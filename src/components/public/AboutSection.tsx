@@ -61,7 +61,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
           {/* Content Column (Figma Node 112:619 — 495px, gap 32) */}
           <div className="lg:col-span-6 lg:order-1 flex flex-col items-start gap-8 max-w-[495px] lg:ms-auto">
             {/* Statement (Figma Node 112:623 — Qahwa 48px/66) */}
-            <h3 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-normal text-brand-espresso leading-[1.375] text-start">
+            <h3 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-bold text-brand-espresso leading-[1.375] text-start">
               {settings.about_headline}
             </h3>
 
