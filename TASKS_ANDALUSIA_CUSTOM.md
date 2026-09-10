@@ -370,9 +370,22 @@ Connect all public routes to Supabase queries for published content. Verify link
 
 ## Tasks 41–51 — Admin Workspace and CMS
 
-### Task 41 — Admin Shell
+### Task 41 — Admin Shell `[COMPLETED]`
 
-Create the protected admin layout with sidebar/navigation, header, breadcrumbs, logout, loading states, unauthorized states, error boundaries, and the canonical admin route names.
+Implemented the protected admin shell matching canonical architecture:
+- `src/app/(admin)/admin/layout.tsx`: Layer 2 server-side auth guard with cookie-aware `createClient()`, `getUser()`, strict `user.app_metadata?.role === 'admin'` verification, redirect to `/login`, and robots `noindex, nofollow` metadata.
+- `src/components/admin/AdminShell.tsx`: Responsive workspace coordinator with desktop persistent sidebar and mobile slide-out drawer with backdrop blur and escape key handling.
+- `src/components/admin/AdminSidebar.tsx`: RTL sidebar with band brand header, section groups, active state detection via `usePathname()`, and external link to public site (`/`).
+- `src/components/admin/AdminHeader.tsx`: Sticky admin header with mobile menu toggle, dynamic Arabic breadcrumbs, user email badge, admin role indicator, and `LogoutButton`.
+- `src/components/admin/AdminBreadcrumbs.tsx`: RTL directional breadcrumb trail with chevron separators.
+- `src/components/admin/adminNavConfig.ts`: Canonical 12-route configuration (`/admin`, `/admin/artists`, `/admin/tracks`, `/admin/releases`, `/admin/events`, `/admin/academy`, `/admin/articles`, `/admin/testimonials`, `/admin/bookings`, `/admin/subscribers`, `/admin/media`, `/admin/settings`) grouped into 5 logical sections.
+- `src/components/admin/AdminIcons.tsx`: Semantic SVG icons for each canonical admin section.
+- `src/app/(admin)/admin/media/page.tsx`: Completed the 12th canonical admin page.
+- `src/app/(admin)/admin/loading.tsx`: Pulse skeleton state for header, stat cards, and content tables.
+- `src/app/(admin)/admin/error.tsx`: Client error boundary with recovery `reset()` action and return-to-dashboard fallback.
+- `src/app/(admin)/admin/unauthorized.tsx`: Access-denied screen with login and public home links.
+- `tests/admin-shell.test.ts`: 6/6 tests passing covering route existence, security guards, breadcrumb derivation, component architecture, and error handling. Full suite 111/111 passing.
+
 
 ### Task 42 — Admin Dashboard
 

@@ -19,7 +19,7 @@ export function MobileNavbar() {
   return (
     <>
       <header
-        className="lg:hidden fixed top-0 start-0 end-0 z-40 h-14 sm:h-16 bg-[#F2EEE0]/95 backdrop-blur-md border-b border-brand-surface px-4 sm:px-6 flex items-center justify-between"
+        className="lg:hidden fixed top-0 start-0 end-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-brand-surface/70 px-4 sm:px-6 flex items-center justify-between"
         role="banner"
       >
         {/* Inline Start: Brand Identity */}
@@ -40,7 +40,7 @@ export function MobileNavbar() {
         <div className="flex items-center gap-2.5">
           <Link
             href="/booking"
-            className="inline-flex items-center justify-center h-8 px-3 rounded-lg bg-brand-primary text-brand-tint text-xs font-bold shadow-2xs hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="inline-flex items-center justify-center h-[34px] px-3.5 rounded-xl bg-brand-primary text-white text-xs font-bold shadow-2xs hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <span>احجز الآن</span>
           </Link>
@@ -48,7 +48,7 @@ export function MobileNavbar() {
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="p-2 rounded-lg border border-brand-surface bg-white text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="p-2 rounded-xl border border-brand-surface bg-white text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
             aria-label="فتح القائمة الرئيسية"
             aria-expanded={drawerOpen}
             aria-controls="mobile-navigation-drawer"

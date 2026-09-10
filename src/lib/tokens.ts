@@ -54,16 +54,20 @@ export const FIGMA_TOKENS = {
       600: "#3A3A3A",
       700: "#2D2D2D",
       800: "#232323",
-      900: "#1B1B1B", // Dark Text
+      900: "#130F26", // Canonical Dark Text (Indigo Charcoal)
     },
     // Semantic & High-Contrast Tokens
     brand: {
       primary: "#C54716",
+      primaryHover: "#B34114",
+      primaryPressed: "#B34114",
       espresso: "#2B1D14",
       espressoSubtle: "rgba(43, 29, 20, 0.12)",
       cream: "#F9F7F0",
       surface: "#ECE6D0",
       tint: "#F9EDE8",
+      borderSecondary: "#F9EDE8",
+      borderGrey: "#DADADA",
       gold: "#FFD900",
       goldSoft: "#FFE15A",
       alertError: "#FF4B55",
@@ -100,7 +104,7 @@ export const FIGMA_TOKENS = {
     sm: "5px",
     md: "8px",
     button: "12px", // Button Master (27:11866) — live-sourced, unconfirmed locally
-    card: "16px",   // Card Master (115:2435) — CONFIRMED (5 instances)
+    card: "24px",   // Card Master Desktop (115:2435, 1440px canvas) — 16px on mobile reflow
     input: "16px",  // Form Inputs (91:17109)
     badge: "16px",  // Filter Chips (31:3483) — CONFIRMED (2 instances)
     drawer: "20px", // Mobile Navigation (139:12348) — live-sourced, unconfirmed locally
@@ -123,7 +127,7 @@ export const FIGMA_TOKENS = {
   typography: {
     fonts: {
       sans: "Cairo, sans-serif",
-      calligraphic: "Aref Ruqaa, Qahwa Arabic, serif",
+      calligraphic: "Qahwa Arabic, Cairo, serif",
       mono: "DM Mono, monospace",
       system: "SF Pro, -apple-system, BlinkMacSystemFont, Inter, sans-serif",
     },

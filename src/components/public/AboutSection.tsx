@@ -10,26 +10,27 @@ interface AboutSectionProps {
 
 /**
  * Verified against Figma Component 9 (Nodes 112:850, 186:284, 186:281, 186:279, 186:278):
- * - Kicker: "من نحن" Cairo Bold 61px (headline-size, NOT a pill badge)
- * - Statement: "نكتشف · نصل · نحتفي" display face (Qahwa Regular) 48px
+ * - Height: 879px desktop (min-h-[879px] lg:h-[879px]), surface #F9F7F0
+ * - Kicker: "من نحن" Cairo Bold 61px in brand-primary (headline-size, NOT a pill badge)
+ * - Statement: "نكتشف · نصل · نحتفي" display face (Qahwa Regular) 48px font-calligraphic
  * - Body: Cairo Medium 25px, text-brand-espresso/85
  * - CTA: "تعرّف على فنانينا ←" SF Pro Bold 16px -> /artists
  * - Visual: Musician Studio Portrait (Node 87:14467)
  */
 export function AboutSection({ settings }: AboutSectionProps) {
   return (
-    <section className="py-20 lg:py-28 bg-[#F7F4EE] overflow-hidden">
+    <section className="py-16 lg:py-0 min-h-[879px] lg:h-[879px] bg-[#F9F7F0] overflow-hidden flex items-center">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Content Column (7 cols on desktop) */}
           <div className="lg:col-span-7 flex flex-col items-start text-start space-y-6">
-            {/* Kicker (Figma Node 186:284 — Cairo Bold 61px) */}
-            <p className="font-sans text-3xl sm:text-4xl lg:text-[61px] font-bold text-brand-espresso leading-tight">
+            {/* Kicker (Figma Node 186:284 — Cairo Bold 61px in Brand Primary) */}
+            <p className="font-sans text-3xl sm:text-4xl lg:text-[61px] font-bold text-brand-primary leading-tight">
               من نحن
             </p>
 
-            {/* Statement (Figma Node 186:281 — display face 48px) */}
-            <h2 className="font-display text-4xl lg:text-[48px] font-normal text-brand-espresso leading-[1.3]">
+            {/* Statement (Figma Node 186:281 — Qahwa 48px calligraphic) */}
+            <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-normal text-brand-espresso leading-[1.3]">
               {settings.about_headline}
             </h2>
 

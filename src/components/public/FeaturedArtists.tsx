@@ -11,10 +11,12 @@ interface FeaturedArtistsProps {
 
 /**
  * Verified against Figma Frame 14 (Nodes 87:14240, 87:14299, 186:1051):
- * - Section Title: display face (Qahwa Regular) 64px "أصوات تصنع التاريخ"
+ * - Height: 615px desktop (min-h-[615px] lg:h-[615px])
+ * - Section Title: display face (Qahwa Regular) 64px "أصوات تصنع التاريخ" font-calligraphic
  * - Frame carries no pill badge and no subtitle — header is H2 + action link only
  * - Action Link: "عرض جميع الفنانين ←" SF Pro Bold 16px -> /artists
  * - 4-Column Responsive Grid: 1 col mobile, 2 col tablet, 4 col desktop
+ * - 4:5 aspect ratio, 24px corner radius on cards
  */
 export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
   if (!artists || artists.length === 0) {
@@ -22,11 +24,11 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
   }
 
   return (
-    <section className="py-20 lg:py-28 bg-[#F2EEE0] border-t border-brand-espresso/5">
+    <section className="py-12 lg:py-0 min-h-[615px] lg:h-[615px] bg-[#F2EEE0] border-t border-brand-espresso/5 flex items-center">
       <Container>
         {/* Section Header (Figma Frame 14 — H2 64px + link, no badge/subtitle) */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-12">
-          <h2 className="font-display text-4xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25] text-start">
+          <h2 className="font-calligraphic text-3xl sm:text-5xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25] text-start">
             أصوات تصنع التاريخ
           </h2>
 
@@ -45,7 +47,7 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
         {/* 4-Item Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {artists.slice(0, 4).map((artist) => (
-            <ArtistCard key={artist.id} artist={artist} />
+            <ArtistCard key={artist.id} artist={artist} className="rounded-[24px]" />
           ))}
         </div>
       </Container>

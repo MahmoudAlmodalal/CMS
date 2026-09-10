@@ -3,7 +3,7 @@
 @theme {
   /* Brand Core Colors */
   --color-brand-primary: #C54716;
-  --color-brand-primary-hover: #D16C45;
+  --color-brand-primary-hover: #B34114;
   --color-brand-primary-pressed: #B34114;
   --color-brand-primary-disabled: #E4AA94;
 
@@ -13,6 +13,8 @@
   --color-brand-cream: #F9F7F0;
   --color-brand-surface: #ECE6D0;
   --color-brand-tint: #F9EDE8;
+  --color-border-secondary: #F9EDE8;
+  --color-border-grey: #DADADA;
   --color-brand-gold: #FFD900;
   --color-brand-gold-soft: #FFE15A;
 
@@ -53,7 +55,7 @@
   --color-gradscale-600: #3A3A3A;
   --color-gradscale-700: #2D2D2D;
   --color-gradscale-800: #232323;
-  --color-gradscale-900: #1B1B1B;
+  --color-gradscale-900: #130F26;
 
   /* Typography */
   --font-sans: var(--font-cairo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -68,7 +70,7 @@
   --radius-sm: 5px;
   --radius-md: 8px;
   --radius-button: 12px;
-  --radius-card: 16px;
+  --radius-card: 24px;
   --radius-input: 16px;
   --radius-badge: 16px;
   --radius-drawer: 20px;

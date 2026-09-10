@@ -87,9 +87,9 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside className="fixed inset-y-0 start-0 z-50 w-full max-w-[320px] sm:max-w-sm bg-brand-cream border-e border-brand-surface shadow-2xl flex flex-col text-brand-espresso">
+      <aside className="fixed inset-y-0 start-0 z-50 w-full max-w-[370px] bg-white border-e border-brand-surface shadow-2xl flex flex-col text-brand-espresso rounded-e-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-brand-surface bg-white/70">
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-brand-surface bg-white">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-brand-primary flex items-center justify-center text-white shadow-xs">
               <MusicIcon size={20} />
@@ -125,10 +125,10 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                   href={item.href}
                   onClick={onClose}
                   className={cn(
-                    "flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
+                    "flex items-center justify-between h-11 px-4 rounded-[10px] text-sm font-semibold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
                     active
-                      ? "bg-brand-primary/10 text-brand-primary shadow-2xs font-extrabold"
-                      : "text-brand-espresso/85 hover:bg-brand-surface/60 hover:text-brand-primary"
+                      ? "bg-brand-primary/10 text-brand-primary font-bold"
+                      : "text-brand-espresso/85 hover:bg-brand-surface/50 hover:text-brand-primary"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
