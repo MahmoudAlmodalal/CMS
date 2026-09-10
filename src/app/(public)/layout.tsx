@@ -25,7 +25,7 @@ export default function PublicLayout({
       {/* 4. Primary Page Viewport */}
       <main
         id="main-content"
-        className="flex-1 pt-16 lg:pt-32 focus:outline-hidden"
+        className="flex-1 pt-14 lg:pt-24 focus:outline-hidden"
         tabIndex={-1}
       >
         {children}
