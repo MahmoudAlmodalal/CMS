@@ -1,18 +1,140 @@
 import React from "react";
+import type { Metadata } from "next";
 import { Container } from "@/components/ui/LayoutPrimitives";
+import {
+  BookingHeader,
+  BookingSidebar,
+  BookingForm,
+  BookingContextBanner,
+} from "@/components/public";
+import { getBookingPageData } from "@/lib/dal/booking";
 
-export default function BookingPage() {
+export const metadata: Metadata = {
+  title: "حجز الفعاليات والعروض الخاصة | فرقة أندلسيا للموسيقى والتراث",
+  description:
+    "احجز فرقة أندلسيا لحفلتك الخاصة، زفافك، أو مهرجانك القادم في لبنان، المغرب، والخليج. تواصل مباشر وتنسيق فني متكامل.",
+  openGraph: {
+    title: "حجز الفعاليات والعروض الخاصة | فرقة أندلسيا",
+    description:
+      "احجز فرقة أندلسيا لحفلتك الخاصة، زفافك، أو مهرجانك القادم. ننسق معك مباشرة لتقديم أرقى التواشيح والموشحات الأندلسية.",
+    locale: "ar_AR",
+    type: "website",
+  },
+};
+
+interface BookingPageProps {
+  searchParams?: Promise<{
+    event_id?: string;
+    artist?: string;
+    artist_id?: string;
+    course?: string;
+  }>;
+}
+
+/**
+ * Task 38 — Booking Route `/booking`
+ * Verified against Figma Screen "الحجز" (Node 91:17109):
+ * - Frame 11 (Node 91:17123): Header with title & subtitle
+ * - Frame 33 (Node 91:17792): 2-Column Responsive Layout (Form + Sidebar)
+ * - Deep Link Parameter Binding:
+ *   - ?event_id=[id] -> Pre-fills event context & associated artist
+ *   - ?artist=[slug|id] -> Pre-selects artist in dropdown
+ *   - ?course=[slug] -> Pre-fills academy registration inquiry
+ */
+export default async function BookingPage({ searchParams }: BookingPageProps) {
+  const resolvedParams = searchParams ? await searchParams : {};
+  const eventIdParam = resolvedParams.event_id;
+  const artistParam = resolvedParams.artist || resolvedParams.artist_id;
+  const courseParam = resolvedParams.course;
+
+  // Retrieve published artists, event details, and configurable site settings
+  const {
+    subtitle,
+    contactEmail,
+    contactPhone,
+    instagramUrl,
+    artists,
+    eventContext,
+  } = await getBookingPageData(eventIdParam);
+
+  // Derive preselection state from query parameters
+  let defaultArtistId: string | undefined = undefined;
+  let preferredArtistName: string | null = null;
+  let defaultPreferredArtist: string | undefined = undefined;
+  let defaultMessage: string | undefined = undefined;
+  let defaultEventType = "private_concert";
+
+  // 1. Event linkage preselection (?event_id=...)
+  if (eventContext) {
+    if (eventContext.artist_id) {
+      defaultArtistId = eventContext.artist_id;
+    }
+    if (eventContext.performer_name && !defaultArtistId) {
+      defaultPreferredArtist = eventContext.performer_name;
+      preferredArtistName = eventContext.performer_name;
+    }
+    defaultEventType = "festival";
+    defaultMessage = `طلب حجز تذاكر واستفسار بخصوص حضور فعالية: "${eventContext.title}"${
+      eventContext.venue ? ` المقامة في ${eventContext.venue}` : ""
+    }.`;
+  }
+
+  // 2. Artist preselection (?artist=...)
+  if (artistParam && !eventContext) {
+    const matchedArtist = artists.find(
+      (a) => a.id === artistParam || a.slug === artistParam
+    );
+    if (matchedArtist) {
+      defaultArtistId = matchedArtist.id;
+      preferredArtistName = matchedArtist.name;
+    } else {
+      defaultPreferredArtist = artistParam;
+      preferredArtistName = artistParam;
+    }
+  }
+
+  // 3. Academy course preselection (?course=...)
+  if (courseParam && !eventContext) {
+    defaultEventType = "other";
+    defaultMessage = `طلب تسجيل واستفسار عن مسار الأكاديمية: "${courseParam}". يرجى تزويدي بالمواعيد المتاحة والشروط.`;
+  }
+
   return (
-    <Container className="py-12 sm:py-16">
-      <div className="space-y-4 text-start">
-        <span className="text-xs font-bold text-brand-primary">حجز الفعاليات</span>
-        <h1 className="font-calligraphic text-3xl sm:text-4xl font-bold text-brand-espresso">
-          طلب حجز حفل أو أمسية خاصة
-        </h1>
-        <p className="text-base text-brand-espresso/80">
-          تواصل معنا لتنسيق فرقة أندلسيا لفعاليتك أو مهرجانك القادم في لبنان، المغرب والخليج.
-        </p>
-      </div>
-    </Container>
+    <div className="w-full bg-brand-cream min-h-screen py-6 sm:py-10">
+      <Container>
+        {/* Header (Figma Frame 11 / Node 91:17123) */}
+        <BookingHeader subtitle={subtitle} />
+
+        {/* 2-Column Responsive Layout (Figma Frame 33 / Node 91:17792) */}
+        <div className="w-full mt-6 sm:mt-8 flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
+          {/* Main Form Column (Figma Form Node 91:17171) */}
+          <main className="flex-1 w-full min-w-0">
+            {/* Deep-link Context Alert */}
+            <BookingContextBanner
+              eventContext={eventContext}
+              preferredArtistName={preferredArtistName}
+              courseSlug={courseParam}
+            />
+
+            {/* Public Interactive Booking Form */}
+            <BookingForm
+              artists={artists}
+              defaultArtistId={defaultArtistId}
+              defaultEventId={eventContext?.id}
+              defaultEventType={defaultEventType}
+              defaultMessage={defaultMessage}
+              defaultPreferredArtist={defaultPreferredArtist}
+            />
+          </main>
+
+          {/* Sidebar Column (Figma Sidebar Node 91:17250) */}
+          <BookingSidebar
+            contactEmail={contactEmail}
+            contactPhone={contactPhone}
+            instagramUrl={instagramUrl}
+          />
+        </div>
+      </Container>
+    </div>
   );
 }

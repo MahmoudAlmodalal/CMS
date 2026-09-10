@@ -25,6 +25,7 @@ export function Bdi({
     </bdi>
   );
 }
+export const Bidi = Bdi;
 
 /**
  * LocalizedNumber: Renders numbers using either Western Arabic (0-9) or Eastern Arabic-Indic (٠-٩)
