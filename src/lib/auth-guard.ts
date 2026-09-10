@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export interface UserClaim {
   id?: string;
@@ -9,7 +10,7 @@ export interface UserClaim {
 }
 
 export interface AuthContext {
-  supabase?: any;
+  supabase?: SupabaseClient;
   user?: UserClaim | null;
 }
 
