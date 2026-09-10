@@ -163,7 +163,7 @@ Next.js Server Actions create publicly accessible HTTP POST endpoints identified
   - *Defense:* Supabase Storage buckets restrict `allowed_mime_types` strictly to `image/jpeg`, `image/png`, `image/webp` for visual assets, and `audio/mpeg`, `audio/ogg`, `audio/wav` for audio. SVG uploads are excluded from user-controllable buckets.
 - **Unbounded Storage Exhaustion:**
   - *Risk:* Uploading 500MB video/binary files to exhaust project storage limits.
-  - *Defense:* `max_file_size` is strictly enforced at the bucket level (5 MB for image buckets, 20 MB for audio bucket).
+  - *Defense:* `max_file_size` is strictly enforced at the bucket level (5 MB for image buckets, 30 MB for audio bucket).
 - **Client Direct Upload vs Server Mediation:**
   - Public visitors have **zero upload rights** to any storage bucket (`storage_admin_insert` requires `auth.is_admin()`). Public forms accept only structured text, dates, and contact data—no visitor file attachments exist in the Figma specifications.
 
