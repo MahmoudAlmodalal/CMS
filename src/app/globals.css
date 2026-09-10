@@ -1,26 +1,107 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand Core Colors */
+  --color-brand-primary: #C54716;
+  --color-brand-primary-hover: #D16C45;
+  --color-brand-primary-pressed: #B34114;
+  --color-brand-primary-disabled: #E4AA94;
+
+  --color-brand-espresso: #2B1D14;
+  --color-brand-espresso-subtle: rgba(43, 29, 20, 0.12);
+
+  --color-brand-cream: #F9F7F0;
+  --color-brand-surface: #ECE6D0;
+  --color-brand-tint: #F9EDE8;
+  --color-brand-gold: #FFD900;
+  --color-brand-gold-soft: #FFE15A;
+
+  --color-alert-error: #FF4B55;
+  --color-alert-success: #73AF00;
+
+  /* Primary Palette (50 to 900) */
+  --color-primary-50: #F9EDE8;
+  --color-primary-100: #EDC6B7;
+  --color-primary-200: #E4AA94;
+  --color-primary-300: #D88463;
+  --color-primary-400: #D16C45;
+  --color-primary-500: #C54716;
+  --color-primary-600: #B34114;
+  --color-primary-700: #8C3210;
+  --color-primary-800: #6C270C;
+  --color-primary-900: #531E09;
+
+  /* Secondary Surface Palette (50 to 900) */
+  --color-secondary-50: #FDFDFA;
+  --color-secondary-100: #F9F7F0;
+  --color-secondary-200: #F6F4E9;
+  --color-secondary-300: #F2EEE0;
+  --color-secondary-400: #EFEBD9;
+  --color-secondary-500: #EBE6D0;
+  --color-secondary-600: #D6D1BD;
+  --color-secondary-700: #A7A394;
+  --color-secondary-800: #817F72;
+  --color-secondary-900: #636157;
+
+  /* Grayscale / Typography Palette (50 to 900) */
+  --color-gradscale-50: #ECECEC;
+  --color-gradscale-100: #C4C4C4;
+  --color-gradscale-200: #A7A7A7;
+  --color-gradscale-300: #7F7F7F;
+  --color-gradscale-400: #666666;
+  --color-gradscale-500: #404040;
+  --color-gradscale-600: #3A3A3A;
+  --color-gradscale-700: #2D2D2D;
+  --color-gradscale-800: #232323;
+  --color-gradscale-900: #1B1B1B;
+
+  /* Typography */
+  --font-sans: var(--font-cairo), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-calligraphic: var(--font-aref-ruqaa), "Qahwa Arabic", serif;
+  --font-mono: var(--font-dm-mono), monospace;
+  --font-system: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Radii */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-button: 12px;
+  --radius-card: 16px;
+  --radius-input: 16px;
+  --radius-badge: 16px;
+  --radius-drawer: 20px;
+  --radius-modal: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-subtle: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0px 4px 12px 0px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 9px 12px 57px 0px rgba(197, 71, 22, 0.8);
+  --shadow-nav: 0px 4px 12px 0px rgba(0, 0, 0, 0.10);
+  --shadow-dropdown: 0px 4px 30px 0px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0px 4px 35px 0px rgba(198, 72, 23, 0.40);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #F9F7F0;
+  --foreground: #2B1D14;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Logical Bidi Isolation Helpers */
+bdi, .bdi-isolate {
+  unicode-bidi: isolate;
+}
+
+/* Phone & LTR embed isolation inside RTL contexts */
+.ltr-embed {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
 }
