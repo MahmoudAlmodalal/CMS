@@ -24,7 +24,12 @@ test("RTL Foundation — 1. Arabic Characters and Typography", () => {
   assert.ok(layoutContent.includes('lang="ar"'), 'Root HTML layout must declare lang="ar"');
   assert.ok(layoutContent.includes('dir="rtl"'), 'Root HTML layout must declare dir="rtl"');
   assert.ok(layoutContent.includes("Cairo"), "Layout must configure Cairo font for Arabic body typography");
-  assert.ok(layoutContent.includes("Aref_Ruqaa"), "Layout must configure Aref_Ruqaa for calligraphic titles");
+  // Display titles use the --font-display stack (Qahwa Arabic, Cairo fallback) defined
+  // in globals.css — Figma specifies Qahwa/Cairo, not a third calligraphic face.
+  // (Aref_Ruqaa was removed: absent from Figma and broke the Turbopack build.)
+  const cssContent = fs.readFileSync(path.resolve("src/app/globals.css"), "utf-8");
+  assert.ok(cssContent.includes("--font-display"), "Theme must define --font-display for display titles");
+  assert.ok(cssContent.includes("Qahwa Arabic"), "Display stack must prefer Qahwa Arabic per Figma");
   assert.ok(layoutContent.includes("DM_Mono"), "Layout must configure DM_Mono for dates and tabular numerals");
 });
 

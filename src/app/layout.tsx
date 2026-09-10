@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Cairo, Aref_Ruqaa, DM_Mono } from "next/font/google";
+import { Cairo, DM_Mono } from "next/font/google";
 import "./globals.css";
 import { DirectionProvider } from "@/lib/direction";
 
 const cairo = Cairo({
   variable: "--font-cairo",
-  subsets: ["arabic", "latin"],
-  display: "swap",
-});
-
-const arefRuqaa = Aref_Ruqaa({
-  variable: "--font-aref-ruqaa",
-  weight: ["400", "700"],
   subsets: ["arabic", "latin"],
   display: "swap",
 });
@@ -37,7 +30,7 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} ${arefRuqaa.variable} ${dmMono.variable} h-full antialiased`}
+      className={`${cairo.variable} ${dmMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-brand-cream text-brand-espresso">
         <DirectionProvider defaultDirection="rtl" defaultLocale="ar">
