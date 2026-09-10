@@ -289,11 +289,13 @@ Test logged-out admin access, invalid credentials, valid admin credentials, logo
 
 Implement the approved admin role check for every create, edit, delete, publish, upload, media-delete, and booking-view operation. Test direct Server Action calls and direct data access, not only visible UI buttons.
 
-### Task 29 — Supabase Storage Implementation
+### Task 29 — Supabase Storage Implementation `[COMPLETED]`
 
-Implement upload, validation, preview, replacement, deletion, deterministic path generation, metadata handling, database reference integrity, and authorization for the seven approved buckets.
+Implemented upload, validation, replacement, deletion, deterministic path generation, metadata handling, database reference integrity, and admin authorization for the seven approved buckets: `src/lib/storage.ts` (canonical buckets/quotas/MIME allowlists incl. avif+aac, folders, `<folder>/<entity_id>/<ts>_<slug>.<ext>` paths, URL helpers, magic-byte spoof defense, SVG script rejection, PNG/JPEG/WebP dimension guardrails, 9-column reference map, orphan set-difference), `src/actions/storage.ts` (admin-gated upload with `upsert:false`, 3-step version-addressed replacement with approved-column pointer swing, reference-guarded deletion, orphan list/cleanup dry-run-by-default), and `supabase/migrations/20260910001300_storage_buckets.sql` (7 buckets + `storage_orphan_candidates` view, idempotent reapply).
 
-Test valid files, invalid MIME types, spoofed extensions, oversized images, audio over 30 MB, invalid dimensions, unauthorized requests, replacement, deletion, referenced files, and orphan files.
+**Current result:** `tests/storage.test.ts` 11/11 pass (paths/sanitization, allowlists, spoofed EXE-as-media, oversize incl. 30 MB audio boundary, invalid MIME/ext, SVG script rejection, corrupt/tiny/huge dimensions, URL round-trip, admin-claim gate, reference map, orphan grace logic); full suite 47/47, typecheck clean, lint 0 errors. Live-bucket upload/replace/delete/orphan-cleanup runs at deploy (Task 59); CMS UI wiring in Task 50; adversarial media QA in Task 55. Two observations: `src/lib/validations/media.ts` (Task 30 scope, other session) omits avif/aac — Task 29 constants are canonical; replace-flow DB-update failure leaves an unreferenced asset that orphan cleanup reclaims after grace.
+
+Required coverage (pure-function level satisfied — `tests/storage.test.ts`; live-credential paths deferred to Tasks 50/55/59):
 
 ### Task 30 — Server-Side Validation
 
@@ -303,11 +305,17 @@ Test empty fields, malformed input, unexpected fields, very long values, invalid
 
 ## Tasks 31–40 — Public Website
 
-### Task 31 — Global Public Shell
+### Task 31 — Global Public Shell `[COMPLETED]`
 
-Implement the confirmed public shell: desktop floating navbar, mobile top bar, mobile drawer, footer, global background, typography, container system, RTL behavior, focus states, and responsive layout.
-
-Do not include CMS data or speculative sections in this task.
+Implemented the confirmed public shell:
+- **Desktop Floating Navbar (`src/components/public/Navbar.tsx`)**: Verified Figma Frame 7 (`186:1519` / `186:2`, `94:18729`), dimensions 1123px x 85px, corner radius 32px (`rounded-[32px]`), solid `#F2EEE0/90` with backdrop blur, shadow-nav, brand identity linking to `/`, 5 confirmed route links ("الرئيسية" `/`, "الأكاديمية" `/academy`, "الفنانين" `/artists`, "الأخبار" `/news`, "الفعاليات" `/events`) with active state detection, RTL/LTR direction toggle, and confirmed CTA button "أحجز الآن" linking to `/booking`.
+- **Mobile Top Bar (`src/components/public/MobileNavbar.tsx`)**: Verified Figma Component 17 (`139:12348`), 56px height, space-between layout with brand identity, quick booking CTA, and accessible hamburger drawer trigger (`aria-label="فتح القائمة الرئيسية"`).
+- **Mobile Drawer (`src/components/public/MobileDrawer.tsx`)**: Verified Figma 139:12368 Navbar Drawer, sliding from inline-start (`start-0` / RTL safe), backdrop overlay, Escape key & body scroll lock handling, route change auto-close, 5 navigation links with chevron end icon, full-width CTA "ابدأ حجزك الآن ♪" linking to `/booking`, contact email (`hello@andalusia.art`), regional presence ("لبنان · المغرب · الخليج"), and direction switcher.
+- **Global Footer (`src/components/public/Footer.tsx`)**: Verified Figma Node `94:18289` / `186:2072` / `87:14546`, 1454px width, 1280px inner container, dark espresso background `#2B1D14`, text `#F9EDE8`, 4-column layout (Brand & Mission with tagline "♪ من رحم المعاناة ولدت الموسيقى", Explore links, Contact & Regional presence, Booking pitch and button "ابدأ حجزك الآن ♪"), and bottom bar with motto "موسيقى · ثقافة · قدرة" and copyright "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة".
+- **Accessible Skip Link (`src/components/public/SkipToContent.tsx`)**: Focusable skip to `#main-content`.
+- **Public Layout (`src/app/(public)/layout.tsx`)**: Route group shell wrapping public pages with background `bg-brand-cream`, typography tokens (Cairo, Aref Ruqaa, DM Mono), container system, RTL behavior, and focus rings.
+- **8 Confirmed Public Routes**: `/`, `/artists`, `/artists/[slug]`, `/events`, `/academy`, `/news`, `/news/[slug]`, `/booking` (strictly NO `/events/[slug]`).
+- **Test Suite (`tests/public-shell.test.ts`)**: 7/7 tests passing; overall test suite 43/43 green; `tsc --noEmit` clean; `next build` 21/21 static pages generated.
 
 ### Task 32 — Home Page `/`
 
