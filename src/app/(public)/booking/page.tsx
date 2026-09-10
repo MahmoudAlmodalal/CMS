@@ -6,6 +6,7 @@ import {
   BookingSidebar,
   BookingForm,
   BookingContextBanner,
+  PageHero,
 } from "@/components/public";
 import { getBookingPageData } from "@/lib/dal/booking";
 
@@ -100,10 +101,15 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   }
 
   return (
-    <div className="w-full bg-brand-cream min-h-screen py-6 sm:py-10">
+    <div className="w-full bg-brand-cream min-h-screen">
+      <PageHero
+        eyebrow="حجز الفعاليات والعروض الخاصة ♪"
+        title="مناسبتك تستحق موسيقى حقيقية."
+        subtitle={subtitle}
+      />
       <Container>
         {/* Header (Figma Frame 11 / Node 91:17123) */}
-        <BookingHeader subtitle={subtitle} />
+        <div className="sr-only"><BookingHeader subtitle={subtitle} /></div>
 
         {/* 2-Column Responsive Layout (Figma Frame 33 / Node 91:17792) */}
         <div className="w-full mt-6 sm:mt-8 flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">

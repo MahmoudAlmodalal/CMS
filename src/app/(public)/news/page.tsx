@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
+import { PageHero } from "@/components/public";
 import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
 
 export const revalidate = 1800; // 30 minutes ISR as specified in APPLICATION_ARCHITECTURE.md
@@ -43,10 +44,15 @@ export default async function NewsPage() {
       : articles.filter((a) => a.id !== primaryArticle?.id).slice(0, 2);
 
   return (
-    <div className="py-8 sm:py-12 lg:py-16 space-y-12 sm:space-y-16">
+    <div className="space-y-12 sm:space-y-16">
+      <PageHero
+        eyebrow="مدونة التراث والموسيقى"
+        title="الأخبار والملفات الثقافية"
+        subtitle="حوارات وتغطيات وتفاصيل تحفظ ذاكرة الموسيقى العربية والتراث الأندلسي."
+      />
       <Container>
         {/* Page Header Header Kicker & Title */}
-        <div className="space-y-3 text-start mb-8 sm:mb-12">
+        <div className="sr-only space-y-3 text-start mb-8 sm:mb-12">
           <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">
             مدونة التراث والموسيقى
           </span>
@@ -93,4 +99,3 @@ export default async function NewsPage() {
     </div>
   );
 }
-

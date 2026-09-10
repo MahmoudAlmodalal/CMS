@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { getPublishedArtists } from "@/lib/dal/artists";
@@ -6,6 +6,7 @@ import { getSiteSettings } from "@/lib/dal/site-settings";
 import {
   ArtistsHeader,
   ArtistsDirectoryClient,
+  PageHero,
 } from "@/components/public";
 
 /**
@@ -13,6 +14,7 @@ import {
  * ISR revalidation every 1 hour (3600s) as specified in APPLICATION_ARCHITECTURE.md §4.1
  */
 export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "الفنانين | فرقة أندلسيا",
@@ -37,27 +39,19 @@ export default async function ArtistsPage() {
   ]);
 
   return (
-    <div className="py-10 sm:py-14 lg:py-20">
+    <div>
+      <PageHero
+        eyebrow="دليل الفنانين ♪"
+        title="أصوات تصنع التاريخ"
+        subtitle={settings.artists_subtitle}
+      />
       <Container>
-        <div className="space-y-10 lg:space-y-12">
+        <div className="space-y-10 py-10 lg:space-y-12 lg:py-16">
           {/* Header section matching Figma Frame 10 (91:17844 / 91:18060) */}
-          <ArtistsHeader
-            subtitle={settings.artists_subtitle}
-            socialLinks={settings.social_links}
-          />
+          <div className="sr-only"><ArtistsHeader subtitle={settings.artists_subtitle} socialLinks={settings.social_links} /></div>
 
-          {/* Interactive filter & grid wrapped in Suspense for useSearchParams */}
-          <Suspense
-            fallback={
-              <div className="py-16 text-center text-gradscale-400">
-                <span className="font-calligraphic text-xl text-brand-espresso">
-                  جاري تحميل دليل الفنانين...
-                </span>
-              </div>
-            }
-          >
-            <ArtistsDirectoryClient initialArtists={artists} />
-          </Suspense>
+          {/* Interactive filter & grid; dynamic rendering avoids a static fallback replacing the cards. */}
+          <ArtistsDirectoryClient initialArtists={artists} />
         </div>
       </Container>
     </div>
