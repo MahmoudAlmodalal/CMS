@@ -336,11 +336,19 @@ export async function updateArtistAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف الفنان مطلوب" };
 
+  const parsed = artistSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("artists")
-    .update({ ...input, updated_at: new Date().toISOString() } as never)
+    .update({ ...parsed.data, updated_at: new Date().toISOString() } as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
