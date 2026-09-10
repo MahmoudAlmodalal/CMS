@@ -60,7 +60,7 @@
   /* Display face: Qahwa Arabic (self-host woff2 pending) falls back to Cairo Bold.
      Per FIGMA_DESIGN_SPEC §3: hero H1 + section H2s. Qahwa ships Regular only → font-normal. */
   --font-display: "Qahwa Arabic", var(--font-cairo), -apple-system, "Segoe UI", serif;
-  --font-calligraphic: var(--font-aref-ruqaa), "Qahwa Arabic", serif;
+  --font-calligraphic: var(--font-display), serif;
   --font-mono: var(--font-dm-mono), monospace;
   --font-system: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 

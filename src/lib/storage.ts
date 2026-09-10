@@ -139,15 +139,27 @@ export function buildStoragePath(input: BuildPathInput): string {
 // URL helpers (§7.2): DB stores a path or full URL; resolve to absolute CDN URL.
 // ---------------------------------------------------------------------------
 
-export function storageBaseUrl(): string {
+/** CDN base for public reads. Returns null when unconfigured (build/preview
+ *  without Supabase env) — read-path callers must degrade, never crash. */
+export function storageBaseUrl(): string | null {
   const direct = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL;
   if (direct) return direct.replace(/\/+$/, "");
   const project = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (project) return `${project.replace(/\/+$/, "")}/storage/v1/object/public`;
-  throw new Error("[storage] Missing NEXT_PUBLIC_SUPABASE_URL (or _STORAGE_URL).");
+  return null;
 }
 
-/** Absolute URLs pass through; relative paths resolve against the CDN base. */
+/** Strict variant for write paths (upload/replace/delete/orphan cleanup):
+ *  env misconfiguration must fail loudly at runtime, never silently. */
+export function requireStorageBaseUrl(): string {
+  const base = storageBaseUrl();
+  if (!base) throw new Error("[storage] Missing NEXT_PUBLIC_SUPABASE_URL (or _STORAGE_URL).");
+  return base;
+}
+
+/** Absolute URLs pass through; relative paths resolve against the CDN base.
+ *  Without a configured base (e.g. static build with no env), the stored
+ *  path is returned unchanged so prerendering never crashes. */
 export function resolveMediaUrl(
   bucket: StorageBucket,
   pathOrUrl: string | null | undefined,
@@ -156,7 +168,9 @@ export function resolveMediaUrl(
   const v = pathOrUrl.trim();
   if (!v) return null;
   if (v.startsWith("http://") || v.startsWith("https://")) return v;
-  return `${storageBaseUrl()}/${bucket}/${v.replace(/^\/+/, "")}`;
+  const base = storageBaseUrl();
+  if (!base) return v;
+  return `${base}/${bucket}/${v.replace(/^\/+/, "")}`;
 }
 
 const PUBLIC_URL_RE =
