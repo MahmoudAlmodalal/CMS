@@ -12,6 +12,10 @@
  */
 
 export const FIGMA_TOKENS = {
+  // NOTE (Task 22 verification): figma_full_inventory.json contains zero
+  // fills/colors/effects keys, so every color & shadow below is live-Figma
+  // sourced and UNCONFIRMED locally. Re-verify against live Figma on next pull.
+  // Do not invent additional color/shadow tokens until then.
   colors: {
     // Primary Scale (Terracotta / Brand Core)
     primary: {
@@ -87,16 +91,21 @@ export const FIGMA_TOKENS = {
     14: "112px",// 7rem
   },
 
-  // Corner radii from Figma
+  // Corner radii from Figma.
+  // CONFIRMED in-repo (figma_full_inventory.json): 5, 8, 16, 24, 32, 50(+2 section).
+  // button 12 / drawer 20 / modal 24: sourced from live Figma nodes
+  // (27:11866, 139:12348), absent from in-repo inventory — re-verify on next live pull.
+  // bar 32: Frame 7 wide bars (1123x85, 11 instances, e.g. 186:2).
   radii: {
     sm: "5px",
     md: "8px",
-    button: "12px", // Button Master (27:11866)
-    card: "16px",   // Card Master (115:2435)
+    button: "12px", // Button Master (27:11866) — live-sourced, unconfirmed locally
+    card: "16px",   // Card Master (115:2435) — CONFIRMED (5 instances)
     input: "16px",  // Form Inputs (91:17109)
-    badge: "16px",  // Filter Chips (31:3483)
-    drawer: "20px", // Mobile Navigation (139:12348)
-    modal: "24px",
+    badge: "16px",  // Filter Chips (31:3483) — CONFIRMED (2 instances)
+    drawer: "20px", // Mobile Navigation (139:12348) — live-sourced, unconfirmed locally
+    modal: "24px", // live-sourced, unconfirmed locally (24 seen on Container frames)
+    bar: "32px", // Frame 7 bars — CONFIRMED (11 instances)
     full: "9999px", // Pill Buttons & Badges
   },
 
