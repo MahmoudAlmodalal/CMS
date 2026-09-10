@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/ui-foundation.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts tests/booking.test.ts tests/academy.test.ts tests/news.test.ts tests/media.test.ts tests/public-integration.test.ts tests/home-page.test.ts tests/admin-shell.test.ts tests/admin-dashboard.test.ts"
+    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/ui-foundation.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts tests/booking.test.ts tests/academy.test.ts tests/news.test.ts tests/media.test.ts tests/public-integration.test.ts tests/home-page.test.ts tests/admin-shell.test.ts tests/admin-dashboard.test.ts tests/admin-settings.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
