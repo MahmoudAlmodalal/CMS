@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { requireAdminSession } from "@/lib/auth-guard";
 import type { Database } from "@/lib/supabase/types";
 import {
   type Artist,
@@ -15,6 +16,28 @@ export {
   CANONICAL_FEATURED_ARTISTS,
   getCategoryLabel,
 };
+
+/**
+ * Fetches every artist for the protected admin workspace, including drafts.
+ * The auth guard is intentionally kept in the DAL so the page cannot forget it.
+ */
+export async function getAdminArtists(): Promise<Artist[]> {
+  const { supabase } = await requireAdminSession();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("artists")
+    .select("*")
+    .order("display_order", { ascending: true })
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("DAL Error [getAdminArtists]:", error.message);
+    throw new Error("تعذر تحميل قائمة الفنانين حالياً");
+  }
+
+  return (data as unknown as Artist[]) || [];
+}
 
 /**
  * Fetches featured published artists for the homepage.
@@ -69,7 +92,10 @@ export async function getPublishedArtists(options?: {
       .order("name", { ascending: true });
 
     if (options?.category && options.category !== "all") {
-      query = query.eq("category", options.category as any);
+      query = query.eq(
+        "category",
+        options.category as Database["public"]["Tables"]["artists"]["Row"]["category"],
+      );
     }
 
 
