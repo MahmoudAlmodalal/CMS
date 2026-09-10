@@ -33,11 +33,11 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   hero_headline: "منصتك الأولى *لاكتشاف* ودعم *المواهب* الفنية والثقافية",
   hero_subheadline:
     "أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",
-  hero_image_url: "/assets/hero-stage.png",
+  hero_image_url: "/assets/figma/hero-stage-landscape.png",
   about_headline: "نكتشف · نصل · نحتفي",
   about_body:
     "وُلدنا من إيمان عميق بأن الفن ليس ترفاً بل ضرورة. نعمل على تقريب المسافة بين الفنان الموهوب والجمهور الذي ينتظره، وبين المناسبة التي تستحق اللحظة الفنية التي تجعلها لا تُنسى. أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",
-  about_image_url: "/assets/about-musician.png",
+  about_image_url: "/assets/figma/about-musician.png",
   booking_banner_title: "مناسبتك تستحق موسيقى حقيقية",
   booking_banner_body: "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.",
   artists_subtitle: "كل فنان في أندلسيا يحمل قصة ومعاناة، يعزف بأنامله روح الشرق، ويصنع من التراث نغماً للمستقبل.",
