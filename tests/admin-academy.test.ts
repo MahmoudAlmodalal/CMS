@@ -1,147 +1,90 @@
-/**
- * Task 47 — Academy CMS — fs-based test suite
- * Tests: file existence, Zod schema, 'use server' directive, no enrollment imports.
- */
-
-import { describe, it } from "node:test";
+import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import fs from "node:fs";
+import path from "node:path";
+import { academyCourseSchema } from "../src/lib/validations/cms.ts";
 
-const ROOT = resolve(process.cwd());
+const ROOT = path.resolve(import.meta.dirname, "..");
 
-function filePath(rel: string): string {
-  return resolve(ROOT, rel);
+function read(rel: string): string {
+  return fs.readFileSync(path.join(ROOT, rel), "utf-8");
 }
 
-function fileContent(rel: string): string {
-  return readFileSync(filePath(rel), "utf-8");
-}
+test("Task 44 (rebuild) — academy route is dynamic and reads through the admin DAL", () => {
+  const page = read("src/app/(admin)/admin/academy/page.tsx");
+  const dal = read("src/lib/dal/admin-academy.ts");
 
-function fileExists(rel: string): boolean {
-  return existsSync(filePath(rel));
-}
+  assert.match(page, /dynamic = "force-dynamic"/);
+  assert.match(page, /getAdminCourses/);
+  assert.match(page, /AcademyManager/);
+  assert.match(dal, /requireAdminSession/);
+  assert.match(dal, /academy_courses/); // The same query returns published courses and drafts.
+  assert.match(dal, /display_order/);
+});
 
-// ---------------------------------------------------------------------------
-// T1: Required files exist
-// ---------------------------------------------------------------------------
-describe("T1 — Required files exist", () => {
-  const required = [
-    "src/lib/types/admin-academy.ts",
-    "src/lib/validations/academy.ts",
-    "src/lib/dal/admin-academy.ts",
-    "src/actions/admin-academy.ts",
-    "src/components/admin/academy/CoursesTable.tsx",
-    "src/components/admin/academy/CourseForm.tsx",
-    "src/app/(admin)/admin/academy/page.tsx",
+test("Task 44 (rebuild) — manager covers canonical academy course fields and guarded actions", () => {
+  const manager = read("src/components/admin/AcademyManager.tsx");
+
+  for (const field of [
+    "title", "slug", "track_category", "description", "instructor_name", "instructor_id",
+    "image_url", "display_order", "is_published",
+  ]) {
+    assert.ok(manager.includes(field), `academy manager must include ${field}`);
+  }
+
+  // Phantom-schema fields from the deleted implementation must never reappear.
+  for (const phantomField of ["title_ar", "description_ar", "signup_copy_ar", "ordering", "publish_now"]) {
+    assert.ok(!manager.includes(phantomField), `academy manager must NOT include phantom field ${phantomField}`);
+  }
+
+  assert.match(manager, /createAcademyCourseAction/);
+  assert.match(manager, /updateAcademyCourseAction/);
+  assert.match(manager, /deleteAcademyCourseAction/);
+  assert.match(manager, /setPublishStatusAction\("academy_courses"/);
+  assert.match(manager, /window\.confirm/);
+  assert.match(manager, /dir="rtl"/);
+
+  const kit = read("src/components/admin/ManagerKit.tsx");
+  assert.match(kit, /role=\{notice\.type === "error" \? "alert" : "status"\}/);
+});
+
+test("Task 44 (rebuild) — academy course validation accepts the full form and enforces the display_order CHECK", () => {
+  const input = {
+    title: "مسار الغيتار الكلاسيكي",
+    slug: "classical-guitar",
+    track_category: "آلات وترية",
+    description: "مسار تعليمي متكامل لتعلم أساسيات وتقنيات العزف على الغيتار الكلاسيكي.",
+    instructor_name: "مدرب تجريبي",
+    instructor_id: null,
+    image_url: "https://example.com/course.webp",
+    display_order: 3,
+    is_published: false,
+  };
+
+  assert.equal(academyCourseSchema.safeParse(input).success, true);
+  assert.equal(academyCourseSchema.safeParse({ ...input, display_order: 0 }).success, false);
+  assert.equal(academyCourseSchema.safeParse({ ...input, display_order: 11 }).success, false);
+  assert.equal(academyCourseSchema.safeParse({ ...input, slug: "Not Valid Slug!" }).success, false);
+});
+
+test("Task 44 (rebuild) — update action validates partial academy course updates through requireAdminSession", () => {
+  const action = read("src/actions/cms.ts");
+
+  assert.match(action, /academyCourseSchema\.omit\(\{ id: true \}\)\.partial\(\)\.safeParse\(input\)/);
+  assert.match(action, /export async function createAcademyCourseAction/);
+  assert.match(action, /export async function deleteAcademyCourseAction/);
+});
+
+test("Task 44 (rebuild) — phantom-schema academy files no longer exist", () => {
+  for (const rel of [
     "src/app/(admin)/admin/academy/new/page.tsx",
     "src/app/(admin)/admin/academy/[id]/edit/page.tsx",
-  ];
-
-  for (const rel of required) {
-    it(`exists: ${rel}`, () => {
-      assert.ok(fileExists(rel), `Missing required file: ${rel}`);
-    });
-  }
-});
-
-// ---------------------------------------------------------------------------
-// T2: courseSchema rejects missing title_ar
-// ---------------------------------------------------------------------------
-describe("T2 — courseSchema rejects missing title_ar", async () => {
-  it("fails with missing title_ar", async () => {
-    // Dynamically import to use the actual schema
-    const { courseSchema } = await import("../src/lib/validations/academy.ts");
-    const result = courseSchema.safeParse({
-      // title_ar intentionally omitted
-      description_ar: "وصف كافٍ للتحقق من صحة المخطط",
-      is_published: false,
-      ordering: 0,
-    });
-    assert.strictEqual(result.success, false);
-    const messages = result.error?.issues.map((i) => i.message) ?? [];
-    assert.ok(
-      messages.some((m) => m.includes("عنوان") || m.includes("مطلوب") || m.includes("Required")),
-      `Expected Arabic title error, got: ${messages.join(", ")}`
-    );
-  });
-});
-
-// ---------------------------------------------------------------------------
-// T3: courseSchema rejects description_ar < 10 chars
-// ---------------------------------------------------------------------------
-describe("T3 — courseSchema rejects short description_ar", async () => {
-  it("fails when description_ar is < 10 chars", async () => {
-    const { courseSchema } = await import("../src/lib/validations/academy.ts");
-    const result = courseSchema.safeParse({
-      title_ar: "عنوان صالح",
-      description_ar: "قصير",   // < 10 chars
-      is_published: false,
-      ordering: 0,
-    });
-    assert.strictEqual(result.success, false);
-    const messages = result.error?.issues.map((i) => i.message) ?? [];
-    assert.ok(
-      messages.some((m) => m.includes("10") || m.includes("وصف") || m.includes("أحرف")),
-      `Expected description length error, got: ${messages.join(", ")}`
-    );
-  });
-});
-
-// ---------------------------------------------------------------------------
-// T4: courseSchema accepts a valid course
-// ---------------------------------------------------------------------------
-describe("T4 — courseSchema accepts a valid course", async () => {
-  it("succeeds with all required + optional fields", async () => {
-    const { courseSchema } = await import("../src/lib/validations/academy.ts");
-    const result = courseSchema.safeParse({
-      title_ar: "أساسيات العود للمبتدئين",
-      description_ar: "دورة شاملة لتعلم آلة العود من الصفر حتى الاحتراف في بيئة تفاعلية.",
-      instructor_id: null,
-      image_url: null,
-      signup_copy_ar: "سجّل الآن واستفد من تجربة تعليمية فريدة",
-      is_published: true,
-      ordering: 1,
-    });
-    assert.strictEqual(result.success, true, JSON.stringify(result.error?.issues));
-  });
-});
-
-// ---------------------------------------------------------------------------
-// T5: 'use server' in actions file
-// ---------------------------------------------------------------------------
-describe("T5 — actions file has 'use server' directive", () => {
-  it("src/actions/admin-academy.ts starts with use server", () => {
-    const content = fileContent("src/actions/admin-academy.ts");
-    assert.ok(
-      content.includes('"use server"') || content.includes("'use server'"),
-      "Expected 'use server' directive in src/actions/admin-academy.ts"
-    );
-  });
-});
-
-// ---------------------------------------------------------------------------
-// T6: No enrollment / payment / stripe imports
-// ---------------------------------------------------------------------------
-describe("T6 — No student enrollment system references", () => {
-  const filesToCheck = [
-    "src/lib/dal/admin-academy.ts",
-    "src/actions/admin-academy.ts",
-    "src/components/admin/academy/CoursesTable.tsx",
     "src/components/admin/academy/CourseForm.tsx",
-  ];
-
-  const forbidden = ["enrollment", "payment", "stripe"];
-
-  for (const rel of filesToCheck) {
-    it(`${rel} has no enrollment/payment/stripe references`, () => {
-      const content = fileContent(rel).toLowerCase();
-      for (const term of forbidden) {
-        assert.ok(
-          !content.includes(term),
-          `Found forbidden term "${term}" in ${rel}`
-        );
-      }
-    });
+    "src/components/admin/academy/CoursesTable.tsx",
+    "src/actions/admin-academy.ts",
+    "src/lib/validations/academy.ts",
+    "src/lib/types/admin-academy.ts",
+  ]) {
+    assert.equal(fs.existsSync(path.join(ROOT, rel)), false, `${rel} should have been deleted`);
   }
 });

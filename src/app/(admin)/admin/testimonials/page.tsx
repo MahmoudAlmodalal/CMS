@@ -1,3 +1,9 @@
-export default function AdminTestimonialsPage() {
-  return <h1 className="text-2xl font-bold font-sans">إدارة آراء الجمهور والشهادات</h1>;
+import { TestimonialsManager } from "@/components/admin/TestimonialsManager";
+import { getAdminTestimonials } from "@/lib/dal/admin-testimonials";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminTestimonialsPage() {
+  const testimonials = await getAdminTestimonials();
+  return <TestimonialsManager initialTestimonials={testimonials} />;
 }

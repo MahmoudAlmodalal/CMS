@@ -1,3 +1,9 @@
-export default function AdminSubscribersPage() {
-  return <h1 className="text-2xl font-bold font-sans">إدارة المشتركين في النشرة البريدية</h1>;
+import { SubscribersTable } from "@/components/admin/SubscribersTable";
+import { getAdminNewsletterSubscribers } from "@/lib/dal/bookings";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminSubscribersPage() {
+  const subscribers = await getAdminNewsletterSubscribers();
+  return <SubscribersTable initialSubscribers={subscribers} />;
 }

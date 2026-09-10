@@ -1,5 +1,9 @@
 /**
- * Admin DAL for Testimonials (Task 48).
+ * Admin DAL for Testimonials (Task 48, rebuilt).
+ *
+ * Real schema (supabase/migrations/20260910000800_create_testimonials.sql):
+ *   id, quote, author_name, author_role, avatar_image_url (nullable), display_order,
+ *   is_published, created_at. No published_at column — publication is a plain boolean.
  *
  * Read operations use createClient() (anon/session key, subject to RLS).
  * Write operations use createAdminClient() (service_role, bypasses RLS).
@@ -8,27 +12,34 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/auth-guard";
-import type { AdminTestimonial } from "@/lib/types/admin-articles";
-import type { TestimonialInput } from "@/lib/validations/testimonials";
+import type { TestimonialInput } from "@/lib/validations/cms";
 
-export type { AdminTestimonial };
+export interface AdminTestimonial {
+  id: string;
+  quote: string;
+  author_name: string;
+  author_role: string;
+  avatar_image_url: string | null;
+  display_order: number;
+  is_published: boolean;
+  created_at: string;
+}
+
+const TESTIMONIAL_COLUMNS =
+  "id, quote, author_name, author_role, avatar_image_url, display_order, is_published, created_at";
 
 // ============================================================================
 // READ
 // ============================================================================
 
-/**
- * Fetch all testimonials for the admin panel (published and unpublished).
- * Ordered by ordering ASC, then created_at DESC.
- */
 export async function getAdminTestimonials(): Promise<AdminTestimonial[]> {
   await requireAdminSession();
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("testimonials")
-    .select("id, quote_ar, author_name_ar, author_role_ar, avatar_url, is_published, ordering, created_at")
-    .order("ordering", { ascending: true })
+    .select(TESTIMONIAL_COLUMNS)
+    .order("display_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -39,16 +50,13 @@ export async function getAdminTestimonials(): Promise<AdminTestimonial[]> {
   return (data as unknown as AdminTestimonial[]) || [];
 }
 
-/**
- * Fetch a single testimonial by ID for the admin panel.
- */
 export async function getAdminTestimonialById(id: string): Promise<AdminTestimonial | null> {
   await requireAdminSession();
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("testimonials")
-    .select("id, quote_ar, author_name_ar, author_role_ar, avatar_url, is_published, ordering, created_at")
+    .select(TESTIMONIAL_COLUMNS)
     .eq("id", id)
     .maybeSingle();
 
@@ -64,19 +72,10 @@ export async function getAdminTestimonialById(id: string): Promise<AdminTestimon
 // WRITE — all use createAdminClient() (service_role)
 // ============================================================================
 
-/**
- * Create a new testimonial.
- */
-export async function createTestimonial(
-  data: TestimonialInput
-): Promise<{ id: string }> {
+export async function createTestimonial(data: TestimonialInput): Promise<{ id: string }> {
   const adminClient = createAdminClient();
 
-  const payload = {
-    ...data,
-    author_role_ar: data.author_role_ar || null,
-    avatar_url: data.avatar_url || null,
-  };
+  const payload = { ...data, avatar_image_url: data.avatar_image_url || null };
 
   const { data: row, error } = await adminClient
     .from("testimonials")
@@ -92,27 +91,15 @@ export async function createTestimonial(
   return { id: (row as unknown as { id: string }).id };
 }
 
-/**
- * Update an existing testimonial by ID.
- */
-export async function updateTestimonial(
-  id: string,
-  data: Partial<TestimonialInput>
-): Promise<void> {
+export async function updateTestimonial(id: string, data: Partial<TestimonialInput>): Promise<void> {
   const adminClient = createAdminClient();
 
   const payload: Record<string, unknown> = { ...data };
-  if (data.author_role_ar !== undefined) {
-    payload.author_role_ar = data.author_role_ar || null;
-  }
-  if (data.avatar_url !== undefined) {
-    payload.avatar_url = data.avatar_url || null;
+  if (data.avatar_image_url !== undefined) {
+    payload.avatar_image_url = data.avatar_image_url || null;
   }
 
-  const { error } = await adminClient
-    .from("testimonials")
-    .update(payload as never)
-    .eq("id", id);
+  const { error } = await adminClient.from("testimonials").update(payload as never).eq("id", id);
 
   if (error) {
     console.error("DAL Error [updateTestimonial]:", error.message);
@@ -120,9 +107,6 @@ export async function updateTestimonial(
   }
 }
 
-/**
- * Delete a testimonial by ID.
- */
 export async function deleteTestimonial(id: string): Promise<void> {
   const adminClient = createAdminClient();
 
@@ -131,26 +115,5 @@ export async function deleteTestimonial(id: string): Promise<void> {
   if (error) {
     console.error("DAL Error [deleteTestimonial]:", error.message);
     throw new Error(error.message || "تعذر حذف الشهادة");
-  }
-}
-
-/**
- * Toggle the is_published flag of a testimonial.
- * Pass the current is_published value; the function will flip it.
- */
-export async function toggleTestimonialPublish(
-  id: string,
-  current: boolean
-): Promise<void> {
-  const adminClient = createAdminClient();
-
-  const { error } = await adminClient
-    .from("testimonials")
-    .update({ is_published: !current } as never)
-    .eq("id", id);
-
-  if (error) {
-    console.error("DAL Error [toggleTestimonialPublish]:", error.message);
-    throw new Error(error.message || "تعذر تغيير حالة النشر");
   }
 }
