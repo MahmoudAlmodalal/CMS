@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import { getPublishedAcademyCourses } from "@/lib/dal/academy";
 import {
-  AcademyHeader,
   AcademyValueProps,
   AcademyTracks,
   AcademyNewsletter,
 } from "@/components/public/academy";
+import { PageHero } from "@/components/public";
 
 export const dynamic = "force-static"; // Static per APPLICATION_ARCHITECTURE.md (no searchParams/cookies)
 
@@ -49,8 +49,12 @@ export default async function AcademyPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* 1. Header with dynamic subtitle */}
-      <AcademyHeader subtitle={settings.academy_subtitle} />
+      {/* 1. Figma academy hero */}
+      <PageHero
+        eyebrow="أكاديمية أندلسيا الموسيقية"
+        title="تعلّم من اليد التي تعرف الطريق"
+        subtitle={settings.academy_subtitle}
+      />
 
       {/* 2. Value propositions & methodology */}
       <AcademyValueProps />

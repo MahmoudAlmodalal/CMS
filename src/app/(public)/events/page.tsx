@@ -5,6 +5,7 @@ import {
   EventsHeader,
   EventsCatalogView,
 } from "@/components/public/events";
+import { PageHero } from "@/components/public";
 import {
   getPublishedEvents,
   getFeaturedEvent,
@@ -55,13 +56,15 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   ]);
 
   return (
-    <div className="w-full py-10 sm:py-14 lg:py-16">
+    <div className="w-full">
+      <PageHero
+        eyebrow="جدول العروض والفعاليات"
+        title="مواعيد تترك أثراً جميلاً."
+        subtitle={subtitle}
+      />
       <Container className="space-y-10 sm:space-y-12">
         {/* 1. Header (Figma 91:16532 / 91:16748) */}
-        <EventsHeader
-          title="مواعيد تترك أثراً جميلاً."
-          subtitle={subtitle}
-        />
+        <div className="sr-only"><EventsHeader title="مواعيد تترك أثراً جميلاً." subtitle={subtitle} /></div>
 
         {/* 2. Catalog View with Suspense for useSearchParams boundary */}
         <Suspense

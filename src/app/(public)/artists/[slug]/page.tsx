@@ -1,8 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { getArtistBySlug, getPublishedArtists } from "@/lib/dal/artists";
+import { PageHero } from "@/components/public";
 
 export async function generateStaticParams() {
   // Published-only slugs: drafts never pre-render (Task 40 draft exclusion).
@@ -52,22 +54,41 @@ export default async function ArtistDetailPage({
   }
 
   return (
-    <Container className="py-12 sm:py-16">
-      <div className="space-y-4 text-start">
-        <span className="text-xs font-bold text-brand-primary">الملف الشخصي للفنان</span>
-        {/* Artist name — Figma الفنان screen: display face (Qahwa) Heading 1 */}
-        <h1 className="font-display text-4xl sm:text-5xl font-normal text-brand-espresso leading-[1.25]">
-          {artist.name}
-        </h1>
-        {[artist.genre_tag, artist.city].filter(Boolean).join(" · ") ? (
-          <p className="text-sm text-brand-espresso/70">
-            {[artist.genre_tag, artist.city].filter(Boolean).join(" · ")}
-          </p>
-        ) : null}
-        {artist.short_bio ? (
-          <p className="max-w-2xl leading-8 text-brand-espresso/80">{artist.short_bio}</p>
-        ) : null}
-      </div>
-    </Container>
+    <div>
+      <PageHero
+        eyebrow="الملف الشخصي للفنان"
+        title={artist.name}
+        subtitle={[artist.genre_tag, artist.city].filter(Boolean).join(" · ")}
+      />
+      <Container className="py-12 sm:py-16 lg:py-24">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(300px,440px)_1fr] lg:gap-16">
+          <div className="overflow-hidden rounded-[28px] bg-brand-surface shadow-card">
+            <Image
+              src={artist.portrait_image_url || "/assets/artists/artist-1.png"}
+              alt={artist.name}
+              width={700}
+              height={820}
+              className="aspect-[4/5] w-full object-cover"
+            />
+          </div>
+          <article className="space-y-8 text-start">
+            <div>
+              <span className="text-xs font-bold tracking-wider text-brand-primary">عن الفنان</span>
+              <h2 className="mt-3 font-display text-4xl font-normal text-brand-espresso sm:text-5xl">{artist.name}</h2>
+              <p className="mt-3 text-sm text-brand-espresso/65">{[artist.genre_tag, artist.city].filter(Boolean).join(" · ")}</p>
+            </div>
+            <p className="max-w-2xl text-lg leading-9 text-brand-espresso/80">{artist.full_bio || artist.short_bio}</p>
+            <div className="rounded-[24px] bg-brand-espresso p-7 text-[#F9F7F0]">
+              <p className="text-xl leading-9">“{artist.quote}”</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {artist.specialties.split("•").map((item) => (
+                <span key={item} className="rounded-full border border-brand-primary/30 bg-brand-tint px-4 py-2 text-sm font-bold text-brand-primary">{item.trim()}</span>
+              ))}
+            </div>
+          </article>
+        </div>
+      </Container>
+    </div>
   );
 }
