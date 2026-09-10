@@ -67,7 +67,8 @@ export async function getAdminArticles(filters?: AdminArticleFilters): Promise<A
   let query = supabase.from("articles").select(ARTICLE_COLUMNS).order("created_at", { ascending: false });
 
   if (filters?.category) {
-    query = query.eq("category", filters.category);
+    const category = filters.category as "culture" | "artists" | "academy" | "events";
+    query = query.eq("category", category);
   }
 
   if (filters?.is_published !== undefined) {

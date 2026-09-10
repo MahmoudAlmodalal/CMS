@@ -83,3 +83,5 @@ export function AdminShell({ children, userEmail }: AdminShellProps) {
     </div>
   );
 }
+
+export default AdminShell;
