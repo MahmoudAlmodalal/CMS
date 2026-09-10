@@ -292,7 +292,7 @@ flowchart LR
     7. Booking Inquiries (`/booking`): Multi-field booking inquiry form with validation.
   - Interactive widgets: Custom audio player (`AudioPlayer.tsx`) with play/pause, seek, and volume.
 - **Validation:**
-  - Pixel-accurate fidelity to Figma canvas across all 7 routes.
+  - Pixel-accurate fidelity to Figma canvas across all 8 routes.
   - Responsive audit: 390px (mobile), 768px (tablet), 1440px (desktop) without horizontal scrollbar.
   - Audio player streams media without interruptions or memory leaks.
   - Lighthouse Accessibility and Best Practices scores exceed 90.

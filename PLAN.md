@@ -67,7 +67,7 @@
 ---
 
 ## Phase 5: English Translation (LTR) & Responsive Polish
-- [ ] Implement English counterparts for all 7 routes under `/[locale]/...`.
+- [ ] Implement English counterparts for all 8 routes under `/[locale]/...`.
 - [ ] Add LTR/RTL dynamic switching via `html dir` attribute.
 - [ ] Responsive inspection & refinement across Mobile (`390px`), Tablet (`768px` - `1024px`), and Desktop (`1440px`).
 

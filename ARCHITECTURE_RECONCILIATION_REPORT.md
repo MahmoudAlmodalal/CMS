@@ -151,3 +151,47 @@ All 5 blocking inconsistencies identified in the Task 20 Architecture Approval G
 ---
 
 > **ARCHITECTURE APPROVAL GATE: APPROVED — IMPLEMENTATION MAY BEGIN AT TASK 21.**
+
+---
+
+## Addendum — Task 20A Completion Pass (2026-09-10)
+
+Follow-up verification against `TASKS_ANDALUSIA_CUSTOM.md` Task 20A rule
+("one authoritative answer for login, admin routes, buckets, MIME types,
+audio size, policy names, schema edge cases, and Figma references").
+All fixes are specification-only; zero application code.
+
+### F1 — Audio/image MIME allowlists ✅ FIXED
+
+- `CMS_SCOPE.md:294` listed Audio as (`audio/mpeg`, `audio/ogg`) only.
+  Aligned to canonical 5-type allowlist (`audio/mpeg`, `audio/ogg`,
+  `audio/wav`, `audio/mp4`, `audio/aac`), matching the RLS seed
+  (`RLS_DESIGN.md`) and roadmap Task 16.
+- `SECURITY_MODEL.md:163` listed audio as (`mpeg`, `ogg`, `wav`) and images
+  as (`jpeg`, `png`, `webp`). Added `audio/mp4`, `audio/aac`, and
+  `image/avif`; kept the SVG-exclusion clause with the admin-only `site`
+  bucket exception (logos/OG images), matching the bucket seed matrix.
+
+### F2 — Route-count wording ✅ FIXED
+
+"All 7 routes" → "all 8 routes" (the text always listed 8) in
+`CMS_SCOPE.md:16,306`, `CMS_MODULE_MATRIX.md:30`, `PLAN.md:70`,
+`IMPLEMENTATION_DEPENDENCY_PLAN.md:295` (+ `docs/` mirrors).
+
+### Verified consistent (no change)
+
+- **Policy names:** `{table}_{select|insert|update|delete}` convention holds
+  across all 10 tables in `RLS_DESIGN.md`.
+- **Schema edge cases:** `booking_requests` carries both `artist_id` FK
+  (nullable, `ON DELETE SET NULL`) and `preferred_artist` text;
+  `events.performer_name` required; `newsletter_subscribers.status` enum
+  (`subscribed`/`unsubscribed`); `site_settings` INSERT is admin-only
+  (`site_settings_insert_admin`).
+- **Figma references:** `figma_full_inventory.json` is the in-repo source of
+  truth; the missing external `figma_audit_master_specification.md` is
+  superseded and must not be depended upon (roadmap Task 2).
+- **Prior B1–B5 zero-hit claims re-verified:** remaining hits exist only in
+  historical `TASK_1_20_*` audit files, the report's own Problem statements,
+  and `node_modules` — no prescriptive doc regressed.
+
+> **TASK 20A COMPLETE — TASKS 1–20A CLOSED. NEXT: TASK 25.**

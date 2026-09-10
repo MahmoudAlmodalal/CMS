@@ -27,7 +27,7 @@ To maintain architectural purity and prevent over-engineering:
 
 1. **Generic Drag-and-Drop Page Builder:**
    - **Verdict:** **REJECTED**
-   - **Reason:** Figma provides pixel-perfect, tailored layouts for all 7 routes. A dynamic block/page builder introduces unnecessary database complexity, degrades performance, and risks breaking Arabic typography and RTL spacing.
+   - **Reason:** Figma provides pixel-perfect, tailored layouts for all 8 routes. A dynamic block/page builder introduces unnecessary database complexity, degrades performance, and risks breaking Arabic typography and RTL spacing.
 2. **E-Commerce / Cart / Checkout Module:**
    - **Verdict:** **REJECTED**
    - **Reason:** The Figma design contains zero cart icons, checkout buttons, or payment processing flows. All concert attendance and band engagements operate via inquiry routing to `/booking`.
