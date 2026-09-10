@@ -27,7 +27,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${settings.hero_image_url || "/assets/hero-stage.png"})`,
+            backgroundImage: `url(${settings.hero_image_url || "/assets/figma/hero-stage-landscape.png"})`,
           }}
           aria-hidden="true"
         />

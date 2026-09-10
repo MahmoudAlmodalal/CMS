@@ -44,3 +44,6 @@ next-env.d.ts
 
 # local tool logs
 .playwright-mcp/
+# generated visual captures and pixel diffs
+/artifacts/visual/current/
+/artifacts/visual/diff/
