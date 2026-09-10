@@ -75,7 +75,9 @@ export async function requireAdminSession(ctx?: AuthContext) {
     throw new Error(ADMIN_AUTH_ERROR);
   }
 
-  assertAdminRole(user);
+  // Supabase's User type lacks the index signature required by our claim model,
+  // although its runtime shape contains the same app_metadata fields.
+  assertAdminRole(user as unknown as UserClaim);
 
   return { supabase, user };
 }
