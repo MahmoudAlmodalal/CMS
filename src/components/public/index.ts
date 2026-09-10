@@ -9,6 +9,7 @@ export { HeroSection } from "./HeroSection";
 export { AboutSection } from "./AboutSection";
 export { FeaturedArtists } from "./FeaturedArtists";
 export { ArtistCard } from "./ArtistCard";
+export { ArtistTile } from "./ArtistTile";
 export { TestimonialsSlider } from "./TestimonialsSlider";
 export { AudioPlayerWidget, type PlayerTrack } from "./AudioPlayerWidget";
 export { EditorialFeature } from "./EditorialFeature";

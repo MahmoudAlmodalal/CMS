@@ -30,7 +30,7 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     description:
       "برنامج تدريبي مكثف على أصول العزف والانتقال بين المقامات الموسيقية والارتجال المتقن والتكنيك الأندلسي الأصيل.",
     instructor_name: "طارق العود",
-    image_url: "/assets/academy-oud.webp",
+    image_url: "/assets/academy-oud.png",
     display_order: 1,
     is_published: true,
   },
@@ -42,7 +42,7 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     description:
       "تطوير الحضور المسرحي والتفاعل الحي مع الجمهور وبناء الثقة الإبداعية والتناغم الجماعي فوق خشبة المسرح.",
     instructor_name: "هيئة التدريب",
-    image_url: "/assets/academy-performance.webp",
+    image_url: "/assets/academy-performance.png",
     display_order: 2,
     is_published: true,
   },
@@ -54,7 +54,7 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     description:
       "تقنيات التنفس السليم، تدريب الأحبال الصوتية، وأداء الموشحات والمقامات التراثية الأصيلة بإحساس فني عميق.",
     instructor_name: "سارة الصوت",
-    image_url: "/assets/academy-vocal.webp",
+    image_url: "/assets/academy-vocal.png",
     display_order: 3,
     is_published: true,
   },

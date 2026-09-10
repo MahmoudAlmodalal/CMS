@@ -176,7 +176,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.webp"})`,
+            backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.png"})`,
             backgroundColor: "#2B1D14",
           }}
           aria-label={article.title}

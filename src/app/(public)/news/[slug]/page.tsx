@@ -62,7 +62,7 @@ export async function generateMetadata({
       locale: "ar_AR",
       images: [
         {
-          url: article.cover_image_url || "/assets/articles/default-article.webp",
+          url: article.cover_image_url || "/assets/articles/default-article.png",
           alt: article.title,
         },
       ],
@@ -71,7 +71,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: `${article.title} | فرقة أندلسيا`,
       description: article.excerpt,
-      images: [article.cover_image_url || "/assets/articles/default-article.webp"],
+      images: [article.cover_image_url || "/assets/articles/default-article.png"],
     },
   };
 }
