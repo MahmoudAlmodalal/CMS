@@ -340,6 +340,23 @@ export function PlayIcon({ size = 20, className = "", ...props }: IconProps) {
   );
 }
 
+export function PauseIcon({ size = 20, className = "", ...props }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="5" y="3" width="5" height="18" rx="1" />
+      <rect x="14" y="3" width="5" height="18" rx="1" />
+    </svg>
+  );
+}
+
 export function MusicIcon({ size = 20, className = "", ...props }: IconProps) {
   return (
     <svg

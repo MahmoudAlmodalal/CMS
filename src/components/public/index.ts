@@ -10,6 +10,7 @@ export { AboutSection } from "./AboutSection";
 export { FeaturedArtists } from "./FeaturedArtists";
 export { ArtistCard } from "./ArtistCard";
 export { TestimonialsSlider } from "./TestimonialsSlider";
+export { AudioPlayerWidget, type PlayerTrack } from "./AudioPlayerWidget";
 export { EditorialFeature } from "./EditorialFeature";
 export { ArticleCard } from "./ArticleCard";
 export { HomeEvents } from "./HomeEvents";

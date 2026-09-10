@@ -79,6 +79,17 @@ export function formatPhoneNumber(phone: string): { raw: string; display: string
 }
 
 /**
+ * Formats a track duration in seconds as m:ss for the audio player timeline.
+ * Guards against NaN, negative, and infinite values (metadata not yet loaded).
+ */
+export function formatDuration(totalSeconds: number): string {
+  if (!Number.isFinite(totalSeconds) || totalSeconds < 0) return "0:00";
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+/**
  * Normalizes URL for safe display inside RTL paragraphs
  */
 export function formatUrlForDisplay(url: string): { full: string; domain: string } {
