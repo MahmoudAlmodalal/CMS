@@ -1,6 +1,7 @@
 "use server";
 
 import "server-only";
+import { revalidatePath } from "next/cache";
 import { requireAdminSession, type AuthContext, ADMIN_AUTH_ERROR } from "@/lib/auth-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -26,7 +27,8 @@ import {
   type AdminNewsletterUpdate,
 } from "@/lib/validations";
 
-export { uploadMediaAction, deleteMediaAction, replaceMediaAction } from "./storage";
+
+
 
 export interface ActionResult<T = unknown> {
   ok: boolean;
@@ -316,6 +318,13 @@ export async function updateSiteSettingsAction(
     .eq("id" as never, "default" as never);
 
   if (error) return { ok: false, error: error.message };
+
+  try {
+    revalidatePath("/", "layout");
+  } catch {
+    // Ignore cache invalidation errors during tests or static execution.
+  }
+
   return { ok: true };
 }
 

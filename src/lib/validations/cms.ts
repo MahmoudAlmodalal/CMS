@@ -20,15 +20,17 @@ import {
 // 1. Site Settings Schema (Singleton id='default')
 // ============================================================================
 
+const siteImageUrlSchema = z.union([z.literal(""), safeUrlSchema(500)]);
+
 export const siteSettingsSchema = z
   .object({
     id: z.literal("default").default("default"),
     hero_headline: trimmedString(1, 255, "عنوان الهيرو الرئيسي"),
     hero_subheadline: trimmedString(1, 500, "العنوان الفرعي للهيرو"),
-    hero_image_url: safeUrlSchema(500),
+    hero_image_url: siteImageUrlSchema,
     about_headline: trimmedString(1, 255, "عنوان قسم من نحن"),
     about_body: trimmedString(1, 10000, "نص قسم من نحن"),
-    about_image_url: safeUrlSchema(500),
+    about_image_url: siteImageUrlSchema,
     booking_banner_title: trimmedString(1, 255, "عنوان بنر الحجز"),
     booking_banner_body: trimmedString(1, 5000, "نص بنر الحجز"),
     artists_subtitle: optionalTrimmedString(500).optional().nullable(),
