@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/ui-foundation.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts"
+    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/ui-foundation.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts tests/booking.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
