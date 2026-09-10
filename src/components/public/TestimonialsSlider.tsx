@@ -14,7 +14,7 @@ interface TestimonialsSliderProps {
 /**
  * Verified against Figma Section 87:14313 & Component 22 (176:6169):
  * - Dimensions: 1447x597 desktop, surface #F9F7F0
- * - Heading (87:14314): Qahwa Arabic 64px, `أندلسيا` carrying a second #C54716 fill
+ * - Heading (87:14314): Cairo Bold 64px, `أندلسيا` carrying a second #C54716 fill
  * - Quote (176:2351): Cairo Medium 20px/30.4, centered, #000, 540px
  * - Author lockup (176:2354): name Cairo Bold 13.12px with the 5x14px star row
  *   beneath it, and a 36x36 round avatar alongside (176:1822), 9px gap
@@ -66,8 +66,8 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
     >
       <Container>
         <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-10">
-          {/* Section Header (Figma 87:14314 — Qahwa 64px, 2-fill) */}
-          <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-normal text-black leading-[1.25]">
+          {/* Section Header (Figma 87:14314 — Cairo Bold 64px, 2-fill) */}
+          <h2 className="font-sans text-3xl sm:text-4xl lg:text-[64px] font-bold text-black leading-[1.4296875]">
             <Highlight text="يقولون عن *أندلسيا*" />
           </h2>
 
