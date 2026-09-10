@@ -1,4 +1,4 @@
-import AdminShell from "@/components/admin/AdminShell";
+import { AdminShell } from "@/components/admin/AdminShell";
 import CourseForm from "@/components/admin/academy/CourseForm";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdminSession } from "@/lib/auth-guard";

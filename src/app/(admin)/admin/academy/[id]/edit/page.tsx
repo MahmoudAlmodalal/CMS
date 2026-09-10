@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import AdminShell from "@/components/admin/AdminShell";
+import { AdminShell } from "@/components/admin/AdminShell";
 import CourseForm from "@/components/admin/academy/CourseForm";
 import { getAdminCourseById } from "@/lib/dal/admin-academy";
 import { createClient } from "@/lib/supabase/server";

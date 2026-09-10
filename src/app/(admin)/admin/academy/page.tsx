@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import AdminShell from "@/components/admin/AdminShell";
+import { AdminShell } from "@/components/admin/AdminShell";
 import CoursesTable from "@/components/admin/academy/CoursesTable";
 import { getAdminCourses } from "@/lib/dal/admin-academy";
 

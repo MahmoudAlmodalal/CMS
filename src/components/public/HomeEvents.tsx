@@ -57,11 +57,11 @@ export function HomeEvents({ events }: HomeEventsProps) {
         <div className="relative flex-1 lg:max-w-[939px] flex flex-col justify-center p-6 sm:p-10 lg:p-14 lg:h-full text-start">
           {/* Decorative texture bands (Figma Nodes 87:14470 / 87:14471) */}
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-[18px] opacity-35 bg-repeat-x bg-[url('/assets/branding/arabesque-texture.png')]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[18px] opacity-35 bg-repeat-x bg-[length:60px_18px] bg-[url('/assets/branding/arabesque-texture.png')]"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-[18px] opacity-35 bg-repeat-x bg-[url('/assets/branding/arabesque-texture.png')]"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[18px] opacity-35 bg-repeat-x bg-[length:60px_18px] bg-[url('/assets/branding/arabesque-texture.png')]"
             aria-hidden="true"
           />
 

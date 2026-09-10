@@ -13,20 +13,26 @@
 // Article Category
 // ============================================================================
 
+/**
+ * Must mirror the articles.category CHECK constraint
+ * (supabase/migrations/20260910000700_create_articles.sql:10). The previous
+ * news/interview/announcement set matched no column value and would have been
+ * rejected by Postgres on write.
+ */
 export const ADMIN_ARTICLE_CATEGORIES = [
-  "news",
   "culture",
-  "interview",
-  "announcement",
+  "artists",
+  "academy",
+  "events",
 ] as const;
 
 export type AdminArticleCategory = (typeof ADMIN_ARTICLE_CATEGORIES)[number];
 
 export const ADMIN_ARTICLE_CATEGORY_LABELS: Record<AdminArticleCategory, string> = {
-  news: "أخبار",
-  culture: "ثقافة",
-  interview: "مقابلات",
-  announcement: "إعلانات",
+  culture: "الأخبار الثقافية",
+  artists: "قصص الفنانين",
+  academy: "الأكاديمية",
+  events: "الفعاليات",
 };
 
 // ============================================================================

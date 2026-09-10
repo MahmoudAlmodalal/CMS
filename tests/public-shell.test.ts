@@ -34,8 +34,11 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
 
   // Floating pill dimensions & radius
   assert.match(content, /1123px/, "Navbar must enforce Figma confirmed width: 1123px");
-  assert.match(content, /56px|h-14/, "Navbar must enforce Figma confirmed height: 56px");
-  assert.match(content, /rounded-\[20px\]|rounded-\[32px\]/, "Navbar must enforce Figma confirmed corner radius: 20px");
+  // Figma Node 20:4403 measures 1123x85 with a 32px radius — the earlier 56px/20px
+  // "reconciliation" was not present in the design.
+  assert.match(content, /85px|h-\[85px\]/, "Navbar must enforce Figma confirmed height: 85px");
+  assert.match(content, /rounded-\[32px\]/, "Navbar must enforce Figma confirmed corner radius: 32px");
+  assert.match(content, /#F2EEE0/, "Navbar must use Figma secondary-300 fill #F2EEE0");
   assert.match(content, /fixed top-6/, "Navbar must be floating at top on desktop");
   assert.match(content, /hidden lg:flex/, "Navbar must be desktop-only (hidden on mobile)");
 
