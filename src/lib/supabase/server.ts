@@ -22,7 +22,11 @@ export async function createClient() {
       cookies: {
         getAll: () => cookieStore.getAll(),
         setAll: (toSet) => {
-          for (const { name, value, options } of toSet) cookieStore.set(name, value, options);
+          try {
+            for (const { name, value, options } of toSet) cookieStore.set(name, value, options);
+          } catch {
+            // Ignored when called from Server Component (handled by middleware)
+          }
         },
       },
     },
