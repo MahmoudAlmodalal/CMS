@@ -88,12 +88,11 @@ test("Milestone 2 — 2. Stage 1: Hero Section Geometry & Cairo Typography (Figm
     /text-\[64px\]|text-\[40px\][\s\S]*lg:text-\[64px\]/,
     "Hero headline must declare 64px desktop font size"
   );
-  // Figma Node 148:3671 overrides the base style with ts1/ts2 = Qahwa Arabic Regular,
-  // so the headline renders on the display face, not Cairo Bold.
+  // Figma Node 148:3671 uses Cairo Bold, not the Qahwa display face.
   assert.match(
     heroSrc,
-    /font-calligraphic/,
-    "Hero headline must use the Qahwa display face"
+    /font-sans[\s\S]*font-bold/,
+    "Hero headline must use the Cairo sans face with bold weight"
   );
   assert.match(
     heroSrc,

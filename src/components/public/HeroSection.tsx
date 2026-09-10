@@ -12,7 +12,7 @@ export interface HeroSectionProps {
  * Verified against Figma Component 20 (Node 148:3708, 1441x740):
  * - Backdrop: photo fill + 2x rgba(0,0,0,.2) + linear-gradient(180deg, #000 0%,
  *   rgba(0,0,0,.1) 78%) — the scrim is heaviest at the TOP, under the navbar.
- * - Headline (148:3671): Qahwa Arabic 64px/93px, fill #EFEBD9, with `لاكتشاف` and
+ * - Headline (148:3671): Cairo Bold 64px/93px, fill #EFEBD9, with `لاكتشاف` and
  *   `المواهب` carrying a second terracotta #C54716 fill. Max width 881px, centered.
  * - Subtitle (148:3670): Cairo Medium 25px/37.5, #EFEBD9, max 693px, centered.
  * - CTAs (148:3666), 32px gap: `اكتشف الفنانين` is the SOLID primary (component
@@ -40,8 +40,8 @@ export function HeroSection({ settings }: HeroSectionProps) {
 
       <Container className="relative z-10 w-full">
         <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto space-y-8">
-          {/* Headline (Figma Node 148:3671 — Qahwa Arabic 64px/93px, 2-fill) */}
-          <h1 className="font-calligraphic text-[36px] sm:text-5xl lg:text-[64px] font-normal text-[#EFEBD9] leading-[1.45] max-w-[881px]">
+          {/* Headline (Figma Node 148:3671 — Cairo Bold 64px/93px, 2-fill) */}
+          <h1 className="font-sans text-[36px] sm:text-5xl lg:text-[64px] font-bold text-[#EFEBD9] leading-[1.453125] max-w-[881px]">
             <Highlight text={settings.hero_headline} />
           </h1>
 
