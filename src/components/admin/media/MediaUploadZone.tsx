@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
-import type { StorageBucket } from "@/lib/types/admin-media";
-import { uploadMediaAction } from "@/actions/admin-media";
-import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS } from "@/lib/storage";
+import { uploadMediaAction } from "@/actions/storage";
+import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, type StorageBucket } from "@/lib/storage";
 
 interface MediaUploadZoneProps {
   bucket: StorageBucket;
-  onUploaded?: (path: string, publicUrl?: string) => void;
+  onUploaded?: (path: string, publicUrl: string, mime: string, sizeBytes: number) => void;
 }
 
 /** Formats bytes to a human-readable MB/KB string for the UI. */
@@ -28,7 +27,8 @@ const BUCKET_LABELS: Record<StorageBucket, string> = {
 
 /**
  * Drag-and-drop + click-to-upload zone.
- * Displays bucket-specific MIME type allowlist and file size limit.
+ * Displays bucket-specific MIME type allowlist and file size limit (imported
+ * from @/lib/storage — never re-declared here).
  * Validates files client-side before submitting, then calls uploadMediaAction.
  */
 export function MediaUploadZone({ bucket, onUploaded }: MediaUploadZoneProps) {
@@ -74,17 +74,20 @@ export function MediaUploadZone({ bucket, onUploaded }: MediaUploadZoneProps) {
       setProgress(`جارٍ رفع "${file.name}"…`);
 
       try {
-        const formData = new FormData();
-        formData.set("file", file);
-        formData.set("bucket", bucket);
+        // ponytail: entityId is generic here (no owning record) — the media
+        // manager stores general library assets, not entity-scoped ones.
+        const result = await uploadMediaAction({
+          bucket,
+          entityId: "media-library",
+          label: file.name,
+          file,
+        });
 
-        const result = await uploadMediaAction(formData);
-
-        if (!result.success) {
+        if (!result.ok || !result.data) {
           setError(result.error ?? "فشل رفع الملف");
         } else {
           setSuccess(`تم رفع "${file.name}" بنجاح`);
-          onUploaded?.(result.path ?? "", result.publicUrl);
+          onUploaded?.(result.data.path, result.data.publicUrl, result.data.mime, result.data.sizeBytes);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "فشل رفع الملف");

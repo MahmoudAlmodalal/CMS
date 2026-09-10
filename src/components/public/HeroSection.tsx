@@ -34,8 +34,8 @@ export function HeroSection({ settings }: HeroSectionProps) {
         {/* Two flat 20% black washes, as stacked in the Figma rectangle fill */}
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-0 bg-black/20" />
-        {/* linear-gradient(180deg, #000 0%, rgba(0,0,0,0.1) 78%) — dark at the top */}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,1)_0%,rgba(0,0,0,0.1)_78%)]" />
+        {/* Figma Rectangle 1: linear-gradient(151.78deg, #000 12.8%, rgba(0,0,0,.1) 66.88%) */}
+        <div className="absolute inset-0 bg-[linear-gradient(151.78deg,rgba(0,0,0,1)_12.8%,rgba(0,0,0,0.1)_66.88%)]" />
       </div>
 
       <Container className="relative z-10 w-full">

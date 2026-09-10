@@ -18,7 +18,7 @@ import { Field, ModalShell, Notice } from "@/components/admin/ManagerKit";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
 import type { AdminArticle } from "@/lib/dal/admin-articles";
-import { isArticleLive, isArticleScheduled } from "@/lib/dal/admin-articles";
+import { isArticleLive, isArticleScheduled } from "@/lib/article-status";
 
 const CATEGORY_LABELS: Record<ArticleCategory, string> = {
   culture: "الأخبار الثقافية",

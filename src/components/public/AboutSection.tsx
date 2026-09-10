@@ -29,7 +29,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
         aria-hidden="true"
         width={123}
         height={112}
-        className="pointer-events-none select-none absolute start-0 top-[163px] hidden lg:block -translate-x-[38px] rtl:translate-x-[38px]"
+        className="pointer-events-none select-none absolute -left-[38px] top-[163px] hidden lg:block"
       />
       <Image
         src="/assets/branding/ornament.svg"
@@ -37,7 +37,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
         aria-hidden="true"
         width={123}
         height={112}
-        className="pointer-events-none select-none absolute end-0 bottom-6 hidden lg:block rotate-180"
+        className="pointer-events-none select-none absolute right-0 bottom-6 hidden lg:block rotate-180"
       />
 
       <Container className="relative z-10">
@@ -47,19 +47,19 @@ export function AboutSection({ settings }: AboutSectionProps) {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center pt-10 lg:pt-12">
-          {/* Visual Column — bare bleed, inline-start (Figma Node 112:624) */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-start">
+          {/* Visual Column — bare bleed off the physical LEFT edge (Figma Node 112:624 @ x=-16) */}
+          <div className="lg:col-span-6 lg:order-2 flex justify-center lg:justify-start">
             <Image
               src={settings.about_image_url || "/assets/about-musician.png"}
               alt="عازف من فرقة أندلسيا"
               width={551}
               height={491}
-              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover lg:-ms-8"
+              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover lg:-ml-4"
             />
           </div>
 
           {/* Content Column (Figma Node 112:619 — 495px, gap 32) */}
-          <div className="lg:col-span-6 flex flex-col items-start gap-8 max-w-[495px] lg:ms-auto">
+          <div className="lg:col-span-6 lg:order-1 flex flex-col items-start gap-8 max-w-[495px] lg:ms-auto">
             {/* Statement (Figma Node 112:623 — Qahwa 48px/66) */}
             <h3 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-normal text-brand-espresso leading-[1.375] text-start">
               {settings.about_headline}

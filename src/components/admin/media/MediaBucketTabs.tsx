@@ -1,17 +1,22 @@
 "use client";
 
 import React from "react";
-import type { StorageBucket } from "@/lib/types/admin-media";
+import { STORAGE_BUCKETS, type StorageBucket } from "@/lib/storage";
 
-const BUCKETS: { id: StorageBucket; label: string }[] = [
-  { id: "site", label: "الموقع" },
-  { id: "artists", label: "الفنانون" },
-  { id: "releases", label: "الإصدارات" },
-  { id: "events", label: "الفعاليات" },
-  { id: "academy", label: "الأكاديمية" },
-  { id: "articles", label: "المقالات" },
-  { id: "audio", label: "الملفات الصوتية" },
-];
+const BUCKET_LABELS: Record<StorageBucket, string> = {
+  site: "الموقع",
+  artists: "الفنانون",
+  releases: "الإصدارات",
+  events: "الفعاليات",
+  academy: "الأكاديمية",
+  articles: "المقالات",
+  audio: "الملفات الصوتية",
+};
+
+const BUCKETS: { id: StorageBucket; label: string }[] = STORAGE_BUCKETS.map((id) => ({
+  id,
+  label: BUCKET_LABELS[id],
+}));
 
 interface MediaBucketTabsProps {
   activeBucket: StorageBucket;
@@ -19,8 +24,8 @@ interface MediaBucketTabsProps {
 }
 
 /**
- * Tab bar showing all 7 storage buckets. Switching tabs triggers onBucketChange
- * so the parent can load the corresponding file list.
+ * Tab bar showing all approved storage buckets (from @/lib/storage). Switching
+ * tabs triggers onBucketChange so the parent can show the corresponding files.
  */
 export function MediaBucketTabs({ activeBucket, onBucketChange }: MediaBucketTabsProps) {
   return (
@@ -56,4 +61,4 @@ export function MediaBucketTabs({ activeBucket, onBucketChange }: MediaBucketTab
   );
 }
 
-export { BUCKETS };
+export { BUCKETS, BUCKET_LABELS };
