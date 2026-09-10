@@ -6,10 +6,6 @@ import {
   publicBookingSubmissionSchema,
   adminBookingUpdateSchema,
 } from "../src/lib/validations/booking.ts";
-import {
-  DEFAULT_BOOKING_SUBTITLE,
-  CANONICAL_BOOKING_ARTISTS,
-} from "../src/lib/dal/booking.ts";
 
 const root = path.resolve(".");
 
@@ -156,7 +152,7 @@ test("Task 38 — 4. Zod Public Booking Validation: Strict Anti-Injection & Boun
     preferred_artist: null,
     artist_id: null,
     event_id: null,
-    message: "أهلاً", // only 4 chars
+    message: "أهل", // only 3 chars, below min(5)
   };
   const shortMsgResult = publicBookingSubmissionSchema.safeParse(shortMessagePayload);
   assert.equal(shortMsgResult.success, false, "Schema must reject messages shorter than 5 chars");
@@ -235,8 +231,26 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
 });
 
 test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
-  assert.ok(DEFAULT_BOOKING_SUBTITLE.length > 10);
-  assert.ok(CANONICAL_BOOKING_ARTISTS.length >= 4);
+  // NOTE: src/lib/dal/booking.ts imports @/lib/supabase/server (next/headers),
+  // which plain node --test cannot resolve. Per the events-page.test.ts precedent,
+  // DAL modules are asserted via file content, not runtime import.
+  const dalContent = fs.readFileSync(
+    path.join(root, "src/lib/dal/booking.ts"),
+    "utf-8"
+  );
+  assert.match(
+    dalContent,
+    /DEFAULT_BOOKING_SUBTITLE\s*=\s*"[^"]{10,}"/,
+    "DAL must export a non-trivial DEFAULT_BOOKING_SUBTITLE fallback"
+  );
+  assert.match(dalContent, /احجز فرقة أندلسيا/);
+  for (const slug of ["sara-alsawt", "tariq-aloud", "layla-al-qanun", "karim-percussion"]) {
+    assert.match(
+      dalContent,
+      new RegExp(`slug:\\s*"${slug}"`),
+      `CANONICAL_BOOKING_ARTISTS must include fallback artist ${slug}`
+    );
+  }
 
   const pageContent = fs.readFileSync(
     path.join(root, "src/app/(public)/booking/page.tsx"),
