@@ -363,11 +363,19 @@ export async function updateTrackAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف المقطع الصوتي مطلوب" };
 
+  const parsed = trackSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("tracks")
-    .update(input as never)
+    .update(parsed.data as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
@@ -382,11 +390,19 @@ export async function updateReleaseAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف الإصدار مطلوب" };
 
+  const parsed = releaseSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("releases")
-    .update(input as never)
+    .update(parsed.data as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
@@ -401,11 +417,19 @@ export async function updateEventAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف الفعالية مطلوب" };
 
+  const parsed = eventSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("events")
-    .update({ ...input, updated_at: new Date().toISOString() } as never)
+    .update({ ...parsed.data, updated_at: new Date().toISOString() } as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
@@ -420,11 +444,19 @@ export async function updateAcademyCourseAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف المسار الأكاديمي مطلوب" };
 
+  const parsed = academyCourseSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("academy_courses")
-    .update({ ...input, updated_at: new Date().toISOString() } as never)
+    .update({ ...parsed.data, updated_at: new Date().toISOString() } as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
@@ -439,11 +471,19 @@ export async function updateArticleAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف المقال مطلوب" };
 
+  const parsed = articleSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("articles")
-    .update({ ...input, updated_at: new Date().toISOString() } as never)
+    .update({ ...parsed.data, updated_at: new Date().toISOString() } as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
@@ -458,11 +498,19 @@ export async function updateTestimonialAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف التوصية مطلوب" };
 
+  const parsed = testimonialSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
   if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("testimonials")
-    .update(input as never)
+    .update(parsed.data as never)
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };

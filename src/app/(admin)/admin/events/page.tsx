@@ -1,3 +1,10 @@
-export default function AdminEventsPage() {
-  return <h1 className="text-2xl font-bold font-sans">إدارة الفعاليات والحفلات</h1>;
+import { EventsTable } from "@/components/admin/events/EventsTable";
+import { getAdminEvents } from "@/lib/dal/admin-events";
+import { getAdminArtists } from "@/lib/dal/artists";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminEventsPage() {
+  const [events, artists] = await Promise.all([getAdminEvents(), getAdminArtists()]);
+  return <EventsTable events={events} artists={artists} />;
 }
