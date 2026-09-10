@@ -66,7 +66,7 @@ export async function subscribeNewsletter(
     const { error } = await supabase.from("newsletter_subscribers").insert({
       email,
       status: "subscribed",
-    } as any);
+    } as unknown as { email: string; status: string });
 
     if (error) {
       // 23505: Unique violation (email already subscribed)

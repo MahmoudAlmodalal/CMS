@@ -36,6 +36,11 @@ export interface ActionResult<T = unknown> {
   error?: string;
 }
 
+function insertedId(data: unknown, fallback?: string): string | undefined {
+  const row = data as { id?: unknown } | null;
+  return typeof row?.id === "string" ? row.id : fallback;
+}
+
 export type PublishableTable =
   | "artists"
   | "tracks"
@@ -78,7 +83,7 @@ export async function createArtistAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createTrackAction(
@@ -100,7 +105,7 @@ export async function createTrackAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createReleaseAction(
@@ -122,7 +127,7 @@ export async function createReleaseAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createEventAction(
@@ -144,7 +149,7 @@ export async function createEventAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createAcademyCourseAction(
@@ -166,7 +171,7 @@ export async function createAcademyCourseAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createArticleAction(
@@ -188,7 +193,7 @@ export async function createArticleAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 export async function createTestimonialAction(
@@ -210,7 +215,7 @@ export async function createTestimonialAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
-  return { ok: true, data: { id: (data as any)?.id } };
+  return { ok: true, data: { id: insertedId(data) } };
 }
 
 /**
@@ -244,7 +249,7 @@ export async function createPrivilegedBookingAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: (data as any)?.id || "mock-booking-id" } };
+    return { ok: true, data: { id: insertedId(data) || "mock-booking-id" } };
   }
 
   try {
@@ -255,7 +260,7 @@ export async function createPrivilegedBookingAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: (data as any)?.id } };
+    return { ok: true, data: { id: insertedId(data) } };
   } catch {
     return { ok: true, data: { id: "mock-booking-id" } };
   }
@@ -279,7 +284,7 @@ export async function createPrivilegedSubscriberAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: (data as any)?.id || "mock-subscriber-id" } };
+    return { ok: true, data: { id: insertedId(data) || "mock-subscriber-id" } };
   }
 
   try {
@@ -290,7 +295,7 @@ export async function createPrivilegedSubscriberAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: (data as any)?.id } };
+    return { ok: true, data: { id: insertedId(data) } };
   } catch {
     return { ok: true, data: { id: "mock-subscriber-id" } };
   }
@@ -710,7 +715,7 @@ export async function togglePublishAction(
     return { ok: false, error: fetchErr?.message || "العنصر غير موجود" };
   }
 
-  const nextState = !(data as any).is_published;
+  const nextState = !Boolean((data as { is_published?: boolean }).is_published);
   const res = await setPublishStatusAction(table, id, nextState, undefined, ctx);
   if (!res.ok) return { ok: false, error: res.error };
   return { ok: true, data: { is_published: nextState } };
@@ -735,7 +740,7 @@ export interface SubscriberFilters {
 export async function getBookingRequestsAction(
   filters?: BookingFilters,
   ctx?: AuthContext
-): Promise<ActionResult<any[]>> {
+): Promise<ActionResult<unknown[]>> {
   const { supabase } = await requireAdminSession(ctx);
   if (!supabase) return { ok: true, data: [] };
 
@@ -762,7 +767,7 @@ export async function getBookingRequestsAction(
 export async function getBookingRequestByIdAction(
   id: string,
   ctx?: AuthContext
-): Promise<ActionResult<any>> {
+): Promise<ActionResult<unknown>> {
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف الطلب مطلوب" };
   if (!supabase) return { ok: true, data: null };
@@ -780,7 +785,7 @@ export async function getBookingRequestByIdAction(
 export async function getNewsletterSubscribersAction(
   filters?: SubscriberFilters,
   ctx?: AuthContext
-): Promise<ActionResult<any[]>> {
+): Promise<ActionResult<unknown[]>> {
   const { supabase } = await requireAdminSession(ctx);
   if (!supabase) return { ok: true, data: [] };
 
