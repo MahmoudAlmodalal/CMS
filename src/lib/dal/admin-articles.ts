@@ -54,7 +54,7 @@ export async function getAdminArticles(
     .order("created_at", { ascending: false });
 
   if (filters?.category) {
-    query = query.eq("category", filters.category as string);
+    query = query.eq("category", filters.category);
   }
 
   if (filters?.is_published === true) {

@@ -152,7 +152,7 @@ export const CANONICAL_ARTICLES: Article[] = [
     cover_image_url: "/assets/articles/article-1.png",
     author_name: "هيئة تحرير أندلسيا",
     published_at: "2026-08-15T10:00:00.000Z",
-    is_featured: false,
+    is_featured: true,
     is_published: true,
   },
   {

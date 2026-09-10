@@ -88,10 +88,17 @@ test("Milestone 2 — 2. Stage 1: Hero Section Geometry & Cairo Typography (Figm
     /text-\[64px\]|text-\[40px\][\s\S]*lg:text-\[64px\]/,
     "Hero headline must declare 64px desktop font size"
   );
+  // Figma Node 148:3671 overrides the base style with ts1/ts2 = Qahwa Arabic Regular,
+  // so the headline renders on the display face, not Cairo Bold.
   assert.match(
     heroSrc,
-    /font-bold/,
-    "Hero headline must enforce Cairo Bold weight"
+    /font-calligraphic/,
+    "Hero headline must use the Qahwa display face"
+  );
+  assert.match(
+    heroSrc,
+    /<Highlight/,
+    "Hero headline must render the two-fill terracotta treatment via <Highlight />"
   );
 
   // Subtitle: Cairo Medium 25px max-width 693px
@@ -294,11 +301,21 @@ test("Milestone 2 — 6. Stage 5: Editorial Feature Geometry & Story Headlines (
     "Editorial heading must display 'نكتب كي لا تضيع التفاصيل'"
   );
 
-  // Action link to /news
+  // Figma Frame 26 carries no "view all" link — the four cards deep-link individually.
   assert.match(
     editorialSrc,
-    /href="\/news"/,
-    "EditorialFeature action link must route to /news"
+    /href=\{`\/news\/\$\{article\.slug\}`\}/,
+    "Editorial cards must deep-link to /news/[slug]"
+  );
+  assert.match(
+    editorialSrc,
+    /#1F0900/,
+    "EditorialFeature must use the verified near-black surface #1F0900"
+  );
+  assert.match(
+    editorialSrc,
+    /slice\(0,\s*4\)/,
+    "EditorialFeature must render the four equal Figma cards (115:2436…115:2439)"
   );
 
   assert.match(editorialSrc, /<section[\s>]/, "EditorialFeature must use semantic <section> tag");
@@ -409,16 +426,24 @@ test("Milestone 2 — 9. Stage 8: Global Footer Canvas & Arabesque Texture (Figm
     "Footer must integrate Andalusian arabesque geometric texture overlay"
   );
 
-  // Partner marquee strip (Frame 31, 1123x85px)
-  assert.match(
+  // Figma Node 94:18289 has no partner/patron marquee and no social icon buttons —
+  // both were unverified inventions and must stay purged.
+  assert.doesNotMatch(
     footerSrc,
-    /1123px/,
-    "Footer partner strip must declare 1123px width"
+    /شركاء الثقافة والموسيقى/,
+    "Footer must not reintroduce the invented partner marquee"
   );
+  assert.doesNotMatch(
+    footerSrc,
+    /instagram\.com|tiktok\.com|youtube\.com/,
+    "Footer must not reintroduce the invented social icon buttons"
+  );
+
+  // Brand column leads with the raster logo (Figma Node 89:15223 — 210.5x85.5)
   assert.match(
     footerSrc,
-    /85px/,
-    "Footer partner strip must declare 85px height"
+    /logo-footer/,
+    "Footer brand column must render the Figma raster logo"
   );
 
   // Semantic landmark
