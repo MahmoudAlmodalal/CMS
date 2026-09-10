@@ -9,6 +9,8 @@ import {
   AcademyNewsletter,
 } from "@/components/public/academy";
 
+export const dynamic = "force-static"; // Static per APPLICATION_ARCHITECTURE.md (no searchParams/cookies)
+
 export const metadata: Metadata = {
   title: "الأكاديمية الموسيقية | فرقة أندلسيا",
   description:
