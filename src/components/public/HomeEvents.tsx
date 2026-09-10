@@ -38,7 +38,7 @@ export function HomeEvents({ events }: HomeEventsProps) {
   const featuredImage = events[0]?.image_url || "/assets/events/default-event.webp";
 
   return (
-    <section className="min-h-[678px] lg:h-[678px] bg-[#F7F4EE] border-t border-brand-espresso/5 overflow-hidden flex flex-col justify-center">
+    <section className="min-h-[678px] lg:h-[678px] bg-[#F9F7F0] border-t border-brand-espresso/5 overflow-hidden flex flex-col justify-center">
       <div className="w-full max-w-[1440px] mx-auto flex flex-col lg:flex-row items-stretch lg:h-[678px]">
         {/* Left Visual Banner (Figma Node 87:14467 — 509x678px) */}
         <div className="relative w-full lg:w-[509px] h-64 sm:h-80 lg:h-full shrink-0 overflow-hidden bg-brand-espresso">
@@ -66,7 +66,7 @@ export function HomeEvents({ events }: HomeEventsProps) {
         </div>
 
         {/* Right Event List Container (Figma Node 87:14468 — 939x678px) */}
-        <div className="flex-1 lg:max-w-[939px] flex flex-col justify-between p-6 sm:p-10 lg:p-14 lg:h-full bg-[#F7F4EE] text-start">
+        <div className="flex-1 lg:max-w-[939px] flex flex-col justify-between p-6 sm:p-10 lg:p-14 lg:h-full bg-[#F9F7F0] text-start">
           {/* Section Header (Figma 87:14481 — Qahwa 48px, strictly NO pill badge/subtitle) */}
           <div className="pb-6">
             <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-bold text-brand-espresso leading-[1.2]">

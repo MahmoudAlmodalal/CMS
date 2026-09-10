@@ -19,10 +19,7 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
       <Container>
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-2 inline-block">
-            البرامج الأكاديمية
-          </span>
-          <h2 className="font-calligraphic text-3xl sm:text-4xl md:text-5xl font-bold text-brand-espresso mb-4">
+          <h2 className="font-sans font-black text-[40px] text-brand-espresso mb-4 leading-[1.2]">
             ثلاثة مسارات، موهبة واحدة
           </h2>
           <p className="text-base sm:text-lg text-gradscale-400 font-sans leading-relaxed">
