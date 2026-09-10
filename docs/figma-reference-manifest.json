@@ -1,0 +1,15 @@
+{
+  "fileKey": "xcKbTxQQhUVOFJerTrkrw2",
+  "fileName": "موقع ويب لفرقة موسيقية",
+  "version": "2397151536839537751",
+  "referenceFrames": [
+    {"name":"home-desktop","nodeId":"89:15216","route":"/","viewport":[1440,900],"canvas":[1440,5165],"referenceImage":"docs/figma-reference/home-desktop.png"},
+    {"name":"home-mobile","nodeId":"136:5854","route":"/","viewport":[390,844],"canvas":[390,6528],"referenceImage":"docs/figma-reference/home-mobile.png"},
+    {"name":"academy-desktop","nodeId":"91:16119","route":"/academy","viewport":[1440,900],"canvas":[1440,2503],"referenceImage":"docs/figma-reference/academy-desktop.png"},
+    {"name":"artists-desktop","nodeId":"91:17844","route":"/artists","viewport":[1440,900],"canvas":[1440,2290],"referenceImage":"docs/figma-reference/artists-desktop.png"},
+    {"name":"events-desktop","nodeId":"91:16532","route":"/events","viewport":[1440,900],"canvas":[1440,2290],"referenceImage":"docs/figma-reference/events-desktop.png"},
+    {"name":"news-desktop","nodeId":"91:17296","route":"/news","viewport":[1440,900],"canvas":[1440,1953],"referenceImage":"docs/figma-reference/news-desktop.png"},
+    {"name":"booking-desktop","nodeId":"91:17109","route":"/booking","viewport":[1440,900],"canvas":[1440,1953],"referenceImage":"docs/figma-reference/booking-desktop.png"},
+    {"name":"artist-detail-desktop","nodeId":"134:4420","route":"/artists/sara-alsawt","viewport":[1440,900],"canvas":[1440,2968],"referenceImage":"docs/figma-reference/artist-detail-desktop.png"}
+  ]
+}
