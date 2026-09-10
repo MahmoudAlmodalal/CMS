@@ -13,7 +13,7 @@ All candidate modules from Task 11 were cross-checked against Figma canvas nodes
 
 | Module | Justification Reference | Main Entity | Public Routes | Status |
 | :--- | :--- | :--- | :--- | :---: |
-| **1. Site Settings** | Task 11 §3, §4, §5, §7, §8, §10 | `site_settings` | All 7 routes | **CONFIRMED** |
+| **1. Site Settings** | Task 11 §3, §4, §5, §7, §8, §10 | `site_settings` | All 8 routes | **CONFIRMED** |
 | **2. Artists** | Task 11 §4, §5, §6 | `artists` | `/`, `/artists`, `/artists/[slug]` | **CONFIRMED** |
 | **3. Tracks & Discography** | Task 11 §6, §12 | `tracks`, `releases` | `/artists/[slug]` | **CONFIRMED** |
 | **4. Events & Concerts** | Task 11 §4, §7 | `events` | `/`, `/events` | **CONFIRMED** |
@@ -291,7 +291,7 @@ All candidate modules from Task 11 were cross-checked against Figma canvas nodes
 - **Archive:** Not applicable (Direct object lifecycle).
 - **Publish / Unpublish:** Not applicable (Uploaded assets are public CDN resources).
 - **Ordering:** Reverse chronological by `created_at DESC`.
-- **Media:** File type constraints: Images (`image/webp`, `image/jpeg`, `image/png`, `image/svg+xml`, max 5MB); Audio (`audio/mpeg`, `audio/ogg`, max 30MB).
+- **Media:** File type constraints: Images (`image/webp`, `image/jpeg`, `image/png`, `image/svg+xml`, max 5MB); Audio (`audio/mpeg`, `audio/ogg`, `audio/wav`, `audio/mp4`, `audio/aac`, max 30MB).
 - **Validation:** Strict MIME validation on upload; maximum file size enforcement; filename sanitization.
 - **Public Routes Affected:** Indirectly serves all visual and audio media rendered across the entire website.
 
@@ -303,7 +303,7 @@ The following capabilities are **explicitly excluded** from the CMS scope. None 
 
 | Excluded Feature | Architectural Verdict | Detailed Rationale & Figma Audit Evidence |
 | :--- | :---: | :--- |
-| **1. Drag-and-Drop Page Builder** | **REJECTED** | Figma provides fixed, tailored layouts for all 7 routes (`/`, `/artists`, `/artists/[slug]`, `/events`, `/academy`, `/news`, `/news/[slug]`, `/booking`). A page builder destroys RTL typography hierarchy, compromises TTFB, and introduces unnecessary schema complexity. |
+| **1. Drag-and-Drop Page Builder** | **REJECTED** | Figma provides fixed, tailored layouts for all 8 routes (`/`, `/artists`, `/artists/[slug]`, `/events`, `/academy`, `/news`, `/news/[slug]`, `/booking`). A page builder destroys RTL typography hierarchy, compromises TTFB, and introduces unnecessary schema complexity. |
 | **2. Arbitrary Page Creation** | **REJECTED** | The site architecture consists strictly of the 7 defined routes. The platform has no need for marketing landing page generators or arbitrary URL path creation. |
 | **3. Arbitrary Section Reordering** | **REJECTED** | Screen layouts follow an intentional editorial rhythm established in Figma (e.g., Hero → Events Preview → About Manifesto → Booking Banner → Featured Artists → Editorial Feature → Testimonials → Footer). Dynamic reordering would break visual pacing. |
 | **4. Layout Builder / Grid Editor** | **REJECTED** | All layout grids (12-column desktop, 6-column tablet, 4-column mobile) are hardcoded in Tailwind CSS components adhering to the verified design system. |

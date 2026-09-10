@@ -160,7 +160,7 @@ Next.js Server Actions create publicly accessible HTTP POST endpoints identified
 
 - **Unrestricted File Uploads (Web Shells / Executables):**
   - *Risk:* Uploading `.php`, `.sh`, `.exe`, or malicious `.svg` files containing embedded XSS scripts.
-  - *Defense:* Supabase Storage buckets restrict `allowed_mime_types` strictly to `image/jpeg`, `image/png`, `image/webp` for visual assets, and `audio/mpeg`, `audio/ogg`, `audio/wav` for audio. SVG uploads are excluded from user-controllable buckets.
+  - *Defense:* Supabase Storage buckets restrict `allowed_mime_types` strictly to `image/jpeg`, `image/png`, `image/webp`, `image/avif` for visual assets, and `audio/mpeg`, `audio/ogg`, `audio/wav`, `audio/mp4`, `audio/aac` for audio. SVG uploads are excluded from user-controllable buckets (admin-only `site` bucket excepted for logos/OG images).
 - **Unbounded Storage Exhaustion:**
   - *Risk:* Uploading 500MB video/binary files to exhaust project storage limits.
   - *Defense:* `max_file_size` is strictly enforced at the bucket level (5 MB for image buckets, 30 MB for audio bucket).
