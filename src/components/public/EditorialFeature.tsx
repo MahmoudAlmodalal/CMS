@@ -12,7 +12,7 @@ interface EditorialFeatureProps {
 /**
  * Verified against Figma Frame 26 (Node 87:14400, 1440x709):
  * - Surface: solid #1F0900 (near-black), heading #F9EDE8
- * - Heading (87:14402): Qahwa Arabic 64px, CENTERED
+ * - Heading (87:14402): Qahwa Arabic Bold 64px, CENTERED
  * - Cards (115:2436…115:2439): FOUR equal 273.1x317.16 white tiles, radius 14,
  *   laid out at x=108/409/710/1011 — not an asymmetric 1-large-plus-2-small split
  * - Card anatomy: 170.69px image → 24px padded body → row(date / category) →
@@ -27,8 +27,8 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
   return (
     <section className="min-h-[709px] lg:h-[709px] bg-[#1F0900] flex flex-col justify-center py-16 lg:py-0 overflow-hidden">
       <Container>
-        {/* Section Header (Figma Node 87:14402 — Qahwa 64px, centered) */}
-        <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-normal text-[#F9EDE8] leading-[1.25] text-center pb-10">
+        {/* Section Header (Figma Node 87:14402 — Qahwa Bold 64px, centered) */}
+        <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-bold text-[#F9EDE8] leading-[0.75] text-center pb-10">
           نكتب كي لا تضيع التفاصيل
         </h2>
 
