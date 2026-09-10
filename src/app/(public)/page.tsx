@@ -46,9 +46,9 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const [settings, artists, testimonials, articles, events] = await Promise.all([
     getSiteSettings(),
-    getFeaturedArtists(4),
+    getFeaturedArtists(6),
     getPublishedTestimonials(),
-    getFeaturedArticles(3),
+    getFeaturedArticles(4),
     getUpcomingEvents(3),
   ]);
 

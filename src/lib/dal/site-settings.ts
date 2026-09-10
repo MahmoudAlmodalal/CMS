@@ -28,14 +28,18 @@ export interface SiteSettings {
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   id: "default",
-  hero_headline: "أصوات تصنع التاريخ",
-  hero_subheadline: "فرقة موسيقية تمزج التراث الأندلسي العريق بالرؤية الموسيقية المعاصرة",
-  hero_image_url: "",
-  about_headline: "رسالتنا الموسيقية",
-  about_body: "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة التي تنير الدرب.",
-  about_image_url: "",
-  booking_banner_title: "حفلتك القادمة تبدأ من هنا",
-  booking_banner_body: "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة.",
+  // Copy verified against Figma الرئيسية (89:15216). Asterisks mark the terracotta
+  // runs Figma renders as a second fill inside the same text node — see <Highlight />.
+  hero_headline: "منصتك الأولى *لاكتشاف* ودعم *المواهب* الفنية والثقافية",
+  hero_subheadline:
+    "أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",
+  hero_image_url: "/assets/hero-stage.png",
+  about_headline: "نكتشف · نصل · نحتفي",
+  about_body:
+    "وُلدنا من إيمان عميق بأن الفن ليس ترفاً بل ضرورة. نعمل على تقريب المسافة بين الفنان الموهوب والجمهور الذي ينتظره، وبين المناسبة التي تستحق اللحظة الفنية التي تجعلها لا تُنسى. أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",
+  about_image_url: "/assets/about-musician.png",
+  booking_banner_title: "مناسبتك تستحق موسيقى حقيقية",
+  booking_banner_body: "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.",
   artists_subtitle: "كل فنان في أندلسيا يحمل قصة ومعاناة، يعزف بأنامله روح الشرق، ويصنع من التراث نغماً للمستقبل.",
   events_subtitle: "مواعيد تترك أثراً جميلاً في قلوب عشاق الموسيقى الأصيلة.",
   academy_subtitle: "تعلّم من اليد التي تعرف الطريق وتتقن أسرار المقامات.",

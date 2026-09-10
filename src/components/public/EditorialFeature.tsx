@@ -1,168 +1,84 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/LayoutPrimitives";
-import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatArabicDate } from "@/lib/formatters";
-import type { Article } from "@/lib/dal/articles";
+import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
 
 interface EditorialFeatureProps {
   articles: Article[];
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  culture: "ثقافة وفكر",
-  artists: "حوارات فنية",
-  academy: "تعليم وتراث",
-  events: "تغطيات وفعاليات",
-};
-
 /**
- * Verified against Figma Frame 26 (Nodes 87:14400, 87:14401, 87:14402):
- * - Canvas Dimensions: Fixed 1440x709px desktop height (min-h-[709px] lg:h-[709px])
- * - Heading: Qahwa Arabic Regular 64px (font-calligraphic text-[64px])
- * - Header format: Clean H2 + "عرض كل المقالات ←" link (strictly NO pill badge / subtitle)
- * - Asymmetric layout: 1 large primary article (lg:col-span-7) + 2 secondary stack (lg:col-span-5)
- * - Aspect ratios: 16:9 thumbnail ratio matching Figma Component 16 (115:2435)
+ * Verified against Figma Frame 26 (Node 87:14400, 1440x709):
+ * - Surface: solid #1F0900 (near-black), heading #F9EDE8
+ * - Heading (87:14402): Qahwa Arabic 64px, CENTERED
+ * - Cards (115:2436…115:2439): FOUR equal 273.1x317.16 white tiles, radius 14,
+ *   laid out at x=108/409/710/1011 — not an asymmetric 1-large-plus-2-small split
+ * - Card anatomy: 170.69px image → 24px padded body → row(date / category) →
+ *   title (pt 12) → kicker (pt 6.4). No overlay pill, no scrim, no read-more row.
+ * - Category micro-type: Cairo Bold 12.28px, 0.0907em tracking, uppercase, #C54716
  */
 export function EditorialFeature({ articles }: EditorialFeatureProps) {
   if (!articles || articles.length === 0) {
     return null;
   }
 
-  const primaryArticle = articles[0];
-  const secondaryArticles = articles.slice(1, 3);
-
-  const primaryCategory = CATEGORY_LABELS[primaryArticle.category] || "ثقافة وفكر";
-  const primaryDate = formatArabicDate(primaryArticle.published_at);
-
   return (
-    <section className="min-h-[709px] lg:h-[709px] bg-[#F2EEE0] border-t border-brand-espresso/5 flex flex-col justify-center py-16 lg:py-0 overflow-hidden">
+    <section className="min-h-[709px] lg:h-[709px] bg-[#1F0900] flex flex-col justify-center py-16 lg:py-0 overflow-hidden">
       <Container>
-        {/* Section Header (Figma Frame 26 — Qahwa 64px H2 + Link, NO badge/subtitle) */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-10">
-          <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25] text-start">
-            نكتب كي لا تضيع التفاصيل
-          </h2>
+        {/* Section Header (Figma Node 87:14402 — Qahwa 64px, centered) */}
+        <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-normal text-[#F9EDE8] leading-[1.25] text-center pb-10">
+          نكتب كي لا تضيع التفاصيل
+        </h2>
 
-          {/* View All Link */}
-          <Link
-            href="/news"
-            className="inline-flex items-center gap-2 text-base font-bold text-brand-primary hover:text-brand-primary-hover active:text-brand-primary-pressed transition-colors group shrink-0"
-          >
-            <span>عرض كل المقالات</span>
-            <span className="transition-transform group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
-              <ArrowEndIcon size={18} />
-            </span>
-          </Link>
-        </div>
-
-        {/* Asymmetric Layout (Figma Frame 26: 1 Primary + 2 Secondary Stack) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-          {/* Primary Featured Article (lg:col-span-7) */}
-          <article className="lg:col-span-7 group flex flex-col bg-white rounded-3xl overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start">
-            <Link href={`/news/${primaryArticle.slug}`} className="flex flex-col flex-1 h-full">
-              {/* Cover Image */}
-              <div className="relative aspect-video w-full overflow-hidden bg-brand-surface">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                  style={{
-                    backgroundImage: `url(${primaryArticle.cover_image_url || "/assets/articles/default-article.webp"})`,
-                  }}
-                  aria-label={primaryArticle.title}
-                  role="img"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-espresso/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute top-4 end-4">
-                  <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-brand-espresso/80 backdrop-blur-xs text-brand-tint text-xs font-semibold border border-white/10">
-                    {primaryCategory}
-                  </span>
+        {/* Four equal cards (Figma Nodes 115:2436…115:2439 — 273x317, 28px gap) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 justify-items-center">
+          {articles.slice(0, 4).map((article) => (
+            <article
+              key={article.id}
+              className="group w-full max-w-[273px] lg:h-[317px] flex flex-col bg-white rounded-[14px] overflow-hidden transition-shadow duration-300 hover:shadow-card-hover text-start"
+            >
+              <Link href={`/news/${article.slug}`} className="flex flex-col h-full">
+                {/* Cover Image (Figma EL-44c2fae9 — 170.69px tall) */}
+                <div className="relative h-[170.69px] w-full shrink-0 overflow-hidden bg-brand-surface">
+                  <Image
+                    src={article.cover_image_url || "/assets/articles/default-article.png"}
+                    alt={article.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 273px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
-              </div>
 
-              {/* Content Details */}
-              <div className="p-6 sm:p-8 flex flex-col flex-1 justify-between gap-4">
-                <div className="space-y-2.5">
-                  <div className="text-xs text-brand-espresso/60 font-mono">
-                    <time dateTime={primaryArticle.published_at}>{primaryDate}</time>
+                {/* Body (Figma EL-7d7fdedb — 24px padding) */}
+                <div className="p-6 flex flex-col">
+                  {/* Meta row (Figma EL-bb582553 — space-between) */}
+                  <div className="flex items-center justify-between gap-2">
+                    <time
+                      dateTime={article.published_at}
+                      className="font-sans text-[10px] font-normal leading-[1.5] text-gradscale-400"
+                    >
+                      {formatArabicDate(article.published_at)}
+                    </time>
+                    <span className="font-sans text-[12.28px] font-bold leading-[1.13] tracking-[0.0907em] uppercase text-brand-primary">
+                      {getArticleCardCategoryLabel(article.category)}
+                    </span>
                   </div>
-                  <h3 className="font-sans text-xl sm:text-2xl font-bold text-brand-espresso group-hover:text-brand-primary transition-colors leading-snug">
-                    {primaryArticle.title}
+
+                  {/* Title (Figma EL-8e175aae — pt 12, Cairo Bold 16px) */}
+                  <h3 className="pt-3 font-sans text-base font-bold leading-[1.5] text-brand-espresso group-hover:text-brand-primary transition-colors line-clamp-2">
+                    {article.title}
                   </h3>
-                  <p className="font-sans text-sm text-brand-espresso/75 line-clamp-3 leading-relaxed">
-                    {primaryArticle.excerpt}
+
+                  {/* Kicker (Figma EL-ddc5918d — pt 6.4, Cairo Medium 13px) */}
+                  <p className="pt-1.5 font-sans text-[13px] font-medium leading-[1.5] text-gradscale-300 line-clamp-1">
+                    {article.excerpt}
                   </p>
                 </div>
-
-                <div className="pt-3 border-t border-brand-espresso/5 flex items-center justify-between text-sm font-bold text-brand-primary">
-                  <span>اقرأ المقال كاملة</span>
-                  <span className="transition-transform group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
-                    <ArrowEndIcon size={16} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </article>
-
-          {/* Secondary Articles Stack (lg:col-span-5) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
-            {secondaryArticles.map((article) => {
-              const catLabel = CATEGORY_LABELS[article.category] || "ثقافة وفكر";
-              const dateStr = formatArabicDate(article.published_at);
-
-              return (
-                <article
-                  key={article.id}
-                  className="group flex-1 flex flex-col bg-white rounded-3xl overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start"
-                >
-                  <Link href={`/news/${article.slug}`} className="flex flex-col sm:flex-row h-full">
-                    {/* Thumbnail */}
-                    <div className="relative aspect-video sm:aspect-square sm:w-44 shrink-0 overflow-hidden bg-brand-surface">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                        style={{
-                          backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.webp"})`,
-                        }}
-                        aria-label={article.title}
-                        role="img"
-                      />
-                      <div className="absolute top-2.5 end-2.5 sm:hidden">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand-espresso/80 backdrop-blur-xs text-brand-tint text-xs font-semibold border border-white/10">
-                          {catLabel}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-5 flex flex-col flex-1 justify-between gap-2">
-                      <div className="space-y-1.5">
-                        <div className="hidden sm:flex items-center justify-between gap-2 text-xs">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand-surface text-brand-primary font-bold border border-brand-espresso/10">
-                            {catLabel}
-                          </span>
-                          <span className="text-brand-espresso/60 font-mono">
-                            <time dateTime={article.published_at}>{dateStr}</time>
-                          </span>
-                        </div>
-                        <h3 className="font-sans text-base sm:text-lg font-bold text-brand-espresso group-hover:text-brand-primary transition-colors leading-snug line-clamp-2">
-                          {article.title}
-                        </h3>
-                        <p className="font-sans text-xs text-brand-espresso/75 line-clamp-2 leading-relaxed">
-                          {article.excerpt}
-                        </p>
-                      </div>
-
-                      <div className="pt-2 border-t border-brand-espresso/5 flex items-center justify-between text-xs font-bold text-brand-primary">
-                        <span>اقرأ المقال</span>
-                        <span className="transition-transform group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
-                          <ArrowEndIcon size={14} />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </article>
-              );
-            })}
-          </div>
+              </Link>
+            </article>
+          ))}
         </div>
       </Container>
     </section>

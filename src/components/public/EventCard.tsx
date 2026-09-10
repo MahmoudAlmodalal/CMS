@@ -39,7 +39,7 @@ export function EventCard({ event }: EventCardProps) {
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
           style={{
-            backgroundImage: `url(${event.image_url || "/assets/events/default-event.webp"})`,
+            backgroundImage: `url(${event.image_url || "/assets/events/default-event.png"})`,
           }}
           aria-label={event.title}
           role="img"

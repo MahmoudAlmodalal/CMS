@@ -31,7 +31,7 @@ export function BookingBanner({ settings }: BookingBannerProps) {
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none"
         style={{
-          backgroundImage: "url('/assets/branding/concert-stage.webp')",
+          backgroundImage: "url('/assets/branding/concert-stage.png')",
         }}
         data-texture-ref="caeb7e573a02cd1ecf364f1737b1246ad2984677"
         aria-hidden="true"
@@ -39,35 +39,10 @@ export function BookingBanner({ settings }: BookingBannerProps) {
 
       {/* 2. Andalusian Arabesque Stretch Pattern (Figma Node 87:14535, ref: da60c98546b43a3524b1bbd7667d8f518e1c7ee3) */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-screen"
+        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-screen bg-repeat bg-[url('/assets/branding/arabesque-texture.png')]"
         aria-hidden="true"
         data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
-      >
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern
-              id="booking-banner-arabesque"
-              width="80"
-              height="80"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M40 0 L80 40 L40 80 L0 40 Z"
-                fill="none"
-                stroke="#F9EDE8"
-                strokeWidth="1"
-              />
-              <circle cx="40" cy="40" r="14" fill="none" stroke="#F9EDE8" strokeWidth="1" />
-              <path
-                d="M40 14 L40 66 M14 40 L66 40"
-                stroke="#F9EDE8"
-                strokeWidth="0.75"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#booking-banner-arabesque)" />
-        </svg>
-      </div>
+      />
 
       {/* 3. Solid Espresso #2B1D14 Overlay at strictly 88% opacity (Figma 87:14534) */}
       <div
@@ -98,7 +73,12 @@ export function BookingBanner({ settings }: BookingBannerProps) {
 
           {/* CTA Action: Canonical PublicButton with 12px radius and 48px->56px hover expansion */}
           <div className="pt-2">
-            <PublicButton href="/booking" variant="primary" size="md">
+            <PublicButton
+              href="/booking"
+              variant="primary"
+              size="md"
+              className="text-[#ECE6D0]"
+            >
               ابدأ حجزك الآن ♪
             </PublicButton>
           </div>

@@ -43,6 +43,22 @@ export function getArticleCategoryLabel(category: string): string {
 }
 
 /**
+ * Short single-word labels used on the home editorial cards, where Figma renders the
+ * category as tracked uppercase micro-type (nodes 115:2436…115:2439: ثقافة / فعاليات /
+ * فنانون). Distinct from CATEGORY_LABELS, which titles the /news filter tabs.
+ */
+export const CARD_CATEGORY_LABELS: Record<string, string> = {
+  culture: "ثقافة",
+  artists: "فنانون",
+  academy: "أكاديمية",
+  events: "فعاليات",
+};
+
+export function getArticleCardCategoryLabel(category: string): string {
+  return CARD_CATEGORY_LABELS[category] || CARD_CATEGORY_LABELS.culture;
+}
+
+/**
  * Verified canonical articles matching Figma nodes:
  * - 91:17296 (News screen)
  * - 91:17304 (Hero Story: "افتتاح المعرض الفني السنوي في الأندلس")
@@ -71,7 +87,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 تميزت هذه النسخة بتقديم مساحات استماع مخصصة بتقنيات صوتية عالية الدقة، حيث تمكن الحضور من استكشاف الفروق الدقيقة بين المقامات الأساسية كالنهاوند والبياتي والراست، مما عزز من البعد التعليمي والتثقيفي للحدث.
 
 ويستمر المعرض طيلة الشهر الجاري متضمناً ندوات حوارية دورية وورش عمل تدريبية يشرف عليها كبار الموسيقيين والحرفيين في الفرقة، متيحاً للزوار فرصة فريدة للتعلم والتفاعل المباشر مع أساتذة التراث.`,
-    cover_image_url: "/assets/articles/exhibition.webp",
+    cover_image_url: "/assets/articles/article-1.png",
     author_name: "هيئة تحرير أندلسيا",
     published_at: "2026-08-30T10:00:00.000Z",
     is_featured: true,
@@ -93,7 +109,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 ## الهوية الأصيلة في سياق الفن المعاصر
 
 لا يمكن للفنان المعاصر أن ينفصل عن جذوره، وتراثنا العربي والأندلسي غني بالرموز والزخارف الهندسية التي تشكل معيناً لا ينضب من الإلهام والتجديد. أسعى دائماً إلى نقل هذا الإحساس إلى الجمهور دون التخلي عن روح البساطة والحداثة.`,
-    cover_image_url: "/assets/articles/sculpture.webp",
+    cover_image_url: "/assets/articles/article-2.png",
     author_name: "عمر الحاج",
     published_at: "2026-08-25T14:00:00.000Z",
     is_featured: true,
@@ -115,7 +131,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 3. **المعايرة الصوتية والجمالية:** ضبط الترددات الصوتية وتأثير الزخارف الأندلسية على انسيابية النغم.
 
 تهدف هذه الورشة إلى تمكين جيل جديد من الحرفيين والموسيقيين الشغوفين بصون التراث الموسيقي العربي ونقله بصورة احترافية للأجيال القادمة.`,
-    cover_image_url: "/assets/articles/workshop.webp",
+    cover_image_url: "/assets/articles/article-3.png",
     author_name: "د. ناديا القاسم",
     published_at: "2026-08-20T09:00:00.000Z",
     is_featured: true,
@@ -133,7 +149,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 ## تلاقي المقامات والأنغام
 
 تداخلت مقامات الراست والبياتي مع التراكيب اللحنية الأيبيرية لتنتج لوناً طربياً عابراً للقرون. وقد ساهم انتقال رواد الفن قديماً في إثراء السلالم الموسيقية وتوسيع آفاق الارتجال الصوتي والتعبيري.`,
-    cover_image_url: "/assets/articles/borders.webp",
+    cover_image_url: "/assets/articles/article-1.png",
     author_name: "هيئة تحرير أندلسيا",
     published_at: "2026-08-15T10:00:00.000Z",
     is_featured: false,
@@ -151,7 +167,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 ## فلسفة الارتجال والتقاسيم
 
 الارتجال الموسيقي في التراث الصوفي ليس مجرد عزف عفوي، بل هو حالة وجدانية كاملة تتطلب صفاءً ذهنياً وتناغماً تاماً مع الإيقاع الداخلي للكون. عندما يعزف العازف مقام الحجاز، فإنه يدعو المستمع إلى رحلة تأملية خاصة تتجاوز حدود الكلمات.`,
-    cover_image_url: "/assets/articles/oud.webp",
+    cover_image_url: "/assets/articles/article-2.png",
     author_name: "عمر الحاج",
     published_at: "2026-08-10T14:30:00.000Z",
     is_featured: false,
@@ -169,7 +185,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 ## مناهج تدريس عصرية بروح أصيلة
 
 تسعى أكاديمية أندلسيا إلى تبسيط المفاهيم النظرية المعقدة في علم المقامات، وتحويلها إلى تجارب سماعية وتطبيقية ممتعة، مما يتيح للطلاب فهم بنية الموشحات الأندلسية والإبداع في أدائها بروح معاصرة تواكب الذائقة الحالية.`,
-    cover_image_url: "/assets/articles/heritage.webp",
+    cover_image_url: "/assets/articles/article-3.png",
     author_name: "د. ناديا القاسم",
     published_at: "2026-08-05T09:00:00.000Z",
     is_featured: false,
@@ -187,7 +203,7 @@ export const CANONICAL_ARTICLES: Article[] = [
 ## تفاعل جماهيري لافت
 
 تجاوب الحاضرون بحرارة مع الأداء المتقن للقصائد والموشحات، وأكدت هذه الأمسية على المكانة الرفيعة التي يحظى بها الفن الأصيل في وجدان الجماهير المتطلعة دائماً إلى الفن الرفيع والكلمة الصادقة واللحن الشجي.`,
-    cover_image_url: "/assets/articles/opera.webp",
+    cover_image_url: "/assets/articles/article-1.png",
     author_name: "هيئة تحرير أندلسيا",
     published_at: "2026-08-01T20:00:00.000Z",
     is_featured: false,

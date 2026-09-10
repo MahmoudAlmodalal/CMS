@@ -38,7 +38,7 @@ export function NewsHero({
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
               style={{
-                backgroundImage: `url(${primaryArticle.cover_image_url || "/assets/articles/default-hero.webp"})`,
+                backgroundImage: `url(${primaryArticle.cover_image_url || "/assets/articles/default-hero.png"})`,
                 backgroundColor: "#2B1D14",
               }}
               aria-label={primaryArticle.title}

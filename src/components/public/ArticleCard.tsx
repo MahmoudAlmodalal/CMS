@@ -37,7 +37,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
           <div
             className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
             style={{
-              backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.webp"})`,
+              backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.png"})`,
             }}
             aria-label={article.title}
             role="img"

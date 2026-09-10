@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* Display face — Figma uses "Qahwa Arabic" Regular for the hero H1 and every section H2.
+   Drop the licensed woff2 at public/assets/fonts/qahwa-arabic.woff2 and it takes effect
+   immediately; until then the browser silently falls through to Cairo via --font-display. */
+@font-face {
+  font-family: "Qahwa Arabic";
+  src: local("Qahwa Arabic"), url("/assets/fonts/qahwa-arabic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* Brand Core Colors */
   --color-brand-primary: #C54716;
