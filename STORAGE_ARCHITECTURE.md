@@ -498,7 +498,7 @@ Components implement explicit Next.js `sizes` attributes matching the Andalusian
 
 ### 9.4 Audio Streaming Delivery Architecture
 1. **HTTP 206 Partial Content:** Supabase Storage natively honors HTTP byte-range requests (`Range: bytes=0-1048576`).
-2. **Buffering & Playback:** The client `AudioPlayerWidget.tsx` requests audio chunks on demand, enabling immediate playback within 150ms without waiting for a 20MB file to download completely.
+2. **Buffering & Playback:** The client `AudioPlayerWidget.tsx` requests audio chunks on demand, enabling immediate playback within 150ms without waiting for a full file (up to 30MB) to download completely.
 3. **Format Support:** Audio tracks are encoded in stereo MP3 (192–320 kbps) or AAC for universal playback across iOS Safari, Android Chrome, and desktop browsers.
 
 ---

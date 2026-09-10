@@ -122,7 +122,7 @@ All candidate modules from Task 11 were cross-checked against Figma canvas nodes
 - **Archive:** Soft archive via `is_published = false`.
 - **Publish / Unpublish:** Yes (`is_published` boolean flag).
 - **Ordering:** `tracks` ordered by `display_order ASC`; `releases` ordered by `release_year DESC, display_order ASC`.
-- **Media:** Audio uploads (`audio/` bucket, `.mp3` / `.ogg`, max 25MB); Album artwork (`releases/` bucket, WebP 600×600).
+- **Media:** Audio uploads (`audio/` bucket, `.mp3` / `.ogg`, max 30MB); Album artwork (`releases/` bucket, WebP 600×600).
 - **Validation:** `duration_seconds` > 0; `track_count` >= 1; `release_year` valid 4-digit year; valid audio MIME types (`audio/mpeg`, `audio/ogg`).
 - **Public Routes Affected:** `/artists/[slug]` (Audio Player Widget, Discography tabs).
 
@@ -291,7 +291,7 @@ All candidate modules from Task 11 were cross-checked against Figma canvas nodes
 - **Archive:** Not applicable (Direct object lifecycle).
 - **Publish / Unpublish:** Not applicable (Uploaded assets are public CDN resources).
 - **Ordering:** Reverse chronological by `created_at DESC`.
-- **Media:** File type constraints: Images (`image/webp`, `image/jpeg`, `image/png`, `image/svg+xml`, max 5MB); Audio (`audio/mpeg`, `audio/ogg`, max 25MB).
+- **Media:** File type constraints: Images (`image/webp`, `image/jpeg`, `image/png`, `image/svg+xml`, max 5MB); Audio (`audio/mpeg`, `audio/ogg`, max 30MB).
 - **Validation:** Strict MIME validation on upload; maximum file size enforcement; filename sanitization.
 - **Public Routes Affected:** Indirectly serves all visual and audio media rendered across the entire website.
 

@@ -567,7 +567,7 @@ CREATE POLICY "newsletter_subscribers_delete_admin"
 | :--- | :---: | :---: | :--- | :--- |
 | `site` | Public | 5 MB | `image/jpeg`, `image/png`, `image/webp` | Hero background, about portrait, branding |
 | `artists` | Public | 5 MB | `image/jpeg`, `image/png`, `image/webp` | Musician profile portraits |
-| `audio` | Public | 20 MB | `audio/mpeg`, `audio/ogg`, `audio/wav` | Musician audio player streaming samples |
+| `audio` | Public | 30 MB | `audio/mpeg`, `audio/ogg`, `audio/wav` | Musician audio player streaming samples |
 | `releases` | Public | 5 MB | `image/jpeg`, `image/png`, `image/webp` | Album and discography cover artwork |
 | `events` | Public | 5 MB | `image/jpeg`, `image/png`, `image/webp` | Concert promotional posters |
 | `academy` | Public | 5 MB | `image/jpeg`, `image/png`, `image/webp` | Learning track visuals |
