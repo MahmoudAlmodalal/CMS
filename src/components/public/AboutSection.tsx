@@ -50,11 +50,11 @@ export function AboutSection({ settings }: AboutSectionProps) {
           {/* Visual Column — bare bleed off the physical LEFT edge (Figma Node 112:624 @ x=-16) */}
           <div className="lg:col-span-6 lg:order-2 flex justify-center lg:justify-start">
             <Image
-              src={settings.about_image_url || "/assets/about-musician.png"}
+              src={settings.about_image_url || "/assets/figma/about-musician.png"}
               alt="عازف من فرقة أندلسيا"
               width={551}
               height={491}
-              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover lg:-ml-4"
+              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover rounded-[50%] lg:-ml-4"
             />
           </div>
 
