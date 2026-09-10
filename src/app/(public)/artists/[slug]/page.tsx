@@ -12,7 +12,8 @@ export default async function ArtistDetailPage({
     <Container className="py-12 sm:py-16">
       <div className="space-y-4 text-start">
         <span className="text-xs font-bold text-brand-primary">الملف الشخصي للفنان</span>
-        <h1 className="font-calligraphic text-3xl sm:text-4xl font-bold text-brand-espresso">
+        {/* Artist name — Figma الفنان screen: display face (Qahwa) Heading 1 */}
+        <h1 className="font-display text-4xl sm:text-5xl font-normal text-brand-espresso leading-[1.25]">
           الفنان ({slug})
         </h1>
       </div>
