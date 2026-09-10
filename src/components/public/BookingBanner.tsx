@@ -12,7 +12,7 @@ interface BookingBannerProps {
  * - Canvas Dimensions: Fixed 1449x498px desktop height (min-h-[498px] lg:h-[498px])
  * - Background Composite: Espresso #2B1D14 at 88% overlay over texture (caeb7e57... + da60c985...)
  * - Musical Glyph: Cairo Regular 44px "♪" in brand-primary terracotta #C54716 (Node 87:14537)
- * - Headline: Qahwa Arabic Regular 60px (font-calligraphic text-[60px], Node 87:14539)
+ * - Headline: Qahwa Arabic Bold 60px (font-calligraphic text-[60px], Node 87:14539)
  * - Subtitle: Cairo Regular 16px in warm tint #F9EDE8/90 (Node 87:14541)
  * - CTA Action: Canonical PublicButton (variant="primary", size="md", 48px->56px hover expansion)
  */
@@ -61,8 +61,8 @@ export function BookingBanner({ settings }: BookingBannerProps) {
             ♪
           </div>
 
-          {/* Headline (Figma Node 87:14539 — Qahwa Arabic Regular 60px) */}
-          <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[60px] font-normal text-brand-tint leading-[1.25] tracking-tight">
+          {/* Headline (Figma Node 87:14539 — Qahwa Arabic Bold 60px) */}
+          <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[60px] font-bold text-brand-tint leading-none tracking-tight">
             {headline}
           </h2>
 
