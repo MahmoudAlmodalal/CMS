@@ -25,6 +25,23 @@ export interface BookingPageData {
   eventContext: BookingEventContext | null;
 }
 
+type BookingEventRow = {
+  id: string;
+  title: string;
+  event_date: string;
+  location?: string | null;
+  city?: string | null;
+  performer_name?: string | null;
+  artist_id?: string | null;
+};
+
+type BookingSettingsRow = {
+  booking_subtitle?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
+  social_links?: Record<string, string> | null;
+};
+
 export const DEFAULT_BOOKING_SUBTITLE =
   "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى بصحبة نخبة من الموسيقيين والمطربين المبدعين.";
 
@@ -83,15 +100,15 @@ export async function getBookingEventContext(eventId?: string): Promise<BookingE
       .maybeSingle();
 
     if (error || !data) return null;
-    const row = data as Record<string, any>;
+    const row = data as BookingEventRow;
 
     return {
       id: row.id,
       title: row.title,
       event_date: row.event_date,
-      venue: row.location,
-      city: row.city,
-      performer_name: row.performer_name,
+      venue: row.location ?? undefined,
+      city: row.city ?? undefined,
+      performer_name: row.performer_name ?? undefined,
       artist_id: row.artist_id,
     };
   } catch {
@@ -118,13 +135,12 @@ export async function getBookingPageData(eventId?: string): Promise<BookingPageD
         .maybeSingle();
 
       if (data) {
-        const s = data as Record<string, any>;
+        const s = data as BookingSettingsRow;
         if (s.booking_subtitle) subtitle = s.booking_subtitle;
         if (s.contact_email) contactEmail = s.contact_email;
         if (s.contact_phone) contactPhone = s.contact_phone;
-        if (s.social_links && typeof s.social_links === "object") {
-          const links = s.social_links as Record<string, string>;
-          if (links.instagram) instagramUrl = links.instagram;
+        if (s.social_links) {
+          if (s.social_links.instagram) instagramUrl = s.social_links.instagram;
         }
       }
     }
