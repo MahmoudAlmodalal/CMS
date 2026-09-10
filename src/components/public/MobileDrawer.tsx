@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -30,6 +30,7 @@ export interface MobileDrawerProps {
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const pathname = usePathname();
   const { isRTL, toggleDirection } = useDirection();
+  const panelRef = useRef<HTMLElement>(null);
 
   // Close on route change
   useEffect(() => {
@@ -49,6 +50,33 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
+
+  // Keep keyboard focus inside the open drawer, as required by the mobile modal state.
+  useEffect(() => {
+    if (!isOpen || !panelRef.current) return;
+
+    const panel = panelRef.current;
+    const focusable = panel.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || focusable.length === 0) return;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+
+    panel.addEventListener("keydown", trapFocus);
+    return () => panel.removeEventListener("keydown", trapFocus);
+  }, [isOpen]);
 
   // Lock body scroll
   useEffect(() => {
@@ -87,7 +115,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside className="fixed inset-y-0 start-0 z-50 w-full max-w-[370px] bg-white border-e border-brand-surface shadow-2xl flex flex-col text-brand-espresso rounded-e-2xl">
+      <aside ref={panelRef} className="fixed inset-y-0 start-0 z-50 w-full max-w-[370px] bg-white border-e border-brand-surface shadow-2xl flex flex-col text-brand-espresso rounded-e-2xl">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-brand-surface bg-white">
           <div className="flex items-center gap-3">
