@@ -331,9 +331,20 @@ Display published artists with portrait, name, role/genre, approved social links
 
 Implement the artist identity, portrait, biography, tracks, audio player, gallery, and social links. Handle valid slugs, invalid slugs, missing artists, unpublished artists, missing media, audio errors, responsive behavior, RTL, metadata, and SEO.
 
-### Task 35 — Events `/events`
+### Task 35 — Events `/events` `[COMPLETED]`
 
-Display published events with category, date, venue, city, image, and ticket/booking action. Implement only confirmed filters and fields. Link internal booking to `/booking?event_id=...`; do not create an event detail route.
+Implemented the canonical events catalog route `/events` matching Figma Node `91:16532` and Content Inventory §7:
+- `src/app/(public)/events/page.tsx`: Server Component with `revalidate = 1800` (30m ISR) and Arabic metadata.
+- `src/components/public/events/EventsHeader.tsx`: Confirmed header title ("مواعيد تترك أثراً جميلاً.") and configurable `events_subtitle` from `site_settings` (Node 91:16748/91:16747).
+- `src/components/public/events/EventsFilterTabs.tsx`: Confirmed category tabs ("الكل", "حفلات", "مهرجانات", "أمسيات", "ورش") matching Figma nodes 186:1781–186:1769.
+- `src/components/public/events/FeaturedEventBanner.tsx`: Kicker badge "الفعالية الأبرز", event title, performer attribution, date & location string, poster photo, and booking CTA (Node 91:16919–91:16925).
+- `src/components/public/events/EventCard.tsx`: Chronological card with category badge (91:16800), title (91:16802), performer & city (91:16804), DM Mono day number (91:16809), Cairo Arabic month (91:16811), and "احجز" action button (91:16814).
+- `src/components/public/events/EventsCatalogView.tsx`: Client coordinator with instant tab filtering, deep-link URL synchronization, and empty state.
+- `src/lib/dal/events.ts`: PostgREST DAL (`getPublishedEvents`, `getFeaturedEvent`, `getEventsSubtitle`) with safe fallbacks and explicit column selection.
+- `src/lib/types/events.ts`: Strict types and category maps.
+- Strict architecture requirement: NO speculative `/events/[slug]` detail route created; all event booking actions link to `/booking?event_id=...` (or external `ticket_url`).
+- **Current result:** 9/9 tests pass in `tests/events-page.test.ts`; full test suite 63/63 pass (`npm test`).
+
 
 ### Task 36 — Academy `/academy`
 
