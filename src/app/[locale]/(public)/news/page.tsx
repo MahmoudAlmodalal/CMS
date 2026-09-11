@@ -1,10 +1,8 @@
-import React, { Suspense } from "react";
+import React from "react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Container } from "@/components/ui/LayoutPrimitives";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
-import { PageHero } from "@/components/public";
 import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
 
 export const revalidate = 1800; // 30 minutes ISR as specified in APPLICATION_ARCHITECTURE.md
@@ -37,10 +35,9 @@ export async function generateMetadata({
 }
 
 export default async function NewsPage() {
-  const [articles, featuredArticles, t] = await Promise.all([
+  const [articles, featuredArticles] = await Promise.all([
     getPublishedArticles(),
     getFeaturedArticles(3),
-    getTranslations("page"),
   ]);
 
   const primaryArticle = featuredArticles[0] || articles[0];
@@ -49,58 +46,31 @@ export default async function NewsPage() {
       ? featuredArticles.slice(1, 3)
       : articles.filter((a) => a.id !== primaryArticle?.id).slice(0, 2);
 
+  // The design shows exactly three cards below the fold, and the three it shows
+  // are the ones the featured band does not carry. Excluding only the three the
+  // band happens to render is not enough: a fourth featured article would fall
+  // through into the grid and displace one of the three the design specifies.
+  const featuredIds = new Set(
+    [primaryArticle, ...secondaryArticles].filter(Boolean).map((a) => a!.id)
+  );
+  const gridArticles = articles
+    .filter((a) => !a.is_featured && !featuredIds.has(a.id))
+    .slice(0, 3);
+
   return (
-    <div className="space-y-12 sm:space-y-16">
-      <PageHero
-        eyebrow={t("newsEyebrow")}
-        title={t("newsTitle")}
-        subtitle={t("newsSubtitle")}
-      />
-      <Container>
-        {/* Page Header Header Kicker & Title */}
-        <div className="sr-only space-y-3 text-start mb-8 sm:mb-12">
-          <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">
-            {t("newsEyebrow")}
-          </span>
-          <h1 className="font-calligraphic text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-espresso">
-            {t("newsHiddenTitle")}
-          </h1>
-          <p className="text-sm sm:text-base text-brand-espresso/80 max-w-2xl leading-relaxed">
-            {t("newsHiddenSubtitle")}
-          </p>
+    <div className="w-full bg-brand-cream">
+      {primaryArticle && (
+        <NewsHero primaryArticle={primaryArticle} secondaryArticles={secondaryArticles} />
+      )}
+
+      {/* Figma node 91:17798 sits 1208px wide, 103px from the inline end of the
+          1440 frame — deliberately off-centre, so it is offset rather than
+          centred at the design width and falls back to a fluid gutter below it. */}
+      <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-16 sm:px-8 lg:px-0 lg:pb-[154px] lg:pt-[181px]">
+        <div className="w-full lg:ms-[103px] lg:w-[1208px]">
+          <NewsGrid articles={gridArticles} />
         </div>
-
-        {/* Featured News Hero (Figma Node 91:17296) */}
-        {primaryArticle && (
-          <div className="mb-12 sm:mb-16">
-            <NewsHero
-              primaryArticle={primaryArticle}
-              secondaryArticles={secondaryArticles}
-            />
-          </div>
-        )}
-
-        {/* All Articles Grid with Instant Filtering (Figma Frame 34 / Node 91:17798).
-            Suspense boundary required: NewsGrid reads useSearchParams, which
-            forbids static prerendering without one. */}
-        <Suspense
-          fallback={
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-              aria-hidden="true"
-            >
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="h-72 rounded-card bg-brand-surface/50 border border-brand-espresso-subtle animate-pulse"
-                />
-              ))}
-            </div>
-          }
-        >
-          <NewsGrid initialArticles={articles} />
-        </Suspense>
-      </Container>
+      </div>
     </div>
   );
 }

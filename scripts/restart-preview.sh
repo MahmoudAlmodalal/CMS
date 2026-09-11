@@ -11,6 +11,11 @@
 # Processes are found by name, not by listening socket: `ss` is not installed here,
 # and a port lookup that silently finds nothing looks exactly like a free port.
 #
+# The optimizer's image cache is dropped on every build. It is keyed by request
+# URL, so a file in public/ that is replaced in place — as the reference crops in
+# public/assets are — keeps serving its previous bytes indefinitely, and the
+# capture scores an asset that is no longer in the tree.
+#
 # Pass --no-build to skip the build when nothing has changed.
 set -uo pipefail
 PORT="${PORT:-3000}"
@@ -19,6 +24,7 @@ LOG="${PREVIEW_LOG:-/tmp/next-preview.log}"
 servers() { ps -eo pid,args | awk '/next-server|npm exec next start|[n]ext start -p/ && !/awk/ {print $1}'; }
 
 if [ "${1:-}" != "--no-build" ]; then
+  rm -rf .next/cache/images
   npm run build >/tmp/next-build.log 2>&1 || { echo "build failed:"; tail -30 /tmp/next-build.log; exit 1; }
 fi
 

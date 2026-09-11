@@ -81,7 +81,8 @@
     "portraitAlt": "Portrait of {name}"
   },
   "article": {
-    "read": "Read the article"
+    "read": "Read the article",
+    "readMore": "Read more"
   },
   "event": {
     "bookTicket": "Book a ticket for {title}",
@@ -143,7 +144,8 @@
     "browseAll": "Browse all Andalusia articles",
     "relatedRegion": "Related articles",
     "relatedKicker": "Read also",
-    "relatedHeading": "Related articles and stories"
+    "relatedHeading": "Related articles and stories",
+    "gridHeading": "Latest news"
   },
   "academy": {
     "kicker": "The Andalusia Music Academy",
@@ -193,7 +195,7 @@
   },
   "booking": {
     "kicker": "Booking events and private shows",
-    "title": "Your occasion deserves real music. ♪",
+    "title": "Your occasion deserves <em>real music</em>. ♪",
     "contextHeading": "Selected booking context",
     "contextEvent": "Booking linked to the event: {title}",
     "contextPerformer": "Performer: {name}",
@@ -214,24 +216,24 @@
     "groupPersonal": "Your details",
     "groupOccasion": "Occasion details",
     "fieldName": "Full name",
-    "fieldNamePlaceholder": "For example: Ahmed Abdullah",
+    "fieldNamePlaceholder": "Your name here",
     "fieldEmail": "Email address",
-    "fieldPhone": "Phone or WhatsApp number",
+    "fieldPhone": "Phone number",
     "fieldBudget": "Approximate budget",
-    "fieldBudgetPlaceholder": "For example: 1,000 - 5,000 USD",
-    "fieldOccasionType": "Type of occasion",
-    "fieldDate": "Preferred event date",
-    "fieldArtist": "Choose an artist or ensemble",
+    "fieldBudgetPlaceholder": "1,000 – 5,000 USD",
+    "fieldOccasionType": "Occasion type",
+    "fieldDate": "Event date",
+    "fieldArtist": "Choose the artist / ensemble",
     "fieldArtistAny": "The full Andalusia ensemble / complete heritage package",
     "fieldSpecificArtist": "A specific artist or player",
     "fieldSpecificArtistPlaceholder": "For example: a solo oud player, or a five-piece takht",
-    "fieldDetails": "More about the event",
-    "fieldDetailsPlaceholder": "Please tell us the venue (city, hall), approximate timing, expected audience size, and any particular wishes for muwashshahat or songs...",
+    "fieldDetails": "Further details",
+    "fieldDetailsPlaceholder": "Tell us about your occasion, the venue, the number of guests, and any special requests…",
     "fieldDetailsHint": "Enter at least 5 characters describing what the event needs.",
     "optional": "(optional)",
-    "consent": "By sending this request you agree to Andalusia's privacy policy and event booking terms. All information stays confidential and is used only to arrange the event.",
+    "consent": "By sending this form I agree to the terms of use and the privacy policy.",
     "submitting": "Sending your request...",
-    "submit": "Send the request ♪",
+    "submit": "Send the request",
     "contactHeading": "Contact us directly",
     "contactBody": "Get in touch directly for anything urgent, or to arrange an event with particular requirements:",
     "contactEmailLabel": "Official email",
@@ -249,7 +251,15 @@
     "step3Body": "We design a programme that suits the occasion, with audio samples and the logistics worked out.",
     "step4Title": "Confirming the booking",
     "step4Body": "We finalise the agreement and coordinate with the ensemble and crew to deliver an exceptional evening.",
-    "noPrepayment": "No online prepayment — arrangements are agreed directly with the management."
+    "noPrepayment": "No online prepayment — arrangements are agreed directly with the management.",
+    "contactEmailShort": "Email",
+    "contactWhatsappShort": "WhatsApp",
+    "contactInstagramShort": "Instagram",
+    "heroSubtitle": "Music programmes with real artists in small, intensive settings — an experience that changes your path.",
+    "fieldEmailPlaceholder": "name@email.com",
+    "fieldPhonePlaceholder": "+961 70 000 000",
+    "fieldOccasionPlaceholder": "Choose a type",
+    "fieldArtistPlaceholder": "Choose…"
   },
   "player": {
     "unavailable": "This audio track is not available right now.",

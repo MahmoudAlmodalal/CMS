@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { MailIcon, PhoneIcon, GlobeIcon, CheckIcon } from "@/components/ui/Icons";
-import { toArabicDigits } from "@/lib/formatters";
 import { Bdi } from "@/components/ui/Bidi";
+import { toArabicDigits } from "@/lib/formatters";
 
 interface BookingSidebarProps {
   contactEmail: string;
@@ -10,19 +9,25 @@ interface BookingSidebarProps {
   instagramUrl: string;
 }
 
-/** Copy lives in the `booking` namespace; the step numeral is rendered in the reader's script. */
-const STEPS = [
-  { index: 1, titleKey: "step1Title", descriptionKey: "step1Body" },
-  { index: 2, titleKey: "step2Title", descriptionKey: "step2Body" },
-  { index: 3, titleKey: "step3Title", descriptionKey: "step3Body" },
-  { index: 4, titleKey: "step4Title", descriptionKey: "step4Body" },
-];
+/** Only the step titles appear in the design; the bodies are not drawn. */
+const STEPS = ["step1Title", "step2Title", "step3Title", "step4Title"] as const;
 
 /**
- * Booking Sidebar Component
- * Verified against Figma Screen "الحجز" (Node 91:17109 / Frame 91:17250)
- * - Direct contact card: Email, WhatsApp/Phone, Instagram
- * - "What happens next?" 4-step milestone progression
+ * Booking sidebar — Figma node 91:17250 in frame 91:17109.
+ *
+ * 412 wide, two cards 20px apart, every row flush to the inline start:
+ * - Contact card (91:17251): #2B1D14 under the arabesque mark, 32px padding,
+ *   12px radius. Heading "♪ تواصل مباشرة" in primary-500 at 16/24, then three
+ *   label/value pairs — label Cairo Bold 10/15, value Cairo SemiBold 14.08/21.12,
+ *   3.2px apart — spaced 24, 17.6 and 17.6/17.6 down the card over 256px.
+ * - Steps card (91:17273): primary-500, same padding and radius. Heading at 16/24,
+ *   then four rows of Cairo 13.6/22.44 each led by a 24px numeral chip on a 20%
+ *   secondary-500 wash at a 12px radius, 12px from the text.
+ *
+ * The design draws no channel icons, no contact paragraph and no prepayment note,
+ * and it states the step numerals in Western digits except the third, which is
+ * Arabic-Indic. That is a slip in the file, not a rule, so all four are rendered
+ * in the reader's own script.
  */
 export function BookingSidebar({
   contactEmail,
@@ -31,115 +36,86 @@ export function BookingSidebar({
 }: BookingSidebarProps) {
   const t = useTranslations("booking");
   const locale = useLocale();
-  const stepNumeral = (index: number) => (locale === "ar" ? toArabicDigits(index) : String(index));
-  // Normalize phone for WhatsApp link
   const rawPhoneDigits = contactPhone.replace(/\D/g, "");
   const whatsappHref = rawPhoneDigits ? `https://wa.me/${rawPhoneDigits}` : "#";
+  const instagramHandle = "@andalusia.art";
+
+  const channels = [
+    {
+      label: t("contactEmailShort"),
+      value: contactEmail,
+      href: `mailto:${contactEmail}`,
+      ariaLabel: t("contactEmailAction", { email: contactEmail }),
+      spacing: "pt-6",
+    },
+    {
+      label: t("contactWhatsappShort"),
+      value: contactPhone,
+      href: whatsappHref,
+      ariaLabel: t("contactWhatsappAction", { phone: contactPhone }),
+      spacing: "pt-[17.6px]",
+    },
+    {
+      label: t("contactInstagramShort"),
+      value: instagramHandle,
+      href: instagramUrl,
+      ariaLabel: t("contactInstagramAction"),
+      spacing: "py-[17.6px]",
+    },
+  ];
 
   return (
-    <aside className="w-full lg:w-[380px] xl:w-[412px] flex flex-col gap-6 text-start">
-      {/* Direct Contact Card */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-brand-espresso/10 shadow-sm">
-        <div className="flex items-center gap-2 pb-4 mb-5 border-b border-brand-espresso/10">
-          <span className="text-brand-primary font-bold">♪</span>
-          <h2 className="font-calligraphic text-xl font-bold text-brand-espresso">
-            {t("contactHeading")}
-          </h2>
-        </div>
+    <aside className="flex w-full flex-col gap-5 text-start lg:w-[412px]">
+      <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-8">
+        <div
+          aria-hidden="true"
+          data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
+          className="absolute left-0 top-0 h-[21.35%] w-[18.75%] bg-[url('/assets/branding/card-mark.png')] bg-contain bg-no-repeat"
+        />
 
-        <p className="text-sm text-brand-espresso/70 mb-5 leading-relaxed">
-          {t("contactBody")}
-        </p>
+        <h2 className="text-[16px] font-bold leading-[24px] text-brand-primary">
+          ♪ {t("contactHeading")}
+        </h2>
 
-        <div className="flex flex-col gap-4">
-          {/* Email Channel */}
-          <a
-            href={`mailto:${contactEmail}`}
-            className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label={t("contactEmailAction", { email: contactEmail })}
-          >
-            <div className="w-10 h-10 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
-              <MailIcon size={18} />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">{t("contactEmailLabel")}</span>
-              <span className="text-sm font-semibold text-brand-espresso truncate font-mono" dir="ltr">
-                <Bdi dir="ltr">{contactEmail}</Bdi>
-              </span>
-            </div>
-          </a>
-
-          {/* WhatsApp / Phone Channel */}
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label={t("contactWhatsappAction", { phone: contactPhone })}
-          >
-            <div className="w-10 h-10 rounded-lg bg-green-600/10 text-green-700 flex items-center justify-center shrink-0 group-hover:bg-green-600 group-hover:text-white transition-colors">
-              <PhoneIcon size={18} />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">{t("contactWhatsappLabel")}</span>
-              <span className="text-sm font-semibold text-brand-espresso font-mono" dir="ltr">
-                <Bdi dir="ltr">{contactPhone}</Bdi>
-              </span>
-            </div>
-          </a>
-
-          {/* Instagram Channel */}
-          <a
-            href={instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label={t("contactInstagramAction")}
-          >
-            <div className="w-10 h-10 rounded-lg bg-brand-espresso/10 text-brand-espresso flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
-              <GlobeIcon size={18} />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">{t("contactInstagramLabel")}</span>
-              <span className="text-sm font-semibold text-brand-espresso font-mono" dir="ltr">
-                <Bdi dir="ltr">@andalusia.art</Bdi>
-              </span>
-            </div>
-          </a>
-        </div>
+        {channels.map((channel) => (
+          <div key={channel.label} className={`w-[256px] ${channel.spacing}`}>
+            <p className="text-[10px] font-bold leading-[15px] text-brand-tint">
+              {channel.label}
+            </p>
+            <a
+              href={channel.href}
+              aria-label={channel.ariaLabel}
+              className="block pt-[3.2px] text-[14.08px] font-semibold leading-[21.12px] text-brand-tint hover:text-brand-primary"
+            >
+              <Bdi dir="ltr">{channel.value}</Bdi>
+            </a>
+          </div>
+        ))}
       </div>
 
-      {/* What Happens Next Card */}
-      <div className="bg-brand-espresso text-brand-cream rounded-2xl p-6 sm:p-7 shadow-sm">
-        <div className="flex items-center gap-2 pb-4 mb-5 border-b border-brand-cream/15">
-          <span className="text-brand-primary font-bold">♪</span>
-          <h2 className="font-calligraphic text-xl font-bold text-white">
-            {t("stepsHeading")}
-          </h2>
-        </div>
+      <div className="rounded-[12px] bg-brand-primary p-8">
+        <h2 className="text-[16px] font-bold leading-[24px] text-brand-tint">
+          {t("stepsHeading")}
+        </h2>
 
-        <ol className="flex flex-col gap-5 list-none p-0 m-0">
-          {STEPS.map((step) => (
-            <li key={step.index} className="flex items-start gap-3.5">
-              <div className="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 font-bold text-sm font-mono mt-0.5">
-                {stepNumeral(step.index)}
-              </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-sm font-bold text-white">
-                  {t(step.titleKey)}
-                </h3>
-                <p className="text-xs text-brand-cream/75 leading-relaxed">
-                  {t(step.descriptionKey)}
-                </p>
-              </div>
+        <ol className="m-0 list-none p-0">
+          {STEPS.map((key, index) => (
+            <li
+              key={key}
+              className={`flex w-[256px] items-start gap-3 ${
+                index === 0 ? "pt-5" : index === STEPS.length - 1 ? "py-[13.6px]" : "pt-[13.6px]"
+              }`}
+            >
+              <span
+                aria-hidden="true"
+                className="flex size-6 shrink-0 items-center justify-center rounded-[12px] bg-[rgba(236,230,208,0.2)] text-[11.2px] font-black leading-[16.8px] text-brand-tint"
+              >
+                {locale === "ar" ? toArabicDigits(index + 1) : index + 1}
+              </span>
+              <p className="text-[13.6px] leading-[22.44px] text-brand-tint">{t(key)}</p>
             </li>
           ))}
         </ol>
-
-        <div className="mt-6 pt-4 border-t border-brand-cream/15 flex items-center gap-2 text-xs text-brand-cream/60">
-          <CheckIcon size={14} className="text-brand-primary shrink-0" />
-          <span>{t("noPrepayment")}</span>
-        </div>
       </div>
     </aside>
   );

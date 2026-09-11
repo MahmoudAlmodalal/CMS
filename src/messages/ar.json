@@ -81,7 +81,8 @@
     "portraitAlt": "صورة الفنان {name}"
   },
   "article": {
-    "read": "اقرأ المقال"
+    "read": "اقرأ المقال",
+    "readMore": "اقرأ المزيد"
   },
   "event": {
     "bookTicket": "احجز تذكرة {title}",
@@ -143,7 +144,8 @@
     "browseAll": "تصفح كافة مقالات أندلسيا",
     "relatedRegion": "مقالات ذات صلة",
     "relatedKicker": "اقرأ أيضاً",
-    "relatedHeading": "مقالات وقصص ذات صلة"
+    "relatedHeading": "مقالات وقصص ذات صلة",
+    "gridHeading": "آخر الأخبار"
   },
   "academy": {
     "kicker": "أكاديمية أندلسيا الموسيقية",
@@ -193,7 +195,7 @@
   },
   "booking": {
     "kicker": "حجز الفعاليات والعروض الخاصة",
-    "title": "مناسبتك تستحق موسيقى حقيقية. ♪",
+    "title": "مناسبتك تستحق <em>موسيقى</em> حقيقية. ♪",
     "contextHeading": "سياق الحجز المحدد",
     "contextEvent": "حجز مرتبط بالفعالية: {title}",
     "contextPerformer": "المؤدي: {name}",
@@ -214,24 +216,24 @@
     "groupPersonal": "معلوماتك الشخصية",
     "groupOccasion": "تفاصيل المناسبة",
     "fieldName": "الاسم الكامل",
-    "fieldNamePlaceholder": "مثال: أحمد عبد الله",
+    "fieldNamePlaceholder": "اسمك هنا",
     "fieldEmail": "البريد الإلكتروني",
-    "fieldPhone": "رقم الهاتف أو الواتساب",
+    "fieldPhone": "رقم الهاتف",
     "fieldBudget": "الميزانية التقريبية",
-    "fieldBudgetPlaceholder": "مثال: ١٠٠٠ - ٥٠٠٠ دولار",
+    "fieldBudgetPlaceholder": "١٠٠٠ - ٥٠٠٠ دولار",
     "fieldOccasionType": "نوع المناسبة",
-    "fieldDate": "تاريخ الفعالية المفضل",
+    "fieldDate": "تاريخ الفعالية",
     "fieldArtist": "اختر الفنان / الفرقة",
     "fieldArtistAny": "فرقة أندلسيا الكاملة / باقة تراثية متكاملة",
     "fieldSpecificArtist": "فنان محدد أو عازف معين",
     "fieldSpecificArtistPlaceholder": "مثال: عازف عود منفرد أو تخت شرقي خماسي",
-    "fieldDetails": "تفاصيل إضافية عن الفعالية",
-    "fieldDetailsPlaceholder": "يرجى ذكر مكان الفعالية (المدينة، القاعة)، التوقيت التقريبي، عدد الحضور المتوقع، وأي رغبات خاصة في الموشحات أو الأغاني...",
+    "fieldDetails": "تفاصيل إضافية",
+    "fieldDetailsPlaceholder": "أخبرنا عن مناسبتك، المكان، عدد الضيوف، وأي رغبات خاصة...",
     "fieldDetailsHint": "أدخل ٥ أحرف على الأقل لوصف متطلبات الحفل.",
     "optional": "(اختياري)",
-    "consent": "بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية وشروط حجز الفعاليات لدى فرقة أندلسيا. تبقى كافة المعلومات سرية ولأغراض تنسيق الفعالية حصراً.",
+    "consent": "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة الخصوصية.",
     "submitting": "جارٍ إرسال الطلب...",
-    "submit": "أرسل الطلب ♪",
+    "submit": "أرسل الطلب",
     "contactHeading": "تواصل مباشرة",
     "contactBody": "تفضل بالتواصل معنا مباشرة لأي استفسار عاجل أو لتنسيق فعالية بمواصفات خاصة:",
     "contactEmailLabel": "البريد الإلكتروني الرسمي",
@@ -249,7 +251,15 @@
     "step3Body": "نصمم برنامجاً موسيقياً مخصصاً يلائم طبيعة الحفل مع توفير نماذج صوتية وترتيبات لوجستية.",
     "step4Title": "تأكيد الحجز والتفاصيل",
     "step4Body": "نبرم الاتفاق النهائي وننسق مع الفرقة والفنيين لتقديم تجربة أندلسية استثنائية.",
-    "noPrepayment": "لا يوجد دفع إلكتروني مسبق — التنسيق والاتفاق يتم مباشرة مع الإدارة."
+    "noPrepayment": "لا يوجد دفع إلكتروني مسبق — التنسيق والاتفاق يتم مباشرة مع الإدارة.",
+    "contactEmailShort": "البريد",
+    "contactWhatsappShort": "واتساب",
+    "contactInstagramShort": "انستقرام",
+    "heroSubtitle": "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني.",
+    "fieldEmailPlaceholder": "name@email.com",
+    "fieldPhonePlaceholder": "+961 70 000 000",
+    "fieldOccasionPlaceholder": "اختر النوع",
+    "fieldArtistPlaceholder": "أختار..."
   },
   "player": {
     "unavailable": "المقطع الصوتي غير متوفر حالياً.",
