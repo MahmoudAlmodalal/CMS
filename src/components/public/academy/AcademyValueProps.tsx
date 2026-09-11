@@ -1,87 +1,83 @@
 import React from "react";
-import { useTranslations, useLocale } from "next-intl";
-import { Container, Grid } from "@/components/ui/LayoutPrimitives";
-import { Card, CardContent } from "@/components/ui/Card";
-import { toArabicDigits } from "@/lib/formatters";
+import { useTranslations } from "next-intl";
 
 export interface ValuePropItem {
   id: string;
   /** Key under the `academy` message namespace. */
   titleKey: string;
   descriptionKey: string;
-  /** 1-based position, rendered as a zero-padded numeral in the reader's script. */
-  index: number;
+  /** Paragraph width the design gives this column, in px. */
+  bodyWidth: number;
 }
 
-/** Copy lives in the `academy` message namespace; the numerals are locale-formatted at render. */
+/**
+ * The three pillars of node 91:16354, in reading order — the design's grid places
+ * them col-3, col-2, col-1, which right to left is this order.
+ */
 export const CANONICAL_VALUE_PROPS: ValuePropItem[] = [
-  { id: "small-groups", titleKey: "value1Title", descriptionKey: "value1Body", index: 1 },
-  { id: "active-artists", titleKey: "value2Title", descriptionKey: "value2Body", index: 2 },
-  { id: "live-performance", titleKey: "value3Title", descriptionKey: "value3Body", index: 3 },
+  { id: "small-groups", titleKey: "value1Title", descriptionKey: "value1Body", bodyWidth: 260 },
+  { id: "active-artists", titleKey: "value2Title", descriptionKey: "value2Body", bodyWidth: 259 },
+  { id: "live-performance", titleKey: "value3Title", descriptionKey: "value3Body", bodyWidth: 265 },
 ];
 
 /**
- * Academy Value Propositions Section
- * Figma Node: 91:16119 / 91:16352 / 91:16359 / 91:16366 / 91:16373
- * - Section Title: "التعلّم هنا مختلف"
- * - 3 Pillars: "مجموعات صغيرة", "فنانون من الواقع", "أداء حقيقي"
+ * Academy value propositions — Figma node 91:16348 in frame 91:16119.
+ *
+ * A full-bleed #2B1D14 band 443.3 tall, 96px of padding top and bottom, carrying
+ * the arabesque corner mark once at the top-left at 6.39% x 12.4% — the same mark
+ * the footer draws, cropped for this band's height.
+ *
+ * Everything inside is centred: the heading (91:16352) in Qahwa Arabic 40/48
+ * #F9EDE8, then 56px down a 888-wide grid of three 270.44 columns 40px apart. Each
+ * column is a ♪ in Cairo 28/42 primary-500, the pillar in Cairo Bold 16.8/25.2
+ * #ECE6D0 16px under it, and the body in Cairo 14.08/26.048 at 70% #ECE6D0 a
+ * further 12px down, held to the width the design gives that column.
+ *
+ * The design draws no kicker, no standfirst, no cards and no numerals here.
  */
 export function AcademyValueProps() {
   const t = useTranslations("academy");
-  const locale = useLocale();
-
-  // Figma numbers these pillars ٠١ / ٠٢ / ٠٣ in Arabic; English reads 01 / 02 / 03.
-  const formatOrdinal = (index: number) => {
-    const padded = String(index).padStart(2, "0");
-    return locale === "ar" ? toArabicDigits(padded) : padded;
-  };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-secondary-100/50 border-y border-brand-espresso-subtle">
-      <Container>
-        {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16">
-          <span className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-2 inline-block">
-            {t("valuesKicker")}
-          </span>
-          <h2 className="font-calligraphic text-2xl sm:text-3xl md:text-4xl font-bold text-brand-espresso mb-3">
-            {t("valuesHeading")}
-          </h2>
-          <p className="text-sm sm:text-base text-gradscale-400 font-sans">
-            {t("valuesSubtitle")}
-          </p>
-        </div>
+    <section
+      aria-labelledby="academy-values-heading"
+      className="relative isolate w-full overflow-hidden bg-brand-espresso px-6 py-16 lg:py-24"
+    >
+      <div
+        aria-hidden="true"
+        data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
+        className="pointer-events-none absolute left-0 top-0 h-[12.4%] w-[92px] bg-[url('/assets/branding/band-mark.png')] bg-contain bg-no-repeat"
+      />
 
-        {/* 3 Core Pillars Grid */}
-        <Grid cols={3} className="gap-6 lg:gap-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center lg:w-[916px]">
+        <h2
+          id="academy-values-heading"
+          className="text-center font-display text-[32px] leading-[1.2] text-brand-tint sm:text-[40px] lg:whitespace-nowrap lg:leading-[48px]"
+        >
+          {t("valuesHeading")}
+        </h2>
+
+        <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3 lg:mt-14 lg:w-[888px] lg:grid-cols-[270.44px_270.45px_270.44px]">
           {CANONICAL_VALUE_PROPS.map((prop) => (
-            <Card
-              key={prop.id}
-              variant="default"
-              className="bg-white p-6 sm:p-8 rounded-card border border-brand-espresso-subtle/80 hover:border-primary-500/40 transition-all duration-200 shadow-sm"
-            >
-              <CardContent className="p-0 space-y-4 text-start">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xl sm:text-2xl font-bold text-primary-500/40">
-                    {formatOrdinal(prop.index)}
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-xs font-bold font-mono">
-                    ♪
-                  </div>
-                </div>
+            <div key={prop.id} className="flex flex-col items-center text-center">
+              <span aria-hidden="true" className="text-[28px] leading-[42px] text-brand-primary">
+                ♪
+              </span>
 
-                <h3 className="text-lg sm:text-xl font-bold text-brand-espresso font-sans">
-                  {t(prop.titleKey)}
-                </h3>
+              <h3 className="pt-4 text-[16.8px] font-bold leading-[25.2px] text-brand-surface">
+                {t(prop.titleKey)}
+              </h3>
 
-                <p className="text-sm text-gradscale-400 font-sans leading-relaxed">
-                  {t(prop.descriptionKey)}
-                </p>
-              </CardContent>
-            </Card>
+              <p
+                className="pt-3 text-[14.08px] leading-[26.048px] text-[rgba(236,230,208,0.7)]"
+                style={{ maxWidth: `${prop.bodyWidth}px` }}
+              >
+                {t(prop.descriptionKey)}
+              </p>
+            </div>
           ))}
-        </Grid>
-      </Container>
+        </div>
+      </div>
     </section>
   );
 }
