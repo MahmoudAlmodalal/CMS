@@ -75,7 +75,7 @@ export async function requireAdminSession(ctx?: AuthContext) {
     throw new Error(ADMIN_AUTH_ERROR);
   }
 
-  assertAdminRole(user);
+  assertAdminRole(user as unknown as UserClaim);
 
   return { supabase, user };
 }
