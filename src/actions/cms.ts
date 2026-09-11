@@ -36,7 +36,7 @@ export interface ActionResult<T = unknown> {
   error?: string;
 }
 
-function insertedId(data: unknown, fallback?: string): string | undefined {
+function insertedId(data: unknown, fallback = "unknown-id"): string {
   const row = data as { id?: unknown } | null;
   return typeof row?.id === "string" ? row.id : fallback;
 }
