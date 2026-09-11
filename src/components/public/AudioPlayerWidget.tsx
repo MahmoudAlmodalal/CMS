@@ -32,20 +32,6 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
   const [hasError, setHasError] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [knownDuration, setKnownDuration] = useState<number | null>(null);
-
-  // Missing-media state: never render a broken player when no file is attached.
-  if (!track.audio_file_url) {
-    return (
-      <div
-        role="status"
-        className="flex items-center gap-3 rounded-2xl bg-brand-cream px-5 py-4 text-brand-espresso"
-      >
-        <MusicIcon size={24} className="shrink-0 text-brand-primary" />
-        <p className="text-sm">المقطع الصوتي غير متوفر حالياً.</p>
-      </div>
-    );
-  }
-
   const duration = knownDuration ?? track.duration_seconds;
 
   const toggle = useCallback(() => {
@@ -73,6 +59,19 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
     audio.currentTime = value;
     setCurrentTime(value);
   }, []);
+
+  // Missing-media state: never render a broken player when no file is attached.
+  if (!track.audio_file_url) {
+    return (
+      <div
+        role="status"
+        className="flex items-center gap-3 rounded-2xl bg-brand-cream px-5 py-4 text-brand-espresso"
+      >
+        <MusicIcon size={24} className="shrink-0 text-brand-primary" />
+        <p className="text-sm">المقطع الصوتي غير متوفر حالياً.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl bg-brand-espresso px-5 py-4 text-brand-cream shadow-card">
