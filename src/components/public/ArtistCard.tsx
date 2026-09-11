@@ -1,12 +1,9 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { type Artist, getCategoryLabel } from "@/lib/types/artists";
+import { type Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
-import { ArrowEndIcon, MusicIcon } from "@/components/ui/Icons";
 
 export interface ArtistCardProps {
   artist: Artist;
@@ -15,142 +12,73 @@ export interface ArtistCardProps {
 }
 
 /**
- * ArtistCard Component
- * Mapped to Figma Component 16 / Frame 19/20 (Nodes 91:18068-143, 91:18070, 91:18072):
- * - 4:5 portrait photo with missing-image fallback
- * - Musician name, genre tag, city, and quote
- * - Category badge and interactive hover states
- * - Canonical link to /artists/[slug] and quick booking CTA
+ * Artist card — Figma node 91:18063 in frame 91:17844.
+ *
+ * White, a 16px radius, 296x422 and clipped. The design expresses it as a 474-tall
+ * stack — a 340 image box over a 134 body — centred in a 422 box that clips 26px
+ * off each end, so what it actually draws is 314 of photograph and 108 of body with
+ * the body's own bottom padding cut off. That visible result is what is built here.
+ *
+ * The body is 20px padded and reads from the inline start — the right-hand edge of
+ * the Arabic frame: the genre in Cairo Medium 13/19.5 primary-500, the name in
+ * Cairo Bold 16/24 #1B1B1B 4.8px down, then the city in Cairo 12.8/19.2 a further
+ * 2.4px down.
+ *
+ * The design draws nothing else on the card — no scrim, no category pill, no
+ * featured star, no quote, no specialties and no second link. All of those were
+ * removed as unverified inventions; the whole card is the link to the profile.
  */
-export function ArtistCard({
-  artist,
-  priority = false,
-  className = "",
-}: ArtistCardProps) {
-  const t = useTranslations("artists");
+export function ArtistCard({ artist, priority = false, className = "" }: ArtistCardProps) {
   const a = useTranslations("artist");
-  const [imageError, setImageError] = useState(false);
-
-  const rawImageUrl = artist.portrait_image_url?.trim() || "";
-  const resolvedImageUrl = resolveMediaUrl("artists", rawImageUrl);
-  const showFallbackImage = !resolvedImageUrl || imageError;
+  const portrait = resolveMediaUrl("artists", artist.portrait_image_url?.trim() || "");
 
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`group relative flex flex-col bg-white rounded-card overflow-hidden border border-brand-espresso-subtle hover:border-brand-primary/50 shadow-card hover:shadow-card-hover transition-all duration-300 text-start ${className}`}
+      className={`group flex w-full flex-col overflow-hidden rounded-[16px] bg-white text-start lg:h-[422px] lg:w-[296px] ${className}`}
     >
-      {/* 1. Portrait Visual (4:5 Aspect Ratio) */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-brand-surface/40 select-none">
-        {showFallbackImage ? (
-          <div
-            data-testid="artist-card-fallback-image"
-            className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-brand-surface/60 to-brand-cream"
-          >
-            <div className="w-20 h-20 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary mb-3">
-              <span className="font-sans text-3xl font-bold">
-                {artist.name.charAt(0)}
-              </span>
+      <Link
+        href={`/artists/${artist.slug}`}
+        aria-label={a("viewProfile", { name: artist.name })}
+        className="flex flex-1 flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+      >
+        <div className="relative aspect-[296/314] w-full shrink-0 overflow-hidden bg-brand-surface/40 lg:aspect-auto lg:h-[314px]">
+          {portrait ? (
+            <Image
+              src={portrait}
+              alt={a("portraitAlt", { name: artist.name })}
+              fill
+              sizes="(min-width: 1024px) 296px, (min-width: 640px) 50vw, 100vw"
+              priority={priority}
+              quality={90}
+              className="object-cover"
+            />
+          ) : (
+            /* Missing-asset fallback: the initial on the card's own surface, so an
+               artist without a portrait never renders a broken image. */
+            <div
+              data-testid="artist-card-fallback-image"
+              className="flex h-full w-full items-center justify-center bg-brand-surface/60 text-3xl font-bold text-brand-primary"
+            >
+              {artist.name.charAt(0)}
             </div>
-            <p className="font-sans text-lg font-bold text-brand-espresso">
-              {artist.name}
-            </p>
-            <span className="text-xs text-brand-primary font-medium mt-1 flex items-center gap-1">
-              <MusicIcon size={14} />
-              {artist.genre_tag}
-            </span>
-          </div>
-        ) : (
-          <Image
-            src={resolvedImageUrl}
-            alt={a("portraitAlt", { name: artist.name })}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            priority={priority}
-            onError={() => setImageError(true)}
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-          />
-        )}
-
-        {/* Gradient Scrim for Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-espresso/70 via-transparent to-black/20 pointer-events-none" />
-
-        {/* Category Pill Overlay */}
-        <div className="absolute top-3.5 start-3.5 z-10">
-          <span className="px-3 py-1 rounded-badge text-xs font-bold tracking-wide bg-brand-espresso/80 backdrop-blur-xs text-brand-tint border border-white/10 shadow-subtle">
-            {getCategoryLabel(artist.category)}
-          </span>
+          )}
         </div>
 
-        {/* Featured Kicker if applicable */}
-        {artist.is_featured && (
-          <div className="absolute top-3.5 end-3.5 z-10">
-            <span className="px-2.5 py-1 rounded-badge text-xs font-bold bg-brand-primary text-white shadow-subtle flex items-center gap-1">
-              <span aria-hidden="true">★</span>
-              <span>{t("featured")}</span>
-            </span>
-          </div>
-        )}
-
-        {/* Bottom In-Image Badge: City & Genre */}
-        <div className="absolute bottom-3 start-3.5 end-3.5 z-10 text-white flex items-center justify-between pointer-events-none text-xs">
-          <span className="font-medium bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded-md">
-            📍 {artist.city}
-          </span>
-          <span className="font-medium bg-brand-primary/90 px-2 py-0.5 rounded-md">
+        <div className="h-[134px] shrink-0 p-5">
+          <p className="text-[13px] font-medium leading-[19.5px] text-brand-primary">
             {artist.genre_tag}
-          </span>
-        </div>
-      </div>
+          </p>
 
-      {/* 2. Card Metadata & Content */}
-      <div className="p-5 flex flex-col flex-1 justify-between gap-4 text-start">
-        <div className="space-y-2">
-          {/* Musician Name */}
-          <h2 className="font-sans font-bold text-xl text-brand-espresso group-hover:text-brand-primary transition-colors line-clamp-1">
+          <h2 className="pt-[4.8px] text-[16px] font-bold leading-[24px] text-gradscale-900 transition-colors group-hover:text-brand-primary">
             {artist.name}
           </h2>
 
-          {/* Artist Quote or Short Bio */}
-          {(artist.quote || artist.short_bio) && (
-            <p className="text-xs text-gradscale-400 italic line-clamp-2 leading-relaxed">
-              &ldquo;{artist.quote || artist.short_bio}&rdquo;
-            </p>
-          )}
-
-          {/* Specialties if present */}
-          {artist.specialties && (
-            <p className="text-xs text-brand-espresso/70 line-clamp-1 font-medium pt-1">
-              <span className="text-brand-primary font-bold">{t("specialty")}</span>
-              {artist.specialties}
-            </p>
-          )}
+          <p className="pt-[2.4px] text-[12.8px] leading-[19.2px] text-gradscale-900">
+            {artist.city}
+          </p>
         </div>
-
-        {/* 3. Card Footer with Profile & Booking Links */}
-        <div className="pt-3 border-t border-brand-espresso-subtle/50 flex items-center justify-between gap-3 text-xs">
-          <span className="inline-flex items-center gap-1.5 font-bold text-brand-primary group-hover:text-brand-primary-pressed transition-colors">
-            <span>{t("profile")}</span>
-            <ArrowEndIcon size={16} />
-          </span>
-
-          <Link
-            href={`/booking?artist=${encodeURIComponent(artist.slug)}`}
-            onClick={(e) => e.stopPropagation()}
-            className="z-10 relative px-3 py-1.5 rounded-lg bg-brand-surface/80 hover:bg-brand-primary hover:text-white text-brand-espresso font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-            aria-label={t("bookArtistLabel", { name: artist.name })}
-          >
-            {t("bookArtist")}
-          </Link>
-        </div>
-      </div>
-
-      {/* 4. Full Card Hit Area for canonical /artists/[slug] navigation */}
-      <Link
-        href={`/artists/${artist.slug}`}
-        className="absolute inset-0 z-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 rounded-card"
-        aria-label={a("viewProfile", { name: artist.name })}
-      />
+      </Link>
     </article>
   );
 }

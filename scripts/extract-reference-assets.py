@@ -49,6 +49,35 @@ CROPS = [
     # The booking sidebar's card (91:17251) carries the same mark at 18.75% x 21.35%.
     ("booking-desktop", 149, 676, 77, 61, "public/assets/branding/card-mark.png",
      "arabesque mark, dark card top-left", False),
+    # The academy's value-props band (91:16348) draws the same mark at 6.39% x 12.4%
+    # of a 1444-wide band that starts 1px off the artboard, so 92x55 of it shows.
+    ("academy-desktop", 0, 1210, 92, 55, "public/assets/branding/band-mark.png",
+     "arabesque mark, dark band top-left", False),
+    # The dotted marks flanking the academy tracks grid (91:16120 and 91:16225) are
+    # 122.7x111.56 each and hang off both edges of the artboard, so only the inner
+    # 73.7 and 86.7 are ever drawn. Both sit on the flat cream ground.
+    ("academy-desktop", 0, 839, 74, 112, "public/assets/branding/dots-start.png",
+     "dotted mark, tracks grid inline end", False),
+    ("academy-desktop", 1354, 1066, 86, 112, "public/assets/branding/dots-end.png",
+     "dotted mark, tracks grid inline start", False),
+    # The same dotted marks on الفنانين (91:17845, 91:17950) hang off the artboard by
+    # different amounts, so they need their own crops.
+    ("artists-desktop", 0, 708, 62, 112, "public/assets/branding/dots-artists-start.png",
+     "dotted mark, artists grid inline end", False),
+    ("artists-desktop", 1377, 1696, 63, 112, "public/assets/branding/dots-artists-end.png",
+     "dotted mark, artists grid inline start", False),
+    # The eight portraits of the الفنانين grid (91:18061) are four photographs used
+    # twice each. Each card clips its 340 image box to the 314 it actually shows, so
+    # the crop is the visible rectangle and the card renders it at that size. Read
+    # right to left, the first row is artist 1 through 4.
+    ("artists-desktop", 1031, 846, 296, 314, "public/assets/artists/artist-1.png",
+     "portrait, artists row 1 card 1", False),
+    ("artists-desktop", 725, 846, 296, 314, "public/assets/artists/artist-2.png",
+     "portrait, artists row 1 card 2", False),
+    ("artists-desktop", 419, 846, 296, 314, "public/assets/artists/artist-3.png",
+     "portrait, artists row 1 card 3", False),
+    ("artists-desktop", 113, 846, 296, 314, "public/assets/artists/artist-4.png",
+     "portrait, artists row 1 card 4", False),
 ]
 
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in

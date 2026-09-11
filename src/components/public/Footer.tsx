@@ -120,10 +120,10 @@ export function Footer() {
               the copyright on the right, which in Arabic is the reverse of source
               order — hence flex-row-reverse rather than a swapped DOM. */}
           <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t-[0.667px] border-[rgba(236,230,208,0.15)] pt-6 text-primary-50 sm:flex-row-reverse">
-            <span className="font-semibold text-[9.92px] tracking-[0.14em] uppercase">
+            <span className="text-[9.92px] font-semibold uppercase leading-[14.88px] tracking-[0.14em]">
               {t("strapline")}
             </span>
-            <span className="text-xs font-normal">
+            <span className="text-[12px] font-normal leading-[18px]">
               {t("copyright")}
             </span>
           </div>

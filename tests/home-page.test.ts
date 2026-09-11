@@ -190,7 +190,9 @@ test("Milestone 2 — 3. Stage 2: About Section Geometry & Warm Parchment Surfac
 
 test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ratios (Figma Frame 14, 87:14240)", () => {
   const artistsSectionSrc = read(comp("FeaturedArtists.tsx"));
-  const artistCardSrc = read(comp("ArtistCard.tsx"));
+  // The homepage rail renders ArtistTile, not the directory's ArtistCard; these
+  // assertions read the component that is actually on the frame.
+  const artistTileSrc = read(comp("ArtistTile.tsx"));
 
   // Height: 615px
   assert.match(
@@ -220,18 +222,16 @@ test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ra
     "FeaturedArtists action link must route to /artists"
   );
 
-  // 4:5 Aspect Ratio on Artist Cards
+  // Tile geometry, Figma node 87:14241 — a 220x293 tile on a 16px radius.
   assert.match(
-    artistCardSrc,
-    /aspect-\[4\/5\]/,
-    "ArtistCard must enforce canonical 4:5 portrait aspect ratio (aspect-[4/5])"
+    artistTileSrc,
+    /w-\[220px\] h-\[293px\]/,
+    "ArtistTile must enforce the frame's 220x293 tile"
   );
-
-  // 24px Card Radius
   assert.match(
-    artistCardSrc + artistsSectionSrc,
-    /rounded-\[24px\]|rounded-card/,
-    "Artist cards must enforce canonical 24px corner radius"
+    artistTileSrc,
+    /rounded-\[16px\]/,
+    "ArtistTile must enforce the frame's 16px corner radius"
   );
 
   assert.match(artistsSectionSrc, /<section[\s>]/, "FeaturedArtists must use semantic <section> tag");

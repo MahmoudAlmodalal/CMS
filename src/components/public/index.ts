@@ -36,7 +36,6 @@ export { ArticleView, type ArticleViewProps } from "./ArticleView";
 
 // Academy Page components
 export {
-  AcademyHeader,
   AcademyValueProps,
   TrackCard,
   AcademyTracks,

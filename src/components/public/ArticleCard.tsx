@@ -44,6 +44,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             alt=""
             fill
             sizes="(min-width: 1024px) 387px, (min-width: 640px) 50vw, 100vw"
+            quality={90}
             className="object-cover"
           />
           <span className="absolute start-4 top-4 rounded-[2px] bg-[rgba(255,248,246,0.9)] px-2 py-1 text-[12px] leading-[16px] tracking-[0.6px] text-ink-heading backdrop-blur-[4px]">

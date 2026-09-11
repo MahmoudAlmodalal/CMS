@@ -100,6 +100,114 @@
       ],
       "subject": "arabesque mark, dark card top-left",
       "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/band-mark.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        0,
+        1210,
+        92,
+        55
+      ],
+      "subject": "arabesque mark, dark band top-left",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-start.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        0,
+        839,
+        74,
+        112
+      ],
+      "subject": "dotted mark, tracks grid inline end",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-end.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        1354,
+        1066,
+        86,
+        112
+      ],
+      "subject": "dotted mark, tracks grid inline start",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-artists-start.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        0,
+        708,
+        62,
+        112
+      ],
+      "subject": "dotted mark, artists grid inline end",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-artists-end.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        1377,
+        1696,
+        63,
+        112
+      ],
+      "subject": "dotted mark, artists grid inline start",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-1.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        1031,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 1",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-2.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        725,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 2",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-3.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        419,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 3",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-4.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        113,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 4",
+      "scrubbed": null
     }
   ],
   "outstanding": [
