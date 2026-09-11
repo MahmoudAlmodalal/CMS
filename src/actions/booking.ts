@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import type { Database } from "@/lib/supabase/types";
 import {
   publicBookingSubmissionSchema,
   type PublicBookingSubmission,
@@ -69,7 +70,7 @@ export async function submitBookingAction(
   try {
     const supabase = await createClient();
 
-    const { error } = await supabase.from("booking_requests").insert({
+    const bookingRequest: Database["public"]["Tables"]["booking_requests"]["Insert"] = {
       full_name: submission.full_name,
       email: submission.email,
       phone: submission.phone ?? null,
@@ -82,7 +83,8 @@ export async function submitBookingAction(
       message: submission.message,
       status: "pending",
       admin_notes: null,
-    } as unknown as Record<string, string | null>);
+    };
+    const { error } = await supabase.from("booking_requests").insert(bookingRequest);
 
     if (error) {
       console.error("[Booking Submission DB Error]:", error.message);
