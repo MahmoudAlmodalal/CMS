@@ -1,0 +1,54 @@
+{
+  "site": {
+    "title": "Andalusia Music Collective — Heritage Music Platform",
+    "description": "A bilingual platform for discovering and supporting artistic and cultural talent rooted in Andalusian music.",
+    "brand": "Andalusia"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "primaryNav": "Primary navigation",
+    "brandHome": "Andalusia — home page",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "exploreLinks": "Explore links"
+  },
+  "locale": {
+    "switchTo": "ع",
+    "switchLabel": "Switch to Arabic"
+  },
+  "nav": {
+    "home": "Home",
+    "academy": "Academy",
+    "artists": "Artists",
+    "news": "News",
+    "events": "Events",
+    "bookNow": "Book now"
+  },
+  "footer": {
+    "mission": "A collective of artists who believe creativity is life and music is the spark.",
+    "motto": "♪ From the womb of hardship, music was born",
+    "exploreHeading": "Explore",
+    "exploreArtists": "Artists",
+    "exploreEvents": "Events",
+    "exploreNews": "News",
+    "exploreAcademy": "Academy",
+    "contactHeading": "Contact",
+    "contactEmail": "hello@andalusia.art",
+    "contactSocial": "Instagram · TikTok",
+    "contactRegions": "Lebanon · Morocco · The Gulf",
+    "bookingHeading": "Your next concert starts here.",
+    "bookingBody": "We meet the audience, and build a new feeling — music, art, emotion, unity.",
+    "bookingCta": "Start your booking ♪",
+    "strapline": "MUSIC · CULTURE · CRAFT",
+    "copyright": "© Andalusia 2025 — All rights reserved"
+  },
+  "drawer": {
+    "title": "Mobile navigation menu",
+    "nav": "Mobile navigation",
+    "tagline": "Arabic heritage and music",
+    "bookingCta": "Start your booking ♪",
+    "contactHeading": "Contact",
+    "regionsHeading": "Where we play",
+    "languageHeading": "Interface language"
+  }
+}
