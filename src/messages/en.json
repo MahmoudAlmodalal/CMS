@@ -80,7 +80,8 @@
     "portraitAlt": "Portrait of {name}"
   },
   "article": {
-    "read": "Read the article"
+    "read": "Read the article",
+    "readMore": "Read more"
   },
   "event": {
     "bookTicket": "Book a ticket for {title}",
@@ -142,7 +143,8 @@
     "browseAll": "Browse all Andalusia articles",
     "relatedRegion": "Related articles",
     "relatedKicker": "Read also",
-    "relatedHeading": "Related articles and stories"
+    "relatedHeading": "Related articles and stories",
+    "gridHeading": "Latest news"
   },
   "academy": {
     "kicker": "The Andalusia Music Academy",

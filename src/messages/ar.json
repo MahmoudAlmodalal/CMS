@@ -80,7 +80,8 @@
     "portraitAlt": "صورة الفنان {name}"
   },
   "article": {
-    "read": "اقرأ المقال"
+    "read": "اقرأ المقال",
+    "readMore": "اقرأ المزيد"
   },
   "event": {
     "bookTicket": "احجز تذكرة {title}",
@@ -142,7 +143,8 @@
     "browseAll": "تصفح كافة مقالات أندلسيا",
     "relatedRegion": "مقالات ذات صلة",
     "relatedKicker": "اقرأ أيضاً",
-    "relatedHeading": "مقالات وقصص ذات صلة"
+    "relatedHeading": "مقالات وقصص ذات صلة",
+    "gridHeading": "آخر الأخبار"
   },
   "academy": {
     "kicker": "أكاديمية أندلسيا الموسيقية",

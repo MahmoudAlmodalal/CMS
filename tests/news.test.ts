@@ -276,3 +276,62 @@ test("Task 37 — 6. Articles DAL Data Access Methods & RLS Predicates", () => {
     slugs.some((s) => s.slug === "annual-andalusia-art-exhibition")
   );
 });
+
+test("Figma 91:17296 — News page geometry matches the frame", () => {
+  const hero = fs.readFileSync(path.join(root, "src/components/public/NewsHero.tsx"), "utf-8");
+  const grid = fs.readFileSync(path.join(root, "src/components/public/NewsGrid.tsx"), "utf-8");
+  const card = fs.readFileSync(path.join(root, "src/components/public/ArticleCard.tsx"), "utf-8");
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8");
+
+  // Band 91:17298 is full-bleed and exactly 668 tall; the navbar floats over it.
+  assert.match(hero, /lg:h-\[668px\]/, "Hero band must be 668px tall on desktop");
+  // Headline block 91:17299: left 677, right 103, bottom 15, height 178.
+  assert.match(hero, /lg:start-\[103px\]/, "Headline block must be inset 103px from the inline end");
+  assert.match(hero, /lg:w-\[660px\]/, "Headline block must be 660px wide");
+  assert.match(hero, /lg:h-\[178px\]/, "Headline block must be 178px tall");
+  assert.match(hero, /bottom-\[15px\]/, "Headline block must sit 15px off the band's bottom");
+  assert.match(hero, /lg:top-\[66px\]/, "Heading 91:17303 must sit at +66 in the block");
+  assert.match(hero, /lg:top-\[130px\]/, "Standfirst 91:17305 must sit at +130 in the block");
+  // Both lines are nowrap; only the standfirst clips where it runs past its box.
+  assert.match(hero, /lg:overflow-hidden lg:whitespace-nowrap/, "Standfirst must clip, not wrap");
+  // Floating card 91:17307 is physically left in both directions.
+  assert.match(hero, /lg:left-\[130px\] lg:top-\[229px\]/, "Floating card must sit at left 130 / top 229");
+
+  // Section 91:17798 is 1208 wide, 103 from the inline end — deliberately off-centre.
+  assert.match(page, /lg:ms-\[103px\] lg:w-\[1208px\]/, "Grid section must be 1208 wide at 103 from the inline end");
+  // The design shows no filter tabs on this section.
+  assert.doesNotMatch(grid, /<NewsFilterTabs/, "The news grid must not render a category filter — the design has none");
+  assert.doesNotMatch(grid, /import .*NewsFilterTabs/, "The news grid must not import the filter it no longer renders");
+  assert.doesNotMatch(grid, /"use client"/, "The news grid is presentational and renders on the server");
+
+  // Every row of the card reads from the inline start — flush right in Arabic.
+  assert.match(card, /justify-between p-6 text-start/, "Card body must read from the inline start");
+  assert.match(card, /absolute start-4 top-4/, "Date wash must sit at the inline-start corner of the cover");
+  assert.match(card, /h-\[192px\]/, "Cover strip must be a flat 192px");
+});
+
+test("Figma 91:17296 — grid carries the three articles the featured band does not", () => {
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8");
+  // A fourth featured article must not fall through into the grid.
+  assert.match(page, /!a\.is_featured/, "Grid must exclude every featured article, not only the rendered ones");
+  assert.match(page, /\.slice\(0, 3\)/, "The design shows exactly three cards");
+
+  for (const title of [
+    "تطور الفن الرقمي في العالم العربي",
+    "رحلة مصور في أزقة المدينة القديمة",
+    "الإعلان عن جدول فعاليات الصيف الموسيقية",
+  ]) {
+    assert.ok(
+      CANONICAL_ARTICLES.some((article) => article.title === title && !article.is_featured),
+      `Canonical content must carry the grid article "${title}" as unfeatured`
+    );
+  }
+
+  const heroArticle = CANONICAL_ARTICLES.find((a) => a.slug === "annual-andalusia-art-exhibition");
+  assert.ok(heroArticle, "Canonical content must carry the hero article");
+  assert.equal(
+    heroArticle!.excerpt,
+    "يستضيف المركز هذا الأسبوع مجموعة من أبرز الفنانين المعاصرين لتقديم أعمالهم الجديدة في المعرض السنوي المرتقب.",
+    "Hero standfirst must be the copy in node 91:17306"
+  );
+});

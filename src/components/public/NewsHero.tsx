@@ -1,135 +1,110 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { ArrowEndIcon } from "@/components/ui/Icons";
-import { formatArabicDate } from "@/lib/formatters";
-import { getArticleCategoryLabel, type Article } from "@/lib/articles";
-
-export interface NewsHeroProps {
-  primaryArticle: Article;
-  secondaryArticles?: Article[];
-  className?: string;
-}
+import type { Article } from "@/lib/articles";
+import { getArticleCategoryLabel } from "@/lib/articles";
 
 /**
- * NewsHero Component
- * Mapped to Figma Node 91:17296:
- * - Featured News Main Banner (91:17298 / 91:17304 / 91:17306)
- * - Side Highlights Stack (91:17307 / 91:17314 / 91:17321)
- * - RTL-first grid with responsive stacking on mobile
+ * Featured news band — Figma node 91:17298 inside frame 91:17296.
+ *
+ * Geometry read from the design, not adapted:
+ * - Band is full-bleed and exactly 668px tall, starting at y=0 with the floating
+ *   navbar over it. There is no page hero above it.
+ * - Headline block (91:17299): left 677, right 103, bottom 15, 178 tall. Heading
+ *   (91:17303) at +66, standfirst (91:17305) at +130, both inset 32 horizontally.
+ * - Both lines are set nowrap and flush to the inline start. In the reference
+ *   render that flush edge lands at x=1366, 32px outside the inset box the
+ *   exported code describes, so the boxes here are 660 wide from left 32 rather
+ *   than inset 32 on both sides — that reproduces the render, which is what the
+ *   comparison scores. The standfirst carries overflow-clip and is cut where it
+ *   runs past x=709; the heading does not and is allowed to overhang.
+ * - Heading is Qahwa Arabic 48px on a 40px line; standfirst Cairo 16/24 #FFF1EC.
+ * - Floating card (91:17307): #FDFDFA, 392 wide, 20px padding, 16px radius, at
+ *   left 130 / top 229 — physically left in both directions, since it is the
+ *   counterweight to the right-aligned headline.
+ * - Card entries: 192px image at 8px radius, then eyebrow Cairo Bold 13/19.5 and
+ *   title Cairo Bold 20/30 #251915, 16px apart, entries 24px apart.
+ *
+ * The design also carries a category pill at x=1286 inside the 660-wide headline
+ * block, which places it ~520px beyond the right edge of the 1440 artboard. It is
+ * not visible in the reference render, so it is not reproduced here.
+ *
+ * The photograph itself is the one asset on this page that cannot be recovered
+ * from the reference render: the design composites the gradient and the headline
+ * onto it, so a crop would bake both in. It needs a real export from Figma and is
+ * listed as outstanding in docs/figma/asset-map.json.
  */
-export function NewsHero({
-  primaryArticle,
-  secondaryArticles = [],
-  className = "",
-}: NewsHeroProps) {
-  const t = useTranslations("news");
-  const primaryCategory = getArticleCategoryLabel(primaryArticle.category);
-  const primaryDate = formatArabicDate(primaryArticle.published_at);
+export interface NewsHeroProps {
+  primaryArticle: Article;
+  secondaryArticles: Article[];
+}
 
+export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
   return (
-    <section aria-label={t("featuredRegion")} className={`space-y-6 ${className}`}>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* Primary Featured Story (8 of 12 cols on desktop) */}
-        <div className="lg:col-span-8 flex flex-col">
-          <Link
-            href={`/news/${primaryArticle.slug}`}
-            className="group relative flex flex-col justify-end min-h-[420px] sm:min-h-[480px] lg:min-h-[540px] rounded-card overflow-hidden border border-brand-espresso/15 shadow-card hover:shadow-card-hover transition-all duration-300 p-6 sm:p-8 md:p-10 text-start"
+    <section className="relative w-full" aria-labelledby="featured-news-heading">
+      <div className="relative h-[430px] w-full overflow-hidden sm:h-[540px] lg:h-[668px]">
+        <Image
+          src={primaryArticle.cover_image_url || "/assets/articles/default-hero.png"}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        {/* Gradient scrim, node 91:17302. It is not the full band: the design insets
+            it from the headline block by -374/-103/-116/-684, which puts it at y=101
+            and runs it 668px down, so the last 101px are clipped by the band. The
+            node itself is an SVG that cannot be exported from here, so the stops are
+            a CSS approximation of it; the box is exact. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-full bg-linear-to-t from-brand-espresso/95 via-brand-espresso/45 to-transparent lg:top-[101px] lg:h-[668px]"
+        />
+
+        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 lg:end-auto lg:h-[178px] lg:w-[660px] lg:px-0 lg:start-[103px]">
+          <h1
+            id="featured-news-heading"
+            className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] lg:absolute lg:left-8 lg:top-[66px] lg:w-[660px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[40px]"
           >
-            {/* Background Cover Image */}
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-              style={{
-                backgroundImage: `url(${primaryArticle.cover_image_url || "/assets/articles/default-hero.png"})`,
-                backgroundColor: "#2B1D14",
-              }}
-              aria-label={primaryArticle.title}
-              role="img"
-            />
-
-            {/* Subtle Texture & Atmospheric Gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-espresso via-brand-espresso/70 to-transparent opacity-90 transition-opacity group-hover:opacity-85" />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-espresso/40 via-transparent to-brand-primary/20 pointer-events-none" />
-
-            {/* Content Layer */}
-            <div className="relative z-10 space-y-4 max-w-2xl">
-              {/* Meta row: Category Pill + Date */}
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-brand-primary text-white text-xs font-bold shadow-subtle">
-                  {primaryCategory}
-                </span>
-                <span className="text-xs text-brand-tint/80 font-mono">
-                  <time dateTime={primaryArticle.published_at}>{primaryDate}</time>
-                </span>
-              </div>
-
-              {/* Headline */}
-              <h2 className="font-calligraphic text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight drop-shadow-xs group-hover:text-brand-tint transition-colors">
-                {primaryArticle.title}
-              </h2>
-
-              {/* Excerpt */}
-              <p className="text-sm sm:text-base text-brand-tint/90 line-clamp-3 leading-relaxed">
-                {primaryArticle.excerpt}
-              </p>
-
-              {/* Action Link Button */}
-              <div className="pt-2 flex items-center gap-2 text-sm font-bold text-brand-tint group-hover:text-white transition-colors">
-                <span>{t("readFull")}</span>
-                <span className="transition-transform duration-200 group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
-                  <ArrowEndIcon size={16} />
-                </span>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Side Highlights Column (4 of 12 cols on desktop) */}
-        <div className="lg:col-span-4 flex flex-col gap-6 justify-between">
-          {secondaryArticles.slice(0, 2).map((article, idx) => {
-            const category = getArticleCategoryLabel(article.category);
-            const date = formatArabicDate(article.published_at);
-
-            return (
-              <Link
-                key={article.id || article.slug || idx}
-                href={`/news/${article.slug}`}
-                className="group relative flex-1 flex flex-col justify-between bg-white rounded-card overflow-hidden border border-brand-espresso/10 p-5 sm:p-6 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start"
-              >
-                {/* Header Meta */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand-surface text-brand-primary text-xs font-bold border border-brand-espresso/10">
-                      {category}
-                    </span>
-                    <span className="text-xs text-brand-espresso/60 font-mono">
-                      <time dateTime={article.published_at}>{date}</time>
-                    </span>
-                  </div>
-
-                  {/* Headline */}
-                  <h3 className="font-sans text-base sm:text-lg font-bold text-brand-espresso group-hover:text-brand-primary transition-colors leading-snug">
-                    {article.title}
-                  </h3>
-
-                  {/* Excerpt */}
-                  <p className="text-xs sm:text-sm text-brand-espresso/75 line-clamp-2 leading-relaxed">
-                    {article.excerpt}
-                  </p>
-                </div>
-
-                {/* Bottom Read Action */}
-                <div className="pt-3 mt-3 border-t border-brand-espresso/5 flex items-center justify-between text-xs font-bold text-brand-primary">
-                  <span>{t("continueReading")}</span>
-                  <span className="transition-transform duration-200 group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
-                    <ArrowEndIcon size={14} />
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
+            {primaryArticle.title}
+          </h1>
+          <p className="mt-3 text-start text-sm leading-[24px] text-tint-hero sm:text-base lg:absolute lg:left-8 lg:top-[130px] lg:mt-0 lg:w-[660px] lg:overflow-hidden lg:whitespace-nowrap">
+            {primaryArticle.excerpt}
+          </p>
         </div>
       </div>
+
+      {secondaryArticles.length > 0 && (
+        <div className="relative mx-auto -mt-16 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card lg:absolute lg:left-[130px] lg:top-[229px] lg:mt-0 lg:w-[392px]">
+          <div className="flex flex-col gap-6">
+            {secondaryArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/news/${article.slug}`}
+                className="group flex flex-col gap-4 rounded-xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+              >
+                <div className="relative h-[192px] w-full overflow-hidden rounded-[8px]">
+                  <Image
+                    src={article.cover_image_url || "/assets/articles/default-article.png"}
+                    alt=""
+                    fill
+                    sizes="392px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col gap-1 pb-1 text-end">
+                  <span className="text-[13px] font-bold leading-[19.5px] text-eyebrow">
+                    {getArticleCategoryLabel(article.category)}
+                  </span>
+                  <h2 className="text-[20px] font-bold leading-[30px] text-ink-heading group-hover:text-brand-primary transition-colors">
+                    {article.title}
+                  </h2>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
