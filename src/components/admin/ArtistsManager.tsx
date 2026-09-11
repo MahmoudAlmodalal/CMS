@@ -8,6 +8,7 @@ import {
   setPublishStatusAction,
   updateArtistAction,
 } from "@/actions/cms";
+import { TranslationField } from "@/components/admin/ManagerKit";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -28,15 +29,23 @@ interface ArtistsManagerProps {
 function emptyArtist(): ArtistFormValues {
   return {
     name: "",
+    name_en: null,
     slug: "",
     category: "singing",
     genre_tag: "",
+    genre_tag_en: null,
     city: "",
+    city_en: null,
     quote: "",
+    quote_en: null,
     spotlight_quote: "",
+    spotlight_quote_en: null,
     short_bio: "",
+    short_bio_en: null,
     full_bio: "",
+    full_bio_en: null,
     specialties: "",
+    specialties_en: null,
     portrait_image_url: "",
     is_featured: false,
     is_published: false,
@@ -47,15 +56,23 @@ function emptyArtist(): ArtistFormValues {
 function artistToForm(artist: Artist): ArtistFormValues {
   return {
     name: artist.name,
+    name_en: artist.name_en ?? null,
     slug: artist.slug,
     category: artist.category as ArtistFormValues["category"],
     genre_tag: artist.genre_tag,
+    genre_tag_en: artist.genre_tag_en ?? null,
     city: artist.city,
+    city_en: artist.city_en ?? null,
     quote: artist.quote,
+    quote_en: artist.quote_en ?? null,
     spotlight_quote: artist.spotlight_quote ?? "",
+    spotlight_quote_en: artist.spotlight_quote_en ?? null,
     short_bio: artist.short_bio,
+    short_bio_en: artist.short_bio_en ?? null,
     full_bio: artist.full_bio,
+    full_bio_en: artist.full_bio_en ?? null,
     specialties: artist.specialties,
+    specialties_en: artist.specialties_en ?? null,
     portrait_image_url: artist.portrait_image_url,
     is_featured: artist.is_featured,
     is_published: artist.is_published,
@@ -398,6 +415,7 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
               <Field id="artist-name" label="اسم الفنان">
                 <Input id="artist-name" value={values.name} onChange={(event) => setField("name", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-name-en" label="اسم الفنان" value={values.name_en} onChange={(value) => setField("name_en", value)} />
               <Field id="artist-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
                 <Input id="artist-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
               </Field>
@@ -417,9 +435,11 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
               <Field id="artist-genre" label="وسم النمط الموسيقي">
                 <Input id="artist-genre" value={values.genre_tag} onChange={(event) => setField("genre_tag", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-genre-en" label="وسم النمط الموسيقي" value={values.genre_tag_en} onChange={(value) => setField("genre_tag_en", value)} />
               <Field id="artist-city" label="المدينة">
                 <Input id="artist-city" value={values.city} onChange={(event) => setField("city", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-city-en" label="المدينة" value={values.city_en} onChange={(value) => setField("city_en", value)} />
               <Field id="artist-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="artist-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
               </Field>
@@ -429,18 +449,23 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
               <Field id="artist-specialties" label="التخصصات">
                 <Input id="artist-specialties" value={values.specialties} onChange={(event) => setField("specialties", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-specialties-en" label="التخصصات" value={values.specialties_en} onChange={(value) => setField("specialties_en", value)} />
               <Field id="artist-quote" label="الاقتباس الفني">
                 <Textarea id="artist-quote" rows={3} className="min-h-[112px]" value={values.quote} onChange={(event) => setField("quote", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-quote-en" label="الاقتباس الفني" multiline rows={3} className="min-h-[112px]" value={values.quote_en} onChange={(value) => setField("quote_en", value)} />
               <Field id="artist-spotlight-quote" label="اقتباس الواجهة" required={false}>
                 <Textarea id="artist-spotlight-quote" rows={3} className="min-h-[112px]" value={values.spotlight_quote ?? ""} onChange={(event) => setField("spotlight_quote", event.target.value)} />
               </Field>
+              <TranslationField id="artist-spotlight-quote-en" label="اقتباس الواجهة" multiline rows={3} className="min-h-[112px]" value={values.spotlight_quote_en} onChange={(value) => setField("spotlight_quote_en", value)} />
               <Field id="artist-short-bio" label="نبذة مختصرة">
                 <Textarea id="artist-short-bio" rows={4} value={values.short_bio} onChange={(event) => setField("short_bio", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-short-bio-en" label="نبذة مختصرة" multiline rows={4} value={values.short_bio_en} onChange={(value) => setField("short_bio_en", value)} />
               <Field id="artist-full-bio" label="السيرة الذاتية الكاملة">
                 <Textarea id="artist-full-bio" rows={7} value={values.full_bio} onChange={(event) => setField("full_bio", event.target.value)} required />
               </Field>
+              <TranslationField id="artist-full-bio-en" label="السيرة الذاتية الكاملة" multiline rows={7} value={values.full_bio_en} onChange={(value) => setField("full_bio_en", value)} />
               <div className="flex flex-wrap items-center gap-5 md:col-span-2">
                 <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                   <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

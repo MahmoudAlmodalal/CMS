@@ -19,6 +19,10 @@ export interface AdminTestimonial {
   quote: string;
   author_name: string;
   author_role: string;
+  /** Optional English translations; null falls back to the Arabic field. */
+  quote_en: string | null;
+  author_name_en: string | null;
+  author_role_en: string | null;
   avatar_image_url: string | null;
   display_order: number;
   is_published: boolean;
@@ -26,7 +30,8 @@ export interface AdminTestimonial {
 }
 
 const TESTIMONIAL_COLUMNS =
-  "id, quote, author_name, author_role, avatar_image_url, display_order, is_published, created_at";
+  "id, quote, author_name, author_role, avatar_image_url, display_order, is_published, created_at, " +
+  "quote_en, author_name_en, author_role_en";
 
 // ============================================================================
 // READ

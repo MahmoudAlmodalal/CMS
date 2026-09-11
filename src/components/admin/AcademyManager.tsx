@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
 import type { AcademyCourseInput } from "@/lib/validations/cms";
 import type { AdminAcademyCourse } from "@/lib/dal/admin-academy";
 import type { Artist } from "@/lib/types/artists";
@@ -29,10 +29,14 @@ interface AcademyManagerProps {
 function emptyCourse(): CourseFormValues {
   return {
     title: "",
+    title_en: null,
     slug: "",
     track_category: "",
+    track_category_en: null,
     description: "",
+    description_en: null,
     instructor_name: "",
+    instructor_name_en: null,
     instructor_id: null,
     image_url: "",
     display_order: 1,
@@ -43,10 +47,14 @@ function emptyCourse(): CourseFormValues {
 function courseToForm(course: AdminAcademyCourse): CourseFormValues {
   return {
     title: course.title,
+    title_en: course.title_en ?? null,
     slug: course.slug,
     track_category: course.track_category,
+    track_category_en: course.track_category_en ?? null,
     description: course.description,
+    description_en: course.description_en ?? null,
     instructor_name: course.instructor_name ?? "",
+    instructor_name_en: course.instructor_name_en ?? null,
     instructor_id: course.instructor_id,
     image_url: course.image_url ?? "",
     display_order: course.display_order,
@@ -309,12 +317,14 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
             <Field id="course-title" label="عنوان المسار">
               <Input id="course-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
             </Field>
+            <TranslationField id="course-title-en" label="عنوان المسار" value={values.title_en} onChange={(value) => setField("title_en", value)} />
             <Field id="course-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
               <Input id="course-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
             <Field id="course-track-category" label="تصنيف المسار">
               <Input id="course-track-category" value={values.track_category} onChange={(event) => setField("track_category", event.target.value)} required />
             </Field>
+            <TranslationField id="course-track-category-en" label="تصنيف المسار" value={values.track_category_en} onChange={(value) => setField("track_category_en", value)} />
             <Field id="course-order" label="ترتيب الظهور" help="رقم بين 1 و10.">
               <Input
                 id="course-order"
@@ -343,12 +353,14 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
             <Field id="course-instructor-name" label="اسم المدرب (نص حر)" required={false} help="يُستخدم عند عدم اختيار مدرب من القائمة.">
               <Input id="course-instructor-name" value={values.instructor_name ?? ""} onChange={(event) => setField("instructor_name", event.target.value)} />
             </Field>
+            <TranslationField id="course-instructor-name-en" label="اسم المدرب" value={values.instructor_name_en} onChange={(value) => setField("instructor_name_en", value)} />
             <Field id="course-image" label="رابط صورة المسار" required={false}>
               <Input id="course-image" type="url" dir="ltr" value={values.image_url ?? ""} onChange={(event) => setField("image_url", event.target.value)} />
             </Field>
             <Field id="course-description" label="وصف المسار">
               <Textarea id="course-description" rows={5} className="min-h-[140px]" value={values.description} onChange={(event) => setField("description", event.target.value)} required />
             </Field>
+            <TranslationField id="course-description-en" label="وصف المسار" multiline rows={5} className="min-h-[140px]" value={values.description_en} onChange={(value) => setField("description_en", value)} />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />
