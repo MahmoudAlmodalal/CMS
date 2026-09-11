@@ -54,7 +54,8 @@ export function AboutSection({ settings }: AboutSectionProps) {
               alt="عازف من فرقة أندلسيا"
               width={551}
               height={491}
-              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover rounded-[50%] lg:-ml-4"
+              className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover lg:-ml-4"
+              style={{ width: "auto" }}
             />
           </div>
 
