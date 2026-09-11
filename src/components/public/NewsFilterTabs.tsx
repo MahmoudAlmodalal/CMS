@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { ARTICLE_CATEGORIES } from "@/lib/articles";
 
 export interface NewsFilterTabsProps {
@@ -21,9 +22,11 @@ export function NewsFilterTabs({
   counts,
   className = "",
 }: NewsFilterTabsProps) {
+  const t = useTranslations("news");
+
   return (
     <nav
-      aria-label="تصنيفات الأخبار والمقالات"
+      aria-label={t("filterTabs")}
       className={`w-full flex justify-start sm:justify-center overflow-x-auto py-2 ${className}`}
     >
       <div

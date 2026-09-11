@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { Highlight } from "@/components/ui/Highlight";
@@ -22,6 +23,8 @@ interface TestimonialsSliderProps {
  * - Indicators (176:2369): 24x12 terracotta pill + 12x12 white dots
  */
 export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
+  const t = useTranslations("testimonials");
+  const home = useTranslations("home");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const total = testimonials?.length ?? 0;
@@ -62,13 +65,13 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
     <section
       className="min-h-[597px] lg:h-[597px] bg-[#F9F7F0] flex flex-col justify-center relative overflow-hidden py-16 lg:py-0"
       aria-roledescription="carousel"
-      aria-label="يقولون عن أندلسيا"
+      aria-label={t("region")}
     >
       <Container>
         <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-10">
           {/* Section Header (Figma 87:14314 — Cairo Bold 64px, 2-fill) */}
           <h2 className="font-sans text-3xl sm:text-4xl lg:text-[64px] font-bold text-black leading-[1.4296875]">
-            <Highlight text="يقولون عن *أندلسيا*" />
+            <Highlight text={home("testimonialsHeading")} />
           </h2>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
@@ -78,7 +81,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
               type="button"
               onClick={handlePrev}
               className="h-12 px-3 rounded-[50px] bg-white flex items-center justify-center text-brand-espresso hover:text-brand-primary active:scale-95 transition-all shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-              aria-label="الشهادة السابقة"
+              aria-label={t("previous")}
             >
               <ChevronStartIcon size={24} />
             </button>
@@ -100,7 +103,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
                   {/* 5 Stars (Figma Node 176:2357 — 14px, 3px gap, #FFD900) */}
                   <div
                     className="flex items-center gap-[3px] text-brand-gold"
-                    aria-label="تقييم 5 من 5"
+                    aria-label={t("rating")}
                   >
                     {[...Array(5)].map((_, i) => (
                       <svg
@@ -139,7 +142,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
               <div
                 className="flex items-center justify-center gap-0.5 pt-2"
                 role="tablist"
-                aria-label="مؤشرات الشهادات"
+                aria-label={t("indicators")}
               >
                 {testimonials.map((_, idx) => (
                   <button
@@ -149,7 +152,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
                     className={`h-3 mx-[1px] rounded-full transition-all duration-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
                       idx === currentIndex ? "w-6 bg-brand-primary" : "w-3 bg-white"
                     }`}
-                    aria-label={`الانتقال إلى الشهادة ${idx + 1}`}
+                    aria-label={t("goTo", { index: idx + 1 })}
                     aria-selected={idx === currentIndex}
                     role="tab"
                   />
@@ -162,7 +165,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
               type="button"
               onClick={handleNext}
               className="h-12 px-3 rounded-[50px] bg-white flex items-center justify-center text-brand-espresso hover:text-brand-primary active:scale-95 transition-all shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-              aria-label="الشهادة التالية"
+              aria-label={t("next")}
             >
               <ChevronEndIcon size={24} />
             </button>

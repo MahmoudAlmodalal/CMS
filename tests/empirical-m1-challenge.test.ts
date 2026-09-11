@@ -138,7 +138,7 @@ test("Challenger 2 — 5. Mobile Shell: MobileDrawer 390px constraints & modal b
 });
 
 test("Challenger 2 — 6. Public Shell Layout Clearance Synchronization", () => {
-  const layoutPath = path.join(root, "src/app/(public)/layout.tsx");
+  const layoutPath = path.join(root, "src/app/[locale]/(public)/layout.tsx");
   const content = fs.readFileSync(layoutPath, "utf-8");
 
   // Layout top padding pt-14 (56px) matches MobileNavbar height h-14 (56px)

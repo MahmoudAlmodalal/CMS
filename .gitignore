@@ -47,3 +47,5 @@ next-env.d.ts
 # generated visual captures and pixel diffs
 /artifacts/visual/current/
 /artifacts/visual/diff/
+# full Figma document dump — regenerate with `npm run figma:sync`
+/docs/figma/file.json

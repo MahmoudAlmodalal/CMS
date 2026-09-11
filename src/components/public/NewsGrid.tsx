@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ArticleCard } from "./ArticleCard";
 import { NewsFilterTabs } from "./NewsFilterTabs";
@@ -23,10 +24,11 @@ export interface NewsGridProps {
  */
 export function NewsGrid({
   initialArticles,
-  title = "آخر الأخبار والمقالات",
-  subtitle = "اكتشف أحدث التغطيات الثقافية، الحوارات الفنية، وورش العمل التدريبية.",
+  title,
+  subtitle,
   className = "",
 }: NewsGridProps) {
+  const t = useTranslations("news");
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -78,17 +80,17 @@ export function NewsGrid({
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-brand-espresso/10 pb-6 text-start">
         <div className="space-y-1">
           <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">
-            الأرشيف الصحفي
+            {t("kicker")}
           </span>
           <h2
             id="news-grid-heading"
             className="font-calligraphic text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-espresso"
           >
-            {title}
+            {title ?? t("title")}
           </h2>
-          {subtitle && (
+          {(subtitle ?? t("subtitle")) && (
             <p className="text-sm sm:text-base text-brand-espresso/75 max-w-xl">
-              {subtitle}
+              {subtitle ?? t("subtitle")}
             </p>
           )}
         </div>
@@ -109,17 +111,17 @@ export function NewsGrid({
           <div className="py-16 text-center space-y-3 bg-white/50 rounded-card border border-dashed border-brand-espresso/20 p-8">
             <span className="text-3xl">📰</span>
             <h3 className="font-bold text-lg text-brand-espresso">
-              لا توجد مقالات متوفرة في هذا التصنيف حالياً
+              {t("emptyTitle")}
             </h3>
             <p className="text-sm text-brand-espresso/70 max-w-md mx-auto">
-              يمكنك اختيار تصنيف آخر أو العودة إلى عرض جميع المقالات لمتابعة جديد فرقة أندلسيا.
+              {t("emptyBody")}
             </p>
             <button
               type="button"
               onClick={() => handleSelectCategory("all")}
               className="mt-2 inline-flex items-center px-4 py-2 rounded-full bg-brand-primary text-white text-xs font-bold hover:bg-brand-primary/90 transition-colors"
             >
-              عرض جميع المقالات
+              {t("showAll")}
             </button>
           </div>
         ) : (

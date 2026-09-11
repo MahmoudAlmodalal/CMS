@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
@@ -20,6 +21,8 @@ interface EditorialFeatureProps {
  * - Category micro-type: Cairo Bold 12.28px, 0.0907em tracking, uppercase, #C54716
  */
 export function EditorialFeature({ articles }: EditorialFeatureProps) {
+  const t = useTranslations("home");
+
   if (!articles || articles.length === 0) {
     return null;
   }
@@ -29,7 +32,7 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
       <Container>
         {/* Section Header (Figma Node 87:14402 — Qahwa Bold 64px, centered) */}
         <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-bold text-[#F9EDE8] leading-[0.75] text-center pb-10">
-          نكتب كي لا تضيع التفاصيل
+          {t("editorialHeading")}
         </h2>
 
         {/* Four equal cards (Figma Nodes 115:2436…115:2439 — 273x317, 28px gap) */}

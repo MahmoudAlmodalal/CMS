@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(".");
-const pub = (...segs: string[]) => path.join(root, "src/app/(public)", ...segs);
+const pub = (...segs: string[]) => path.join(root, "src/app/[locale]/(public)", ...segs);
 const read = (p: string) => fs.readFileSync(p, "utf-8");
 
 test("Task 40 — 1. Route map: 8 canonical routes, no /events/[slug]", () => {

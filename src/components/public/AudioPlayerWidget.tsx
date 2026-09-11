@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { PlayIcon, PauseIcon, MusicIcon } from "@/components/ui/Icons";
 import { formatDuration } from "@/lib/formatters";
 
@@ -26,6 +27,7 @@ interface AudioPlayerWidgetProps {
  * and keyboard-accessible controls (native button + range slider semantics).
  */
 export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps) {
+  const t = useTranslations("player");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +70,7 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
         className="flex items-center gap-3 rounded-2xl bg-brand-cream px-5 py-4 text-brand-espresso"
       >
         <MusicIcon size={24} className="shrink-0 text-brand-primary" />
-        <p className="text-sm">المقطع الصوتي غير متوفر حالياً.</p>
+        <p className="text-sm">{t("unavailable")}</p>
       </div>
     );
   }
@@ -80,7 +82,7 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
           type="button"
           onClick={toggle}
           disabled={isLoading}
-          aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
+          aria-label={isPlaying ? t("pause") : t("play")}
           aria-pressed={isPlaying}
           className="grid size-12 shrink-0 place-items-center rounded-full bg-brand-primary text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold disabled:opacity-60"
         >
@@ -99,7 +101,7 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
               step={1}
               value={Math.min(currentTime, Math.max(duration, 0))}
               onChange={(e) => seek(Number(e.target.value))}
-              aria-label={`التقديم في المقطع: ${track.title}`}
+              aria-label={t("seek", { title: track.title })}
               className="w-full accent-brand-gold"
             />
             <span className="shrink-0 text-xs tabular-nums" dir="ltr">
@@ -113,19 +115,19 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
 
       {isLoading ? (
         <p role="status" aria-busy="true" className="mt-2 text-xs opacity-70">
-          جارٍ تحميل المقطع الصوتي…
+          {t("loading")}
         </p>
       ) : null}
 
       {hasError ? (
         <div role="alert" className="mt-2 flex items-center gap-3 text-xs">
-          <p>تعذّر تشغيل المقطع الصوتي. تحقق من الاتصال وحاول مجدداً.</p>
+          <p>{t("error")}</p>
           <button
             type="button"
             onClick={retry}
             className="shrink-0 rounded-full border border-brand-gold px-3 py-1 font-bold text-brand-gold transition hover:bg-brand-gold hover:text-brand-espresso focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold"
           >
-            إعادة المحاولة
+            {t("retry")}
           </button>
         </div>
       ) : null}

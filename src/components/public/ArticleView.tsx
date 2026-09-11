@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCategoryLabel, type Article } from "@/lib/articles";
@@ -17,6 +18,8 @@ export interface ArticleViewProps {
  * author attribution, date badges, and related articles feed.
  */
 export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps) {
+  const t = useTranslations("news");
+  const nav = useTranslations("nav");
   const categoryLabel = getArticleCategoryLabel(article.category);
   const dateFormatted = formatArabicDate(article.published_at);
 
@@ -119,16 +122,16 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
             <span className="rotate-180 inline-block rtl:rotate-0">
               <ArrowEndIcon size={14} />
             </span>
-            <span>العودة إلى قائمة الأخبار</span>
+            <span>{t("backToList")}</span>
           </Link>
 
-          <nav aria-label="فتات الخبز" className="text-brand-espresso/50 hidden sm:flex items-center gap-2 font-medium">
+          <nav aria-label={t("breadcrumb")} className="text-brand-espresso/50 hidden sm:flex items-center gap-2 font-medium">
             <Link href="/" className="hover:text-brand-espresso transition-colors">
-              الرئيسية
+              {nav("home")}
             </Link>
             <span>/</span>
             <Link href="/news" className="hover:text-brand-espresso transition-colors">
-              الأخبار
+              {nav("news")}
             </Link>
             <span>/</span>
             <span className="text-brand-espresso truncate max-w-xs">{article.title}</span>
@@ -145,7 +148,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
           </span>
           <span className="text-xs text-brand-espresso/40">•</span>
           <span className="text-xs text-brand-espresso/60 font-mono">
-            {readingMinutes} دقائق قراءة
+            {t("readingTime", { minutes: readingMinutes })}
           </span>
         </div>
 
@@ -166,7 +169,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
           </div>
           <div>
             <div className="font-bold text-brand-espresso">{article.author_name}</div>
-            <div className="text-xs text-brand-espresso/50">هيئة التحرير والنشر الثقافي</div>
+            <div className="text-xs text-brand-espresso/50">{t("editorial")}</div>
           </div>
         </div>
       </header>
@@ -193,7 +196,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
       {/* 4. Article Footer & Share/Tag Info */}
       <footer className="max-w-3xl mx-auto pt-8 border-t border-brand-espresso/10 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-brand-espresso/70">التصنيف:</span>
+          <span className="text-xs font-bold text-brand-espresso/70">{t("categoryLabel")}</span>
           <Link
             href={`/news?category=${article.category}`}
             className="text-xs font-bold px-3 py-1 rounded-full bg-brand-surface text-brand-primary hover:bg-brand-primary hover:text-white transition-colors border border-brand-espresso/10"
@@ -206,7 +209,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
           href="/news"
           className="text-xs font-bold text-brand-primary hover:underline flex items-center gap-1"
         >
-          <span>تصفح كافة مقالات أندلسيا</span>
+          <span>{t("browseAll")}</span>
           <ArrowEndIcon size={14} />
         </Link>
       </footer>
@@ -214,13 +217,13 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
       {/* 5. Related Articles Section */}
       {relatedArticles.length > 0 && (
         <section
-          aria-label="مقالات ذات صلة"
+          aria-label={t("relatedRegion")}
           className="pt-12 sm:pt-16 border-t border-brand-espresso/10 space-y-8"
         >
           <div className="max-w-5xl mx-auto space-y-2">
-            <span className="text-xs font-bold text-brand-primary uppercase">اقرأ أيضاً</span>
+            <span className="text-xs font-bold text-brand-primary uppercase">{t("relatedKicker")}</span>
             <h2 className="font-calligraphic text-2xl sm:text-3xl font-bold text-brand-espresso">
-              مقالات وقصص ذات صلة
+              {t("relatedHeading")}
             </h2>
           </div>
 

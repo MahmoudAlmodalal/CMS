@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon, CalendarIcon } from "@/components/ui/Icons";
 import type { Event } from "@/lib/dal/events";
 
@@ -7,11 +8,12 @@ interface EventCardProps {
   event: Event;
 }
 
-const EVENT_CATEGORY_LABELS: Record<Event["category"], string> = {
-  concert: "حفل غنائي",
-  festival: "مهرجان ثقافي",
-  evening: "أمسية موسيقية",
-  workshop: "ورشة تدريبية",
+/** Event category -> key under the `categories` message namespace. */
+const EVENT_CATEGORY_LABEL_KEYS: Record<Event["category"], string> = {
+  concert: "eventConcert",
+  festival: "eventFestival",
+  evening: "eventEvening",
+  workshop: "eventWorkshop",
 };
 
 /**
@@ -24,10 +26,12 @@ const EVENT_CATEGORY_LABELS: Record<Event["category"], string> = {
  * - Action button: routes to ticket_url or /booking?event_id=[id]
  */
 export function EventCard({ event }: EventCardProps) {
+  const t = useTranslations("event");
+  const c = useTranslations("categories");
   const eventDate = new Date(event.event_date);
   const day = eventDate.getDate();
   const month = new Intl.DateTimeFormat("ar-EG", { month: "short" }).format(eventDate);
-  const categoryLabel = EVENT_CATEGORY_LABELS[event.category] || "فعالية";
+  const categoryLabel = c(EVENT_CATEGORY_LABEL_KEYS[event.category] ?? "eventFallback");
 
   const bookingHref = event.ticket_url || `/booking?event_id=${event.id}`;
   const isExternal = Boolean(event.ticket_url);
@@ -105,7 +109,7 @@ export function EventCard({ event }: EventCardProps) {
             rel={isExternal ? "noopener noreferrer" : undefined}
             className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-brand-surface hover:bg-brand-primary text-brand-espresso hover:text-white font-bold text-xs sm:text-sm border border-brand-espresso/10 hover:border-brand-primary transition-all duration-200"
           >
-            <span>{isExternal ? "حجز التذاكر (خارجي)" : "احجز مقعدك"}</span>
+            <span>{isExternal ? t("bookExternal") : t("bookSeat")}</span>
             <ArrowEndIcon size={14} />
           </Link>
         </div>
