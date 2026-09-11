@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice } from "@/components/admin/ManagerKit";
+import { Field, ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
 import type { AdminArticle } from "@/lib/dal/admin-articles";
@@ -37,12 +37,16 @@ interface ArticlesManagerProps {
 function emptyArticle(): ArticleFormValues {
   return {
     title: "",
+    title_en: null,
     slug: "",
     category: "culture",
     excerpt: "",
+    excerpt_en: null,
     content: "",
+    content_en: null,
     cover_image_url: "",
     author_name: "",
+    author_name_en: null,
     featured_artist_id: null,
     published_at: new Date().toISOString(),
     is_featured: false,
@@ -53,12 +57,16 @@ function emptyArticle(): ArticleFormValues {
 function articleToForm(article: AdminArticle): ArticleFormValues {
   return {
     title: article.title,
+    title_en: article.title_en ?? null,
     slug: article.slug,
     category: article.category,
     excerpt: article.excerpt,
+    excerpt_en: article.excerpt_en ?? null,
     content: article.content,
+    content_en: article.content_en ?? null,
     cover_image_url: article.cover_image_url,
     author_name: article.author_name,
+    author_name_en: article.author_name_en ?? null,
     featured_artist_id: article.featured_artist_id,
     published_at: article.published_at,
     is_featured: article.is_featured,
@@ -338,6 +346,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             <Field id="article-title" label="عنوان المقال">
               <Input id="article-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
             </Field>
+            <TranslationField id="article-title-en" label="عنوان المقال" value={values.title_en} onChange={(value) => setField("title_en", value)} />
             <Field id="article-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
               <Input id="article-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
@@ -357,6 +366,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             <Field id="article-author" label="اسم الكاتب أو هيئة التحرير">
               <Input id="article-author" value={values.author_name} onChange={(event) => setField("author_name", event.target.value)} required />
             </Field>
+            <TranslationField id="article-author-en" label="اسم الكاتب" value={values.author_name_en} onChange={(value) => setField("author_name_en", value)} />
             <Field id="article-cover" label="رابط صورة الغلاف">
               <Input id="article-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
             </Field>
@@ -373,9 +383,11 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             <Field id="article-excerpt" label="المقتطف الصحفي">
               <Textarea id="article-excerpt" rows={3} value={values.excerpt} onChange={(event) => setField("excerpt", event.target.value)} required />
             </Field>
+            <TranslationField id="article-excerpt-en" label="المقتطف الصحفي" multiline rows={3} value={values.excerpt_en} onChange={(value) => setField("excerpt_en", value)} />
             <Field id="article-content" label="محتوى المقال الكامل">
               <Textarea id="article-content" rows={8} value={values.content} onChange={(event) => setField("content", event.target.value)} required />
             </Field>
+            <TranslationField id="article-content-en" label="محتوى المقال الكامل" multiline rows={8} value={values.content_en} onChange={(value) => setField("content_en", value)} />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

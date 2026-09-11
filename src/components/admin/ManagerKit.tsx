@@ -6,6 +6,8 @@
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
+import { Input } from "@/components/ui/Input";
+import { Textarea } from "@/components/ui/Textarea";
 
 export function Field({
   id,
@@ -26,6 +28,60 @@ export function Field({
       {children}
       {help && <FormHelperText>{help}</FormHelperText>}
     </div>
+  );
+}
+
+/**
+ * The English sibling of an Arabic content field.
+ *
+ * Always optional: a blank value is stored as null and the public English pages
+ * fall back to the Arabic text, so an untranslated row never renders empty.
+ */
+export function TranslationField({
+  id,
+  label,
+  value,
+  onChange,
+  multiline = false,
+  rows = 3,
+  className,
+}: {
+  id: string;
+  label: string;
+  value: string | null | undefined;
+  onChange: (value: string) => void;
+  multiline?: boolean;
+  rows?: number;
+  className?: string;
+}) {
+  return (
+    <Field
+      id={id}
+      label={`${label} — English`}
+      required={false}
+      help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي."
+    >
+      {multiline ? (
+        <Textarea
+          id={id}
+          dir="ltr"
+          lang="en"
+          rows={rows}
+          className={className}
+          value={value ?? ""}
+          onChange={(event) => onChange(event.target.value)}
+        />
+      ) : (
+        <Input
+          id={id}
+          dir="ltr"
+          lang="en"
+          className={className}
+          value={value ?? ""}
+          onChange={(event) => onChange(event.target.value)}
+        />
+      )}
+    </Field>
   );
 }
 
