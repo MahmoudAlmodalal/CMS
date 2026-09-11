@@ -1,64 +1,101 @@
 /**
  * Report the rendered geometry of each manifest route against its Figma canvas.
  *
- * The pixel diff says a page is wrong; this says *where*. It drives Chromium over
- * CDP, so it reports the same numbers the capture will produce. Pass selectors as
- * extra arguments to also print their boxes, e.g.
+ * The pixel diff says a page is wrong; this says where. Pass CSS selectors as extra
+ * arguments to print their boxes too:
  *   node scripts/measure-layout.mjs news-desktop "footer" "main > *"
+ *
+ * Each frame gets its own short-lived browser. A single long-lived one was both
+ * serving stale pages from its HTTP cache across rebuilds and intermittently
+ * failing to navigate, which showed up as a page measuring exactly one viewport.
  */
-import { readFileSync } from "node:fs";
-
+import { spawn } from "node:child_process";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 const [, , only, ...selectors] = process.argv;
-const frames = JSON.parse(readFileSync("docs/figma-reference-manifest.json", "utf8")).referenceFrames
-  .filter((f) => !only || f.name === only);
+const base = process.env.PLAYWRIGHT_BROWSERS_PATH ?? "/opt/pw-browsers";
+const chromium = [
+  process.env.CHROMIUM_BIN,
+  ...(existsSync(base) ? readdirSync(base).filter((e) => e.startsWith("chromium-")).map((e) => `${base}/${e}/chrome-linux/chrome`) : []),
+  "/usr/bin/chromium",
+].filter(Boolean).find((c) => existsSync(c));
 
-const version = await (await fetch("http://localhost:9222/json/version")).json();
-const ws = new WebSocket(version.webSocketDebuggerUrl);
-await new Promise((r) => ws.addEventListener("open", r));
+const frames = JSON.parse(readFileSync("docs/figma-reference-manifest.json", "utf8"))
+  .referenceFrames.filter((f) => !only || f.name === only);
 
-let id = 0;
-const pending = new Map();
-ws.addEventListener("message", (event) => {
-  const msg = JSON.parse(event.data);
-  if (msg.id && pending.has(msg.id)) { pending.get(msg.id)(msg); pending.delete(msg.id); }
-});
-const send = (method, params = {}, sessionId) =>
-  new Promise((resolve) => { const n = ++id; pending.set(n, resolve); ws.send(JSON.stringify({ id: n, method, params, sessionId })); });
-
-const expression = (selectors) => `(() => {
-  const out = { height: document.documentElement.scrollHeight, width: document.documentElement.scrollWidth, boxes: [] };
+const probe = (selectors) => `(() => {
+  const out = { height: document.documentElement.scrollHeight, boxes: [] };
   for (const sel of ${JSON.stringify(selectors)}) {
     for (const el of document.querySelectorAll(sel)) {
       const r = el.getBoundingClientRect();
-      out.boxes.push({ sel, tag: el.tagName.toLowerCase(), cls: (el.className || "").toString().slice(0, 60),
+      out.boxes.push({ sel, tag: el.tagName.toLowerCase(), cls: (el.className || "").toString().slice(0, 62),
         x: Math.round(r.x), y: Math.round(r.y + window.scrollY), w: Math.round(r.width), h: Math.round(r.height) });
     }
   }
   return JSON.stringify(out);
 })()`;
 
-for (const frame of frames) {
-  const { result: target } = await send("Target.createTarget", { url: "about:blank" });
-  const { result: attached } = await send("Target.attachToTarget", { targetId: target.targetId, flatten: true });
-  const sessionId = attached.sessionId;
-  // Measure at a realistic viewport, not the canvas height: the public shell is
-  // min-h-screen, so a canvas-tall window stretches any page shorter than the frame
-  // to exactly the frame height and hides the error we are looking for.
-  await send("Emulation.setDeviceMetricsOverride", { width: frame.viewport[0], height: frame.viewport[1], deviceScaleFactor: 1, mobile: false }, sessionId);
-  await send("Network.enable", {}, sessionId);
-  // Same reason as capture-visual.mjs: without this the unprefixed Arabic routes
-  // negotiate to English and every measurement describes the wrong page.
-  await send("Network.setExtraHTTPHeaders", { headers: { "Accept-Language": frame.locale ?? "ar" } }, sessionId);
-  await send("Page.enable", {}, sessionId);
-  await send("Page.navigate", { url: new URL(frame.route, "http://localhost:3000").toString() }, sessionId);
-  await new Promise((r) => setTimeout(r, 2500));
-  const { result } = await send("Runtime.evaluate", { expression: expression(selectors), returnByValue: true }, sessionId);
-  const data = JSON.parse(result.result.value);
-  const delta = data.height - frame.canvas[1];
-  const sign = delta > 0 ? "+" : "";
-  console.log(`${frame.name.padEnd(24)} figma ${String(frame.canvas[1]).padStart(5)}   actual ${String(data.height).padStart(5)}   ${sign}${delta}`);
-  for (const b of data.boxes) console.log(`    ${b.sel.padEnd(16)} ${b.tag.padEnd(8)} y=${String(b.y).padStart(5)} h=${String(b.h).padStart(5)} x=${String(b.x).padStart(4)} w=${String(b.w).padStart(5)}  ${b.cls}`);
-  await send("Target.closeTarget", { targetId: target.targetId });
+async function cdp(ws, method, params = {}, sessionId) {
+  return new Promise((resolve) => {
+    const id = (cdp.n = (cdp.n ?? 0) + 1);
+    const onMessage = (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.id === id) { ws.removeEventListener("message", onMessage); resolve(msg); }
+    };
+    ws.addEventListener("message", onMessage);
+    ws.send(JSON.stringify({ id, method, params, sessionId }));
+  });
 }
-ws.close();
+
+async function measure(frame, port) {
+  // Same locale pin as capture-visual.mjs: next-intl negotiates on the unprefixed
+  // Arabic routes, so an en-US default would measure the English page.
+  const locale = frame.locale ?? "ar";
+  // min-h-screen on the public shell means a canvas-tall viewport stretches any
+  // short page to exactly the frame height, hiding the very error we want.
+  const height = process.env.MEASURE_AT_CANVAS ? frame.canvas[1] : frame.viewport[1];
+  const child = spawn(chromium, ["--headless", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+    `--accept-lang=${locale}`, `--remote-debugging-port=${port}`,
+    `--window-size=${frame.canvas[0]},${height}`, "about:blank"], { stdio: "ignore" });
+  try {
+    let version;
+    for (let i = 0; i < 80; i += 1) {
+      try { version = await (await fetch(`http://localhost:${port}/json/version`)).json(); break; }
+      catch { await new Promise((r) => setTimeout(r, 150)); }
+    }
+    const ws = new WebSocket(version.webSocketDebuggerUrl);
+    await new Promise((r) => ws.addEventListener("open", r));
+    const { result: target } = await cdp(ws, "Target.createTarget", { url: "about:blank" });
+    const { result: attached } = await cdp(ws, "Target.attachToTarget", { targetId: target.targetId, flatten: true });
+    const sessionId = attached.sessionId;
+    await cdp(ws, "Emulation.setDeviceMetricsOverride", { width: frame.canvas[0], height, deviceScaleFactor: 1, mobile: false }, sessionId);
+    await cdp(ws, "Page.enable", {}, sessionId);
+    await cdp(ws, "Page.navigate", { url: new URL(frame.route, "http://localhost:3000").toString() }, sessionId);
+    for (let i = 0; i < 60; i += 1) {
+      const { result } = await cdp(ws, "Runtime.evaluate", { expression: "document.readyState", returnByValue: true }, sessionId);
+      if (result?.result?.value === "complete") break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    await new Promise((r) => setTimeout(r, 600));
+    const { result } = await cdp(ws, "Runtime.evaluate", { expression: probe(selectors), returnByValue: true }, sessionId);
+    ws.close();
+    return JSON.parse(result.result.value);
+  } finally {
+    child.kill();
+  }
+}
+
+let port = 9400;
+for (const frame of frames) {
+  // A result no taller than the viewport means the navigation did not settle —
+  // real pages here are all several viewports tall. Retry once before believing it.
+  let data = await measure(frame, port++);
+  if (data.height <= (process.env.MEASURE_AT_CANVAS ? frame.canvas[1] : frame.viewport[1])) {
+    data = await measure(frame, port++);
+  }
+  const delta = data.height - frame.canvas[1];
+  console.log(`${frame.name.padEnd(24)} figma ${String(frame.canvas[1]).padStart(5)}   actual ${String(data.height).padStart(5)}   ${delta > 0 ? "+" : ""}${delta}`);
+  for (const b of data.boxes) {
+    console.log(`    ${b.sel.padEnd(14)} ${b.tag.padEnd(8)} y=${String(b.y).padStart(5)} h=${String(b.h).padStart(5)} x=${String(b.x).padStart(4)} w=${String(b.w).padStart(5)}  ${b.cls}`);
+  }
+}
