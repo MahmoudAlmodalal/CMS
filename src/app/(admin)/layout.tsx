@@ -8,7 +8,7 @@ import { fontVariables } from "@/lib/fonts";
  * segment and owns its own document shell.
  */
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000"),
   title: "لوحة تحكم أندلسيا",
   robots: { index: false, follow: false },
 };
