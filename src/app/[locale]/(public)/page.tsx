@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   HeroSection,
   AboutSection,
@@ -17,18 +18,24 @@ import { getUpcomingEvents } from "@/lib/dal/events";
 
 export const revalidate = 3600; // 1 hour ISR as locked in APPLICATION_ARCHITECTURE.md
 
-export const metadata: Metadata = {
-  title: "فرقة أندلسيا للموسيقى والتراث | منصتك الأولى لاكتشاف المواهب الثقافية",
-  description:
-    "أندلسيا منصة متخصصة في تمثيل ودعم المواهب الفنية التراثية وإحياء المقامات والموشحات الأندلسية عبر فعاليات ثقافية وأكاديمية متكاملة.",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+  title: t("homeTitle"),
+  description: t("homeDescription"),
   openGraph: {
-    title: "فرقة أندلسيا للموسيقى والتراث",
-    description:
-      "منصتك الأولى لاكتشاف ودعم المواهب الفنية والتراثية وإحياء روائع الموشحات والمقامات.",
-    locale: "ar_AR",
+    title: t("homeOgTitle"),
+    description: t("homeOgDescription"),
+    locale: locale === "ar" ? "ar_AR" : "en_US",
     type: "website",
   },
-};
+  };
+}
 
 /**
  * Milestone 2 — Home Page 8-Stage Vertical Coordinate Sequence
@@ -45,7 +52,14 @@ export const metadata: Metadata = {
  * Stage 7: Booking CTA Banner (Section, Node 87:14534, y=4282, h=498px, #2B1D14 overlay)
  * Stage 8: Global Footer (Node 94:18289, y=4780, h=385px, #2B1D14 texture) [Rendered in PublicLayout]
  */
-export default async function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const [settings, artists, testimonials, articles, events] = await Promise.all([
     getSiteSettings(),
     getFeaturedArtists(6),

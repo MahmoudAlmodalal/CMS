@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import {
   EventsHeader,
@@ -25,18 +26,24 @@ import type { CategoryFilterId } from "@/lib/types/events";
  */
 export const revalidate = 1800;
 
-export const metadata: Metadata = {
-  title: "الفعاليات والحفلات | فرقة أندلسيا للموسيقى والتراث",
-  description:
-    "استكشف مواعيد الأمسيات والمهرجانات والورش الموسيقية القادمة لفرقة أندلسيا واحجز تذكرتك مباشرة.",
-  openGraph: {
-    title: "الفعاليات والحفلات | فرقة أندلسيا للموسيقى والتراث",
-    description:
-      "استكشف مواعيد الأمسيات والمهرجانات والورش الموسيقية القادمة لفرقة أندلسيا واحجز تذكرتك مباشرة.",
-    locale: "ar_AR",
-    type: "website",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("eventsTitle"),
+    description: t("eventsDescription"),
+    openGraph: {
+      title: t("eventsTitle"),
+      description: t("eventsDescription"),
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+      type: "website",
+    },
+  };
+}
 
 interface EventsPageProps {
   searchParams?: Promise<{
@@ -49,22 +56,23 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const requestedCategory = (params.category as CategoryFilterId) || "all";
 
   // Fetch dynamic content via Data Access Layer
-  const [events, featuredEvent, subtitle] = await Promise.all([
+  const [events, featuredEvent, subtitle, t] = await Promise.all([
     getPublishedEvents(),
     getFeaturedEvent(),
     getEventsSubtitle(),
+    getTranslations("page"),
   ]);
 
   return (
     <div className="w-full">
       <PageHero
-        eyebrow="جدول العروض والفعاليات"
-        title="مواعيد تترك أثراً جميلاً."
+        eyebrow={t("eventsEyebrow")}
+        title={t("eventsTitle")}
         subtitle={subtitle}
       />
       <Container className="space-y-10 sm:space-y-12">
         {/* 1. Header (Figma 91:16532 / 91:16748) */}
-        <div className="sr-only"><EventsHeader title="مواعيد تترك أثراً جميلاً." subtitle={subtitle} /></div>
+        <div className="sr-only"><EventsHeader title={t("eventsTitle")} subtitle={subtitle} /></div>
 
         {/* 2. Catalog View with Suspense for useSearchParams boundary */}
         <Suspense

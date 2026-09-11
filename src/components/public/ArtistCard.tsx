@@ -63,7 +63,7 @@ export function ArtistCard({
         ) : (
           <Image
             src={resolvedImageUrl}
-            alt={`صورة الفنان ${artist.name}`}
+            alt={a("portraitAlt", { name: artist.name })}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             priority={priority}
@@ -87,7 +87,7 @@ export function ArtistCard({
           <div className="absolute top-3.5 end-3.5 z-10">
             <span className="px-2.5 py-1 rounded-badge text-xs font-bold bg-brand-primary text-white shadow-subtle flex items-center gap-1">
               <span aria-hidden="true">★</span>
-              <span>مميز</span>
+              <span>{t("featured")}</span>
             </span>
           </div>
         )}
@@ -121,7 +121,7 @@ export function ArtistCard({
           {/* Specialties if present */}
           {artist.specialties && (
             <p className="text-xs text-brand-espresso/70 line-clamp-1 font-medium pt-1">
-              <span className="text-brand-primary font-bold">التخصص: </span>
+              <span className="text-brand-primary font-bold">{t("specialty")}</span>
               {artist.specialties}
             </p>
           )}
@@ -130,7 +130,7 @@ export function ArtistCard({
         {/* 3. Card Footer with Profile & Booking Links */}
         <div className="pt-3 border-t border-brand-espresso-subtle/50 flex items-center justify-between gap-3 text-xs">
           <span className="inline-flex items-center gap-1.5 font-bold text-brand-primary group-hover:text-brand-primary-pressed transition-colors">
-            <span>الملف الشخصي</span>
+            <span>{t("profile")}</span>
             <ArrowEndIcon size={16} />
           </span>
 
@@ -138,9 +138,9 @@ export function ArtistCard({
             href={`/booking?artist=${encodeURIComponent(artist.slug)}`}
             onClick={(e) => e.stopPropagation()}
             className="z-10 relative px-3 py-1.5 rounded-lg bg-brand-surface/80 hover:bg-brand-primary hover:text-white text-brand-espresso font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-            aria-label={`احجز الفنان ${artist.name}`}
+            aria-label={t("bookArtistLabel", { name: artist.name })}
           >
-            احجز الفنان ♪
+            {t("bookArtist")}
           </Link>
         </div>
       </div>

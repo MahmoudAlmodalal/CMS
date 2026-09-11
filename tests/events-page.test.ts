@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 import {
   CATEGORY_MAP,
   CATEGORY_TABS,
@@ -155,11 +156,13 @@ test("Task 35 — 6. Events Header & Subtitle Integration", () => {
     "utf-8"
   );
 
-  assert.match(
-    headerContent,
-    /مواعيد تترك أثراً جميلاً\./,
-    "Events header must use confirmed title 'مواعيد تترك أثراً جميلاً.'"
+  assert.match(headerContent, /t\("title"\)/, "Events header must render the events.title message");
+  assert.equal(
+    arMessages["events.title"],
+    "مواعيد تترك أثراً جميلاً.",
+    "Arabic events title is confirmed by Figma"
   );
+  assert.ok(enMessages["events.title"], "The events title must exist in English too");
   assert.match(headerContent, /subtitle/, "Events header must accept subtitle from site_settings");
   assert.match(headerContent, /font-calligraphic/, "Events title must use calligraphic font");
 });
@@ -210,9 +213,11 @@ test("Task 35 — 8. Events Page Route & ISR Caching", () => {
   );
   assert.match(
     pageContent,
-    /metadata:\s*Metadata/,
-    "Events page must export typed Next.js metadata"
+    /export async function generateMetadata[\s\S]*?Promise<Metadata>/,
+    "Events page must export typed, locale-aware Next.js metadata"
   );
+  assert.ok(arMessages["meta.eventsTitle"], "Events metadata title must exist in Arabic");
+  assert.ok(enMessages["meta.eventsTitle"], "Events metadata title must exist in English");
   assert.match(
     pageContent,
     /<Suspense/,

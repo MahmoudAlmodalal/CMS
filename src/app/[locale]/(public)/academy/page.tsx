@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import { getPublishedAcademyCourses } from "@/lib/dal/academy";
 import {
@@ -11,18 +12,24 @@ import { PageHero } from "@/components/public";
 
 export const dynamic = "force-static"; // Static per APPLICATION_ARCHITECTURE.md (no searchParams/cookies)
 
-export const metadata: Metadata = {
-  title: "الأكاديمية الموسيقية | فرقة أندلسيا",
-  description:
-    "مسارات تدريبية تخصصية في العود، المقامات، والغناء الأندلسي والتراثي مع نخبة من فناني أندلسيا.",
-  openGraph: {
-    title: "الأكاديمية الموسيقية | فرقة أندلسيا",
-    description:
-      "مسارات تدريبية تخصصية في العود، المقامات، والغناء الأندلسي والتراثي مع نخبة من فناني أندلسيا.",
-    type: "website",
-    locale: "ar_AR",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("academyTitle"),
+    description: t("academyDescription"),
+    openGraph: {
+      title: t("academyTitle"),
+      description: t("academyDescription"),
+      type: "website",
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+    },
+  };
+}
 
 /**
  * Task 36 — Academy Public Route (/academy)
@@ -41,18 +48,26 @@ export const metadata: Metadata = {
  * - No progress or course completion tracking
  * All course registrations route through /booking?course=[slug]
  */
-export default async function AcademyPage() {
-  const [settings, courses] = await Promise.all([
+export default async function AcademyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const [settings, courses, t] = await Promise.all([
     getSiteSettings(),
     getPublishedAcademyCourses(),
+    getTranslations("page"),
   ]);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. Figma academy hero */}
       <PageHero
-        eyebrow="أكاديمية أندلسيا الموسيقية"
-        title="تعلّم من اليد التي تعرف الطريق"
+        eyebrow={t("academyEyebrow")}
+        title={t("academyTitle")}
         subtitle={settings.academy_subtitle}
       />
 
