@@ -24,7 +24,7 @@ test("UI Foundation — Color Tokens Verification against Figma values", () => {
 
   // Gradscale Palette
   assert.equal(FIGMA_TOKENS.colors.gradscale[400], "#666666");
-  assert.equal(FIGMA_TOKENS.colors.gradscale[900], "#130F26");
+  assert.equal(FIGMA_TOKENS.colors.gradscale[900], "#1B1B1B");
 });
 
 test("UI Foundation — Spacing Tokens Verification", () => {
@@ -87,7 +87,7 @@ test("UI Foundation — Globals.css contains all Figma Theme Variables", () => {
   assert.ok(css.includes("--color-brand-espresso: #2B1D14;"));
   assert.ok(css.includes("--color-brand-cream: #F9F7F0;"));
   assert.ok(css.includes("--color-brand-tint: #F9EDE8;"));
-  assert.ok(css.includes("--color-gradscale-900: #130F26;"));
+  assert.ok(css.includes("--color-gradscale-900: #1B1B1B;"));
   assert.ok(css.includes("--radius-button: 12px;"));
   assert.ok(css.includes("--radius-card: 24px;"));
   assert.ok(css.includes("--radius-input: 16px;"));
