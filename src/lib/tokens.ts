@@ -54,7 +54,7 @@ export const FIGMA_TOKENS = {
       600: "#3A3A3A",
       700: "#2D2D2D",
       800: "#232323",
-      900: "#130F26", // Canonical Dark Text (Indigo Charcoal)
+      900: "#1B1B1B", // Canonical Dark Text — Figma Foundation/gradscale/gradscale-900
     },
     // Semantic & High-Contrast Tokens
     brand: {

@@ -42,8 +42,26 @@ export function Navbar() {
     return pathname.startsWith(href);
   };
 
+  // The floating bar sits at a slightly different offset on each frame. These are
+  // measured off the 1:1 reference renders in docs/figma-reference (the first row
+  // of the #F2EEE0 band), not read from get_metadata: the bar is wrapped in a
+  // double rotate-180 for RTL mirroring, so its reported node coordinates are not
+  // frame-relative and put it ~85px too low.
+  const NAVBAR_TOP: Record<string, string> = {
+    "/": "top-[33px]",
+    "/events": "top-[40px]",
+    "/academy": "top-[57px]",
+  };
+  const offset =
+    NAVBAR_TOP[pathname] ??
+    // Artist profiles sit 10px higher than the artists index.
+    (/^\/artists\/.+/.test(pathname) ? "top-[40px]" : "top-[50px]");
+
   return (
-    <div className="hidden lg:flex fixed top-6 start-0 end-0 z-50 justify-center px-4 pointer-events-none transition-all">
+    <div className={cn(
+      "hidden lg:flex fixed start-0 end-0 z-50 justify-center px-4 pointer-events-none transition-all",
+      offset,
+    )}>
       <header
         className="pointer-events-auto w-full max-w-[1123px] h-[85px] bg-[#F2EEE0] rounded-[32px] shadow-dropdown flex items-center justify-between px-6"
         role="banner"

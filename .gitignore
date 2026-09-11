@@ -49,3 +49,4 @@ next-env.d.ts
 /artifacts/visual/diff/
 # full Figma document dump — regenerate with `npm run figma:sync`
 /docs/figma/file.json
+/artifacts/visual/compare/
