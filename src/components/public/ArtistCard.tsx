@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { type Artist, getCategoryLabel } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
 import { ArrowEndIcon, MusicIcon } from "@/components/ui/Icons";
@@ -26,6 +27,8 @@ export function ArtistCard({
   priority = false,
   className = "",
 }: ArtistCardProps) {
+  const t = useTranslations("artists");
+  const a = useTranslations("artist");
   const [imageError, setImageError] = useState(false);
 
   const rawImageUrl = artist.portrait_image_url?.trim() || "";
@@ -146,7 +149,7 @@ export function ArtistCard({
       <Link
         href={`/artists/${artist.slug}`}
         className="absolute inset-0 z-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 rounded-card"
-        aria-label={`عرض الملف الشخصي للفنان ${artist.name}`}
+        aria-label={a("viewProfile", { name: artist.name })}
       />
     </article>
   );

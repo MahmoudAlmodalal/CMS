@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCategoryLabel, type Article } from "@/lib/articles";
@@ -22,11 +23,12 @@ export function NewsHero({
   secondaryArticles = [],
   className = "",
 }: NewsHeroProps) {
+  const t = useTranslations("news");
   const primaryCategory = getArticleCategoryLabel(primaryArticle.category);
   const primaryDate = formatArabicDate(primaryArticle.published_at);
 
   return (
-    <section aria-label="الأخبار الثقافية المميزة" className={`space-y-6 ${className}`}>
+    <section aria-label={t("featuredRegion")} className={`space-y-6 ${className}`}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Primary Featured Story (8 of 12 cols on desktop) */}
         <div className="lg:col-span-8 flex flex-col">
@@ -73,7 +75,7 @@ export function NewsHero({
 
               {/* Action Link Button */}
               <div className="pt-2 flex items-center gap-2 text-sm font-bold text-brand-tint group-hover:text-white transition-colors">
-                <span>اقرأ القصة كاملة</span>
+                <span>{t("readFull")}</span>
                 <span className="transition-transform duration-200 group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
                   <ArrowEndIcon size={16} />
                 </span>
@@ -118,7 +120,7 @@ export function NewsHero({
 
                 {/* Bottom Read Action */}
                 <div className="pt-3 mt-3 border-t border-brand-espresso/5 flex items-center justify-between text-xs font-bold text-brand-primary">
-                  <span>متابعة القراءة</span>
+                  <span>{t("continueReading")}</span>
                   <span className="transition-transform duration-200 group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
                     <ArrowEndIcon size={14} />
                   </span>
