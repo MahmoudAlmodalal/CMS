@@ -60,6 +60,24 @@ CROPS = [
      "dotted mark, tracks grid inline end", False),
     ("academy-desktop", 1354, 1066, 86, 112, "public/assets/branding/dots-end.png",
      "dotted mark, tracks grid inline start", False),
+    # The same dotted marks on الفنانين (91:17845, 91:17950) hang off the artboard by
+    # different amounts, so they need their own crops.
+    ("artists-desktop", 0, 708, 62, 112, "public/assets/branding/dots-artists-start.png",
+     "dotted mark, artists grid inline end", False),
+    ("artists-desktop", 1377, 1696, 63, 112, "public/assets/branding/dots-artists-end.png",
+     "dotted mark, artists grid inline start", False),
+    # The eight portraits of the الفنانين grid (91:18061) are four photographs used
+    # twice each. Each card clips its 340 image box to the 314 it actually shows, so
+    # the crop is the visible rectangle and the card renders it at that size. Read
+    # right to left, the first row is artist 1 through 4.
+    ("artists-desktop", 1031, 846, 296, 314, "public/assets/artists/artist-1.png",
+     "portrait, artists row 1 card 1", False),
+    ("artists-desktop", 725, 846, 296, 314, "public/assets/artists/artist-2.png",
+     "portrait, artists row 1 card 2", False),
+    ("artists-desktop", 419, 846, 296, 314, "public/assets/artists/artist-3.png",
+     "portrait, artists row 1 card 3", False),
+    ("artists-desktop", 113, 846, 296, 314, "public/assets/artists/artist-4.png",
+     "portrait, artists row 1 card 4", False),
 ]
 
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in

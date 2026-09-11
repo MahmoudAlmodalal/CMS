@@ -40,7 +40,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   about_image_url: "/assets/figma/about-musician.png",
   booking_banner_title: "مناسبتك تستحق موسيقى حقيقية",
   booking_banner_body: "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.",
-  artists_subtitle: "كل فنان في أندلسيا يحمل قصة ومعاناة، يعزف بأنامله روح الشرق، ويصنع من التراث نغماً للمستقبل.",
+  // Node 91:18059 in frame 91:17844 — the standfirst the design draws on the band.
+  artists_subtitle: "كل فنان في أندلسيا يحمل قصة ومعاناة تحوّلت إلى موسيقى تلامس القلوب.",
   events_subtitle: "مواعيد تترك أثراً جميلاً في قلوب عشاق الموسيقى الأصيلة.",
   // Node 91:16345 in frame 91:16119 — the standfirst the design draws on the band.
   academy_subtitle:

@@ -46,7 +46,7 @@ export async function getAdminArtists(): Promise<Artist[]> {
 export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
+      return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
     }
 
     const supabase = await createClient();
@@ -60,12 +60,12 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
       .limit(limit);
 
     if (error || !data || data.length === 0) {
-      return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
+      return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
     }
 
     return data as unknown as Artist[];
   } catch {
-    return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
+    return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
   }
 }
 
