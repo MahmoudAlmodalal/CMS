@@ -128,7 +128,7 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
     "src/components/public/academy/AcademyTracks.tsx",
     "src/components/public/academy/AcademyNewsletter.tsx",
     "src/components/public/academy/index.ts",
-    "src/app/(public)/academy/page.tsx",
+    "src/app/[locale]/(public)/academy/page.tsx",
   ];
 
   for (const rel of expectedFiles) {
@@ -185,7 +185,7 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
 
   // Page Route verification
   const pageCode = fs.readFileSync(
-    path.join(root, "src/app/(public)/academy/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/academy/page.tsx"),
     "utf-8"
   );
   assert.match(pageCode, /getSiteSettings/, "Page must fetch site settings");

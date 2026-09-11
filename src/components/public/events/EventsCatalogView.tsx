@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { EventItem, CategoryFilterId } from "@/lib/types/events";
 import { EventsFilterTabs } from "./EventsFilterTabs";
@@ -22,6 +23,7 @@ export function EventsCatalogView({
   featuredEvent,
   initialCategory = "all",
 }: EventsCatalogViewProps) {
+  const t = useTranslations("events");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -59,13 +61,13 @@ export function EventsCatalogView({
     <div className="space-y-10 sm:space-y-12">
       {/* 1. Featured Event Hero Banner */}
       {shouldShowFeatured && (
-        <section aria-label="الفعالية الأبرز">
+        <section aria-label={t("featuredRegion")}>
           <FeaturedEventBanner event={featuredEvent} />
         </section>
       )}
 
       {/* 2. Filter Tabs Section */}
-      <section aria-label="تصنيفات الفعاليات" className="space-y-4">
+      <section aria-label={t("filterTabs")} className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-brand-espresso/10 pb-4">
           <EventsFilterTabs
             activeCategory={selectedCategory}
@@ -74,8 +76,8 @@ export function EventsCatalogView({
 
           <span className="text-xs text-gradscale-400 font-medium self-end sm:self-auto">
             {filteredEvents.length > 0
-              ? `عرض ${filteredEvents.length} فعالية`
-              : "لا توجد فعاليات"}
+              ? t("count", { count: filteredEvents.length })
+              : t("countNone")}
           </span>
         </div>
 
@@ -84,7 +86,7 @@ export function EventsCatalogView({
           <div
             id="events-catalog-grid"
             role="region"
-            aria-label="قائمة الفعاليات"
+            aria-label={t("listRegion")}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pt-2"
           >
             {filteredEvents.map((event) => (
@@ -99,10 +101,10 @@ export function EventsCatalogView({
             </div>
             <div className="space-y-1.5">
               <h3 className="font-calligraphic text-xl font-bold text-brand-espresso">
-                لا توجد فعاليات مجدولة حالياً
+                {t("emptyTitle")}
               </h3>
               <p className="text-xs sm:text-sm text-gradscale-400 leading-relaxed">
-                لم يتم نشر عروض في هذا التصنيف في الوقت الحالي. يمكنك استعراض كافة الفعاليات أو العودة قريباً.
+                {t("emptyBody")}
               </p>
             </div>
             {selectedCategory !== "all" && (
@@ -111,7 +113,7 @@ export function EventsCatalogView({
                 onClick={() => handleCategoryChange("all")}
                 className="inline-flex items-center justify-center px-6 py-2.5 rounded-button bg-primary-50 text-primary-500 font-bold text-xs hover:bg-primary-100 transition-colors cursor-pointer"
               >
-                عرض كافة الفعاليات
+                {t("showAll")}
               </button>
             )}
           </div>

@@ -1,18 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
 import {
   CloseIcon,
   ChevronEndIcon,
-  GlobeIcon,
   MusicIcon,
   ArrowEndIcon,
 } from "@/components/ui/Icons";
-import { useDirection } from "@/lib/direction";
 import { cn } from "@/lib/utils";
 import { CONFIRMED_NAV_ITEMS } from "./Navbar";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export interface MobileDrawerProps {
   isOpen: boolean;
@@ -29,7 +28,11 @@ export interface MobileDrawerProps {
  */
 export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
   const pathname = usePathname();
-  const { isRTL, toggleDirection } = useDirection();
+  const t = useTranslations("drawer");
+  const nav = useTranslations("nav");
+  const site = useTranslations("site");
+  const footer = useTranslations("footer");
+  const a11y = useTranslations("a11y");
   const panelRef = useRef<HTMLElement>(null);
 
   // Close on route change
@@ -104,7 +107,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
       className="fixed inset-0 z-50 lg:hidden"
       role="dialog"
       aria-modal="true"
-      aria-label="قائمة التنقل للهواتف"
+      aria-label={t("title")}
       id="mobile-navigation-drawer"
     >
       {/* Backdrop */}
@@ -124,10 +127,10 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             </div>
             <div className="flex flex-col text-start">
               <span className="font-calligraphic text-xl font-bold text-brand-espresso leading-none">
-                فرقة أندلسيا
+                {site("brand")}
               </span>
               <span className="text-[10px] font-semibold text-brand-primary mt-0.5">
-                للتراث والموسيقى العربية
+                {t("tagline")}
               </span>
             </div>
           </div>
@@ -135,7 +138,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           <button
             type="button"
             onClick={onClose}
-            aria-label="إغلاق القائمة"
+            aria-label={a11y("closeMenu")}
             className="p-2 rounded-xl text-brand-espresso/70 hover:bg-brand-surface hover:text-brand-espresso transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <CloseIcon size={20} />
@@ -144,7 +147,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
         {/* Navigation Items */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          <nav className="flex flex-col gap-2" aria-label="تنقل الهاتف">
+          <nav className="flex flex-col gap-2" aria-label={t("nav")}>
             {CONFIRMED_NAV_ITEMS.map((item) => {
               const active = isLinkActive(item.href);
               return (
@@ -160,7 +163,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
                   )}
                   aria-current={active ? "page" : undefined}
                 >
-                  <span>{item.label}</span>
+                  <span>{nav(item.key)}</span>
                   <ChevronEndIcon
                     size={18}
                     className={cn(
@@ -180,7 +183,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
               onClick={onClose}
               className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-brand-primary text-white text-base font-bold shadow-md hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
-              <span>ابدأ حجزك الآن ♪</span>
+              <span>{t("bookingCta")}</span>
               <ArrowEndIcon size={18} />
             </Link>
           </div>
@@ -188,34 +191,27 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
           {/* Quick Contact & Presence */}
           <div className="space-y-3 pt-4 border-t border-brand-surface/40 text-sm">
             <div className="flex flex-col gap-1 text-start">
-              <span className="text-xs font-bold text-brand-primary">التواصل</span>
+              <span className="text-xs font-bold text-brand-primary">{t("contactHeading")}</span>
               <a
-                href="mailto:hello@andalusia.art"
+                href={`mailto:${footer("contactEmail")}`}
                 dir="ltr"
                 className="text-brand-espresso/80 hover:text-brand-primary transition-colors text-start"
               >
-                <bdi>hello@andalusia.art</bdi>
+                <bdi>{footer("contactEmail")}</bdi>
               </a>
             </div>
 
             <div className="flex flex-col gap-1 text-start">
-              <span className="text-xs font-bold text-brand-primary">الانتشار الإقليمي</span>
-              <span className="text-brand-espresso/80">لبنان · المغرب · الخليج</span>
+              <span className="text-xs font-bold text-brand-primary">{t("regionsHeading")}</span>
+              <span className="text-brand-espresso/80">{footer("contactRegions")}</span>
             </div>
           </div>
         </div>
 
-        {/* Footer: Direction Switcher */}
+        {/* Footer: Language switch */}
         <div className="p-4 border-t border-brand-surface bg-white/40 flex items-center justify-between">
-          <span className="text-xs text-brand-espresso/60">اتجاه الواجهة</span>
-          <button
-            type="button"
-            onClick={toggleDirection}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-brand-surface bg-white text-xs font-semibold text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-          >
-            <GlobeIcon size={14} className="text-brand-primary" />
-            <span>{isRTL ? "RTL (عربي)" : "LTR (English)"}</span>
-          </button>
+          <span className="text-xs text-brand-espresso/60">{t("languageHeading")}</span>
+          <LocaleSwitcher className="px-3 py-1.5 rounded-full border border-brand-surface bg-white text-xs font-semibold h-auto" />
         </div>
       </aside>
     </div>

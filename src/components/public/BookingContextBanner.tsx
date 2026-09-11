@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { CalendarIcon, MusicIcon, CloseIcon } from "@/components/ui/Icons";
 import type { BookingEventContext } from "@/lib/dal/booking";
 
@@ -20,6 +21,8 @@ export function BookingContextBanner({
   preferredArtistName,
   courseSlug,
 }: BookingContextBannerProps) {
+  const t = useTranslations("booking");
+
   if (!eventContext && !preferredArtistName && !courseSlug) {
     return null;
   }
@@ -32,26 +35,26 @@ export function BookingContextBanner({
             {eventContext ? <CalendarIcon size={18} /> : <MusicIcon size={18} />}
           </div>
           <div>
-            <span className="text-xs font-bold text-brand-primary">سياق الحجز المحدد</span>
+            <span className="text-xs font-bold text-brand-primary">{t("contextHeading")}</span>
             {eventContext && (
               <div className="mt-1">
                 <p className="text-sm font-bold text-brand-espresso">
-                  حجز مرتبط بالفعالية: {eventContext.title}
+                  {t("contextEvent", { title: eventContext.title })}
                 </p>
                 <p className="text-xs text-brand-espresso/70 mt-0.5">
                   {eventContext.venue ? `${eventContext.venue} — ` : ""}
-                  {eventContext.performer_name ? `المؤدي: ${eventContext.performer_name}` : ""}
+                  {eventContext.performer_name ? t("contextPerformer", { name: eventContext.performer_name }) : ""}
                 </p>
               </div>
             )}
             {preferredArtistName && !eventContext && (
               <p className="text-sm font-bold text-brand-espresso mt-1">
-                تم تحديد الفنان المطلوب: {preferredArtistName}
+                {t("contextArtist", { name: preferredArtistName })}
               </p>
             )}
             {courseSlug && !eventContext && !preferredArtistName && (
               <p className="text-sm font-bold text-brand-espresso mt-1">
-                استفسار خاص بمسار الأكاديمية: {courseSlug}
+                {t("contextCourse", { slug: courseSlug })}
               </p>
             )}
           </div>
@@ -61,10 +64,10 @@ export function BookingContextBanner({
         <Link
           href="/booking"
           className="inline-flex items-center gap-1 text-xs text-brand-espresso/60 hover:text-brand-primary transition-colors py-1 px-2 rounded-md hover:bg-white/50"
-          title="إلغاء التحديد وتعبئة طلب عام"
+          title={t("contextClearTitle")}
         >
           <CloseIcon size={14} />
-          <span>طلب عام</span>
+          <span>{t("contextClear")}</span>
         </Link>
       </div>
     </div>

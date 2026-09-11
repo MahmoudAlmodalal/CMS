@@ -1,0 +1,503 @@
+الفنان (FRAME) 1440x2968 @ 0,0 fill=#F9F7F0
+  Group 161 (GROUP) 122.7x111.56 @ -61,708
+    Fill 1 (VECTOR) 6x6 @ -61,721.56 fill=#C54716
+    Fill 3 (VECTOR) 6x6 @ -28,721.56 fill=#C54716
+    Fill 5 (VECTOR) 6x6 @ -44,721.56 fill=#C54716
+    Fill 7 (VECTOR) 6x6 @ -11,721.56 fill=#C54716
+    Fill 9 (VECTOR) 6x6 @ 6,721.56 fill=#C54716
+    Fill 11 (VECTOR) 6x6 @ 39,721.56 fill=#C54716
+    Fill 13 (VECTOR) 6x6 @ 22,721.56 fill=#C54716
+    Group 17 (GROUP) 6.4x6.4 @ 55.3,721.34
+      Clip 16 (VECTOR) 6.4x6.4 @ 55.3,721.34 fill=#000000
+      Fill 15 (VECTOR) 6.4x6.4 @ 55.3,721.34 fill=#C54716
+    Fill 18 (VECTOR) 6x6 @ -61,708.56 fill=#C54716
+    Fill 20 (VECTOR) 6x6 @ -28,708.56 fill=#C54716
+    Fill 22 (VECTOR) 6x6 @ -44,708.56 fill=#C54716
+    Fill 24 (VECTOR) 6x6 @ -11,708.56 fill=#C54716
+    Fill 26 (VECTOR) 6x6 @ 6,708.56 fill=#C54716
+    Fill 28 (VECTOR) 6x6 @ 39,708.56 fill=#C54716
+    Fill 30 (VECTOR) 6x6 @ 22,708.56 fill=#C54716
+    Group 34 (GROUP) 6.4x6.4 @ 55.3,708
+      Clip 33 (VECTOR) 6.4x6.4 @ 55.3,708 fill=#000000
+      Fill 32 (VECTOR) 6.4x6.4 @ 55.3,708 fill=#C54716
+    Fill 35 (VECTOR) 6x6 @ -61,734.56 fill=#C54716
+    Fill 37 (VECTOR) 6x6 @ -28,734.56 fill=#C54716
+    Fill 39 (VECTOR) 6x6 @ -44,734.56 fill=#C54716
+    Fill 41 (VECTOR) 6x6 @ -11,734.56 fill=#C54716
+    Fill 43 (VECTOR) 6x6 @ 6,734.56 fill=#C54716
+    Fill 45 (VECTOR) 6x6 @ 39,734.56 fill=#C54716
+    Fill 47 (VECTOR) 6x6 @ 22,734.56 fill=#C54716
+    Group 51 (GROUP) 6.4x6.4 @ 55.3,734.69
+      Clip 50 (VECTOR) 6.4x6.4 @ 55.3,734.69 fill=#000000
+      Fill 49 (VECTOR) 6.4x6.4 @ 55.3,734.69 fill=#C54716
+    Fill 52 (VECTOR) 6x6 @ -61,747.56 fill=#C54716
+    Fill 54 (VECTOR) 6x6 @ -28,747.56 fill=#C54716
+    Fill 56 (VECTOR) 6x6 @ -44,747.56 fill=#C54716
+    Fill 58 (VECTOR) 6x6 @ -11,747.56 fill=#C54716
+    Fill 60 (VECTOR) 6x6 @ 6,747.56 fill=#C54716
+    Fill 62 (VECTOR) 6x6 @ 39,747.56 fill=#C54716
+    Fill 64 (VECTOR) 6x6 @ 22,747.56 fill=#C54716
+    Group 68 (GROUP) 6.4x6.4 @ 55.3,748.03
+      Clip 67 (VECTOR) 6.4x6.4 @ 55.3,748.03 fill=#000000
+      Fill 66 (VECTOR) 6.4x6.4 @ 55.3,748.03 fill=#C54716
+    Fill 69 (VECTOR) 6x6 @ -61,761.56 fill=#C54716
+    Fill 71 (VECTOR) 6x6 @ -28,761.56 fill=#C54716
+    Fill 73 (VECTOR) 6x6 @ -44,761.56 fill=#C54716
+    Fill 75 (VECTOR) 6x6 @ -11,761.56 fill=#C54716
+    Fill 77 (VECTOR) 6x6 @ 6,761.56 fill=#C54716
+    Fill 79 (VECTOR) 6x6 @ 39,761.56 fill=#C54716
+    Fill 81 (VECTOR) 6x6 @ 22,761.56 fill=#C54716
+    Group 85 (GROUP) 6.4x6.4 @ 55.3,760.78
+      Clip 84 (VECTOR) 6.4x6.4 @ 55.3,760.78 fill=#000000
+      Fill 83 (VECTOR) 6.4x6.4 @ 55.3,760.78 fill=#C54716
+    Fill 86 (VECTOR) 6x6 @ -61,774.56 fill=#C54716
+    Fill 88 (VECTOR) 6x6 @ -28,774.56 fill=#C54716
+    Fill 90 (VECTOR) 6x6 @ -44,774.56 fill=#C54716
+    Fill 92 (VECTOR) 6x6 @ -11,774.56 fill=#C54716
+    Fill 94 (VECTOR) 6x6 @ 6,774.56 fill=#C54716
+    Fill 96 (VECTOR) 6x6 @ 39,774.56 fill=#C54716
+    Fill 98 (VECTOR) 6x6 @ 22,774.56 fill=#C54716
+    Group 102 (GROUP) 6.4x6.4 @ 55.3,774.12
+      Clip 101 (VECTOR) 6.4x6.4 @ 55.3,774.12 fill=#000000
+      Fill 100 (VECTOR) 6.4x6.4 @ 55.3,774.12 fill=#C54716
+    Fill 103 (VECTOR) 6x6 @ -61,787.56 fill=#C54716
+    Fill 105 (VECTOR) 6x6 @ -28,787.56 fill=#C54716
+    Fill 107 (VECTOR) 6x6 @ -44,787.56 fill=#C54716
+    Fill 109 (VECTOR) 6x6 @ -11,787.56 fill=#C54716
+    Fill 111 (VECTOR) 6x6 @ 6,787.56 fill=#C54716
+    Fill 113 (VECTOR) 6x6 @ 39,787.56 fill=#C54716
+    Fill 115 (VECTOR) 6x6 @ 22,787.56 fill=#C54716
+    Group 119 (GROUP) 6.4x6.4 @ 55.3,787.47
+      Clip 118 (VECTOR) 6.4x6.4 @ 55.3,787.47 fill=#000000
+      Fill 117 (VECTOR) 6.4x6.4 @ 55.3,787.47 fill=#C54716
+    Fill 120 (VECTOR) 6x6 @ -61,800.56 fill=#C54716
+    Fill 122 (VECTOR) 6x6 @ -28,800.56 fill=#C54716
+    Fill 124 (VECTOR) 6x6 @ -44,800.56 fill=#C54716
+    Fill 126 (VECTOR) 6x6 @ -11,800.56 fill=#C54716
+    Fill 128 (VECTOR) 6x6 @ 6,800.56 fill=#C54716
+    Fill 130 (VECTOR) 6x6 @ 39,800.56 fill=#C54716
+    Fill 132 (VECTOR) 6x6 @ 22,800.56 fill=#C54716
+    Group 136 (GROUP) 6.4x6.4 @ 55.3,800.81
+      Clip 135 (VECTOR) 6.4x6.4 @ 55.3,800.81 fill=#000000
+      Fill 134 (VECTOR) 6.4x6.4 @ 55.3,800.81 fill=#C54716
+    Group 139 (GROUP) 6x6 @ -61,813.56
+      Clip 138 (VECTOR) 6x6 @ -61,813.56 fill=#000000
+      Fill 137 (VECTOR) 6x6 @ -61,813.56 fill=#C54716
+    Group 142 (GROUP) 6.42x6 @ -28.01,813.56
+      Clip 141 (VECTOR) 6.42x6 @ -28.01,813.56 fill=#000000
+      Fill 140 (VECTOR) 6.42x6 @ -28.01,813.56 fill=#C54716
+    Group 145 (GROUP) 6.42x6 @ -44.51,813.56
+      Clip 144 (VECTOR) 6.42x6 @ -44.51,813.56 fill=#000000
+      Fill 143 (VECTOR) 6.42x6 @ -44.51,813.56 fill=#C54716
+    Group 148 (GROUP) 6.4x6 @ -11.5,813.56
+      Clip 147 (VECTOR) 6.4x6 @ -11.5,813.56 fill=#000000
+      Fill 146 (VECTOR) 6.4x6 @ -11.5,813.56 fill=#C54716
+    Group 151 (GROUP) 6.4x6 @ 5.4,813.56
+      Clip 150 (VECTOR) 6.4x6 @ 5.4,813.56 fill=#000000
+      Fill 149 (VECTOR) 6.4x6 @ 5.4,813.56 fill=#C54716
+    Group 154 (GROUP) 6.42x6 @ 38.39,813.56
+      Clip 153 (VECTOR) 6.42x6 @ 38.39,813.56 fill=#000000
+      Fill 152 (VECTOR) 6.42x6 @ 38.39,813.56 fill=#C54716
+    Group 157 (GROUP) 6.42x6 @ 21.89,813.56
+      Clip 156 (VECTOR) 6.42x6 @ 21.89,813.56 fill=#000000
+      Fill 155 (VECTOR) 6.42x6 @ 21.89,813.56 fill=#C54716
+    Group 160 (GROUP) 6.4x6 @ 55.3,813.56
+      Clip 159 (VECTOR) 6.4x6 @ 55.3,813.56 fill=#000000
+      Fill 158 (VECTOR) 6.4x6 @ 55.3,813.56 fill=#C54716
+  Group 162 (GROUP) 122.7x111.56 @ 1377,1696
+    Fill 1 (VECTOR) 6x6 @ 1377,1709.56 fill=#C54716
+    Fill 3 (VECTOR) 6x6 @ 1410,1709.56 fill=#C54716
+    Fill 5 (VECTOR) 6x6 @ 1394,1709.56 fill=#C54716
+    Fill 7 (VECTOR) 6x6 @ 1427,1709.56 fill=#C54716
+    Fill 9 (VECTOR) 6x6 @ 1444,1709.56 fill=#C54716
+    Fill 11 (VECTOR) 6x6 @ 1477,1709.56 fill=#C54716
+    Fill 13 (VECTOR) 6x6 @ 1460,1709.56 fill=#C54716
+    Group 17 (GROUP) 6.4x6.4 @ 1493.3,1709.34
+      Clip 16 (VECTOR) 6.4x6.4 @ 1493.3,1709.34 fill=#000000
+      Fill 15 (VECTOR) 6.4x6.4 @ 1493.3,1709.34 fill=#C54716
+    Fill 18 (VECTOR) 6x6 @ 1377,1696.56 fill=#C54716
+    Fill 20 (VECTOR) 6x6 @ 1410,1696.56 fill=#C54716
+    Fill 22 (VECTOR) 6x6 @ 1394,1696.56 fill=#C54716
+    Fill 24 (VECTOR) 6x6 @ 1427,1696.56 fill=#C54716
+    Fill 26 (VECTOR) 6x6 @ 1444,1696.56 fill=#C54716
+    Fill 28 (VECTOR) 6x6 @ 1477,1696.56 fill=#C54716
+    Fill 30 (VECTOR) 6x6 @ 1460,1696.56 fill=#C54716
+    Group 34 (GROUP) 6.4x6.4 @ 1493.3,1696
+      Clip 33 (VECTOR) 6.4x6.4 @ 1493.3,1696 fill=#000000
+      Fill 32 (VECTOR) 6.4x6.4 @ 1493.3,1696 fill=#C54716
+    Fill 35 (VECTOR) 6x6 @ 1377,1722.56 fill=#C54716
+    Fill 37 (VECTOR) 6x6 @ 1410,1722.56 fill=#C54716
+    Fill 39 (VECTOR) 6x6 @ 1394,1722.56 fill=#C54716
+    Fill 41 (VECTOR) 6x6 @ 1427,1722.56 fill=#C54716
+    Fill 43 (VECTOR) 6x6 @ 1444,1722.56 fill=#C54716
+    Fill 45 (VECTOR) 6x6 @ 1477,1722.56 fill=#C54716
+    Fill 47 (VECTOR) 6x6 @ 1460,1722.56 fill=#C54716
+    Group 51 (GROUP) 6.4x6.4 @ 1493.3,1722.69
+      Clip 50 (VECTOR) 6.4x6.4 @ 1493.3,1722.69 fill=#000000
+      Fill 49 (VECTOR) 6.4x6.4 @ 1493.3,1722.69 fill=#C54716
+    Fill 52 (VECTOR) 6x6 @ 1377,1735.56 fill=#C54716
+    Fill 54 (VECTOR) 6x6 @ 1410,1735.56 fill=#C54716
+    Fill 56 (VECTOR) 6x6 @ 1394,1735.56 fill=#C54716
+    Fill 58 (VECTOR) 6x6 @ 1427,1735.56 fill=#C54716
+    Fill 60 (VECTOR) 6x6 @ 1444,1735.56 fill=#C54716
+    Fill 62 (VECTOR) 6x6 @ 1477,1735.56 fill=#C54716
+    Fill 64 (VECTOR) 6x6 @ 1460,1735.56 fill=#C54716
+    Group 68 (GROUP) 6.4x6.4 @ 1493.3,1736.03
+      Clip 67 (VECTOR) 6.4x6.4 @ 1493.3,1736.03 fill=#000000
+      Fill 66 (VECTOR) 6.4x6.4 @ 1493.3,1736.03 fill=#C54716
+    Fill 69 (VECTOR) 6x6 @ 1377,1749.56 fill=#C54716
+    Fill 71 (VECTOR) 6x6 @ 1410,1749.56 fill=#C54716
+    Fill 73 (VECTOR) 6x6 @ 1394,1749.56 fill=#C54716
+    Fill 75 (VECTOR) 6x6 @ 1427,1749.56 fill=#C54716
+    Fill 77 (VECTOR) 6x6 @ 1444,1749.56 fill=#C54716
+    Fill 79 (VECTOR) 6x6 @ 1477,1749.56 fill=#C54716
+    Fill 81 (VECTOR) 6x6 @ 1460,1749.56 fill=#C54716
+    Group 85 (GROUP) 6.4x6.4 @ 1493.3,1748.78
+      Clip 84 (VECTOR) 6.4x6.4 @ 1493.3,1748.78 fill=#000000
+      Fill 83 (VECTOR) 6.4x6.4 @ 1493.3,1748.78 fill=#C54716
+    Fill 86 (VECTOR) 6x6 @ 1377,1762.56 fill=#C54716
+    Fill 88 (VECTOR) 6x6 @ 1410,1762.56 fill=#C54716
+    Fill 90 (VECTOR) 6x6 @ 1394,1762.56 fill=#C54716
+    Fill 92 (VECTOR) 6x6 @ 1427,1762.56 fill=#C54716
+    Fill 94 (VECTOR) 6x6 @ 1444,1762.56 fill=#C54716
+    Fill 96 (VECTOR) 6x6 @ 1477,1762.56 fill=#C54716
+    Fill 98 (VECTOR) 6x6 @ 1460,1762.56 fill=#C54716
+    Group 102 (GROUP) 6.4x6.4 @ 1493.3,1762.12
+      Clip 101 (VECTOR) 6.4x6.4 @ 1493.3,1762.12 fill=#000000
+      Fill 100 (VECTOR) 6.4x6.4 @ 1493.3,1762.12 fill=#C54716
+    Fill 103 (VECTOR) 6x6 @ 1377,1775.56 fill=#C54716
+    Fill 105 (VECTOR) 6x6 @ 1410,1775.56 fill=#C54716
+    Fill 107 (VECTOR) 6x6 @ 1394,1775.56 fill=#C54716
+    Fill 109 (VECTOR) 6x6 @ 1427,1775.56 fill=#C54716
+    Fill 111 (VECTOR) 6x6 @ 1444,1775.56 fill=#C54716
+    Fill 113 (VECTOR) 6x6 @ 1477,1775.56 fill=#C54716
+    Fill 115 (VECTOR) 6x6 @ 1460,1775.56 fill=#C54716
+    Group 119 (GROUP) 6.4x6.4 @ 1493.3,1775.47
+      Clip 118 (VECTOR) 6.4x6.4 @ 1493.3,1775.47 fill=#000000
+      Fill 117 (VECTOR) 6.4x6.4 @ 1493.3,1775.47 fill=#C54716
+    Fill 120 (VECTOR) 6x6 @ 1377,1788.56 fill=#C54716
+    Fill 122 (VECTOR) 6x6 @ 1410,1788.56 fill=#C54716
+    Fill 124 (VECTOR) 6x6 @ 1394,1788.56 fill=#C54716
+    Fill 126 (VECTOR) 6x6 @ 1427,1788.56 fill=#C54716
+    Fill 128 (VECTOR) 6x6 @ 1444,1788.56 fill=#C54716
+    Fill 130 (VECTOR) 6x6 @ 1477,1788.56 fill=#C54716
+    Fill 132 (VECTOR) 6x6 @ 1460,1788.56 fill=#C54716
+    Group 136 (GROUP) 6.4x6.4 @ 1493.3,1788.81
+      Clip 135 (VECTOR) 6.4x6.4 @ 1493.3,1788.81 fill=#000000
+      Fill 134 (VECTOR) 6.4x6.4 @ 1493.3,1788.81 fill=#C54716
+    Group 139 (GROUP) 6x6 @ 1377,1801.56
+      Clip 138 (VECTOR) 6x6 @ 1377,1801.56 fill=#000000
+      Fill 137 (VECTOR) 6x6 @ 1377,1801.56 fill=#C54716
+    Group 142 (GROUP) 6.42x6 @ 1409.99,1801.56
+      Clip 141 (VECTOR) 6.42x6 @ 1409.99,1801.56 fill=#000000
+      Fill 140 (VECTOR) 6.42x6 @ 1409.99,1801.56 fill=#C54716
+    Group 145 (GROUP) 6.42x6 @ 1393.49,1801.56
+      Clip 144 (VECTOR) 6.42x6 @ 1393.49,1801.56 fill=#000000
+      Fill 143 (VECTOR) 6.42x6 @ 1393.49,1801.56 fill=#C54716
+    Group 148 (GROUP) 6.4x6 @ 1426.5,1801.56
+      Clip 147 (VECTOR) 6.4x6 @ 1426.5,1801.56 fill=#000000
+      Fill 146 (VECTOR) 6.4x6 @ 1426.5,1801.56 fill=#C54716
+    Group 151 (GROUP) 6.4x6 @ 1443.4,1801.56
+      Clip 150 (VECTOR) 6.4x6 @ 1443.4,1801.56 fill=#000000
+      Fill 149 (VECTOR) 6.4x6 @ 1443.4,1801.56 fill=#C54716
+    Group 154 (GROUP) 6.42x6 @ 1476.39,1801.56
+      Clip 153 (VECTOR) 6.42x6 @ 1476.39,1801.56 fill=#000000
+      Fill 152 (VECTOR) 6.42x6 @ 1476.39,1801.56 fill=#C54716
+    Group 157 (GROUP) 6.42x6 @ 1459.89,1801.56
+      Clip 156 (VECTOR) 6.42x6 @ 1459.89,1801.56 fill=#000000
+      Fill 155 (VECTOR) 6.42x6 @ 1459.89,1801.56 fill=#C54716
+    Group 160 (GROUP) 6.4x6 @ 1493.3,1801.56
+      Clip 159 (VECTOR) 6.4x6 @ 1493.3,1801.56 fill=#000000
+      Fill 158 (VECTOR) 6.4x6 @ 1493.3,1801.56 fill=#C54716
+  From Klickpin.com- Trending bridal shower themes that feel curated elegant and easy enough to recreate this weekend for your next Pinterest save-p 1 (RECTANGLE) 1581x655 @ -98,-37 fill=image
+  Rectangle 1 (VECTOR) 1440x611 @ 0,0 fill=gradient_linear
+  Footer (INSTANCE) 1454x384.67 @ -7,2583 fill=#2B1D14 [VERTICAL]
+    Container (FRAME) 1280x384.67 @ 80,2583 [VERTICAL pad=64/24/32/24]
+      Container (FRAME) 736x190 @ 352,2647
+        Container (FRAME) 297x179.5 @ 946,2646.74 [VERTICAL]
+          {E2E66FB0-8A42-40AA-991C-0F4FC8CD0D61} 1 (RECTANGLE) 210.5x85.5 @ 989.25,2646.74 fill=image
+          Paragraph (FRAME) 206x55 @ 991.5,2732.24 [VERTICAL pad=16/0/0/0]
+            مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيق (TEXT) 206x39 @ 991.5,2748.24 fill=#F9EDE8
+              ↳ Cairo 400 13/19.5 ls=0 RIGHT
+              ↳ "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة."
+          Paragraph (FRAME) 297x39 @ 946,2787.24 [VERTICAL pad=20/0/0/0]
+            ♪ من رحم المعاناة ولدت الموسيقى (TEXT) 200x20 @ 994.5,2807.24 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "♪ من رحم المعاناة ولدت الموسيقى"
+        Container (FRAME) 156x190 @ 642,2646.74 [VERTICAL]
+          Heading 4 (FRAME) 156x20 @ 642,2646.74 [VERTICAL]
+            استكشف (TEXT) 57x20 @ 691.5,2646.74 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "استكشف"
+          Link (FRAME) 155.7x42 @ 642,2666.74 [VERTICAL pad=20/0/0/0]
+            الفنانون (TEXT) 44x20 @ 697.85,2686.74 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الفنانون"
+          Link (FRAME) 155.7x30.8 @ 642,2708.74 [VERTICAL pad=8.8/0/0/0]
+            الفعاليات (TEXT) 50x20 @ 694.85,2717.54 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الفعاليات"
+          Link (FRAME) 155.7x30.8 @ 642,2739.54 [VERTICAL pad=8.8/0/0/0]
+            الأخبار (TEXT) 31x20 @ 704.35,2748.34 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الأخبار"
+          Link (FRAME) 155.7x39.6 @ 642,2770.34 [VERTICAL pad=8.8/0/8.8/0]
+            الأكاديمية (TEXT) 55x20 @ 692.35,2779.14 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الأكاديمية"
+        Container (FRAME) 156x190 @ 442,2647 [VERTICAL]
+          Heading 4 (FRAME) 156x20 @ 442,2647 [VERTICAL]
+            تواصل (TEXT) 38x20 @ 501,2647 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "تواصل"
+          Paragraph (FRAME) 155.69x40 @ 442,2667 [VERTICAL pad=20/0/0/0]
+            hello@andalusia.art (TEXT) 111x20 @ 464.34,2687 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "hello@andalusia.art"
+          Paragraph (FRAME) 155.69x28 @ 442,2707 [VERTICAL pad=8/0/0/0]
+            Instagram · TikTok (TEXT) 100x20 @ 469.84,2715 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "Instagram · TikTok"
+          Paragraph (FRAME) 155.69x36 @ 442,2735 [VERTICAL pad=8/0/8/0]
+            لبنان · المغرب · الخليج (TEXT) 112x20 @ 463.84,2743 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "لبنان · المغرب · الخليج"
+        Container (FRAME) 235x190 @ 159,2646.74 [VERTICAL]
+          Heading 4 (FRAME) 235x24 @ 159,2646.74 [VERTICAL]
+            حفلتك القادمة تبدأ من هنا. (TEXT) 213x24 @ 159,2646.74 fill=#ECE6D0
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "حفلتك القادمة تبدأ من هنا."
+          Paragraph:margin (FRAME) 235x73.4 @ 159,2670.74 [VERTICAL pad=10.4/0/24/0]
+            Paragraph (FRAME) 235x39 @ 159,2681.14 [VERTICAL]
+              نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن (TEXT) 201x39 @ 159,2681.14 fill=#F9EDE8
+                ↳ Cairo 500 13/19.5 ls=0 RIGHT
+                ↳ "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة."
+          button (INSTANCE) 150x48 @ 159,2744.14 fill=#C54716 r=12 [HORIZONTAL gap=10 pad=10/10/10/10]
+            placeholder (TEXT) 234x23 @ 117,2756.64 fill=#ECE6D0
+              ↳ SF Pro 700 16/22.4 ls=0 CENTER
+              ↳ "ابدأ حجزك الآن ♪"
+      Container:margin (FRAME) 1232x98.67 @ 104,2837 [VERTICAL pad=56/0/0/0]
+        Container (FRAME) 1232x42.67 @ 104,2893 [HORIZONTAL gap=12 pad=24/0/0/0]
+          Text (FRAME) 125x15 @ 104,2919.17 [VERTICAL]
+            موسيقى · ثقافة · قدرة (TEXT) 125x15 @ 104,2919.17 fill=#F9EDE8
+              ↳ Cairo 600 9.92/14.88 ls=1.39 LEFT
+              ↳ "موسيقى · ثقافة · قدرة"
+          Text (FRAME) 205x18 @ 1131,2917.67 [VERTICAL]
+            © أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة (TEXT) 205x18 @ 1131,2917.67 fill=#F9EDE8
+              ↳ Cairo 400 12/18 ls=0 LEFT
+              ↳ "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة"
+  Heading 1 (FRAME) 236x64 @ 602,241 [VERTICAL pad=0/0/20/0]
+    سارة الصوت (TEXT) 204x44 @ 634,241 fill=#ECE6D0
+      ↳ Qahwa Arabic 700 48/44 ls=0 LEFT
+      ↳ "سارة الصوت"
+    Paragraph (FRAME) 357.67x52 @ 480.33,285 [VERTICAL pad=0/0/24/0]
+      ♪ "الصوت هو المرآة الأصدق للروح." (TEXT) 236x28 @ 602,285 fill=#C54716
+        ↳ Cairo 400 16.8/27.72 ls=0 LEFT
+        ↳ "♪ "الصوت هو المرآة الأصدق للروح.""
+  مغنية مصرية تختصص في الطرب الأصيل والغناء العاطفي. (TEXT) 458x56 @ 495,332 fill=#FFFFFF
+    ↳ Cairo 400 14.72/27.97 ls=0 CENTER
+    ↳ "مغنية مصرية تختصص في الطرب الأصيل والغناء العاطفي. صوتها يحمل دفء الأرض وعمق التراث، مع لمسة معاصرة تلامس الأجيال."
+  Container (FRAME) 357.67x47.07 @ 549,449 [HORIZONTAL gap=16]
+    Link (FRAME) 135x47.07 @ 549,449 fill=#C54716 [HORIZONTAL gap=7.2 pad=12/28/12/28]
+      احجز الفنان ♪ (TEXT) 79x22 @ 577,461.53 fill=#ECE6D0
+        ↳ Cairo 700 14.4/21.6 ls=0 LEFT
+        ↳ "احجز الفنان ♪"
+    Button (FRAME) 147.47x47.07 @ 700,449 [HORIZONTAL gap=7.2 pad=11.2/26.4/11.2/26.4]
+      تواصل مباشرة (TEXT) 92x22 @ 727.73,461.53 fill=#ECE6D0
+        ↳ Cairo 700 14.4/21.6 ls=0 CENTER
+        ↳ "تواصل مباشرة"
+  Section (FRAME) 1280x450.98 @ 80,911 [VERTICAL pad=24/40/24/40]
+    Heading 2 (FRAME) 1200x59 @ 120,935 [VERTICAL pad=16/0/0/0]
+      الفن في لحظته الأصدق (TEXT) 406x43 @ 517,951 fill=#000000
+        ↳ Cairo 900 48/42.27 ls=-0.56 RIGHT
+        ↳ "الفن في لحظته الأصدق"
+    Container:margin (FRAME) 1200x343.98 @ 120,994 [VERTICAL pad=48/0/0/0]
+      Container (FRAME) 859.33x295.98 @ 290.33,1042 [GRID]
+        Container (FRAME) 265.68x295.98 @ 883.99,1042 r=12 [VERTICAL]
+          Image (FRAME) 266x267 @ 883.67,1042 fill=image
+        Container (FRAME) 295.98x295.98 @ 572.01,1042 fill=#C54716 r=12 [VERTICAL gap=24 pad=48/40/48/40]
+          Container (FRAME) 26x56 @ 707,1089.49 [VERTICAL]
+            ♪ (TEXT) 26x56 @ 707,1089.49 fill=#ECE6D0/0.79
+              ↳ Cairo 400 56/56 ls=0 RIGHT
+              ↳ "♪"
+          Paragraph (FRAME) 216x80 @ 612,1169.49 [VERTICAL]
+            "الصوت هو المرآة الأصدق للروح — لا تكذب على جمهورك (TEXT) 216x80 @ 612,1169.49 fill=#ECE6D0
+              ↳ Cairo 700 16/26.4 ls=0 CENTER
+              ↳ ""الصوت هو المرآة الأصدق للروح — لا تكذب على جمهورك أبداً.""
+          Paragraph (FRAME) 84x17 @ 678,1273.49 [VERTICAL]
+            — ريم الحسيني (TEXT) 84x17 @ 678,1273.49 fill=#ECE6D0
+              ↳ Cairo 500 11.2/16.8 ls=1.12 RIGHT
+              ↳ "— ريم الحسيني"
+        Container (FRAME) 265.68x295.98 @ 290.33,1042 r=12 [VERTICAL]
+          Image (FRAME) 265.68x265.68 @ 290.33,1042 fill=image
+  Section (FRAME) 1449x498 @ -5,2085 fill=image
+    Container (FRAME) 1449x498 @ -5,2085 fill=image
+    Container (FRAME) 1433x66 @ -5,2142.2 [VERTICAL]
+      ♪ (TEXT) 20x66 @ 701.5,2142.2 fill=#C54716
+        ↳ Cairo 400 44/66 ls=0 CENTER
+        ↳ "♪"
+    Heading 2 (FRAME) 1213x74 @ 51,2262 [VERTICAL pad=24/0/0/0]
+      تريد ريم الحسيني في مناسبتك؟ (TEXT) 636x50 @ 339.5,2286 fill=#ECE6D0
+        ↳ Qahwa Arabic 700 48/49.31 ls=-0.66 CENTER
+        ↳ "تريد ريم الحسيني في مناسبتك؟"
+    Paragraph (FRAME) 1433x91 @ -5,2336 [VERTICAL pad=20/0/40/0]
+      احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع ل (TEXT) 319x31 @ 552,2356 fill=#ECE6D0/0.45
+        ↳ Cairo 400 16/30.4 ls=0 CENTER
+        ↳ "تواصل معنا وسنصمم لك تجربة موسيقية لا تُنسى."
+    Container (FRAME) 1433x54 @ -5,2427.2
+      Link (FRAME) 188x54.4 @ 617,2427 fill=#C54716 r=16 [HORIZONTAL gap=7.2 pad=15.2/40/15.2/40]
+        ابدأ حجزك الآن ♪ (TEXT) 108x24 @ 657,2442.2 fill=#ECE6D0
+          ↳ Cairo 700 16/24 ls=0 CENTER
+          ↳ "ابدأ حجزك الآن ♪"
+  Section (FRAME) 1431x256.83 @ 4,623 [VERTICAL pad=48/0/48/0]
+    Container:margin (FRAME) 1431x160 @ 4,671.83 [VERTICAL]
+      Container (FRAME) 1200x160 @ 119.5,671.83 [HORIZONTAL gap=40 pad=0/32/0/32]
+        Container (FRAME) 160x160 @ 151.5,671.83 fill=image r=27962000
+        Container (FRAME) 936x155 @ 351.5,674.33 [VERTICAL]
+          Heading 3 (FRAME) 936x47 @ 351.5,674.33 [VERTICAL]
+            سارة الصوت (TEXT) 167x47 @ 1120.5,674.33 fill=#2B1D14
+              ↳ Cairo 700 31/46.5 ls=0 RIGHT
+              ↳ "سارة الصوت"
+          Paragraph (FRAME) 936.02x28 @ 351.5,721.33 [VERTICAL pad=8/0/0/0]
+            الصوت • الغناء الأندلسي • الطرب الأصيل (TEXT) 255x20 @ 1032.52,729.33 fill=#C54716
+              ↳ Cairo 700 14/20 ls=0.35 RIGHT
+              ↳ "الصوت • الغناء الأندلسي • الطرب الأصيل"
+          Paragraph (FRAME) 936.02x80 @ 351.5,749.33 [VERTICAL pad=16/0/0/0]
+            سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل وال (TEXT) 937x64 @ 350.52,765.33 fill=#2B1D14/0.7
+              ↳ Cairo 400 16/32 ls=0 RIGHT
+              ↳ "سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل والغناء الأندلسي، صوتها يجمع بين الأصالة والمعاصرة، تجوب المسارح العربية والدولية منذ أكثر من عقد من الزمن."
+  Section (FRAME) 1440x647.16 @ 0,1442 fill=#1B1B1B [VERTICAL pad=96/0/96/0]
+    Heading 2 (FRAME) 144.36x52 @ 647.82,1538 [VERTICAL pad=12/0/0/0]
+      مسيرتها الفنية (TEXT) 251x40 @ 594.5,1550 fill=#F9EDE8
+        ↳ Qahwa Arabic 700 48/40 ls=0 LEFT
+        ↳ "مسيرتها الفنية"
+    Container:margin (FRAME) 1440x403.16 @ 0,1590 [VERTICAL]
+      Container (FRAME) 1200x403.16 @ 120,1590 [VERTICAL pad=0/32/0/32]
+        Container (FRAME) 1136.02x37.67 @ 152,1590 [HORIZONTAL gap=16]
+          Container (FRAME) 259.33x37.67 @ 1028.68,1590 [HORIZONTAL gap=8]
+            Button (FRAME) 74.67x37.67 @ 1028.68,1590 fill=#FFFFFF/0.08 r=27962000 [VERTICAL pad=8/20/8/20]
+              أغاني (TEXT) 33x20 @ 1049.52,1598.83 fill=#F9EDE8/0.7
+                ↳ Cairo 500 14/20 ls=0 CENTER
+                ↳ "أغاني"
+            Button (FRAME) 79.67x37.67 @ 1111.35,1590 fill=#FFFFFF/0.08 r=27962000 [VERTICAL pad=8/20/8/20]
+              حفلات (TEXT) 38x20 @ 1132.18,1598.83 fill=#F9EDE8/0.7
+                ↳ Cairo 500 14/20 ls=0 CENTER
+                ↳ "حفلات"
+            Button (FRAME) 89x36 @ 1199.02,1590 fill=#C54716 r=27962000 [VERTICAL pad=8/20/8/20]
+              ألبومات (TEXT) 49x20 @ 1219.02,1598 fill=#FFFFFF
+                ↳ Cairo 700 14/20 ls=0 CENTER
+                ↳ "ألبومات"
+        Container:margin (FRAME) 1136.02x365.49 @ 152,1627.67 [VERTICAL pad=40/0/0/0]
+          Container (FRAME) 1136.02x325.49 @ 152,1667.67 [GRID]
+            Container (FRAME) 269.01x325.49 @ 1019,1667.67 r=16 [VERTICAL]
+              Container (FRAME) 269.01x269 @ 1019,1667.67 fill=#2A1D13 r=14 [VERTICAL]
+                Image (نسمة من الأندلس) (FRAME) 269.01x269 @ 1019,1667.67 fill=image
+                Text (FRAME) 80x20 @ 1205.49,1679.66 fill=#C54716 r=27962000 [VERTICAL pad=4/10/4/10]
+                  ألبوم استوديو (TEXT) 60x12 @ 1215.49,1683.66 fill=#FFFFFF
+                    ↳ Cairo 700 8/12 ls=0.8 LEFT
+                    ↳ "ألبوم استوديو"
+              Paragraph (FRAME) 269.01x36 @ 1019,1936.66 [VERTICAL pad=16/0/0/0]
+                نسمة من الأندلس (TEXT) 127x20 @ 1161.01,1952.66 fill=#F0EBE1
+                  ↳ Cairo 700 16/20 ls=0 RIGHT
+                  ↳ "نسمة من الأندلس"
+              Container (FRAME) 269.01x21 @ 1019,1972.66 [HORIZONTAL pad=4/0/0/0]
+                Paragraph (FRAME) 31x15 @ 1019,1977.66 [VERTICAL]
+                  ١٢ أغنية (TEXT) 31x15 @ 1019,1977.66 fill=#F9EDE8/0.4
+                    ↳ Cairo 400 10/15 ls=0 LEFT
+                    ↳ "١٢ أغنية"
+                Paragraph (FRAME) 20x17 @ 1268.01,1976.66 [VERTICAL]
+                  ٢٠٢٣ (TEXT) 20x17 @ 1268.01,1976.66 fill=#C54716
+                    ↳ DM Mono 400 11/16.5 ls=0 LEFT
+                    ↳ "٢٠٢٣"
+            Container (FRAME) 269x325.49 @ 730.01,1667.67 r=16 [VERTICAL]
+              Container (FRAME) 269x269.01 @ 730.01,1667.67 fill=#2A1D13 r=14 [VERTICAL]
+                Image (حنين) (FRAME) 269x269.01 @ 730.01,1667.67 fill=image
+                Text (FRAME) 80x20 @ 916.51,1679.66 fill=#C54716 r=27962000 [VERTICAL pad=4/10/4/10]
+                  ألبوم استوديو (TEXT) 60x12 @ 926.51,1683.66 fill=#FFFFFF
+                    ↳ Cairo 700 8/12 ls=0.8 LEFT
+                    ↳ "ألبوم استوديو"
+              Paragraph (FRAME) 269x36 @ 730.01,1936.68 [VERTICAL pad=16/0/0/0]
+                حنين (TEXT) 33x20 @ 966,1952.68 fill=#F0EBE1
+                  ↳ Cairo 700 16/20 ls=0 RIGHT
+                  ↳ "حنين"
+              Container (FRAME) 269x21 @ 730.01,1972.68 [HORIZONTAL pad=4/0/0/0]
+                Paragraph (FRAME) 31x15 @ 730.01,1977.68 [VERTICAL]
+                  ٩ أغاني (TEXT) 31x15 @ 730.01,1977.68 fill=#F9EDE8/0.4
+                    ↳ Cairo 400 10/15 ls=0 LEFT
+                    ↳ "٩ أغاني"
+                Paragraph (FRAME) 17x17 @ 982,1976.68 [VERTICAL]
+                  ٢٠٢١ (TEXT) 17x17 @ 982,1976.68 fill=#C54716
+                    ↳ DM Mono 400 11/16.5 ls=0 LEFT
+                    ↳ "٢٠٢١"
+            Container (FRAME) 269.01x325.49 @ 441,1667.67 r=16 [VERTICAL]
+              Container (FRAME) 269.01x269 @ 441,1667.67 fill=#2A1D13 r=14 [VERTICAL]
+                Image (ليالي بيروت) (FRAME) 269.01x269 @ 441,1667.67 fill=image
+                Text (FRAME) 58x20 @ 645.29,1679.66 fill=#C54716 r=27962000 [VERTICAL pad=4/10/4/10]
+                  ألبوم حي (TEXT) 38x12 @ 655.29,1683.66 fill=#FFFFFF
+                    ↳ Cairo 700 8/12 ls=0.8 LEFT
+                    ↳ "ألبوم حي"
+              Paragraph (FRAME) 269.01x36 @ 441,1936.66 [VERTICAL pad=16/0/0/0]
+                ليالي بيروت (TEXT) 78x20 @ 632.01,1952.66 fill=#F0EBE1
+                  ↳ Cairo 700 16/20 ls=0 RIGHT
+                  ↳ "ليالي بيروت"
+              Container (FRAME) 269.01x21 @ 441,1972.66 [HORIZONTAL pad=4/0/0/0]
+                Paragraph (FRAME) 31x15 @ 441,1977.66 [VERTICAL]
+                  ١٠ أغاني (TEXT) 31x15 @ 441,1977.66 fill=#F9EDE8/0.4
+                    ↳ Cairo 400 10/15 ls=0 LEFT
+                    ↳ "١٠ أغاني"
+                Paragraph (FRAME) 17x17 @ 693.01,1976.66 [VERTICAL]
+                  ٢٠١٩ (TEXT) 17x17 @ 693.01,1976.66 fill=#C54716
+                    ↳ DM Mono 400 11/16.5 ls=0 LEFT
+                    ↳ "٢٠١٩"
+            Container (FRAME) 269x325.49 @ 152,1667.67 r=16 [VERTICAL]
+              Container (FRAME) 269x269.01 @ 152,1667.67 fill=#2A1D13 r=14 [VERTICAL]
+                Image (عطر الماضي) (FRAME) 269x269.01 @ 152,1667.67 fill=image
+                Text (FRAME) 80x20 @ 338.5,1679.66 fill=#C54716 r=27962000 [VERTICAL pad=4/10/4/10]
+                  ألبوم استوديو (TEXT) 60x12 @ 348.5,1683.66 fill=#FFFFFF
+                    ↳ Cairo 700 8/12 ls=0.8 LEFT
+                    ↳ "ألبوم استوديو"
+              Paragraph (FRAME) 269x36 @ 152,1936.68 [VERTICAL pad=16/0/0/0]
+                عطر الماضي (TEXT) 85x20 @ 336,1952.68 fill=#F0EBE1
+                  ↳ Cairo 700 16/20 ls=0 RIGHT
+                  ↳ "عطر الماضي"
+              Container (FRAME) 269x21 @ 152,1972.68 [HORIZONTAL pad=4/0/0/0]
+                Paragraph (FRAME) 32x15 @ 152,1977.68 [VERTICAL]
+                  ٨ أغاني (TEXT) 32x15 @ 152,1977.68 fill=#F9EDE8/0.4
+                    ↳ Cairo 400 10/15 ls=0 LEFT
+                    ↳ "٨ أغاني"
+                Paragraph (FRAME) 18x17 @ 403,1976.68 [VERTICAL]
+                  ٢٠١٧ (TEXT) 18x17 @ 403,1976.68 fill=#C54716
+                    ↳ DM Mono 400 11/16.5 ls=0 LEFT
+                    ↳ "٢٠١٧"
+  Frame 30 (INSTANCE) 1123x85 @ 158,40 [VERTICAL gap=116]
+    Frame 7 (FRAME) 1123x85 @ 158,40 fill=#F2EEE0 r=32 [HORIZONTAL gap=85 pad=24/24/24/24]
+      Frame 6 (FRAME) 757x44 @ 200.5,60.5 [HORIZONTAL gap=141]
+        Frame 37 (FRAME) 189x44 @ 200.5,60.5 [HORIZONTAL gap=16]
+          Frame 4 (INSTANCE) 149x44 @ 200.5,60.5 fill=#C54716 r=16 [HORIZONTAL gap=10 pad=10/10/10/10]
+            أحجز الآن (TEXT) 61x24 @ 244.5,70.5 fill=#F9EDE8
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "أحجز الآن"
+          ri:english-input (FRAME) 24x24 @ 365.5,70.5
+            Vector (VECTOR) 21x16 @ 367.5,74.5 fill=#000000
+        Frame 2 (FRAME) 427x24 @ 530.5,70.5 [HORIZONTAL gap=32]
+          Link (INSTANCE) 68x24 @ 530.5,70.5 [VERTICAL]
+            الفنانين (TEXT) 68x24 @ 530.5,70.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الفعاليات"
+          Link (INSTANCE) 42x24 @ 630.5,70.5 [VERTICAL]
+            الفنانين (TEXT) 42x24 @ 630.5,70.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الأخبار"
+          Link (INSTANCE) 55x24 @ 704.5,70.5 [VERTICAL]
+            الفنانين (TEXT) 55x24 @ 704.5,70.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الفنانين"
+          Link (INSTANCE) 74x24 @ 791.5,70.5 [VERTICAL]
+            الفنانين (TEXT) 74x24 @ 791.5,70.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الأكاديمية"
+          Link (INSTANCE) 60x24 @ 897.5,70.5 [VERTICAL]
+            الفنانين (TEXT) 60x24 @ 897.5,70.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الرئيسية "
+      {08021A4D-2034-4BE6-921C-4EDFD089381B} 1 (RECTANGLE) 196x85 @ 1042.5,40 fill=image

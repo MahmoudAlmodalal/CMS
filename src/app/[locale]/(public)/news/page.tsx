@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
@@ -8,33 +9,38 @@ import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
 
 export const revalidate = 1800; // 30 minutes ISR as specified in APPLICATION_ARCHITECTURE.md
 
-export const metadata: Metadata = {
-  title: "الأخبار والمقالات الثقافية | فرقة أندلسيا",
-  description:
-    "مقالات متعمقة في تاريخ المقامات الموسيقية، تغطيات المهرجانات، وحوارات الفنانين وتوثيق التراث الأندلسي الأصيل.",
-  alternates: {
-    canonical: "/news",
-  },
-  openGraph: {
-    title: "الأخبار والمقالات الثقافية | فرقة أندلسيا",
-    description:
-      "مقالات متعمقة في تاريخ المقامات الموسيقية، تغطيات المهرجانات، وحوارات الفنانين وتوثيق التراث الأندلسي الأصيل.",
-    url: "/news",
-    locale: "ar_AR",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "الأخبار والمقالات الثقافية | فرقة أندلسيا",
-    description:
-      "مقالات متعمقة في تاريخ المقامات الموسيقية، تغطيات المهرجانات، وحوارات الفنانين وتوثيق التراث الأندلسي الأصيل.",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const path = locale === "ar" ? "/news" : "/en/news";
+  return {
+    title: t("newsTitle"),
+    description: t("newsDescription"),
+    alternates: { canonical: path },
+    openGraph: {
+      title: t("newsTitle"),
+      description: t("newsDescription"),
+      url: path,
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("newsTitle"),
+      description: t("newsDescription"),
+    },
+  };
+}
 
 export default async function NewsPage() {
-  const [articles, featuredArticles] = await Promise.all([
+  const [articles, featuredArticles, t] = await Promise.all([
     getPublishedArticles(),
     getFeaturedArticles(3),
+    getTranslations("page"),
   ]);
 
   const primaryArticle = featuredArticles[0] || articles[0];
@@ -46,22 +52,21 @@ export default async function NewsPage() {
   return (
     <div className="space-y-12 sm:space-y-16">
       <PageHero
-        eyebrow="مدونة التراث والموسيقى"
-        title="الأخبار والملفات الثقافية"
-        subtitle="حوارات وتغطيات وتفاصيل تحفظ ذاكرة الموسيقى العربية والتراث الأندلسي."
+        eyebrow={t("newsEyebrow")}
+        title={t("newsTitle")}
+        subtitle={t("newsSubtitle")}
       />
       <Container>
         {/* Page Header Header Kicker & Title */}
         <div className="sr-only space-y-3 text-start mb-8 sm:mb-12">
           <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">
-            مدونة التراث والموسيقى
+            {t("newsEyebrow")}
           </span>
           <h1 className="font-calligraphic text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-espresso">
-            الأخبار والمقالات الثقافية
+            {t("newsHiddenTitle")}
           </h1>
           <p className="text-sm sm:text-base text-brand-espresso/80 max-w-2xl leading-relaxed">
-            مقالات متعمقة في تاريخ المقامات الموسيقية، تغطيات المهرجانات الكبرى، وحوارات حصرية
-            مع نخبة الفنانين والحرفيين.
+            {t("newsHiddenSubtitle")}
           </p>
         </div>
 

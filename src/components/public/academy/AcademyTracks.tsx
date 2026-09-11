@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Container, Grid } from "@/components/ui/LayoutPrimitives";
 import { TrackCard } from "./TrackCard";
 import type { AcademyCourse } from "@/lib/dal/academy";
@@ -14,16 +15,18 @@ interface AcademyTracksProps {
  * - 3 Tracks Grid backed by academy_courses
  */
 export function AcademyTracks({ courses }: AcademyTracksProps) {
+  const t = useTranslations("academy");
+
   return (
     <section className="py-16 sm:py-20 lg:py-24" id="tracks">
       <Container>
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <h2 className="font-sans font-black text-[40px] text-brand-espresso mb-4 leading-[1.2]">
-            ثلاثة مسارات، موهبة واحدة
+            {t("tracksHeading")}
           </h2>
           <p className="text-base sm:text-lg text-gradscale-400 font-sans leading-relaxed">
-            برامج تخصصية صممت لتبدأ من صقل الشغف وتصل بك إلى خشبة المسرح والأداء الاحترافي.
+            {t("tracksSubtitle")}
           </p>
         </div>
 
@@ -36,7 +39,7 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
           </Grid>
         ) : (
           <div className="text-center py-12 bg-white rounded-card border border-brand-espresso-subtle">
-            <p className="text-gradscale-400 font-sans">لا توجد مسارات تعليمية متاحة حالياً.</p>
+            <p className="text-gradscale-400 font-sans">{t("tracksEmpty")}</p>
           </div>
         )}
       </Container>

@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 // NOTE: components use the `@/` alias (unresolvable under plain node --test),
 // so the widget contract is asserted via file-content checks per
 // tests/events-page.test.ts precedent. formatDuration lives in the
@@ -52,17 +53,20 @@ test("Task 39 — 3. Playback states: loading, missing-media, error + retry", ()
   // Loading / buffering
   assert.match(widget, /onLoadStart/);
   assert.match(widget, /onWaiting/);
-  assert.match(widget, /جارٍ تحميل المقطع الصوتي/);
+  assert.match(widget, /t\("loading"\)/);
+  assert.match(arMessages["player.loading"], /جارٍ تحميل المقطع الصوتي/);
   assert.match(widget, /aria-busy/);
 
   // Missing-media: empty URL renders a notice, never a broken <audio>
   assert.match(widget, /if\s*\(!track\.audio_file_url\)/);
-  assert.match(widget, /المقطع الصوتي غير متوفر حالياً/);
+  assert.match(widget, /t\("unavailable"\)/);
+  assert.match(arMessages["player.unavailable"], /المقطع الصوتي غير متوفر حالياً/);
 
   // Playback-error with retry
   assert.match(widget, /onError/);
   assert.match(widget, /role="alert"/);
-  assert.match(widget, /إعادة المحاولة/);
+  assert.match(widget, /t\("retry"\)/);
+  assert.equal(arMessages["player.retry"], "إعادة المحاولة");
   assert.match(widget, /audio\.load\(\)/);
 
   // Play promise rejection (autoplay policy / decode failure) surfaces error
@@ -80,12 +84,15 @@ test("Task 39 — 4. Keyboard access & bidi-safe timeline", () => {
 
   // Play/pause is a native button with label + pressed state
   assert.match(widget, /<button/);
-  assert.match(widget, /aria-label=\{isPlaying \? "إيقاف مؤقت" : "تشغيل"\}/);
+  assert.match(widget, /aria-label=\{isPlaying \? t\("pause"\) : t\("play"\)\}/);
+  assert.equal(arMessages["player.pause"], "إيقاف مؤقت");
+  assert.equal(arMessages["player.play"], "تشغيل");
   assert.match(widget, /aria-pressed=\{isPlaying\}/);
 
   // Seek uses a native range slider (arrow-key operable) with an Arabic label
   assert.match(widget, /type="range"/);
-  assert.match(widget, /aria-label=\{`التقديم في المقطع/);
+  assert.match(widget, /aria-label=\{t\("seek", \{ title: track\.title \}\)\}/);
+  assert.match(arMessages["player.seek"], /^التقديم في المقطع/);
   assert.match(widget, /onTimeUpdate/);
 
   // mm:ss readout isolated from RTL paragraph direction

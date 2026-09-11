@@ -19,18 +19,28 @@ test("RTL Foundation — 1. Arabic Characters and Typography", () => {
   assert.ok(arabicRegex.test(sampleArabic), "Sample text should only contain valid Arabic unicode characters");
   assert.ok(sampleArabic.includes("الأندلس"), "Arabic ligatures (Lam-Alef) preserve proper encoding");
 
-  // Verify Root Layout sets Arabic lang and RTL dir
-  const layoutContent = fs.readFileSync(path.resolve("src/app/layout.tsx"), "utf-8");
-  assert.ok(layoutContent.includes('lang="ar"'), 'Root HTML layout must declare lang="ar"');
-  assert.ok(layoutContent.includes('dir="rtl"'), 'Root HTML layout must declare dir="rtl"');
-  assert.ok(layoutContent.includes("Cairo"), "Layout must configure Cairo font for Arabic body typography");
+  // The public site is localised, so <html lang/dir> is derived from the active
+  // locale; the Arabic-only panel shell still hard-codes it.
+  const layoutContent = fs.readFileSync(path.resolve("src/app/[locale]/layout.tsx"), "utf-8");
+  assert.ok(layoutContent.includes("lang={locale}"), "Locale layout must declare lang from the active locale");
+  assert.ok(layoutContent.includes("dir={direction}"), "Locale layout must declare dir from the active locale");
+  assert.ok(
+    layoutContent.includes("localeDirection"),
+    "Locale layout must resolve direction through the locale -> direction map",
+  );
+  const adminLayout = fs.readFileSync(path.resolve("src/app/(admin)/layout.tsx"), "utf-8");
+  assert.ok(adminLayout.includes('lang="ar"'), 'Admin shell must declare lang="ar"');
+  assert.ok(adminLayout.includes('dir="rtl"'), 'Admin shell must declare dir="rtl"');
+
+  const fontsContent = fs.readFileSync(path.resolve("src/lib/fonts.ts"), "utf-8");
+  assert.ok(fontsContent.includes("Cairo"), "Fonts module must configure Cairo for Arabic body typography");
   // Display titles use the --font-display stack (Qahwa Arabic, Cairo fallback) defined
   // in globals.css — Figma specifies Qahwa/Cairo, not a third calligraphic face.
   // (Aref_Ruqaa was removed: absent from Figma and broke the Turbopack build.)
   const cssContent = fs.readFileSync(path.resolve("src/app/globals.css"), "utf-8");
   assert.ok(cssContent.includes("--font-display"), "Theme must define --font-display for display titles");
   assert.ok(cssContent.includes("Qahwa Arabic"), "Display stack must prefer Qahwa Arabic per Figma");
-  assert.ok(layoutContent.includes("DM_Mono"), "Layout must configure DM_Mono for dates and tabular numerals");
+  assert.ok(fontsContent.includes("DM_Mono"), "Fonts module must configure DM_Mono for dates and tabular numerals");
 });
 
 test("RTL Foundation — 2. Numbers & Numerical Localization", () => {
@@ -133,7 +143,18 @@ test("RTL Foundation — 7. Logical CSS Properties & No Manual Reversal Hacks", 
 
 test("RTL Foundation — 8. English LTR Extensibility Architecture", () => {
   const dirContent = fs.readFileSync(path.resolve("src/lib/direction.tsx"), "utf-8");
-  assert.ok(dirContent.includes("DirectionProvider"), "DirectionProvider manages document direction");
-  assert.ok(dirContent.includes("useDirection"), "useDirection hook exposes direction and toggle capability");
-  assert.ok(dirContent.includes('document.documentElement.setAttribute("dir"'), "Provider synchronizes HTML dir attribute dynamically");
+  assert.ok(dirContent.includes("DirectionProvider"), "DirectionProvider exposes the active direction");
+  assert.ok(dirContent.includes("useDirection"), "useDirection hook exposes direction and locale");
+  // Direction is rendered on <html> by the server, not patched onto the DOM after
+  // hydration, so there is no flash of the wrong direction on first paint.
+  assert.ok(
+    !dirContent.includes("document.documentElement"),
+    "Provider must not mutate the document element; direction is server-rendered",
+  );
+
+  const routing = fs.readFileSync(path.resolve("src/i18n/routing.ts"), "utf-8");
+  assert.ok(routing.includes('ar: "rtl"'), "Arabic must map to rtl");
+  assert.ok(routing.includes('en: "ltr"'), "English must map to ltr");
+  assert.ok(routing.includes('defaultLocale: "ar"'), "Arabic must remain the default locale");
+  assert.ok(routing.includes('localePrefix: "as-needed"'), "Arabic URLs must stay unprefixed");
 });
