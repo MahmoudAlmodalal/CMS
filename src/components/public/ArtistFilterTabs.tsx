@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ARTIST_CATEGORIES, type ArtistCategoryId } from "@/lib/types/artists";
 
 export interface ArtistFilterTabsProps {
@@ -22,9 +23,11 @@ export function ArtistFilterTabs({
   counts,
   className = "",
 }: ArtistFilterTabsProps) {
+  const t = useTranslations("artists");
+
   return (
     <nav
-      aria-label="تصنيفات الفنانين"
+      aria-label={t("filterTabs")}
       className={`w-full flex justify-center ${className}`}
     >
       <div
