@@ -1,0 +1,314 @@
+الحجز (FRAME) 1440x1953 @ 0,0 fill=#F9F7F0
+  From Klickpin.com- Trending bridal shower themes that feel curated elegant and easy enough to recreate this weekend for your next Pinterest save-p 1 (RECTANGLE) 1581x655 @ -98,-37 fill=image
+  Rectangle 1 (VECTOR) 1529x611 @ 0,0 fill=gradient_linear
+  Frame 11 (FRAME) 986x191 @ 227,247 [VERTICAL gap=65]
+    Frame 10 (FRAME) 986x191 @ 227,247 [VERTICAL gap=24]
+      برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني. (TEXT) 693x75 @ 373.5,363 fill=#EFEBD9
+        ↳ Cairo 500 25/37.5 ls=0 CENTER
+        ↳ "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني."
+      مناسبتك تستحق موسيقى حقيقية. ♪ (TEXT) 924x92 @ 258,247 fill=#C54716
+        ↳ Cairo 700 48/91.5 ls=0 CENTER
+        ↳ "مناسبتك تستحق موسيقى حقيقية. ♪"
+  Footer (INSTANCE) 1454x384.67 @ -14,1568 fill=#2B1D14 [VERTICAL]
+    Container (FRAME) 1280x384.67 @ 73,1568 [VERTICAL pad=64/24/32/24]
+      Container (FRAME) 736x190 @ 345,1632
+        Container (FRAME) 297x179.5 @ 939,1631.74 [VERTICAL]
+          {E2E66FB0-8A42-40AA-991C-0F4FC8CD0D61} 1 (RECTANGLE) 210.5x85.5 @ 982.25,1631.74 fill=image
+          Paragraph (FRAME) 206x55 @ 984.5,1717.24 [VERTICAL pad=16/0/0/0]
+            مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيق (TEXT) 206x39 @ 984.5,1733.24 fill=#F9EDE8
+              ↳ Cairo 400 13/19.5 ls=0 RIGHT
+              ↳ "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة."
+          Paragraph (FRAME) 297x39 @ 939,1772.24 [VERTICAL pad=20/0/0/0]
+            ♪ من رحم المعاناة ولدت الموسيقى (TEXT) 200x20 @ 987.5,1792.24 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "♪ من رحم المعاناة ولدت الموسيقى"
+        Container (FRAME) 156x190 @ 635,1631.74 [VERTICAL]
+          Heading 4 (FRAME) 156x20 @ 635,1631.74 [VERTICAL]
+            استكشف (TEXT) 57x20 @ 684.5,1631.74 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "استكشف"
+          Link (FRAME) 155.7x42 @ 635,1651.74 [VERTICAL pad=20/0/0/0]
+            الفنانون (TEXT) 44x20 @ 690.85,1671.74 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الفنانون"
+          Link (FRAME) 155.7x30.8 @ 635,1693.74 [VERTICAL pad=8.8/0/0/0]
+            الفعاليات (TEXT) 50x20 @ 687.85,1702.54 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الفعاليات"
+          Link (FRAME) 155.7x30.8 @ 635,1724.54 [VERTICAL pad=8.8/0/0/0]
+            الأخبار (TEXT) 31x20 @ 697.35,1733.34 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الأخبار"
+          Link (FRAME) 155.7x39.6 @ 635,1755.34 [VERTICAL pad=8.8/0/8.8/0]
+            الأكاديمية (TEXT) 55x20 @ 685.35,1764.14 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "الأكاديمية"
+        Container (FRAME) 156x190 @ 435,1632 [VERTICAL]
+          Heading 4 (FRAME) 156x20 @ 435,1632 [VERTICAL]
+            تواصل (TEXT) 38x20 @ 494,1632 fill=#C54716
+              ↳ Cairo 700 13/19.5 ls=0 LEFT
+              ↳ "تواصل"
+          Paragraph (FRAME) 155.69x40 @ 435,1652 [VERTICAL pad=20/0/0/0]
+            hello@andalusia.art (TEXT) 111x20 @ 457.34,1672 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "hello@andalusia.art"
+          Paragraph (FRAME) 155.69x28 @ 435,1692 [VERTICAL pad=8/0/0/0]
+            Instagram · TikTok (TEXT) 100x20 @ 462.84,1700 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "Instagram · TikTok"
+          Paragraph (FRAME) 155.69x36 @ 435,1720 [VERTICAL pad=8/0/8/0]
+            لبنان · المغرب · الخليج (TEXT) 112x20 @ 456.84,1728 fill=#F9EDE8
+              ↳ Cairo 500 13/19.5 ls=0 LEFT
+              ↳ "لبنان · المغرب · الخليج"
+        Container (FRAME) 235x190 @ 152,1631.74 [VERTICAL]
+          Heading 4 (FRAME) 235x24 @ 152,1631.74 [VERTICAL]
+            حفلتك القادمة تبدأ من هنا. (TEXT) 213x24 @ 152,1631.74 fill=#ECE6D0
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "حفلتك القادمة تبدأ من هنا."
+          Paragraph:margin (FRAME) 235x73.4 @ 152,1655.74 [VERTICAL pad=10.4/0/24/0]
+            Paragraph (FRAME) 235x39 @ 152,1666.14 [VERTICAL]
+              نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن (TEXT) 201x39 @ 152,1666.14 fill=#F9EDE8
+                ↳ Cairo 500 13/19.5 ls=0 RIGHT
+                ↳ "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة."
+          button (INSTANCE) 150x48 @ 152,1729.14 fill=#C54716 r=12 [HORIZONTAL gap=10 pad=10/10/10/10]
+            placeholder (TEXT) 234x23 @ 110,1741.64 fill=#ECE6D0
+              ↳ SF Pro 700 16/22.4 ls=0 CENTER
+              ↳ "ابدأ حجزك الآن ♪"
+      Container:margin (FRAME) 1232x98.67 @ 97,1822 [VERTICAL pad=56/0/0/0]
+        Container (FRAME) 1232x42.67 @ 97,1878 [HORIZONTAL gap=12 pad=24/0/0/0]
+          Text (FRAME) 125x15 @ 97,1904.17 [VERTICAL]
+            موسيقى · ثقافة · قدرة (TEXT) 125x15 @ 97,1904.17 fill=#F9EDE8
+              ↳ Cairo 600 9.92/14.88 ls=1.39 LEFT
+              ↳ "موسيقى · ثقافة · قدرة"
+          Text (FRAME) 205x18 @ 1124,1902.67 [VERTICAL]
+            © أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة (TEXT) 205x18 @ 1124,1902.67 fill=#F9EDE8
+              ↳ Cairo 400 12/18 ls=0 LEFT
+              ↳ "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة"
+  Frame 33 (FRAME) 1142x829 @ 149,676 [HORIZONTAL gap=58]
+    Sidebar (FRAME) 412x563.8 @ 149,676 [VERTICAL gap=20]
+      Container (FRAME) 412x285.4 @ 149,676 fill=#2B1D14 r=12 [VERTICAL pad=32/32/32/32]
+        Heading 3 (FRAME) 348x24 @ 181,708 [VERTICAL]
+          ♪ تواصل مباشرة (TEXT) 112x24 @ 417,708 fill=#C54716
+            ↳ Cairo 700 16/24 ls=0 RIGHT
+            ↳ "♪ تواصل مباشرة"
+        Container (FRAME) 256x64.2 @ 273,732 [VERTICAL pad=24/0/0/0]
+          Paragraph (FRAME) 256x15 @ 273,756 [VERTICAL]
+            البريد (TEXT) 24x15 @ 505,756 fill=#F9EDE8
+              ↳ Cairo 700 10/15 ls=0 RIGHT
+              ↳ "البريد"
+          Paragraph:margin (FRAME) 256x25.2 @ 273,771 [VERTICAL pad=3.2/0/0/0]
+            Paragraph (FRAME) 256x22 @ 273,774.2 [VERTICAL]
+              hello@andalusia.art (TEXT) 121x22 @ 408,774.2 fill=#F9EDE8
+                ↳ Cairo 600 14.08/21.12 ls=0 RIGHT
+                ↳ "hello@andalusia.art"
+        Container:margin (FRAME) 348x57.8 @ 181,796.2 [VERTICAL pad=17.6/0/0/0]
+          Container (FRAME) 348x40.2 @ 181,813.8 [VERTICAL]
+            Paragraph (FRAME) 348x15 @ 181,813.8 [VERTICAL]
+              واتساب (TEXT) 34x15 @ 495,813.8 fill=#F9EDE8
+                ↳ Cairo 700 10/15 ls=0 RIGHT
+                ↳ "واتساب"
+            Paragraph:margin (FRAME) 348x25.2 @ 181,828.8 [VERTICAL pad=3.2/0/0/0]
+              Paragraph (FRAME) 348x22 @ 181,832 [VERTICAL]
+                +961 70 000 000 (TEXT) 104x22 @ 425,832 fill=#F9EDE8
+                  ↳ Cairo 600 14.08/21.12 ls=0 RIGHT
+                  ↳ "+961 70 000 000"
+        Container (FRAME) 256x75.4 @ 273,854 [VERTICAL pad=17.6/0/17.6/0]
+          Paragraph (FRAME) 256x15 @ 273,871.6 [VERTICAL]
+            انستقرام (TEXT) 40x15 @ 489,871.6 fill=#F9EDE8
+              ↳ Cairo 700 10/15 ls=0 RIGHT
+              ↳ "انستقرام"
+          Paragraph:margin (FRAME) 256x25.2 @ 273,886.6 [VERTICAL pad=3.2/0/0/0]
+            Paragraph (FRAME) 256x22 @ 273,889.8 [VERTICAL]
+              @andalusia.art (TEXT) 92x22 @ 437,889.8 fill=#F9EDE8
+                ↳ Cairo 600 14.08/21.12 ls=0 RIGHT
+                ↳ "@andalusia.art"
+      Container (FRAME) 412x258.4 @ 149,981.4 fill=#C54716 r=12 [VERTICAL pad=32/32/32/32]
+        Heading 3 (FRAME) 348x24 @ 181,1013.4 [VERTICAL]
+          ماذا يحدث بعد ذلك؟ (TEXT) 137x24 @ 392,1013.4 fill=#F9EDE8
+            ↳ Cairo 700 16/24 ls=0 RIGHT
+            ↳ "ماذا يحدث بعد ذلك؟"
+        Container (FRAME) 256x44 @ 273,1037.4 [HORIZONTAL gap=12 pad=20/0/0/0]
+          Paragraph (FRAME) 111x23 @ 382,1057.4 [VERTICAL]
+            نستلم طلبك ونراجعه (TEXT) 111x23 @ 382,1057.4 fill=#F9EDE8
+              ↳ Cairo 400 13.6/22.44 ls=0 RIGHT
+              ↳ "نستلم طلبك ونراجعه"
+          Text (FRAME) 24x24 @ 505,1057.4 fill=#ECE6D0/0.2 r=12 [HORIZONTAL]
+            1 (TEXT) 7x17 @ 513.5,1060.9 fill=#F9EDE8
+              ↳ Cairo 900 11.2/16.8 ls=0 RIGHT
+              ↳ "1"
+        Container (FRAME) 256x37.6 @ 273,1081.4 [HORIZONTAL gap=12 pad=13.6/0/0/0]
+          Paragraph (FRAME) 152x23 @ 341,1095 [VERTICAL]
+            نتواصل معك خلال ٤٨ ساعة (TEXT) 152x23 @ 341,1095 fill=#F9EDE8
+              ↳ Cairo 400 13.6/22.44 ls=0 RIGHT
+              ↳ "نتواصل معك خلال ٤٨ ساعة"
+          Text (FRAME) 24x24 @ 505,1095 fill=#ECE6D0/0.2 r=12 [HORIZONTAL]
+            2 (TEXT) 7x17 @ 513.5,1098.5 fill=#F9EDE8
+              ↳ Cairo 900 11.2/16.8 ls=0 RIGHT
+              ↳ "2"
+        Container (FRAME) 256x37.6 @ 273,1119 [HORIZONTAL gap=12 pad=13.6/0/0/0]
+          Paragraph (FRAME) 116x23 @ 377,1132.6 [VERTICAL]
+            نقترح الفنان والبرنامج (TEXT) 116x23 @ 377,1132.6 fill=#F9EDE8
+              ↳ Cairo 400 13.6/22.44 ls=0 RIGHT
+              ↳ "نقترح الفنان والبرنامج"
+          Text (FRAME) 24x24 @ 505,1132.6 fill=#ECE6D0/0.2 r=12 [HORIZONTAL]
+            ٣ (TEXT) 9x17 @ 512.5,1136.1 fill=#F9EDE8
+              ↳ Cairo 900 11.2/16.8 ls=0 RIGHT
+              ↳ "٣"
+        Container (FRAME) 256x51.2 @ 273,1156.6 [HORIZONTAL gap=12 pad=13.6/0/13.6/0]
+          Paragraph (FRAME) 118x23 @ 375,1170.2 [VERTICAL]
+            تأكيد الحجز والتفاصيل (TEXT) 118x23 @ 375,1170.2 fill=#F9EDE8
+              ↳ Cairo 400 13.6/22.44 ls=0 RIGHT
+              ↳ "تأكيد الحجز والتفاصيل"
+          Text (FRAME) 24x24 @ 505,1170.2 fill=#ECE6D0/0.2 r=12 [HORIZONTAL]
+            4 (TEXT) 7x17 @ 513.5,1173.7 fill=#F9EDE8
+              ↳ Cairo 900 11.2/16.8 ls=0 RIGHT
+              ↳ "4"
+    Form (FRAME) 672x829 @ 619,676 [VERTICAL]
+      Container (FRAME) 672x234.67 @ 619,676 [VERTICAL]
+        Paragraph (FRAME) 672x38 @ 619,676 [VERTICAL pad=0/0/12/0]
+          ♪ معلوماتك الشخصية (TEXT) 153x24 @ 1138,676 fill=#C54716
+            ↳ Cairo 700 16/24 ls=0 RIGHT
+            ↳ "♪ معلوماتك الشخصية"
+        Container:margin (FRAME) 672x196.67 @ 619,714 [VERTICAL pad=24/0/0/0]
+          Container (FRAME) 580x172.67 @ 711,738 [GRID]
+            Container (FRAME) 318x78.33 @ 972.67,738 [VERTICAL]
+              Label:margin (FRAME) 318x27.2 @ 972.67,738 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 318x20 @ 972.67,738 [VERTICAL]
+                  الاسم الكامل * (TEXT) 85x20 @ 1205.67,738 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "الاسم الكامل *"
+              Container (FRAME) 318x51.45 @ 972.67,765.2
+                Text Input (FRAME) 317x48 @ 973,765 fill=#FFFFFF r=16 [VERTICAL pad=13.6/16/13.6/16]
+                  اسمك هنا (TEXT) 282.33x15 @ 990.33,781.5 fill=#666666
+                    ↳ Cairo 400 12/15 ls=0 RIGHT
+                    ↳ "اسمك هنا"
+            Container (FRAME) 245.67x78.33 @ 711,738 [VERTICAL]
+              Label:margin (FRAME) 245.67x27.2 @ 711,738 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 245.67x20 @ 711,738 [VERTICAL]
+                  البريد الإلكتروني * (TEXT) 101x20 @ 855.67,738 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "البريد الإلكتروني *"
+              Container (FRAME) 245.67x51.45 @ 711,765.2
+                Email Input (FRAME) 246x48 @ 711,765 fill=#FFFFFF r=16 [VERTICAL pad=13.6/16/13.6/16]
+                  name@email.com (TEXT) 211.33x15 @ 728.33,781.5 fill=#666666
+                    ↳ Cairo 400 12/15 ls=0 RIGHT
+                    ↳ "name@email.com"
+            Container (FRAME) 318x78.33 @ 972.67,832.33 [VERTICAL]
+              Label:margin (FRAME) 318x27.2 @ 972.67,832.33 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 318x20 @ 972.67,832.33 [VERTICAL]
+                  رقم الهاتف (TEXT) 65x20 @ 1225.67,832.33 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "رقم الهاتف "
+              Container (FRAME) 318x51.45 @ 972.67,859.53
+                Phone Input (FRAME) 317x48 @ 973,860 fill=#FFFFFF r=16 [VERTICAL pad=13.6/16/13.6/16]
+                  +961 70 000 000 (TEXT) 282.33x15 @ 990.33,876.5 fill=#666666
+                    ↳ Cairo 400 12/15 ls=0 RIGHT
+                    ↳ "+961 70 000 000"
+            Container (FRAME) 245.67x78.33 @ 711,832.33 [VERTICAL]
+              Label:margin (FRAME) 245.67x27.2 @ 711,832.33 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 245.67x20 @ 711,832.33 [VERTICAL]
+                  الميزانية التقريبية (TEXT) 102x20 @ 854.67,832.33 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "الميزانية التقريبية "
+              Container (FRAME) 245.67x51.45 @ 711,859.53
+                Text Input (FRAME) 246x48 @ 711,860 fill=#FFFFFF r=16 [VERTICAL pad=13.6/16/13.6/16]
+                  ١٠٠٠ - ٥٠٠٠ دولار (TEXT) 211.33x15 @ 728.33,876.5 fill=#666666
+                    ↳ Cairo 400 12/15 ls=0 RIGHT
+                    ↳ "١٠٠٠ - ٥٠٠٠ دولار"
+      Container (FRAME) 672x475.17 @ 619,910.67 [VERTICAL pad=40/0/0/0]
+        Paragraph (FRAME) 672x38 @ 619,950.67 [VERTICAL pad=0/0/12/0]
+          ♪ تفاصيل المناسبة (TEXT) 131x24 @ 1160,950.67 fill=#C54716
+            ↳ Cairo 700 16/24 ls=0 RIGHT
+            ↳ "♪ تفاصيل المناسبة"
+        Container:margin (FRAME) 672x209.48 @ 619,988.67 [VERTICAL pad=24/0/0/0]
+          Container (FRAME) 582x185.48 @ 709,1012.67 [GRID]
+            Container (FRAME) 320x84.74 @ 970.67,1012.67 [VERTICAL]
+              Label:margin (FRAME) 320x27.2 @ 970.67,1012.67 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 320x20 @ 970.67,1012.67 [VERTICAL]
+                  نوع المناسبة * (TEXT) 82x20 @ 1208.67,1012.67 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "نوع المناسبة *"
+              Container (FRAME) 320x57.85 @ 970.67,1039.87
+                Dropdown (FRAME) 319x48 @ 971,1040 fill=#FFFFFF r=16
+                  Container (FRAME) 161x28 @ 1107.33,1050.14 [HORIZONTAL]
+                    اختر النوع (TEXT) 44x15 @ 1224.33,1056.64 fill=#666666
+                      ↳ Cairo 400 12/15 ls=0 RIGHT
+                      ↳ "اختر النوع"
+                  Container (FRAME) 20x55.19 @ 991,1036 [HORIZONTAL]
+                    Icon (FRAME) 10x6 @ 996,1060.59
+                      Vector (VECTOR) 8x4 @ 997,1061.59
+            Container (FRAME) 245.67x84.74 @ 709,1012.67 [VERTICAL]
+              Label:margin (FRAME) 245.67x27.2 @ 709,1012.67 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 245.67x20 @ 709,1012.67 [VERTICAL]
+                  تاريخ الفعالية * (TEXT) 87x20 @ 867.67,1012.67 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "تاريخ الفعالية *"
+              Container (FRAME) 245.67x57.85 @ 709,1039.87
+                Date Picker (FRAME) 246x48 @ 709,1040 fill=#FFFFFF r=16
+            Container (FRAME) 582x84.74 @ 709,1113.41 [VERTICAL]
+              Label:margin (FRAME) 507x27.2 @ 784,1113.41 [VERTICAL pad=0/0/7.2/0]
+                Label (FRAME) 507x20 @ 784,1113.41 [VERTICAL]
+                  اختر الفنان / الفرقة (TEXT) 109x20 @ 1182,1113.41 fill=#1B1B1B
+                    ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                    ↳ "اختر الفنان / الفرقة"
+              Container (FRAME) 582x57.85 @ 709,1140.61 r=16
+                Dropdown (FRAME) 580x48 @ 711,1150 fill=#FFFFFF r=16
+                  Container (FRAME) 453x35 @ 817,1158 [HORIZONTAL]
+                    أختار... (TEXT) 28x15 @ 1242,1168 fill=#666666
+                      ↳ Cairo 400 12/15 ls=0 RIGHT
+                      ↳ "أختار..."
+                  Container (FRAME) 20x55.19 @ 734.33,1146 [HORIZONTAL]
+                    Icon (FRAME) 10x6 @ 739.33,1170.59
+                      Vector (VECTOR) 8x4 @ 740.33,1171.59
+        Container (FRAME) 672x187.69 @ 619,1198.15 [VERTICAL pad=16/0/0/0]
+          Label:margin (FRAME) 672x27.2 @ 619,1214.15 [VERTICAL pad=0/0/7.2/0]
+            Label (FRAME) 672x20 @ 619,1214.15 [VERTICAL]
+              تفاصيل إضافية * (TEXT) 96x20 @ 1195,1214.15 fill=#1B1B1B
+                ↳ Cairo 700 13/19.5 ls=0 RIGHT
+                ↳ "تفاصيل إضافية *"
+          Container (FRAME) 672x144.49 @ 619,1241.35
+            Text Area (FRAME) 580x138 @ 711,1241 fill=#FFFFFF r=16 [VERTICAL pad=13.6/16/13.6/16]
+              أخبرنا عن مناسبتك، المكان، عدد الضيوف، وأي رغبات خ (TEXT) 545.33x15 @ 728.33,1255.93 fill=#666666
+                ↳ Cairo 400 12/15 ls=0 RIGHT
+                ↳ "أخبرنا عن مناسبتك، المكان، عدد الضيوف، وأي رغبات خاصة..."
+      Paragraph (FRAME) 507.33x82 @ 783.67,1385.83 [VERTICAL gap=16 pad=0/0/24/0]
+        بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة (TEXT) 333x15 @ 958,1385.83 fill=#666666
+          ↳ Cairo 400 12/15 ls=0 RIGHT
+          ↳ "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة الخصوصية."
+        Frame 4 (INSTANCE) 175x44 @ 1116,1416.83 fill=#C54716 r=16 [HORIZONTAL gap=10 pad=10/10/10/10]
+          أحجز الآن (TEXT) 83x24 @ 1162,1426.83 fill=#F9EDE8
+            ↳ Cairo 700 16/24 ls=0 LEFT
+            ↳ "أرسل الطلب"
+      Container (FRAME) 672x52.79 @ 619,1467.83
+  Frame 30 (INSTANCE) 1123x85 @ 159,50 [VERTICAL gap=116]
+    Frame 7 (FRAME) 1123x85 @ 159,50 fill=#F2EEE0 r=32 [HORIZONTAL gap=85 pad=24/24/24/24]
+      Frame 6 (FRAME) 757x44 @ 201.5,70.5 [HORIZONTAL gap=141]
+        Frame 37 (FRAME) 189x44 @ 201.5,70.5 [HORIZONTAL gap=16]
+          Frame 4 (INSTANCE) 149x44 @ 201.5,70.5 fill=#C54716 r=16 [HORIZONTAL gap=10 pad=10/10/10/10]
+            أحجز الآن (TEXT) 61x24 @ 245.5,80.5 fill=#F9EDE8
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "أحجز الآن"
+          ri:english-input (FRAME) 24x24 @ 366.5,80.5
+            Vector (VECTOR) 21x16 @ 368.5,84.5 fill=#000000
+        Frame 2 (FRAME) 427x24 @ 531.5,80.5 [HORIZONTAL gap=32]
+          Link (INSTANCE) 68x24 @ 531.5,80.5 [VERTICAL]
+            الفنانين (TEXT) 68x24 @ 531.5,80.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الفعاليات"
+          Link (INSTANCE) 42x24 @ 631.5,80.5 [VERTICAL]
+            الفنانين (TEXT) 42x24 @ 631.5,80.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الأخبار"
+          Link (INSTANCE) 55x24 @ 705.5,80.5 [VERTICAL]
+            الفنانين (TEXT) 55x24 @ 705.5,80.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الفنانين"
+          Link (INSTANCE) 74x24 @ 792.5,80.5 [VERTICAL]
+            الفنانين (TEXT) 74x24 @ 792.5,80.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الأكاديمية"
+          Link (INSTANCE) 60x24 @ 898.5,80.5 [VERTICAL]
+            الفنانين (TEXT) 60x24 @ 898.5,80.5 fill=#1B1B1B
+              ↳ Cairo 700 16/24 ls=0 LEFT
+              ↳ "الرئيسية "
+      {08021A4D-2034-4BE6-921C-4EDFD089381B} 1 (RECTANGLE) 196x85 @ 1043.5,50 fill=image
