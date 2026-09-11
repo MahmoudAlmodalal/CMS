@@ -109,7 +109,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   }
 
   return (
-    <div className="w-full bg-brand-cream min-h-screen">
+    <div className="w-full bg-brand-cream">
       <PageHero
         eyebrow={t("bookingEyebrow")}
         title={t("bookingTitle")}

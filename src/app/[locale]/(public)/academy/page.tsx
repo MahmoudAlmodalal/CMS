@@ -63,7 +63,7 @@ export default async function AcademyPage({
   ]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       {/* 1. Figma academy hero */}
       <PageHero
         eyebrow={t("academyEyebrow")}
