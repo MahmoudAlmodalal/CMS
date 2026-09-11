@@ -34,6 +34,7 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
   const [hasError, setHasError] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [knownDuration, setKnownDuration] = useState<number | null>(null);
+
   const duration = knownDuration ?? track.duration_seconds;
 
   const toggle = useCallback(() => {
