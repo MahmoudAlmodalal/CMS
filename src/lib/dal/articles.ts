@@ -7,6 +7,8 @@ import {
   getArticleCategoryLabel,
   CARD_CATEGORY_LABELS,
   getArticleCardCategoryLabel,
+  NEWS_CARD_CATEGORY_LABELS,
+  getNewsCardCategoryLabel,
   CANONICAL_ARTICLES,
   CANONICAL_FEATURED_ARTICLES,
 } from "@/lib/articles";
@@ -19,6 +21,8 @@ export {
   getArticleCategoryLabel,
   CARD_CATEGORY_LABELS,
   getArticleCardCategoryLabel,
+  NEWS_CARD_CATEGORY_LABELS,
+  getNewsCardCategoryLabel,
   CANONICAL_ARTICLES,
   CANONICAL_FEATURED_ARTICLES,
 };
