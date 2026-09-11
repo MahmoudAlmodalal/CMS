@@ -77,9 +77,17 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     }
 
     const row = data as unknown as Partial<SiteSettings>;
+    const heroImageUrl = row.hero_image_url === "/assets/hero-stage.png"
+      ? DEFAULT_SITE_SETTINGS.hero_image_url
+      : row.hero_image_url;
+    const aboutImageUrl = row.about_image_url === "/assets/about-musician.png"
+      ? DEFAULT_SITE_SETTINGS.about_image_url
+      : row.about_image_url;
     return {
       ...DEFAULT_SITE_SETTINGS,
       ...row,
+      hero_image_url: heroImageUrl ?? DEFAULT_SITE_SETTINGS.hero_image_url,
+      about_image_url: aboutImageUrl ?? DEFAULT_SITE_SETTINGS.about_image_url,
       social_links:
         typeof row.social_links === "object" && row.social_links !== null
           ? (row.social_links as Record<string, string>)
