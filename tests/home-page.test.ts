@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(".");
-const pub = (...segs: string[]) => path.join(root, "src/app/(public)", ...segs);
+const pub = (...segs: string[]) => path.join(root, "src/app/[locale]/(public)", ...segs);
 const comp = (...segs: string[]) => path.join(root, "src/components/public", ...segs);
 const read = (p: string) => fs.readFileSync(p, "utf-8");
 
@@ -26,7 +26,7 @@ test("Milestone 2 — 1. Canonical 8-Stage Vertical Coordinate Sequence & Landma
     assert.match(
       pageSrc,
       new RegExp(`\\b${component}\\b`),
-      `src/app/(public)/page.tsx must import ${component}`
+      `src/app/[locale]/(public)/page.tsx must import ${component}`
     );
   }
 
@@ -35,7 +35,7 @@ test("Milestone 2 — 1. Canonical 8-Stage Vertical Coordinate Sequence & Landma
     const idx = pageSrc.indexOf(`<${name}`);
     assert.ok(
       idx !== -1,
-      `src/app/(public)/page.tsx must render component <${name} />`
+      `src/app/[locale]/(public)/page.tsx must render component <${name} />`
     );
     return { name, idx };
   });

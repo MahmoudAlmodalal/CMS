@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 /**
  * Global Public Footer
@@ -15,6 +16,9 @@ import Link from "next/link";
  * is a single plain text line. Both were removed as unverified inventions.
  */
 export function Footer() {
+  const t = useTranslations("footer");
+  const a11y = useTranslations("a11y");
+
   return (
     <footer
       className="w-full bg-[#2B1D14] bg-brand-espresso text-brand-tint relative overflow-hidden"
@@ -35,37 +39,37 @@ export function Footer() {
             <div className="flex flex-col items-center text-center lg:max-w-[297px]">
               <Image
                 src="/assets/branding/logo-footer.png"
-                alt="فرقة أندلسيا"
+                alt={a11y("brandHome")}
                 width={211}
                 height={86}
                 className="h-[85px] w-auto object-contain"
               />
 
               <p className="text-[13px] leading-[1.5] text-primary-50 font-normal pt-4 max-w-[206px]">
-                مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة.
+                {t("mission")}
               </p>
 
               <p className="text-[13px] font-bold text-brand-primary pt-5">
-                ♪ من رحم المعاناة ولدت الموسيقى
+                {t("motto")}
               </p>
             </div>
 
             {/* Column 2: Explore Navigation (Figma Node 87:14554) */}
             <div className="flex flex-col items-center text-center">
-              <h4 className="text-[13px] font-bold text-brand-primary">استكشف</h4>
-              <nav className="flex flex-col items-center pt-5 gap-[9px]" aria-label="روابط استكشف">
-                {[
-                  { href: "/artists", label: "الفنانون" },
-                  { href: "/events", label: "الفعاليات" },
-                  { href: "/news", label: "الأخبار" },
-                  { href: "/academy", label: "الأكاديمية" },
-                ].map((item) => (
+              <h4 className="text-[13px] font-bold text-brand-primary">{t("exploreHeading")}</h4>
+              <nav className="flex flex-col items-center pt-5 gap-[9px]" aria-label={a11y("exploreLinks")}>
+                {([
+                  { href: "/artists", key: "exploreArtists" },
+                  { href: "/events", key: "exploreEvents" },
+                  { href: "/news", key: "exploreNews" },
+                  { href: "/academy", key: "exploreAcademy" },
+                ] as const).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     className="text-[13px] font-medium text-primary-50 hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
                   >
-                    {item.label}
+                    {t(item.key)}
                   </Link>
                 ))}
               </nav>
@@ -73,33 +77,33 @@ export function Footer() {
 
             {/* Column 3: Contact & Presence (Figma Node 87:14565) */}
             <div className="flex flex-col items-center text-center">
-              <h4 className="text-[13px] font-bold text-brand-primary">تواصل</h4>
+              <h4 className="text-[13px] font-bold text-brand-primary">{t("contactHeading")}</h4>
               <div className="flex flex-col items-center pt-5 gap-2 text-[13px] font-medium text-primary-50">
                 <a
-                  href="mailto:hello@andalusia.art"
+                  href={`mailto:${t("contactEmail")}`}
                   dir="ltr"
                   className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
                 >
-                  <bdi>hello@andalusia.art</bdi>
+                  <bdi>{t("contactEmail")}</bdi>
                 </a>
-                <span>Instagram · TikTok</span>
-                <span>لبنان · المغرب · الخليج</span>
+                <span>{t("contactSocial")}</span>
+                <span>{t("contactRegions")}</span>
               </div>
             </div>
 
             {/* Column 4: Booking Pitch & CTA (Figma Node 87:14574 — 235px) */}
             <div className="flex flex-col lg:max-w-[235px]">
               <h4 className="text-base font-bold text-[#ECE6D0] max-w-[213px]">
-                حفلتك القادمة تبدأ من هنا.
+                {t("bookingHeading")}
               </h4>
               <p className="text-[13px] font-medium leading-[1.5] text-primary-50 pt-2.5 pb-6 max-w-[201px]">
-                نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة.
+                {t("bookingBody")}
               </p>
               <Link
                 href="/booking"
                 className="inline-flex items-center justify-center w-[150px] h-12 rounded-[12px] bg-brand-primary hover:bg-brand-primary-hover active:bg-brand-primary-pressed text-[#ECE6D0] text-base font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-espresso"
               >
-                ابدأ حجزك الآن ♪
+                {t("bookingCta")}
               </Link>
             </div>
           </div>
@@ -107,10 +111,10 @@ export function Footer() {
           {/* Bottom Bar (Figma Node 87:14584 — 0.667px rule, 24px top padding) */}
           <div className="mt-14 pt-6 border-t-[0.667px] border-[rgba(236,230,208,0.15)] flex flex-col sm:flex-row items-center justify-between gap-4 text-primary-50">
             <span className="font-semibold text-[9.92px] tracking-[0.14em] uppercase">
-              موسيقى · ثقافة · قدرة
+              {t("strapline")}
             </span>
             <span className="text-xs font-normal">
-              © أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة
+              {t("copyright")}
             </span>
           </div>
         </div>

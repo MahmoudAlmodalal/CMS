@@ -12,7 +12,7 @@ const root = path.resolve(".");
 
 test("Task 35 — 1. Events Page Architecture & Component Files", () => {
   const expectedFiles = [
-    "src/app/(public)/events/page.tsx",
+    "src/app/[locale]/(public)/events/page.tsx",
     "src/components/public/events/EventsHeader.tsx",
     "src/components/public/events/EventsFilterTabs.tsx",
     "src/components/public/events/FeaturedEventBanner.tsx",
@@ -40,14 +40,14 @@ test("Task 35 — 1. Events Page Architecture & Component Files", () => {
 });
 
 test("Task 35 — 2. Strict Architectural Prohibition: NO /events/[slug]", () => {
-  const forbiddenDynamicRoute = path.join(root, "src/app/(public)/events/[slug]");
+  const forbiddenDynamicRoute = path.join(root, "src/app/[locale]/(public)/events/[slug]");
   assert.ok(
     !fs.existsSync(forbiddenDynamicRoute),
     "Architecture strictly prohibits /events/[slug] detail route (all bookings route to /booking?event_id=...)"
   );
 
   const pageContent = fs.readFileSync(
-    path.join(root, "src/app/(public)/events/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/events/page.tsx"),
     "utf-8"
   );
   assert.doesNotMatch(
@@ -199,7 +199,7 @@ test("Task 35 — 7. Events Data Access Layer (DAL)", () => {
 
 test("Task 35 — 8. Events Page Route & ISR Caching", () => {
   const pageContent = fs.readFileSync(
-    path.join(root, "src/app/(public)/events/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/events/page.tsx"),
     "utf-8"
   );
 

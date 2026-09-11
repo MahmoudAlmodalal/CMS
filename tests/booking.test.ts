@@ -11,7 +11,7 @@ const root = path.resolve(".");
 
 test("Task 38 — 1. Booking Route Architecture & Component Files", () => {
   const expectedFiles = [
-    "src/app/(public)/booking/page.tsx",
+    "src/app/[locale]/(public)/booking/page.tsx",
     "src/components/public/BookingHeader.tsx",
     "src/components/public/BookingForm.tsx",
     "src/components/public/BookingSidebar.tsx",
@@ -253,7 +253,7 @@ test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
   }
 
   const pageContent = fs.readFileSync(
-    path.join(root, "src/app/(public)/booking/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/booking/page.tsx"),
     "utf-8"
   );
 

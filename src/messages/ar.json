@@ -1,0 +1,54 @@
+{
+  "site": {
+    "title": "فرقة أندلسيا الموسيقية — المنظومة الموسيقية التراثية",
+    "description": "الأساس البرمجي والتصميمي المعتمد على نمط RTL أولاً لدعم اللغة العربية وتراث الموسيقى الأندلسية",
+    "brand": "فرقة أندلسيا"
+  },
+  "a11y": {
+    "skipToContent": "انتقل إلى المحتوى الرئيسي",
+    "primaryNav": "التنقل الرئيسي",
+    "brandHome": "فرقة أندلسيا — الصفحة الرئيسية",
+    "openMenu": "فتح قائمة التنقل",
+    "closeMenu": "إغلاق قائمة التنقل",
+    "exploreLinks": "روابط استكشف"
+  },
+  "locale": {
+    "switchTo": "English",
+    "switchLabel": "التبديل إلى الإنجليزية"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "academy": "الأكاديمية",
+    "artists": "الفنانين",
+    "news": "الأخبار",
+    "events": "الفعاليات",
+    "bookNow": "أحجز الآن"
+  },
+  "footer": {
+    "mission": "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة.",
+    "motto": "♪ من رحم المعاناة ولدت الموسيقى",
+    "exploreHeading": "استكشف",
+    "exploreArtists": "الفنانون",
+    "exploreEvents": "الفعاليات",
+    "exploreNews": "الأخبار",
+    "exploreAcademy": "الأكاديمية",
+    "contactHeading": "تواصل",
+    "contactEmail": "hello@andalusia.art",
+    "contactSocial": "Instagram · TikTok",
+    "contactRegions": "لبنان · المغرب · الخليج",
+    "bookingHeading": "حفلتك القادمة تبدأ من هنا.",
+    "bookingBody": "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة.",
+    "bookingCta": "ابدأ حجزك الآن ♪",
+    "strapline": "موسيقى · ثقافة · قدرة",
+    "copyright": "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة"
+  },
+  "drawer": {
+    "title": "قائمة التنقل للهواتف",
+    "nav": "تنقل الهاتف",
+    "tagline": "للتراث والموسيقى العربية",
+    "bookingCta": "ابدأ حجزك الآن ♪",
+    "contactHeading": "التواصل",
+    "regionsHeading": "الانتشار الإقليمي",
+    "languageHeading": "لغة الواجهة"
+  }
+}

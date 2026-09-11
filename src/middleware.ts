@@ -1,8 +1,21 @@
 import { createServerClient } from "@supabase/ssr";
+import createIntlMiddleware from "next-intl/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/supabase/types";
+import { routing } from "@/i18n/routing";
+
+const handleI18n = createIntlMiddleware(routing);
+
+/** The panel and its sign-in page are Arabic-only and live outside the localized site. */
+function isUnlocalized(pathname: string) {
+  return pathname === "/login" || pathname === "/admin" || pathname.startsWith("/admin/");
+}
 
 export async function middleware(request: NextRequest) {
+  if (!isUnlocalized(request.nextUrl.pathname)) {
+    return handleI18n(request);
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -80,5 +93,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
+  // Everything except Next internals and files with an extension, so locale
+  // rewriting reaches the public site while the auth guard still sees /admin.
+  matcher: ["/((?!api|_next|_vercel|assets|.*\\..*).*)"],
 };

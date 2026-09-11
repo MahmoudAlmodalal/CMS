@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { MenuIcon, MusicIcon } from "@/components/ui/Icons";
 import { MobileDrawer } from "./MobileDrawer";
 
@@ -10,11 +11,14 @@ import { MobileDrawer } from "./MobileDrawer";
  * Verified against Figma Component 17/Navigation (Node 139:12348):
  * - Height: 56px
  * - Responsive: Visible on mobile/tablet (lg:hidden)
- * - Start: Brand logo + "فرقة أندلسيا"
+ * - Start: Brand logo + brand wordmark
  * - End: Quick booking CTA button + Hamburger drawer toggle
  */
 export function MobileNavbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const t = useTranslations("nav");
+  const a11y = useTranslations("a11y");
+  const site = useTranslations("site");
 
   return (
     <>
@@ -26,13 +30,13 @@ export function MobileNavbar() {
         <Link
           href="/"
           className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xl p-1"
-          aria-label="فرقة أندلسيا — الصفحة الرئيسية"
+          aria-label={a11y("brandHome")}
         >
           <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white shadow-2xs">
             <MusicIcon size={18} />
           </div>
           <span className="font-calligraphic text-xl font-bold text-brand-espresso leading-none">
-            فرقة أندلسيا
+            {site("brand")}
           </span>
         </Link>
 
@@ -42,14 +46,14 @@ export function MobileNavbar() {
             href="/booking"
             className="inline-flex items-center justify-center h-[34px] px-3.5 rounded-xl bg-brand-primary text-white text-xs font-bold shadow-2xs hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
-            <span>احجز الآن</span>
+            <span>{t("bookNow")}</span>
           </Link>
 
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
             className="p-2 rounded-xl border border-brand-surface bg-white text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-            aria-label="فتح القائمة الرئيسية"
+            aria-label={a11y("openMenu")}
             aria-expanded={drawerOpen}
             aria-controls="mobile-navigation-drawer"
           >
