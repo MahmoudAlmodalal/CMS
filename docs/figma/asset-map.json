@@ -136,6 +136,78 @@
       ],
       "subject": "dotted mark, tracks grid inline start",
       "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-artists-start.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        0,
+        708,
+        62,
+        112
+      ],
+      "subject": "dotted mark, artists grid inline end",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-artists-end.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        1377,
+        1696,
+        63,
+        112
+      ],
+      "subject": "dotted mark, artists grid inline start",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-1.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        1031,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 1",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-2.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        725,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 2",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-3.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        419,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 3",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/artist-4.png",
+      "frame": "artists-desktop",
+      "nodeRect": [
+        113,
+        846,
+        296,
+        314
+      ],
+      "subject": "portrait, artists row 1 card 4",
+      "scrubbed": null
     }
   ],
   "outstanding": [
@@ -144,19 +216,6 @@
       "frame": "news-desktop",
       "node": "91:17298",
       "reason": "headline and gradient are composited over the photo"
-    },
-    {
-      "file": "public/assets/figma/booking-hero.png",
-      "frame": "booking-desktop",
-      "node": "91:17110",
-      "reason": "headline and gradient are composited over the photo"
-    },
-    {
-      "file": "public/assets/figma/academy-hero.png",
-      "frame": "academy-desktop",
-      "node": "91:16330",
-      "reason": "headline, pill and gradient are composited over the photo"
     }
-  ],
-  "blockedBy": "figma.com and api.figma.com are refused by the environment's egress policy, so the MCP asset URLs for these fills cannot be fetched. Every page hero shares /assets/figma/hero-stage-landscape.png until they can be exported."
+  ]
 }

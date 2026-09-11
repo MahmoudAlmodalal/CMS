@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { type Artist, ARTIST_CATEGORIES } from "@/lib/types/artists";
+import { type Artist } from "@/lib/types/artists";
 import { ArtistFilterTabs } from "./ArtistFilterTabs";
 import { ArtistsGrid } from "./ArtistsGrid";
 
@@ -12,8 +12,13 @@ export interface ArtistsDirectoryClientProps {
 }
 
 /**
- * ArtistsDirectoryClient Component
- * Handles client-side category filtering, URL sync (?category=...), and responsive grid rendering.
+ * Artists directory — the filter bar of node 91:18144 over the grid of 91:18061.
+ *
+ * The frame puts 41.7px between them, which is not the rhythm anything else on the
+ * page uses, so it is stated here rather than taken from a shared scale.
+ *
+ * Filtering, the ?category= sync and the keyboard tablist are behaviour the design
+ * cannot express and are kept as they were.
  */
 export function ArtistsDirectoryClient({
   initialArtists,
@@ -33,17 +38,6 @@ export function ArtistsDirectoryClient({
       setSelectedCategory(paramCategory);
     }
   }, [paramCategory]);
-
-  // Compute category counts for pills
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { all: initialArtists.length };
-    for (const cat of ARTIST_CATEGORIES) {
-      if (cat.id !== "all") {
-        map[cat.id] = initialArtists.filter((a) => a.category === cat.id).length;
-      }
-    }
-    return map;
-  }, [initialArtists]);
 
   // Handle tab switch
   const handleSelectCategory = (categoryId: string) => {
@@ -77,12 +71,11 @@ export function ArtistsDirectoryClient({
   }, [initialArtists, selectedCategory]);
 
   return (
-    <div className={`space-y-8 ${className}`}>
+    <div className={`flex flex-col gap-8 lg:gap-[41.7px] ${className}`}>
       {/* 1. Category Filter Tabs */}
       <ArtistFilterTabs
         activeCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
-        counts={counts}
       />
 
       {/* 2. Responsive Artists Grid */}
