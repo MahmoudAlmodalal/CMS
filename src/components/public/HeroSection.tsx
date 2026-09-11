@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { PublicButton } from "./PublicButton";
@@ -20,6 +21,8 @@ export interface HeroSectionProps {
  *   Both 207x48, 12px radius.
  */
 export function HeroSection({ settings }: HeroSectionProps) {
+  const t = useTranslations("home");
+
   return (
     <section className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint -mt-14 lg:-mt-24 pt-14 lg:pt-24 min-h-[740px] lg:h-[740px] flex items-center justify-center">
       {/* Background Stage Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
@@ -54,12 +57,12 @@ export function HeroSection({ settings }: HeroSectionProps) {
           <div className="flex flex-wrap items-center justify-center gap-8 pt-4 w-full sm:w-auto">
             {/* Solid primary (Figma component 115:1079) */}
             <PublicButton href="/artists" variant="primary" size="md">
-              اكتشف الفنانين
+              {t("heroPrimaryCta")}
             </PublicButton>
 
             {/* Outline secondary (Figma component 115:1091) */}
             <PublicButton href="/booking" variant="secondary" size="md">
-              احجز الآن
+              {t("heroSecondaryCta")}
             </PublicButton>
           </div>
         </div>

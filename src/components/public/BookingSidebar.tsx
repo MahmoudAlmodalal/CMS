@@ -1,5 +1,7 @@
 import React from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { MailIcon, PhoneIcon, GlobeIcon, CheckIcon } from "@/components/ui/Icons";
+import { toArabicDigits } from "@/lib/formatters";
 import { Bdi } from "@/components/ui/Bidi";
 
 interface BookingSidebarProps {
@@ -8,27 +10,12 @@ interface BookingSidebarProps {
   instagramUrl: string;
 }
 
+/** Copy lives in the `booking` namespace; the step numeral is rendered in the reader's script. */
 const STEPS = [
-  {
-    step: "١",
-    title: "نستلم طلبك ونراجعه",
-    description: "نطلع على تفاصيل المناسبة ونوع الفعالية واحتياجاتك الفنية بدقة لتحديد الخيارات الأنسب.",
-  },
-  {
-    step: "٢",
-    title: "نتواصل معك خلال ٤٨ ساعة",
-    description: "يتواصل معك فريق إدارة الحجوزات لمناقشة البرنامج الموسيقي والميزانية والمواعيد.",
-  },
-  {
-    step: "٣",
-    title: "نقترح الفنان والبرنامج",
-    description: "نصمم برنامجاً موسيقياً مخصصاً يلائم طبيعة الحفل مع توفير نماذج صوتية وترتيبات لوجستية.",
-  },
-  {
-    step: "٤",
-    title: "تأكيد الحجز والتفاصيل",
-    description: "نبرم الاتفاق النهائي وننسق مع الفرقة والفنيين لتقديم تجربة أندلسية استثنائية.",
-  },
+  { index: 1, titleKey: "step1Title", descriptionKey: "step1Body" },
+  { index: 2, titleKey: "step2Title", descriptionKey: "step2Body" },
+  { index: 3, titleKey: "step3Title", descriptionKey: "step3Body" },
+  { index: 4, titleKey: "step4Title", descriptionKey: "step4Body" },
 ];
 
 /**
@@ -42,6 +29,9 @@ export function BookingSidebar({
   contactPhone,
   instagramUrl,
 }: BookingSidebarProps) {
+  const t = useTranslations("booking");
+  const locale = useLocale();
+  const stepNumeral = (index: number) => (locale === "ar" ? toArabicDigits(index) : String(index));
   // Normalize phone for WhatsApp link
   const rawPhoneDigits = contactPhone.replace(/\D/g, "");
   const whatsappHref = rawPhoneDigits ? `https://wa.me/${rawPhoneDigits}` : "#";
@@ -53,12 +43,12 @@ export function BookingSidebar({
         <div className="flex items-center gap-2 pb-4 mb-5 border-b border-brand-espresso/10">
           <span className="text-brand-primary font-bold">♪</span>
           <h2 className="font-calligraphic text-xl font-bold text-brand-espresso">
-            تواصل مباشرة
+            {t("contactHeading")}
           </h2>
         </div>
 
         <p className="text-sm text-brand-espresso/70 mb-5 leading-relaxed">
-          تفضل بالتواصل معنا مباشرة لأي استفسار عاجل أو لتنسيق فعالية بمواصفات خاصة:
+          {t("contactBody")}
         </p>
 
         <div className="flex flex-col gap-4">
@@ -66,13 +56,13 @@ export function BookingSidebar({
           <a
             href={`mailto:${contactEmail}`}
             className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label={`إرسال بريد إلكتروني إلى ${contactEmail}`}
+            aria-label={t("contactEmailAction", { email: contactEmail })}
           >
             <div className="w-10 h-10 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
               <MailIcon size={18} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">البريد الإلكتروني الرسمي</span>
+              <span className="text-xs text-brand-espresso/60">{t("contactEmailLabel")}</span>
               <span className="text-sm font-semibold text-brand-espresso truncate font-mono" dir="ltr">
                 <Bdi dir="ltr">{contactEmail}</Bdi>
               </span>
@@ -85,13 +75,13 @@ export function BookingSidebar({
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label={`تواصل عبر واتساب على الرقم ${contactPhone}`}
+            aria-label={t("contactWhatsappAction", { phone: contactPhone })}
           >
             <div className="w-10 h-10 rounded-lg bg-green-600/10 text-green-700 flex items-center justify-center shrink-0 group-hover:bg-green-600 group-hover:text-white transition-colors">
               <PhoneIcon size={18} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">واتساب / اتصال مباشر</span>
+              <span className="text-xs text-brand-espresso/60">{t("contactWhatsappLabel")}</span>
               <span className="text-sm font-semibold text-brand-espresso font-mono" dir="ltr">
                 <Bdi dir="ltr">{contactPhone}</Bdi>
               </span>
@@ -104,13 +94,13 @@ export function BookingSidebar({
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-3.5 p-3 rounded-xl bg-brand-cream/60 hover:bg-brand-cream transition-colors border border-brand-espresso/5"
-            aria-label="متابعة حسابنا على انستغرام"
+            aria-label={t("contactInstagramAction")}
           >
             <div className="w-10 h-10 rounded-lg bg-brand-espresso/10 text-brand-espresso flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors">
               <GlobeIcon size={18} />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-xs text-brand-espresso/60">انستغرام</span>
+              <span className="text-xs text-brand-espresso/60">{t("contactInstagramLabel")}</span>
               <span className="text-sm font-semibold text-brand-espresso font-mono" dir="ltr">
                 <Bdi dir="ltr">@andalusia.art</Bdi>
               </span>
@@ -124,22 +114,22 @@ export function BookingSidebar({
         <div className="flex items-center gap-2 pb-4 mb-5 border-b border-brand-cream/15">
           <span className="text-brand-primary font-bold">♪</span>
           <h2 className="font-calligraphic text-xl font-bold text-white">
-            ماذا يحدث بعد ذلك؟
+            {t("stepsHeading")}
           </h2>
         </div>
 
         <ol className="flex flex-col gap-5 list-none p-0 m-0">
-          {STEPS.map((s, index) => (
-            <li key={index} className="flex items-start gap-3.5">
+          {STEPS.map((step) => (
+            <li key={step.index} className="flex items-start gap-3.5">
               <div className="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center shrink-0 font-bold text-sm font-mono mt-0.5">
-                {s.step}
+                {stepNumeral(step.index)}
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="text-sm font-bold text-white">
-                  {s.title}
+                  {t(step.titleKey)}
                 </h3>
                 <p className="text-xs text-brand-cream/75 leading-relaxed">
-                  {s.description}
+                  {t(step.descriptionKey)}
                 </p>
               </div>
             </li>
@@ -148,7 +138,7 @@ export function BookingSidebar({
 
         <div className="mt-6 pt-4 border-t border-brand-cream/15 flex items-center gap-2 text-xs text-brand-cream/60">
           <CheckIcon size={14} className="text-brand-primary shrink-0" />
-          <span>لا يوجد دفع إلكتروني مسبق — التنسيق والاتفاق يتم مباشرة مع الإدارة.</span>
+          <span>{t("noPrepayment")}</span>
         </div>
       </div>
     </aside>

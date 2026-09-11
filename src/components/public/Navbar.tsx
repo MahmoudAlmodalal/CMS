@@ -2,23 +2,23 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { GlobeIcon } from "@/components/ui/Icons";
-import { useDirection } from "@/lib/direction";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 import { cn } from "@/lib/utils";
 
 export interface NavItem {
-  label: string;
+  /** Key under the `nav` message namespace. */
+  key: "home" | "academy" | "artists" | "news" | "events";
   href: string;
 }
 
 export const CONFIRMED_NAV_ITEMS: readonly NavItem[] = [
-  { label: "الرئيسية", href: "/" },
-  { label: "الأكاديمية", href: "/academy" },
-  { label: "الفنانين", href: "/artists" },
-  { label: "الأخبار", href: "/news" },
-  { label: "الفعاليات", href: "/events" },
+  { key: "home", href: "/" },
+  { key: "academy", href: "/academy" },
+  { key: "artists", href: "/artists" },
+  { key: "news", href: "/news" },
+  { key: "events", href: "/events" },
 ] as const;
 
 /**
@@ -32,7 +32,8 @@ export const CONFIRMED_NAV_ITEMS: readonly NavItem[] = [
  */
 export function Navbar() {
   const pathname = usePathname();
-  const { isRTL, toggleDirection } = useDirection();
+  const t = useTranslations("nav");
+  const a11y = useTranslations("a11y");
 
   const isLinkActive = (href: string) => {
     if (href === "/") {
@@ -51,11 +52,11 @@ export function Navbar() {
         <Link
           href="/"
           className="flex items-center shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xl"
-          aria-label="فرقة أندلسيا — الصفحة الرئيسية"
+          aria-label={a11y("brandHome")}
         >
           <Image
             src="/assets/branding/logo-navbar.png"
-            alt="فرقة أندلسيا"
+            alt={a11y("brandHome")}
             width={196}
             height={85}
             priority
@@ -66,7 +67,7 @@ export function Navbar() {
         {/* Center: Desktop Navigation Links (Figma Node 20:4406 — gap 32) */}
         <nav
           className="flex items-center gap-6 xl:gap-8"
-          aria-label="التنقل الرئيسي"
+          aria-label={a11y("primaryNav")}
         >
           {CONFIRMED_NAV_ITEMS.map((item) => {
             const active = isLinkActive(item.href);
@@ -82,7 +83,7 @@ export function Navbar() {
                 )}
                 aria-current={active ? "page" : undefined}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             );
           })}
@@ -95,19 +96,11 @@ export function Navbar() {
             href="/booking"
             className="inline-flex items-center justify-center w-[149px] h-[44px] rounded-[16px] bg-brand-primary text-primary-50 text-base font-bold hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
           >
-            أحجز الآن
+            {t("bookNow")}
           </Link>
 
-          {/* Direction / Language Toggle (Figma Node 134:8271 — 24x24 glyph) */}
-          <button
-            type="button"
-            onClick={toggleDirection}
-            className="w-6 h-6 inline-flex items-center justify-center text-brand-espresso hover:text-brand-primary transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-            title="تبديل اتجاه المستند"
-            aria-label={isRTL ? "التبديل إلى الإنجليزية (LTR)" : "التبديل إلى العربية (RTL)"}
-          >
-            <GlobeIcon size={24} />
-          </button>
+          {/* Language switch (Figma Node 134:8271 — plain "En" label, 24px box) */}
+          <LocaleSwitcher />
         </div>
       </header>
     </div>

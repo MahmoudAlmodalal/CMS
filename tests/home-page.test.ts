@@ -2,9 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 
 const root = path.resolve(".");
-const pub = (...segs: string[]) => path.join(root, "src/app/(public)", ...segs);
+const pub = (...segs: string[]) => path.join(root, "src/app/[locale]/(public)", ...segs);
 const comp = (...segs: string[]) => path.join(root, "src/components/public", ...segs);
 const read = (p: string) => fs.readFileSync(p, "utf-8");
 
@@ -26,7 +27,7 @@ test("Milestone 2 — 1. Canonical 8-Stage Vertical Coordinate Sequence & Landma
     assert.match(
       pageSrc,
       new RegExp(`\\b${component}\\b`),
-      `src/app/(public)/page.tsx must import ${component}`
+      `src/app/[locale]/(public)/page.tsx must import ${component}`
     );
   }
 
@@ -35,7 +36,7 @@ test("Milestone 2 — 1. Canonical 8-Stage Vertical Coordinate Sequence & Landma
     const idx = pageSrc.indexOf(`<${name}`);
     assert.ok(
       idx !== -1,
-      `src/app/(public)/page.tsx must render component <${name} />`
+      `src/app/[locale]/(public)/page.tsx must render component <${name} />`
     );
     return { name, idx };
   });
@@ -206,9 +207,11 @@ test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ra
   );
   assert.match(
     artistsSectionSrc,
-    /أصوات تصنع التاريخ/,
-    "FeaturedArtists heading must display 'أصوات تصنع التاريخ'"
+    /artistsHeading/,
+    "FeaturedArtists heading must render the home.artistsHeading message"
   );
+  assert.equal(arMessages["home.artistsHeading"], "أصوات تصنع التاريخ", "Arabic heading copy is confirmed by Figma");
+  assert.ok(enMessages["home.artistsHeading"], "English heading copy must exist");
 
   // Action link to /artists
   assert.match(
@@ -264,9 +267,15 @@ test("Milestone 2 — 5. Stage 4: Testimonials Section Geometry & Single Quote C
   );
   assert.match(
     testimonialsSrc,
-    /يقولون عن أندلسيا/,
-    "Testimonials heading must display 'يقولون عن أندلسيا'"
+    /testimonialsHeading/,
+    "Testimonials heading must render the home.testimonialsHeading message"
   );
+  assert.equal(
+    arMessages["home.testimonialsHeading"],
+    "يقولون عن *أندلسيا*",
+    "Arabic heading copy is confirmed by Figma, with أندلسيا carrying the second fill"
+  );
+  assert.ok(enMessages["home.testimonialsHeading"], "English heading copy must exist");
 
   // Single quote card geometry: Frame 176:6169 (805x161px)
   assert.match(
@@ -296,9 +305,11 @@ test("Milestone 2 — 6. Stage 5: Editorial Feature Geometry & Story Headlines (
   );
   assert.match(
     editorialSrc,
-    /نكتب كي لا تضيع التفاصيل/,
-    "Editorial heading must display 'نكتب كي لا تضيع التفاصيل'"
+    /editorialHeading/,
+    "Editorial heading must render the home.editorialHeading message"
   );
+  assert.equal(arMessages["home.editorialHeading"], "نكتب كي لا تضيع التفاصيل", "Arabic heading copy is confirmed by Figma");
+  assert.ok(enMessages["home.editorialHeading"], "English heading copy must exist");
 
   // Figma Frame 26 carries no "view all" link — the four cards deep-link individually.
   assert.match(
@@ -482,12 +493,18 @@ test("Milestone 2 — 10. Public Home Integration & ISR Data Contracts", () => {
   // Metadata verification
   assert.match(
     pageSrc,
+    /t\("homeTitle"\)/,
+    "HomePage metadata must be built from the meta message namespace"
+  );
+  assert.match(
+    arMessages["meta.homeTitle"],
     /فرقة أندلسيا للموسيقى والتراث/,
     "HomePage metadata must declare canonical Arabic title"
   );
+  assert.ok(enMessages["meta.homeTitle"], "HomePage metadata title must exist in English");
   assert.match(
     pageSrc,
-    /locale:\s*["']ar_AR["']/,
-    "HomePage metadata must declare Arabic RTL OpenGraph locale"
+    /locale: locale === "ar" \? "ar_AR" : "en_US"/,
+    "HomePage OpenGraph locale must follow the active locale, with Arabic still ar_AR"
   );
 });

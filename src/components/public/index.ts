@@ -3,6 +3,7 @@ export { MobileNavbar } from "./MobileNavbar";
 export { MobileDrawer, type MobileDrawerProps } from "./MobileDrawer";
 export { Footer } from "./Footer";
 export { SkipToContent } from "./SkipToContent";
+export { LocaleSwitcher } from "./LocaleSwitcher";
 
 // Home Page components
 export { HeroSection } from "./HeroSection";

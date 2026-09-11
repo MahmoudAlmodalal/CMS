@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { toArabicDigits } from "@/lib/formatters";
 import type { EventItem } from "@/lib/types/events";
@@ -20,10 +21,15 @@ export interface FeaturedEventBannerProps {
  * - 186:880  (Cover Poster Photo)
  */
 export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
+  const t = useTranslations("events");
+  const locale = useLocale();
+  const digits = (value: number) => (locale === "ar" ? toArabicDigits(value) : String(value));
   const eventDate = new Date(event.event_date);
-  const day = toArabicDigits(eventDate.getDate());
-  const month = new Intl.DateTimeFormat("ar-EG", { month: "long" }).format(eventDate);
-  const year = toArabicDigits(eventDate.getFullYear());
+  const day = digits(eventDate.getDate());
+  const month = new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
+    month: "long",
+  }).format(eventDate);
+  const year = digits(eventDate.getFullYear());
   const dateLocationString = `${day} ${month} ${year} · ${event.location || event.city}`;
 
   const bookingHref = `/booking?event_id=${event.id}`;
@@ -32,7 +38,7 @@ export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
 
   return (
     <article
-      aria-label="الفعالية الأبرز"
+      aria-label={t("featuredRegion")}
       className="relative overflow-hidden rounded-card bg-white border border-brand-espresso-subtle shadow-card transition-all hover:shadow-card-hover"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
@@ -49,7 +55,7 @@ export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-secondary-300 text-brand-espresso/40">
-              <span className="font-calligraphic text-2xl font-bold">أندلسيا</span>
+              <span className="font-calligraphic text-2xl font-bold">{t("posterFallback")}</span>
             </div>
           )}
           {/* Subtle vignette gradient */}
@@ -63,7 +69,7 @@ export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-badge bg-primary-500 text-white text-xs font-bold shadow-subtle tracking-wide">
                 <span>✦</span>
-                <span>الفعالية الأبرز</span>
+                <span>{t("featuredBadge")}</span>
               </span>
               <span className="text-xs font-bold text-brand-espresso/60">
                 {event.city}
@@ -102,7 +108,7 @@ export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
               rel={isExternalTicket ? "noopener noreferrer" : undefined}
               className="inline-flex items-center justify-center px-8 py-3.5 rounded-button bg-primary-500 text-white font-bold text-base shadow-subtle hover:bg-primary-400 active:bg-primary-600 transition-all active:scale-[0.98]"
             >
-              {isExternalTicket ? "احجز تذكرتك" : "احجز الآن"}
+              {isExternalTicket ? t("bookTicket") : t("bookNow")}
             </Link>
 
             {isExternalTicket && (
@@ -110,7 +116,7 @@ export function FeaturedEventBanner({ event }: FeaturedEventBannerProps) {
                 href={bookingHref}
                 className="inline-flex items-center justify-center px-5 py-3.5 rounded-button bg-primary-50 border border-primary-100 text-primary-500 font-bold text-sm hover:bg-primary-100 transition-all"
               >
-                طلب حجز خاص
+                {t("privateRequest")}
               </Link>
             )}
           </div>

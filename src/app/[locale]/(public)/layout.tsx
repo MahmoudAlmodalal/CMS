@@ -1,4 +1,5 @@
 import React from "react";
+import { setRequestLocale } from "next-intl/server";
 import {
   Navbar,
   MobileNavbar,
@@ -6,11 +7,17 @@ import {
   SkipToContent,
 } from "@/components/public";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  // Keeps the public shell statically renderable per locale.
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <div className="min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
       {/* 1. Accessible Skip Link */}

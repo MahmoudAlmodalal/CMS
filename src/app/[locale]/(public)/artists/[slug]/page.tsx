@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/LayoutPrimitives";
@@ -15,21 +16,22 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
   const artist = await getArtistBySlug(slug);
-  if (!artist) return { title: "الفنان غير موجود | فرقة أندلسيا" };
-  const canonicalUrl = `/artists/${artist.slug}`;
+  if (!artist) return { title: t("artistNotFound") };
+  const canonicalUrl = locale === "ar" ? `/artists/${artist.slug}` : `/en/artists/${artist.slug}`;
   return {
-    title: `${artist.name} | فرقة أندلسيا`,
-    description: artist.short_bio || `الصفحة الرسمية للفنان ${artist.name} في فرقة أندلسيا.`,
+    title: t("artistTitle", { name: artist.name }),
+    description: artist.short_bio || t("artistDescription", { name: artist.name }),
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${artist.name} | فرقة أندلسيا`,
+      title: t("artistTitle", { name: artist.name }),
       description: artist.short_bio || undefined,
       type: "profile",
-      locale: "ar_AR",
+      locale: locale === "ar" ? "ar_AR" : "en_US",
       url: canonicalUrl,
     },
   };
@@ -44,10 +46,10 @@ export async function generateMetadata({
 export default async function ArtistDetailPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
-  const artist = await getArtistBySlug(slug);
+  const [artist, t] = await Promise.all([getArtistBySlug(slug), getTranslations("page")]);
 
   if (!artist) {
     notFound();
@@ -56,7 +58,7 @@ export default async function ArtistDetailPage({
   return (
     <div>
       <PageHero
-        eyebrow="الملف الشخصي للفنان"
+        eyebrow={t("artistEyebrow")}
         title={artist.name}
         subtitle={[artist.genre_tag, artist.city].filter(Boolean).join(" · ")}
       />
@@ -73,7 +75,7 @@ export default async function ArtistDetailPage({
           </div>
           <article className="space-y-8 text-start">
             <div>
-              <span className="text-xs font-bold tracking-wider text-brand-primary">عن الفنان</span>
+              <span className="text-xs font-bold tracking-wider text-brand-primary">{t("artistAbout")}</span>
               <h2 className="mt-3 font-display text-4xl font-normal text-brand-espresso sm:text-5xl">{artist.name}</h2>
               <p className="mt-3 text-sm text-brand-espresso/65">{[artist.genre_tag, artist.city].filter(Boolean).join(" · ")}</p>
             </div>

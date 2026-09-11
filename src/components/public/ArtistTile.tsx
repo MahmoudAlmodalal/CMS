@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
 
@@ -18,6 +19,7 @@ export interface ArtistTileProps {
  * or booking button here.
  */
 export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
+  const t = useTranslations("artist");
   const resolved = resolveMediaUrl("artists", artist.portrait_image_url?.trim() || "");
 
   return (
@@ -25,12 +27,12 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       href={`/artists/${artist.slug}`}
       data-testid={`artist-tile-${artist.slug}`}
       className="group relative block w-[220px] h-[293px] shrink-0 rounded-[16px] overflow-hidden bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      aria-label={`عرض الملف الشخصي للفنان ${artist.name}`}
+      aria-label={t("viewProfile", { name: artist.name })}
     >
       {resolved ? (
         <Image
           src={resolved}
-          alt={`صورة الفنان ${artist.name}`}
+          alt={t("portraitAlt", { name: artist.name })}
           fill
           sizes="220px"
           priority={priority}

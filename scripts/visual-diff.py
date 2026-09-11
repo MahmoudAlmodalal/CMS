@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Create deterministic pixel-diff metrics and images for Figma baselines."""
 import json
+import sys
 from pathlib import Path
-from PIL import Image, ImageChops, ImageEnhance
+
+try:
+    from PIL import Image, ImageChops, ImageEnhance
+except ModuleNotFoundError:
+    sys.exit("Pillow is required for pixel diffing. Install it with: python3 -m pip install pillow")
 
 ROOT = Path(__file__).resolve().parents[1]
 manifest = json.loads((ROOT / "docs/figma-reference-manifest.json").read_text())

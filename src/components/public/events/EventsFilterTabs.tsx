@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { CATEGORY_TABS, type CategoryFilterId } from "@/lib/types/events";
 
@@ -24,10 +25,11 @@ export function EventsFilterTabs({
   onSelectCategory,
   className,
 }: EventsFilterTabsProps) {
+  const t = useTranslations("events");
   return (
     <div
       role="tablist"
-      aria-label="تصنيفات الفعاليات"
+      aria-label={t("filterTabs")}
       className={cn(
         "flex items-center gap-2.5 overflow-x-auto py-2 scrollbar-none no-scrollbar",
         className

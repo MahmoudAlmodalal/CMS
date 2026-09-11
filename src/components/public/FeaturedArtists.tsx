@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ArtistTile } from "./ArtistTile";
 import { PublicButton } from "./PublicButton";
@@ -17,6 +18,8 @@ interface FeaturedArtistsProps {
  * - CTA (115:2179): OUTLINE 207x48 button centered below the rail
  */
 export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
+  const t = useTranslations("home");
+
   if (!artists || artists.length === 0) {
     return null;
   }
@@ -26,7 +29,7 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
       <Container>
         {/* Section Heading (Figma Node 87:14299 — Qahwa 64px, centered) */}
         <h2 className="font-calligraphic text-3xl sm:text-5xl lg:text-[64px] font-normal text-[#F9EDE8] leading-[1.25] text-center pb-10">
-          أصوات تصنع التاريخ
+          {t("artistsHeading")}
         </h2>
       </Container>
 
@@ -42,7 +45,7 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
       {/* View-all CTA (Figma Node 115:2179 — outline 207x48, centered) */}
       <div className="flex justify-center pt-10">
         <PublicButton href="/artists" variant="secondary" size="md">
-          عرض جميع الفنانين ←
+          {t("artistsCta")}
         </PublicButton>
       </div>
     </section>

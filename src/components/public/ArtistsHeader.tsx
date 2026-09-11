@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export interface ArtistsHeaderProps {
   title?: string;
@@ -19,35 +20,37 @@ export interface ArtistsHeaderProps {
  * - Subtitle: configurable via site_settings.artists_subtitle, Cairo body
  */
 export function ArtistsHeader({
-  title = "أصوات تصنع التاريخ",
-  subtitle = "كل فنان في أندلسيا يحمل قصة ومعاناة، يعزف بأنامله روح الشرق، ويصنع من التراث نغماً للمستقبل.",
+  title,
+  subtitle,
   socialLinks,
   className = "",
 }: ArtistsHeaderProps) {
+  const t = useTranslations("artists");
+
   return (
     <header className={`text-center space-y-4 max-w-3xl mx-auto px-4 ${className}`}>
       {/* Kicker badge */}
       <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary-50 border border-primary-100 text-brand-primary text-xs font-bold tracking-wider">
-        <span>دليل الفنانين</span>
+        <span>{t("kicker")}</span>
         <span aria-hidden="true">♪</span>
       </div>
 
       {/* Primary Display Title */}
       <h1 className="font-display text-4xl sm:text-5xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25]">
-        {title}
+        {title ?? t("title")}
       </h1>
 
       {/* Subtitle / Lead Paragraph */}
-      {subtitle && (
+      {(subtitle ?? t("subtitle")) && (
         <p className="text-base sm:text-lg text-brand-espresso/80 leading-relaxed max-w-2xl mx-auto">
-          {subtitle}
+          {subtitle ?? t("subtitle")}
         </p>
       )}
 
       {/* Approved Platform Social Links */}
       {socialLinks && (socialLinks.instagram || socialLinks.tiktok) && (
         <div className="pt-2 flex items-center justify-center gap-4 text-xs font-medium text-brand-espresso/70">
-          <span>تابع جديد الفرقة والفنانين:</span>
+          <span>{t("followPrompt")}</span>
           <div className="flex items-center gap-3">
             {socialLinks.instagram && (
               <a
@@ -55,7 +58,7 @@ export function ArtistsHeader({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-                aria-label="Instagram فرقة أندلسيا"
+                aria-label={t("instagramLabel")}
               >
                 <bdi dir="ltr">Instagram</bdi>
               </a>
@@ -69,7 +72,7 @@ export function ArtistsHeader({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-                aria-label="TikTok فرقة أندلسيا"
+                aria-label={t("tiktokLabel")}
               >
                 <bdi dir="ltr">TikTok</bdi>
               </a>

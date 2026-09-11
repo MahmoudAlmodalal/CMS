@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ArticleView } from "@/components/public/ArticleView";
@@ -28,15 +29,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
   const article = await getArticleBySlug(slug);
 
   if (!article) {
     return {
-      title: "المقال غير موجود | فرقة أندلسيا",
-      description: "المقال المطلوب غير موجود أو لم يتم نشره بعد.",
+      title: t("articleNotFound"),
+      description: t("articleNotFoundDescription"),
       robots: {
         index: false,
         follow: false,
@@ -44,22 +46,22 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `/news/${article.slug}`;
+  const canonicalUrl = locale === "ar" ? `/news/${article.slug}` : `/en/news/${article.slug}`;
 
   return {
-    title: `${article.title} | فرقة أندلسيا`,
+    title: t("articleTitle", { title: article.title }),
     description: article.excerpt,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${article.title} | فرقة أندلسيا`,
+      title: t("articleTitle", { title: article.title }),
       description: article.excerpt,
       url: canonicalUrl,
       type: "article",
       publishedTime: article.published_at,
       authors: [article.author_name],
-      locale: "ar_AR",
+      locale: locale === "ar" ? "ar_AR" : "en_US",
       images: [
         {
           url: article.cover_image_url || "/assets/articles/default-article.png",
@@ -69,7 +71,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${article.title} | فرقة أندلسيا`,
+      title: t("articleTitle", { title: article.title }),
       description: article.excerpt,
       images: [article.cover_image_url || "/assets/articles/default-article.png"],
     },

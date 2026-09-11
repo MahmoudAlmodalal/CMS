@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Badge } from "@/components/ui/Badge";
 
@@ -13,9 +14,8 @@ interface AcademyHeaderProps {
  * - Subtitle: Dynamic from site_settings.academy_subtitle
  */
 export function AcademyHeader({ subtitle }: AcademyHeaderProps) {
-  const displaySubtitle =
-    subtitle ||
-    "برامج تعليمية موسيقية مع فنانين حقيقيين تنقل المعرفة التراثية والتقنية الموسيقية من المسرح إلى الطالب مباشرة.";
+  const t = useTranslations("academy");
+  const displaySubtitle = subtitle || t("subtitle");
 
   return (
     <section className="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden text-center">
@@ -29,13 +29,13 @@ export function AcademyHeader({ subtitle }: AcademyHeaderProps) {
         {/* Section Pill / Category Tag */}
         <div className="mb-4">
           <Badge variant="default" className="text-primary-600 bg-primary-50 border-primary-200">
-            أكاديمية أندلسيا الموسيقية
+            {t("kicker")}
           </Badge>
         </div>
 
         {/* Confirmed Figma Headline */}
         <h1 className="font-calligraphic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] text-brand-espresso font-bold leading-tight md:leading-[1.2] mb-6">
-          تعلّم من اليد التي تعرف الطريق
+          {t("title")}
         </h1>
 
         {/* Dynamic / Configured Subtitle */}

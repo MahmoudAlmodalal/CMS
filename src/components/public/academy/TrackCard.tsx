@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslations, useLocale } from "next-intl";
+import { toArabicDigits } from "@/lib/formatters";
 import Link from "next/link";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -10,8 +12,6 @@ interface TrackCardProps {
   index?: number;
 }
 
-const ARABIC_NUMERALS = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "١٠"];
-
 /**
  * Academy Track Card
  * Figma Node: 91:16444 / 91:16442 / 91:16446 / 91:16448 / 91:16451
@@ -22,9 +22,11 @@ const ARABIC_NUMERALS = ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "
  * - Action button linking to /booking?course=[slug]
  */
 export function TrackCard({ course, index }: TrackCardProps) {
-  const displayNum =
-    ARABIC_NUMERALS[(course.display_order ?? (index !== undefined ? index + 1 : 1)) - 1] ||
-    String(course.display_order);
+  const t = useTranslations("academy");
+  const locale = useLocale();
+  // Figma shows the sequence in the reader's own numerals.
+  const position = course.display_order ?? (index !== undefined ? index + 1 : 1);
+  const displayNum = locale === "ar" ? toArabicDigits(position) : String(position);
 
   const bookingHref = `/booking?course=${encodeURIComponent(course.slug)}`;
 
@@ -55,7 +57,7 @@ export function TrackCard({ course, index }: TrackCardProps) {
         {/* Instructor info if available */}
         {course.instructor_name && (
           <p className="text-xs font-medium text-primary-600 font-sans mt-1">
-            بإشراف: {course.instructor_name}
+            {t("instructor", { name: course.instructor_name })}
           </p>
         )}
       </CardHeader>
@@ -70,9 +72,9 @@ export function TrackCard({ course, index }: TrackCardProps) {
         <Link
           href={bookingHref}
           className="inline-flex items-center justify-between w-full px-5 py-3 rounded-button bg-primary-50 text-primary-600 hover:bg-primary-500 hover:text-white font-bold text-sm transition-all duration-200 group/btn"
-          aria-label={`سجّل الآن في ${course.title}`}
+          aria-label={t("enrollLabel", { title: course.title })}
         >
-          <span>سجّل الآن</span>
+          <span>{t("enroll")}</span>
           <ArrowEndIcon size={18} className="transform group-hover/btn:translate-x-[-4px] rtl:group-hover/btn:translate-x-[4px] transition-transform" />
         </Link>
       </CardFooter>

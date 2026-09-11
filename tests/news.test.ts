@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 // NOTE: node --test cannot resolve the `@/` alias (or next/headers), so data
 // is imported from the runtime-safe `src/lib/articles.ts` module (its only
 // `@/` import is `import type`, elided by type-stripping). The DAL module
@@ -18,8 +19,8 @@ const root = path.resolve(".");
 
 test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
   const expectedFiles = [
-    "src/app/(public)/news/page.tsx",
-    "src/app/(public)/news/[slug]/page.tsx",
+    "src/app/[locale]/(public)/news/page.tsx",
+    "src/app/[locale]/(public)/news/[slug]/page.tsx",
     "src/components/public/NewsHero.tsx",
     "src/components/public/NewsGrid.tsx",
     "src/components/public/NewsFilterTabs.tsx",
@@ -47,7 +48,7 @@ test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
 
 test("Task 37 — 2. News Listing Page ISR & Metadata Specifications", () => {
   const newsPageContent = fs.readFileSync(
-    path.join(root, "src/app/(public)/news/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/news/page.tsx"),
     "utf-8"
   );
 
@@ -61,14 +62,17 @@ test("Task 37 — 2. News Listing Page ISR & Metadata Specifications", () => {
   // Canonical URL and SEO metadata
   assert.match(
     newsPageContent,
-    /canonical:\s*["']\/news["']/,
-    "News listing page must declare canonical URL '/news'"
+    /const path = locale === "ar" \? "\/news" : "\/en\/news";/,
+    "News listing page must declare a per-locale canonical URL, Arabic staying at '/news'"
   );
-  assert.match(
-    newsPageContent,
-    /الأخبار والمقالات الثقافية/,
+  assert.match(newsPageContent, /alternates: \{ canonical: path \}/, "The canonical URL must be applied");
+  assert.match(newsPageContent, /t\("newsTitle"\)/, "News listing metadata must come from the meta namespace");
+  assert.equal(
+    arMessages["meta.newsTitle"],
+    "الأخبار والمقالات الثقافية | فرقة أندلسيا",
     "News listing metadata must contain primary title in Arabic"
   );
+  assert.ok(enMessages["meta.newsTitle"], "News listing metadata title must exist in English");
 
   // Semantics and component composition
   assert.match(newsPageContent, /<NewsHero/);
@@ -77,7 +81,7 @@ test("Task 37 — 2. News Listing Page ISR & Metadata Specifications", () => {
 
 test("Task 37 — 3. Article Reader Page ISR, 404, & Canonical URLs", () => {
   const slugPageContent = fs.readFileSync(
-    path.join(root, "src/app/(public)/news/[slug]/page.tsx"),
+    path.join(root, "src/app/[locale]/(public)/news/[slug]/page.tsx"),
     "utf-8"
   );
 
