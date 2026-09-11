@@ -5,7 +5,7 @@ import { fontVariables } from "@/lib/fonts";
 
 /** Sign-in sits outside the localized site and stays Arabic, like the panel it guards. */
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000"), 
   title: "تسجيل الدخول — أندلسيا",
   robots: { index: false, follow: false },
 };
