@@ -80,3 +80,45 @@ test("i18n — 5. The language control switches locale rather than flipping dire
     assert.ok(!source.includes("toggleDirection"), `${rel} must not merely flip direction`);
   }
 });
+
+test("i18n — public group has localized loading and not-found boundaries", () => {
+  const publicGroup = "src/app/[locale]/(public)";
+
+  // An unmatched URL must enter the [locale] segment, or Next serves its
+  // built-in not-found instead of the localized one.
+  const catchAll = fs.readFileSync(path.join(root, publicGroup, "[...rest]/page.tsx"), "utf-8");
+  assert.match(catchAll, /setRequestLocale\(locale\)/);
+  assert.match(catchAll, /notFound\(\)/);
+
+  const notFound = fs.readFileSync(path.join(root, publicGroup, "not-found.tsx"), "utf-8");
+  assert.match(notFound, /useTranslations\("notFound"\)/);
+  assert.match(notFound, /dir=\{localeDirection\[/, "the error shell carries no dir, so the page sets its own");
+  assert.doesNotMatch(
+    notFound,
+    /from "@\/i18n\/navigation"/,
+    "the locale-aware Link has no router context in the not-found shell"
+  );
+
+  // A loading.tsx opens a Suspense boundary over its segment AND its children,
+  // and a streamed response has already committed its 200 — so a route whose
+  // child calls notFound() must not have one, or 404s would be served as 200.
+  for (const route of ["events", "academy", "booking"]) {
+    assert.ok(
+      fs.existsSync(path.join(root, publicGroup, route, "loading.tsx")),
+      `${route} should show a skeleton while its data loads`
+    );
+  }
+  for (const route of [".", "artists", "news"]) {
+    assert.ok(
+      !fs.existsSync(path.join(root, publicGroup, route, "loading.tsx")),
+      `${route} must not open a Suspense boundary over a notFound() child`
+    );
+  }
+
+  for (const messages of [flattenMessages(loadMessages("ar")), flattenMessages(loadMessages("en"))]) {
+    for (const key of ["notFound.code", "notFound.title", "notFound.body", "notFound.home", "notFound.exploreHeading"]) {
+      assert.ok(messages[key], `the not-found page needs ${key}`);
+    }
+    assert.ok(messages["a11y.loadingPage"], "the loading skeleton needs an accessible label");
+  }
+});
