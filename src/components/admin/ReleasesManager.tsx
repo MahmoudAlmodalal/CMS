@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
 import type { AdminRelease, ArtistOption } from "@/lib/types/admin-tracks";
 import type { ReleaseInput } from "@/lib/validations";
 
@@ -32,6 +32,7 @@ function emptyRelease(defaultArtistId: string): ReleaseFormValues {
   return {
     artist_id: defaultArtistId,
     title: "",
+    title_en: null,
     release_type: "studio",
     track_count: 1,
     release_year: new Date().getFullYear(),
@@ -45,6 +46,7 @@ function releaseToForm(release: AdminRelease): ReleaseFormValues {
   return {
     artist_id: release.artist_id,
     title: release.title,
+    title_en: release.title_en ?? null,
     release_type: release.release_type as ReleaseFormValues["release_type"],
     track_count: release.track_count,
     release_year: release.release_year,
@@ -283,6 +285,7 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
               <Field id="release-title" label="عنوان الإصدار">
                 <Input id="release-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
               </Field>
+              <TranslationField id="release-title-en" label="عنوان الإصدار" value={values.title_en} onChange={(value) => setField("title_en", value)} />
               <Field id="release-type" label="نوع الإصدار">
                 <select
                   id="release-type"

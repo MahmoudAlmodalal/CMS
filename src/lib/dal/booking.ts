@@ -1,4 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
+import { getContentLocale } from "./localize";
+import { pickLocalized } from "@/lib/utils";
+import type { AppLocale } from "@/i18n/routing";
 
 export interface BookingArtistOption {
   id: string;
@@ -33,10 +36,15 @@ type BookingEventRow = {
   city?: string | null;
   performer_name?: string | null;
   artist_id?: string | null;
+  title_en?: string | null;
+  location_en?: string | null;
+  city_en?: string | null;
+  performer_name_en?: string | null;
 };
 
 type BookingSettingsRow = {
   booking_subtitle?: string | null;
+  booking_subtitle_en?: string | null;
   contact_email?: string | null;
   contact_phone?: string | null;
   social_links?: Record<string, string> | null;
@@ -44,6 +52,14 @@ type BookingSettingsRow = {
 
 export const DEFAULT_BOOKING_SUBTITLE =
   "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى بصحبة نخبة من الموسيقيين والمطربين المبدعين.";
+
+export const DEFAULT_BOOKING_SUBTITLE_EN =
+  "Book Andalusia for your concert, your restaurant, your festival — and make a moment nobody forgets, with some of the finest musicians and singers around.";
+
+/** The booking subtitle shown when site_settings carries none, in the reader's locale. */
+function localizedDefaultBookingSubtitle(locale: AppLocale): string {
+  return locale === "ar" ? DEFAULT_BOOKING_SUBTITLE : DEFAULT_BOOKING_SUBTITLE_EN;
+}
 
 export const CANONICAL_BOOKING_ARTISTS: BookingArtistOption[] = [
   { id: "a1000000-0000-0000-0000-000000000001", name: "سارة الصوت", slug: "sara-alsawt" },
@@ -65,7 +81,7 @@ export async function getBookingArtists(): Promise<BookingArtistOption[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("artists")
-      .select("id, name, slug")
+      .select("id, name, slug, name_en")
       .eq("is_published", true)
       .order("display_order", { ascending: true })
       .order("name", { ascending: true });
@@ -74,7 +90,12 @@ export async function getBookingArtists(): Promise<BookingArtistOption[]> {
       return CANONICAL_BOOKING_ARTISTS;
     }
 
-    return data as BookingArtistOption[];
+    const locale = await getContentLocale();
+    return (data as (BookingArtistOption & { name_en?: string | null })[]).map((row) => ({
+      id: row.id,
+      name: pickLocalized(row, "name", locale),
+      slug: row.slug,
+    }));
   } catch {
     return CANONICAL_BOOKING_ARTISTS;
   }
@@ -94,21 +115,25 @@ export async function getBookingEventContext(eventId?: string): Promise<BookingE
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("events")
-      .select("id, title, event_date, location, city, performer_name, artist_id")
+      .select(
+        "id, title, event_date, location, city, performer_name, artist_id, " +
+          "title_en, location_en, city_en, performer_name_en"
+      )
       .eq("id", eventId)
       .eq("is_published", true)
       .maybeSingle();
 
     if (error || !data) return null;
-    const row = data as BookingEventRow;
+    const row = data as unknown as BookingEventRow;
+    const locale = await getContentLocale();
 
     return {
       id: row.id,
-      title: row.title,
+      title: pickLocalized(row, "title", locale),
       event_date: row.event_date,
-      venue: row.location ?? undefined,
-      city: row.city ?? undefined,
-      performer_name: row.performer_name ?? undefined,
+      venue: pickLocalized(row, "location", locale) || undefined,
+      city: pickLocalized(row, "city", locale) || undefined,
+      performer_name: pickLocalized(row, "performer_name", locale) || undefined,
       artist_id: row.artist_id,
     };
   } catch {
@@ -120,7 +145,8 @@ export async function getBookingEventContext(eventId?: string): Promise<BookingE
  * Gathers complete context data needed to render /booking shell
  */
 export async function getBookingPageData(eventId?: string): Promise<BookingPageData> {
-  let subtitle = DEFAULT_BOOKING_SUBTITLE;
+  const locale = await getContentLocale();
+  let subtitle = localizedDefaultBookingSubtitle(locale);
   let contactEmail = "hello@andalusia.art";
   let contactPhone = "+961 70 000 000";
   let instagramUrl = "https://instagram.com/andalusia.art";
@@ -130,13 +156,13 @@ export async function getBookingPageData(eventId?: string): Promise<BookingPageD
       const supabase = await createClient();
       const { data } = await supabase
         .from("site_settings")
-        .select("booking_subtitle, contact_email, contact_phone, social_links")
+        .select("booking_subtitle, booking_subtitle_en, contact_email, contact_phone, social_links")
         .eq("id", "default")
         .maybeSingle();
 
       if (data) {
         const s = data as BookingSettingsRow;
-        if (s.booking_subtitle) subtitle = s.booking_subtitle;
+        if (s.booking_subtitle) subtitle = pickLocalized(s, "booking_subtitle", locale);
         if (s.contact_email) contactEmail = s.contact_email;
         if (s.contact_phone) contactPhone = s.contact_phone;
         if (s.social_links) {

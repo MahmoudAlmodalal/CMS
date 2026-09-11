@@ -12,17 +12,27 @@ import type { SiteSettingsInput } from "@/lib/validations/cms";
 
 interface SiteSettingsFormValues {
   hero_headline: string;
+  hero_headline_en: string;
   hero_subheadline: string;
+  hero_subheadline_en: string;
   hero_image_url: string;
   about_headline: string;
+  about_headline_en: string;
   about_body: string;
+  about_body_en: string;
   about_image_url: string;
   booking_banner_title: string;
+  booking_banner_title_en: string;
   booking_banner_body: string;
+  booking_banner_body_en: string;
   artists_subtitle: string;
+  artists_subtitle_en: string;
   events_subtitle: string;
+  events_subtitle_en: string;
   academy_subtitle: string;
+  academy_subtitle_en: string;
   booking_subtitle: string;
+  booking_subtitle_en: string;
   contact_email: string;
   contact_phone: string;
   social_links: {
@@ -30,8 +40,11 @@ interface SiteSettingsFormValues {
     tiktok: string;
   };
   operational_regions: string;
+  operational_regions_en: string;
   footer_mission: string;
+  footer_mission_en: string;
   copyright_text: string;
+  copyright_text_en: string;
 }
 
 type TextFieldName = Exclude<keyof SiteSettingsFormValues, "social_links">;
@@ -39,17 +52,27 @@ type TextFieldName = Exclude<keyof SiteSettingsFormValues, "social_links">;
 function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
   return {
     hero_headline: settings.hero_headline,
+    hero_headline_en: settings.hero_headline_en ?? "",
     hero_subheadline: settings.hero_subheadline,
+    hero_subheadline_en: settings.hero_subheadline_en ?? "",
     hero_image_url: settings.hero_image_url,
     about_headline: settings.about_headline,
+    about_headline_en: settings.about_headline_en ?? "",
     about_body: settings.about_body,
+    about_body_en: settings.about_body_en ?? "",
     about_image_url: settings.about_image_url,
     booking_banner_title: settings.booking_banner_title,
+    booking_banner_title_en: settings.booking_banner_title_en ?? "",
     booking_banner_body: settings.booking_banner_body,
+    booking_banner_body_en: settings.booking_banner_body_en ?? "",
     artists_subtitle: settings.artists_subtitle ?? "",
+    artists_subtitle_en: settings.artists_subtitle_en ?? "",
     events_subtitle: settings.events_subtitle ?? "",
+    events_subtitle_en: settings.events_subtitle_en ?? "",
     academy_subtitle: settings.academy_subtitle ?? "",
+    academy_subtitle_en: settings.academy_subtitle_en ?? "",
     booking_subtitle: settings.booking_subtitle ?? "",
+    booking_subtitle_en: settings.booking_subtitle_en ?? "",
     contact_email: settings.contact_email,
     contact_phone: settings.contact_phone,
     social_links: {
@@ -57,8 +80,11 @@ function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
       tiktok: settings.social_links.tiktok ?? "",
     },
     operational_regions: settings.operational_regions,
+    operational_regions_en: settings.operational_regions_en ?? "",
     footer_mission: settings.footer_mission,
+    footer_mission_en: settings.footer_mission_en ?? "",
     copyright_text: settings.copyright_text,
+    copyright_text_en: settings.copyright_text_en ?? "",
   };
 }
 
@@ -163,23 +189,36 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
     const input: SiteSettingsInput = {
       id: "default",
       hero_headline: values.hero_headline,
+      hero_headline_en: values.hero_headline_en || null,
       hero_subheadline: values.hero_subheadline,
+      hero_subheadline_en: values.hero_subheadline_en || null,
       hero_image_url: values.hero_image_url,
       about_headline: values.about_headline,
+      about_headline_en: values.about_headline_en || null,
       about_body: values.about_body,
+      about_body_en: values.about_body_en || null,
       about_image_url: values.about_image_url,
       booking_banner_title: values.booking_banner_title,
+      booking_banner_title_en: values.booking_banner_title_en || null,
       booking_banner_body: values.booking_banner_body,
+      booking_banner_body_en: values.booking_banner_body_en || null,
       artists_subtitle: values.artists_subtitle || null,
+      artists_subtitle_en: values.artists_subtitle_en || null,
       events_subtitle: values.events_subtitle || null,
+      events_subtitle_en: values.events_subtitle_en || null,
       academy_subtitle: values.academy_subtitle || null,
+      academy_subtitle_en: values.academy_subtitle_en || null,
       booking_subtitle: values.booking_subtitle || null,
+      booking_subtitle_en: values.booking_subtitle_en || null,
       contact_email: values.contact_email,
       contact_phone: values.contact_phone,
       social_links: values.social_links,
       operational_regions: values.operational_regions,
+      operational_regions_en: values.operational_regions_en || null,
       footer_mission: values.footer_mission,
+      footer_mission_en: values.footer_mission_en || null,
       copyright_text: values.copyright_text,
+      copyright_text_en: values.copyright_text_en || null,
     };
 
     setResult(null);
@@ -205,14 +244,26 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="hero_headline" label="عنوان الهيرو الرئيسي">
               <Input id="hero_headline" value={values.hero_headline} onChange={(event) => setField("hero_headline", event.target.value)} />
             </Field>
+            <Field id="hero_headline_en" label="عنوان الهيرو الرئيسي — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Input id="hero_headline_en" dir="ltr" lang="en" value={values.hero_headline_en} onChange={(event) => setField("hero_headline_en", event.target.value)} />
+            </Field>
             <Field id="about_headline" label="عنوان قسم من نحن">
               <Input id="about_headline" value={values.about_headline} onChange={(event) => setField("about_headline", event.target.value)} />
+            </Field>
+            <Field id="about_headline_en" label="عنوان قسم من نحن — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Input id="about_headline_en" dir="ltr" lang="en" value={values.about_headline_en} onChange={(event) => setField("about_headline_en", event.target.value)} />
             </Field>
             <Field id="hero_subheadline" label="العنوان الفرعي للهيرو">
               <Textarea id="hero_subheadline" rows={3} className="min-h-[96px]" value={values.hero_subheadline} onChange={(event) => setField("hero_subheadline", event.target.value)} />
             </Field>
+            <Field id="hero_subheadline_en" label="العنوان الفرعي للهيرو — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="hero_subheadline_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.hero_subheadline_en} onChange={(event) => setField("hero_subheadline_en", event.target.value)} />
+            </Field>
             <Field id="about_body" label="نص قسم من نحن">
               <Textarea id="about_body" value={values.about_body} onChange={(event) => setField("about_body", event.target.value)} />
+            </Field>
+            <Field id="about_body_en" label="نص قسم من نحن — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="about_body_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.about_body_en} onChange={(event) => setField("about_body_en", event.target.value)} />
             </Field>
             <Field id="hero_image_url" label="رابط صورة الهيرو" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
               <Input id="hero_image_url" type="url" dir="ltr" value={values.hero_image_url} onChange={(event) => setField("hero_image_url", event.target.value)} />
@@ -232,20 +283,38 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="booking_banner_title" label="عنوان بنر الحجز">
               <Input id="booking_banner_title" value={values.booking_banner_title} onChange={(event) => setField("booking_banner_title", event.target.value)} />
             </Field>
+            <Field id="booking_banner_title_en" label="عنوان بنر الحجز — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Input id="booking_banner_title_en" dir="ltr" lang="en" value={values.booking_banner_title_en} onChange={(event) => setField("booking_banner_title_en", event.target.value)} />
+            </Field>
             <Field id="booking_banner_body" label="نص بنر الحجز">
               <Textarea id="booking_banner_body" value={values.booking_banner_body} onChange={(event) => setField("booking_banner_body", event.target.value)} />
+            </Field>
+            <Field id="booking_banner_body_en" label="نص بنر الحجز — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="booking_banner_body_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.booking_banner_body_en} onChange={(event) => setField("booking_banner_body_en", event.target.value)} />
             </Field>
             <Field id="artists_subtitle" label="العنوان الفرعي للفنانين" required={false}>
               <Textarea id="artists_subtitle" rows={3} className="min-h-[96px]" value={values.artists_subtitle} onChange={(event) => setField("artists_subtitle", event.target.value)} />
             </Field>
+            <Field id="artists_subtitle_en" label="العنوان الفرعي للفنانين — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="artists_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.artists_subtitle_en} onChange={(event) => setField("artists_subtitle_en", event.target.value)} />
+            </Field>
             <Field id="events_subtitle" label="العنوان الفرعي للفعاليات" required={false}>
               <Textarea id="events_subtitle" rows={3} className="min-h-[96px]" value={values.events_subtitle} onChange={(event) => setField("events_subtitle", event.target.value)} />
+            </Field>
+            <Field id="events_subtitle_en" label="العنوان الفرعي للفعاليات — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="events_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.events_subtitle_en} onChange={(event) => setField("events_subtitle_en", event.target.value)} />
             </Field>
             <Field id="academy_subtitle" label="العنوان الفرعي للأكاديمية" required={false}>
               <Textarea id="academy_subtitle" rows={3} className="min-h-[96px]" value={values.academy_subtitle} onChange={(event) => setField("academy_subtitle", event.target.value)} />
             </Field>
+            <Field id="academy_subtitle_en" label="العنوان الفرعي للأكاديمية — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="academy_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.academy_subtitle_en} onChange={(event) => setField("academy_subtitle_en", event.target.value)} />
+            </Field>
             <Field id="booking_subtitle" label="العنوان الفرعي لصفحة الحجز" required={false}>
               <Textarea id="booking_subtitle" rows={3} className="min-h-[96px]" value={values.booking_subtitle} onChange={(event) => setField("booking_subtitle", event.target.value)} />
+            </Field>
+            <Field id="booking_subtitle_en" label="العنوان الفرعي لصفحة الحجز — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="booking_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.booking_subtitle_en} onChange={(event) => setField("booking_subtitle_en", event.target.value)} />
             </Field>
           </CardContent>
         </Card>
@@ -271,6 +340,9 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="operational_regions" label="مناطق النشاط">
               <Input id="operational_regions" value={values.operational_regions} onChange={(event) => setField("operational_regions", event.target.value)} />
             </Field>
+            <Field id="operational_regions_en" label="مناطق النشاط — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Input id="operational_regions_en" dir="ltr" lang="en" value={values.operational_regions_en} onChange={(event) => setField("operational_regions_en", event.target.value)} />
+            </Field>
           </CardContent>
         </Card>
 
@@ -283,8 +355,14 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="footer_mission" label="رسالة التذييل">
               <Textarea id="footer_mission" value={values.footer_mission} onChange={(event) => setField("footer_mission", event.target.value)} />
             </Field>
+            <Field id="footer_mission_en" label="رسالة التذييل — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Textarea id="footer_mission_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.footer_mission_en} onChange={(event) => setField("footer_mission_en", event.target.value)} />
+            </Field>
             <Field id="copyright_text" label="نص حقوق النشر">
               <Input id="copyright_text" value={values.copyright_text} onChange={(event) => setField("copyright_text", event.target.value)} />
+            </Field>
+            <Field id="copyright_text_en" label="نص حقوق النشر — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+              <Input id="copyright_text_en" dir="ltr" lang="en" value={values.copyright_text_en} onChange={(event) => setField("copyright_text_en", event.target.value)} />
             </Field>
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">

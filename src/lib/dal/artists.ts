@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { localizeContent, localizeContentList } from "./localize";
 import { requireAdminSession } from "@/lib/auth-guard";
 import type { Database } from "@/lib/supabase/types";
 import {
@@ -43,7 +44,7 @@ export async function getAdminArtists(): Promise<Artist[]> {
  * Fetches featured published artists for the homepage.
  * Strictly checks is_published = true AND is_featured = true.
  */
-export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
+async function getFeaturedArtistsRaw(limit = 4): Promise<Artist[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
@@ -73,7 +74,7 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
  * Fetches all published artists from Supabase ordered by display_order ASC, name ASC.
  * Draft artists (is_published = false) are never returned.
  */
-export async function getPublishedArtists(options?: {
+async function getPublishedArtistsRaw(options?: {
   category?: string;
 }): Promise<Artist[]> {
   try {
@@ -85,7 +86,8 @@ export async function getPublishedArtists(options?: {
     let query = supabase
       .from("artists")
       .select(
-        "id, name, slug, category, genre_tag, city, quote, spotlight_quote, short_bio, full_bio, specialties, portrait_image_url, is_featured, is_published, display_order, created_at, updated_at"
+        "id, name, slug, category, genre_tag, city, quote, spotlight_quote, short_bio, full_bio, specialties, portrait_image_url, is_featured, is_published, display_order, created_at, updated_at, "
+        + "name_en, genre_tag_en, city_en, quote_en, spotlight_quote_en, short_bio_en, full_bio_en, specialties_en"
       )
       .eq("is_published", true)
       .order("display_order", { ascending: true })
@@ -117,7 +119,7 @@ export async function getPublishedArtists(options?: {
  * Fetches a single published artist by slug.
  * Returns null if not found or if is_published is false.
  */
-export async function getArtistBySlug(slug: string): Promise<Artist | null> {
+async function getArtistBySlugRaw(slug: string): Promise<Artist | null> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
@@ -139,4 +141,20 @@ export async function getArtistBySlug(slug: string): Promise<Artist | null> {
   } catch {
     return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
   }
+}
+
+/*
+ * Public readers resolve content into the request's locale. Arabic rows are
+ * returned untouched; English falls back to Arabic per field when a
+ * translation has not been written yet.
+ */
+export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
+  return localizeContentList("artists", await getFeaturedArtistsRaw(limit));
+}
+export async function getPublishedArtists(options?: { category?: string }): Promise<Artist[]> {
+  return localizeContentList("artists", await getPublishedArtistsRaw(options));
+}
+export async function getArtistBySlug(slug: string): Promise<Artist | null> {
+  const row = await getArtistBySlugRaw(slug);
+  return row ? localizeContent("artists", row) : null;
 }
