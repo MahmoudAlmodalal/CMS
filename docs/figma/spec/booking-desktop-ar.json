@@ -1,0 +1,5029 @@
+{
+  "frame": "booking-desktop-ar",
+  "nodes": [
+    {
+      "depth": 0,
+      "id": "91:17109",
+      "name": "الحجز",
+      "type": "FRAME",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 1953
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9F7F0",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "91:17110",
+      "name": "From Klickpin.com- Trending bridal shower themes that feel curated elegant and easy enough to recreate this weekend for your next Pinterest save-p 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": -98,
+        "y": -37,
+        "w": 1581,
+        "h": 655
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "276b3e146e949e9e417ac06dddefb07a8eaefcfb",
+          "scaleMode": "FILL"
+        },
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 0.2
+        },
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 0.2
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "91:17111",
+      "name": "Rectangle 1",
+      "type": "VECTOR",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1529,
+        "h": 611
+      },
+      "fills": [
+        {
+          "type": "gradient_linear",
+          "alpha": 1,
+          "stops": [
+            {
+              "position": 0,
+              "hex": "#000000",
+              "alpha": 1
+            },
+            {
+              "position": 1,
+              "hex": "#000000",
+              "alpha": 0.1
+            }
+          ],
+          "handles": [
+            {
+              "x": 0.46,
+              "y": -0.05
+            },
+            {
+              "x": 0.45,
+              "y": 0.78
+            },
+            {
+              "x": 0.42,
+              "y": -0.03
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "91:17123",
+      "name": "Frame 11",
+      "type": "FRAME",
+      "box": {
+        "x": 227,
+        "y": 247,
+        "w": 986,
+        "h": 191
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 65,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "91:17124",
+      "name": "Frame 10",
+      "type": "FRAME",
+      "box": {
+        "x": 227,
+        "y": 247,
+        "w": 986,
+        "h": 191
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 24,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17125",
+      "name": "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني.",
+      "type": "TEXT",
+      "box": {
+        "x": 373.5,
+        "y": 363,
+        "w": 693,
+        "h": 75
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#EFEBD9",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني.",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 25,
+        "lineHeight": 37.5,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17126",
+      "name": "مناسبتك تستحق موسيقى حقيقية. ♪",
+      "type": "TEXT",
+      "box": {
+        "x": 258,
+        "y": 247,
+        "w": 924,
+        "h": 92
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "مناسبتك تستحق موسيقى حقيقية. ♪",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 48,
+        "lineHeight": 91.5,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "94:18509",
+      "name": "Footer",
+      "type": "INSTANCE",
+      "box": {
+        "x": -14,
+        "y": 1568,
+        "w": 1454,
+        "h": 384.67
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 1
+        },
+        {
+          "type": "image",
+          "imageRef": "da60c98546b43a3524b1bbd7667d8f518e1c7ee3",
+          "scaleMode": "STRETCH"
+        }
+      ],
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "91:18221"
+    },
+    {
+      "depth": 2,
+      "id": "I94:18509;87:14546",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 73,
+        "y": 1568,
+        "w": 1280,
+        "h": 384.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          64,
+          24,
+          32,
+          24
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I94:18509;87:14547",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 345,
+        "y": 1632,
+        "w": 736,
+        "h": 190
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18509;87:14548",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 939,
+        "y": 1631.74,
+        "w": 297,
+        "h": 179.5
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;89:15223",
+      "name": "{E2E66FB0-8A42-40AA-991C-0F4FC8CD0D61} 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": 982.25,
+        "y": 1631.74,
+        "w": 210.5,
+        "h": 85.5
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "36933f1934caf98ea74a606eef28c9ab40a63e84",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14550",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 984.5,
+        "y": 1717.24,
+        "w": 206,
+        "h": 55
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14551",
+      "name": "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيق",
+      "type": "TEXT",
+      "box": {
+        "x": 984.5,
+        "y": 1733.24,
+        "w": 206,
+        "h": 39
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14552",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 939,
+        "y": 1772.24,
+        "w": 297,
+        "h": 39
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14553",
+      "name": "♪ من رحم المعاناة ولدت الموسيقى",
+      "type": "TEXT",
+      "box": {
+        "x": 987.5,
+        "y": 1792.24,
+        "w": 200,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ من رحم المعاناة ولدت الموسيقى",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18509;87:14554",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1631.74,
+        "w": 156,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14555",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1631.74,
+        "w": 156,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14556",
+      "name": "استكشف",
+      "type": "TEXT",
+      "box": {
+        "x": 684.5,
+        "y": 1631.74,
+        "w": 57,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "استكشف",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14557",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1651.74,
+        "w": 155.7,
+        "h": 42
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14558",
+      "name": "الفنانون",
+      "type": "TEXT",
+      "box": {
+        "x": 690.85,
+        "y": 1671.74,
+        "w": 44,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفنانون",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14559",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1693.74,
+        "w": 155.7,
+        "h": 30.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14560",
+      "name": "الفعاليات",
+      "type": "TEXT",
+      "box": {
+        "x": 687.85,
+        "y": 1702.54,
+        "w": 50,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفعاليات",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14561",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1724.54,
+        "w": 155.7,
+        "h": 30.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14562",
+      "name": "الأخبار",
+      "type": "TEXT",
+      "box": {
+        "x": 697.35,
+        "y": 1733.34,
+        "w": 31,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأخبار",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14563",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 635,
+        "y": 1755.34,
+        "w": 155.7,
+        "h": 39.6
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          8.8,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14564",
+      "name": "الأكاديمية",
+      "type": "TEXT",
+      "box": {
+        "x": 685.35,
+        "y": 1764.14,
+        "w": 55,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأكاديمية",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18509;87:14565",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 435,
+        "y": 1632,
+        "w": 156,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14566",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 435,
+        "y": 1632,
+        "w": 156,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14567",
+      "name": "تواصل",
+      "type": "TEXT",
+      "box": {
+        "x": 494,
+        "y": 1632,
+        "w": 38,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تواصل",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14568",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 435,
+        "y": 1652,
+        "w": 155.69,
+        "h": 40
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14569",
+      "name": "hello@andalusia.art",
+      "type": "TEXT",
+      "box": {
+        "x": 457.34,
+        "y": 1672,
+        "w": 111,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "hello@andalusia.art",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14570",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 435,
+        "y": 1692,
+        "w": 155.69,
+        "h": 28
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14571",
+      "name": "Instagram · TikTok",
+      "type": "TEXT",
+      "box": {
+        "x": 462.84,
+        "y": 1700,
+        "w": 100,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "Instagram · TikTok",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14572",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 435,
+        "y": 1720,
+        "w": 155.69,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          null,
+          8,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14573",
+      "name": "لبنان · المغرب · الخليج",
+      "type": "TEXT",
+      "box": {
+        "x": 456.84,
+        "y": 1728,
+        "w": 112,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "لبنان · المغرب · الخليج",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18509;87:14574",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1631.74,
+        "w": 235,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14575",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1631.74,
+        "w": 235,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14576",
+      "name": "حفلتك القادمة تبدأ من هنا.",
+      "type": "TEXT",
+      "box": {
+        "x": 152,
+        "y": 1631.74,
+        "w": 213,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "حفلتك القادمة تبدأ من هنا.",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14577",
+      "name": "Paragraph:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1655.74,
+        "w": 235,
+        "h": 73.4
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          10.4,
+          null,
+          24,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14578",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1666.14,
+        "w": 235,
+        "h": 39
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "I94:18509;87:14579",
+      "name": "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن",
+      "type": "TEXT",
+      "box": {
+        "x": 152,
+        "y": 1666.14,
+        "w": 201,
+        "h": 39
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة.",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;89:15227",
+      "name": "button",
+      "type": "INSTANCE",
+      "box": {
+        "x": 152,
+        "y": 1729.14,
+        "w": 150,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 10,
+        "padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "27:11897"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;89:15227;27:11898",
+      "name": "placeholder",
+      "type": "TEXT",
+      "box": {
+        "x": 110,
+        "y": 1741.64,
+        "w": 234,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ابدأ حجزك الآن ♪",
+        "font": "SF Pro",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 22.4,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I94:18509;87:14583",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 97,
+        "y": 1822,
+        "w": 1232,
+        "h": 98.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          56,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18509;87:14584",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 97,
+        "y": 1878,
+        "w": 1232,
+        "h": 42.67
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#ECE6D0",
+            "alpha": 0.15
+          }
+        ],
+        "weight": 1,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14585",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 97,
+        "y": 1904.17,
+        "w": 125,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14586",
+      "name": "موسيقى · ثقافة · قدرة",
+      "type": "TEXT",
+      "box": {
+        "x": 97,
+        "y": 1904.17,
+        "w": 125,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "موسيقى · ثقافة · قدرة",
+        "font": "Cairo",
+        "weight": 600,
+        "size": 9.92,
+        "lineHeight": 14.88,
+        "letterSpacing": 1.39,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18509;87:14587",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 1124,
+        "y": 1902.67,
+        "w": 205,
+        "h": 18
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18509;87:14588",
+      "name": "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة",
+      "type": "TEXT",
+      "box": {
+        "x": 1124,
+        "y": 1902.67,
+        "w": 205,
+        "h": 18
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 18,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "91:17792",
+      "name": "Frame 33",
+      "type": "FRAME",
+      "box": {
+        "x": 149,
+        "y": 676,
+        "w": 1142,
+        "h": 829
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 58,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "91:17250",
+      "name": "Sidebar",
+      "type": "FRAME",
+      "box": {
+        "x": 149,
+        "y": 676,
+        "w": 412,
+        "h": 563.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 20,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17251",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 149,
+        "y": 676,
+        "w": 412,
+        "h": 285.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 1
+        },
+        {
+          "type": "image",
+          "imageRef": "3a70335964304023158db85ab9f52ee9f0295253",
+          "scaleMode": "STRETCH"
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          32,
+          32,
+          32,
+          32
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17252",
+      "name": "Heading 3",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 708,
+        "w": 348,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17253",
+      "name": "♪ تواصل مباشرة",
+      "type": "TEXT",
+      "box": {
+        "x": 417,
+        "y": 708,
+        "w": 112,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ تواصل مباشرة",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17254",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 732,
+        "w": 256,
+        "h": 64.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17255",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 756,
+        "w": 256,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17256",
+      "name": "البريد",
+      "type": "TEXT",
+      "box": {
+        "x": 505,
+        "y": 756,
+        "w": 24,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "البريد",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17257",
+      "name": "Paragraph:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 771,
+        "w": 256,
+        "h": 25.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          3.2,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17258",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 774.2,
+        "w": 256,
+        "h": 22
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17259",
+      "name": "hello@andalusia.art",
+      "type": "TEXT",
+      "box": {
+        "x": 408,
+        "y": 774.2,
+        "w": 121,
+        "h": 22
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "hello@andalusia.art",
+        "font": "Cairo",
+        "weight": 600,
+        "size": 14.08,
+        "lineHeight": 21.12,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17260",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 796.2,
+        "w": 348,
+        "h": 57.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          17.6,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17261",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 813.8,
+        "w": 348,
+        "h": 40.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17262",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 813.8,
+        "w": 348,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17263",
+      "name": "واتساب",
+      "type": "TEXT",
+      "box": {
+        "x": 495,
+        "y": 813.8,
+        "w": 34,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "واتساب",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17264",
+      "name": "Paragraph:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 828.8,
+        "w": 348,
+        "h": 25.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          3.2,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17265",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 832,
+        "w": 348,
+        "h": 22
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17266",
+      "name": "+961 70 000 000",
+      "type": "TEXT",
+      "box": {
+        "x": 425,
+        "y": 832,
+        "w": 104,
+        "h": 22
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "+961 70 000 000",
+        "font": "Cairo",
+        "weight": 600,
+        "size": 14.08,
+        "lineHeight": 21.12,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17267",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 854,
+        "w": 256,
+        "h": 75.4
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          17.6,
+          null,
+          17.6,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17268",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 871.6,
+        "w": 256,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17269",
+      "name": "انستقرام",
+      "type": "TEXT",
+      "box": {
+        "x": 489,
+        "y": 871.6,
+        "w": 40,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "انستقرام",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17270",
+      "name": "Paragraph:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 886.6,
+        "w": 256,
+        "h": 25.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          3.2,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17271",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 889.8,
+        "w": 256,
+        "h": 22
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17272",
+      "name": "@andalusia.art",
+      "type": "TEXT",
+      "box": {
+        "x": 437,
+        "y": 889.8,
+        "w": 92,
+        "h": 22
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "@andalusia.art",
+        "font": "Cairo",
+        "weight": 600,
+        "size": 14.08,
+        "lineHeight": 21.12,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17273",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 149,
+        "y": 981.4,
+        "w": 412,
+        "h": 258.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          32,
+          32,
+          32,
+          32
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17274",
+      "name": "Heading 3",
+      "type": "FRAME",
+      "box": {
+        "x": 181,
+        "y": 1013.4,
+        "w": 348,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17275",
+      "name": "ماذا يحدث بعد ذلك؟",
+      "type": "TEXT",
+      "box": {
+        "x": 392,
+        "y": 1013.4,
+        "w": 137,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ماذا يحدث بعد ذلك؟",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17276",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 1037.4,
+        "w": 256,
+        "h": 44
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17277",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 382,
+        "y": 1057.4,
+        "w": 111,
+        "h": 23
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17278",
+      "name": "نستلم طلبك ونراجعه",
+      "type": "TEXT",
+      "box": {
+        "x": 382,
+        "y": 1057.4,
+        "w": 111,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نستلم طلبك ونراجعه",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13.6,
+        "lineHeight": 22.44,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17279",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 505,
+        "y": 1057.4,
+        "w": 24,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.2
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17280",
+      "name": "1",
+      "type": "TEXT",
+      "box": {
+        "x": 513.5,
+        "y": 1060.9,
+        "w": 7,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "1",
+        "font": "Cairo",
+        "weight": 900,
+        "size": 11.2,
+        "lineHeight": 16.8,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17281",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 1081.4,
+        "w": 256,
+        "h": 37.6
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          13.6,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17282",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 341,
+        "y": 1095,
+        "w": 152,
+        "h": 23
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17283",
+      "name": "نتواصل معك خلال ٤٨ ساعة",
+      "type": "TEXT",
+      "box": {
+        "x": 341,
+        "y": 1095,
+        "w": 152,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نتواصل معك خلال ٤٨ ساعة",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13.6,
+        "lineHeight": 22.44,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17284",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 505,
+        "y": 1095,
+        "w": 24,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.2
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17285",
+      "name": "2",
+      "type": "TEXT",
+      "box": {
+        "x": 513.5,
+        "y": 1098.5,
+        "w": 7,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "2",
+        "font": "Cairo",
+        "weight": 900,
+        "size": 11.2,
+        "lineHeight": 16.8,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17286",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 1119,
+        "w": 256,
+        "h": 37.6
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          13.6,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17287",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 377,
+        "y": 1132.6,
+        "w": 116,
+        "h": 23
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17288",
+      "name": "نقترح الفنان والبرنامج",
+      "type": "TEXT",
+      "box": {
+        "x": 377,
+        "y": 1132.6,
+        "w": 116,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نقترح الفنان والبرنامج",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13.6,
+        "lineHeight": 22.44,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17289",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 505,
+        "y": 1132.6,
+        "w": 24,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.2
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17290",
+      "name": "٣",
+      "type": "TEXT",
+      "box": {
+        "x": 512.5,
+        "y": 1136.1,
+        "w": 9,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "٣",
+        "font": "Cairo",
+        "weight": 900,
+        "size": 11.2,
+        "lineHeight": 16.8,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17291",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 273,
+        "y": 1156.6,
+        "w": 256,
+        "h": 51.2
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          13.6,
+          null,
+          13.6,
+          null
+        ],
+        "primary": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17292",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 375,
+        "y": 1170.2,
+        "w": 118,
+        "h": 23
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17293",
+      "name": "تأكيد الحجز والتفاصيل",
+      "type": "TEXT",
+      "box": {
+        "x": 375,
+        "y": 1170.2,
+        "w": 118,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تأكيد الحجز والتفاصيل",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13.6,
+        "lineHeight": 22.44,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17294",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 505,
+        "y": 1170.2,
+        "w": 24,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.2
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17295",
+      "name": "4",
+      "type": "TEXT",
+      "box": {
+        "x": 513.5,
+        "y": 1173.7,
+        "w": 7,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "4",
+        "font": "Cairo",
+        "weight": 900,
+        "size": 11.2,
+        "lineHeight": 16.8,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "91:17171",
+      "name": "Form",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 676,
+        "w": 672,
+        "h": 829
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17172",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 676,
+        "w": 672,
+        "h": 234.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17173",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 676,
+        "w": 672,
+        "h": 38
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#C64817",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          12,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17174",
+      "name": "♪ معلوماتك الشخصية",
+      "type": "TEXT",
+      "box": {
+        "x": 1138,
+        "y": 676,
+        "w": 153,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ معلوماتك الشخصية",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17175",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 714,
+        "w": 672,
+        "h": 196.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17176",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 738,
+        "w": 580,
+        "h": 172.67
+      },
+      "layout": {
+        "mode": "GRID",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17177",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 738,
+        "w": 318,
+        "h": 78.33
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17178",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 738,
+        "w": 318,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17179",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 738,
+        "w": 318,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17180",
+      "name": "الاسم الكامل *",
+      "type": "TEXT",
+      "box": {
+        "x": 1205.67,
+        "y": 738,
+        "w": 85,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الاسم الكامل *",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17181",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 765.2,
+        "w": 318,
+        "h": 51.45
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17182",
+      "name": "Text Input",
+      "type": "FRAME",
+      "box": {
+        "x": 973,
+        "y": 765,
+        "w": 317,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          13.6,
+          16,
+          13.6,
+          16
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17183",
+      "name": "اسمك هنا",
+      "type": "TEXT",
+      "box": {
+        "x": 990.33,
+        "y": 781.5,
+        "w": 282.33,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "اسمك هنا",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17184",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 738,
+        "w": 245.67,
+        "h": 78.33
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17185",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 738,
+        "w": 245.67,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17186",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 738,
+        "w": 245.67,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17187",
+      "name": "البريد الإلكتروني *",
+      "type": "TEXT",
+      "box": {
+        "x": 855.67,
+        "y": 738,
+        "w": 101,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "البريد الإلكتروني *",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17188",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 765.2,
+        "w": 245.67,
+        "h": 51.45
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17189",
+      "name": "Email Input",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 765,
+        "w": 246,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          13.6,
+          16,
+          13.6,
+          16
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17190",
+      "name": "name@email.com",
+      "type": "TEXT",
+      "box": {
+        "x": 728.33,
+        "y": 781.5,
+        "w": 211.33,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "name@email.com",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17191",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 832.33,
+        "w": 318,
+        "h": 78.33
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17192",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 832.33,
+        "w": 318,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17193",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 832.33,
+        "w": 318,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17194",
+      "name": "رقم الهاتف",
+      "type": "TEXT",
+      "box": {
+        "x": 1225.67,
+        "y": 832.33,
+        "w": 65,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "رقم الهاتف ",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17195",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 972.67,
+        "y": 859.53,
+        "w": 318,
+        "h": 51.45
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17196",
+      "name": "Phone Input",
+      "type": "FRAME",
+      "box": {
+        "x": 973,
+        "y": 860,
+        "w": 317,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          13.6,
+          16,
+          13.6,
+          16
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17197",
+      "name": "+961 70 000 000",
+      "type": "TEXT",
+      "box": {
+        "x": 990.33,
+        "y": 876.5,
+        "w": 282.33,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "+961 70 000 000",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17198",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 832.33,
+        "w": 245.67,
+        "h": 78.33
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17199",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 832.33,
+        "w": 245.67,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17200",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 832.33,
+        "w": 245.67,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17201",
+      "name": "الميزانية التقريبية",
+      "type": "TEXT",
+      "box": {
+        "x": 854.67,
+        "y": 832.33,
+        "w": 102,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الميزانية التقريبية ",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17202",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 859.53,
+        "w": 245.67,
+        "h": 51.45
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17203",
+      "name": "Text Input",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 860,
+        "w": 246,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          13.6,
+          16,
+          13.6,
+          16
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17204",
+      "name": "١٠٠٠ - ٥٠٠٠ دولار",
+      "type": "TEXT",
+      "box": {
+        "x": 728.33,
+        "y": 876.5,
+        "w": 211.33,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "١٠٠٠ - ٥٠٠٠ دولار",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17205",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 910.67,
+        "w": 672,
+        "h": 475.17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          40,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17206",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 950.67,
+        "w": 672,
+        "h": 38
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#C64817",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          12,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17207",
+      "name": "♪ تفاصيل المناسبة",
+      "type": "TEXT",
+      "box": {
+        "x": 1160,
+        "y": 950.67,
+        "w": 131,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ تفاصيل المناسبة",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17208",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 988.67,
+        "w": 672,
+        "h": 209.48
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17209",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1012.67,
+        "w": 582,
+        "h": 185.48
+      },
+      "layout": {
+        "mode": "GRID",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17210",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 970.67,
+        "y": 1012.67,
+        "w": 320,
+        "h": 84.74
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17211",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 970.67,
+        "y": 1012.67,
+        "w": 320,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17212",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 970.67,
+        "y": 1012.67,
+        "w": 320,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17213",
+      "name": "نوع المناسبة *",
+      "type": "TEXT",
+      "box": {
+        "x": 1208.67,
+        "y": 1012.67,
+        "w": 82,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نوع المناسبة *",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17214",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 970.67,
+        "y": 1039.87,
+        "w": 320,
+        "h": 57.85
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17215",
+      "name": "Dropdown",
+      "type": "FRAME",
+      "box": {
+        "x": 971,
+        "y": 1040,
+        "w": 319,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16
+    },
+    {
+      "depth": 9,
+      "id": "91:17216",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 1107.33,
+        "y": 1050.14,
+        "w": 161,
+        "h": 28
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 10,
+      "id": "91:17217",
+      "name": "اختر النوع",
+      "type": "TEXT",
+      "box": {
+        "x": 1224.33,
+        "y": 1056.64,
+        "w": 44,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "اختر النوع",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17218",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 991,
+        "y": 1036,
+        "w": 20,
+        "h": 55.19
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 10,
+      "id": "91:17219",
+      "name": "Icon",
+      "type": "FRAME",
+      "box": {
+        "x": 996,
+        "y": 1060.59,
+        "w": 10,
+        "h": 6
+      }
+    },
+    {
+      "depth": 11,
+      "id": "91:17220",
+      "name": "Vector",
+      "type": "VECTOR",
+      "box": {
+        "x": 997,
+        "y": 1061.59,
+        "w": 8,
+        "h": 4
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 1
+          }
+        ],
+        "weight": 1.5,
+        "align": "CENTER"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17221",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1012.67,
+        "w": 245.67,
+        "h": 84.74
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17222",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1012.67,
+        "w": 245.67,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17223",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1012.67,
+        "w": 245.67,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17224",
+      "name": "تاريخ الفعالية *",
+      "type": "TEXT",
+      "box": {
+        "x": 867.67,
+        "y": 1012.67,
+        "w": 87,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تاريخ الفعالية *",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17225",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1039.87,
+        "w": 245.67,
+        "h": 57.85
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17226",
+      "name": "Date Picker",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1040,
+        "w": 246,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16
+    },
+    {
+      "depth": 6,
+      "id": "91:17227",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1113.41,
+        "w": 582,
+        "h": 84.74
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17228",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 784,
+        "y": 1113.41,
+        "w": 507,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "91:17229",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 784,
+        "y": 1113.41,
+        "w": 507,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17230",
+      "name": "اختر الفنان / الفرقة",
+      "type": "TEXT",
+      "box": {
+        "x": 1182,
+        "y": 1113.41,
+        "w": 109,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "اختر الفنان / الفرقة",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17231",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 709,
+        "y": 1140.61,
+        "w": 582,
+        "h": 57.85
+      },
+      "radius": 16
+    },
+    {
+      "depth": 8,
+      "id": "91:17232",
+      "name": "Dropdown",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 1150,
+        "w": 580,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16
+    },
+    {
+      "depth": 9,
+      "id": "91:17233",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 817,
+        "y": 1158,
+        "w": 453,
+        "h": 35
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 10,
+      "id": "91:17234",
+      "name": "أختار...",
+      "type": "TEXT",
+      "box": {
+        "x": 1242,
+        "y": 1168,
+        "w": 28,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "أختار...",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "91:17235",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 734.33,
+        "y": 1146,
+        "w": 20,
+        "h": 55.19
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 10,
+      "id": "91:17236",
+      "name": "Icon",
+      "type": "FRAME",
+      "box": {
+        "x": 739.33,
+        "y": 1170.59,
+        "w": 10,
+        "h": 6
+      }
+    },
+    {
+      "depth": 11,
+      "id": "91:17237",
+      "name": "Vector",
+      "type": "VECTOR",
+      "box": {
+        "x": 740.33,
+        "y": 1171.59,
+        "w": 8,
+        "h": 4
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 1
+          }
+        ],
+        "weight": 1.5,
+        "align": "CENTER"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17238",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 1198.15,
+        "w": 672,
+        "h": 187.69
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17239",
+      "name": "Label:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 1214.15,
+        "w": 672,
+        "h": 27.2
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          7.2,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17240",
+      "name": "Label",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 1214.15,
+        "w": 672,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17241",
+      "name": "تفاصيل إضافية *",
+      "type": "TEXT",
+      "box": {
+        "x": 1195,
+        "y": 1214.15,
+        "w": 96,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تفاصيل إضافية *",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "91:17242",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 1241.35,
+        "w": 672,
+        "h": 144.49
+      }
+    },
+    {
+      "depth": 6,
+      "id": "91:17243",
+      "name": "Text Area",
+      "type": "FRAME",
+      "box": {
+        "x": 711,
+        "y": 1241,
+        "w": 580,
+        "h": 138
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#2B1D14",
+            "alpha": 0.12
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          13.6,
+          16,
+          13.6,
+          16
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "91:17244",
+      "name": "أخبرنا عن مناسبتك، المكان، عدد الضيوف، وأي رغبات خ",
+      "type": "TEXT",
+      "box": {
+        "x": 728.33,
+        "y": 1255.93,
+        "w": 545.33,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "أخبرنا عن مناسبتك، المكان، عدد الضيوف، وأي رغبات خاصة...",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17245",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 783.67,
+        "y": 1385.83,
+        "w": 507.33,
+        "h": 82
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 16,
+        "padding": [
+          null,
+          null,
+          24,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17246",
+      "name": "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة",
+      "type": "TEXT",
+      "box": {
+        "x": 958,
+        "y": 1385.83,
+        "w": 333,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#666666",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة الخصوصية.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "91:17789",
+      "name": "Frame 4",
+      "type": "INSTANCE",
+      "box": {
+        "x": 1116,
+        "y": 1416.83,
+        "w": 175,
+        "h": 44
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 16,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 10,
+        "padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1540"
+    },
+    {
+      "depth": 5,
+      "id": "I91:17789;2:1537",
+      "name": "أحجز الآن",
+      "type": "TEXT",
+      "box": {
+        "x": 1162,
+        "y": 1426.83,
+        "w": 83,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "أرسل الطلب",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "91:17247",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 619,
+        "y": 1467.83,
+        "w": 672,
+        "h": 52.79
+      }
+    },
+    {
+      "depth": 1,
+      "id": "94:18659",
+      "name": "Frame 30",
+      "type": "INSTANCE",
+      "box": {
+        "x": 159,
+        "y": 50,
+        "w": 1123,
+        "h": 85
+      },
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "hex": "#000000",
+          "alpha": 0.25,
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "radius": 30
+        }
+      ],
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 116,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "22:4530"
+    },
+    {
+      "depth": 2,
+      "id": "I94:18659;20:4403",
+      "name": "Frame 7",
+      "type": "FRAME",
+      "box": {
+        "x": 159,
+        "y": 50,
+        "w": 1123,
+        "h": 85
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F2EEE0",
+          "alpha": 1
+        }
+      ],
+      "radius": 32,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 85,
+        "padding": [
+          24,
+          24,
+          24,
+          24
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I94:18659;20:4404",
+      "name": "Frame 6",
+      "type": "FRAME",
+      "box": {
+        "x": 201.5,
+        "y": 70.5,
+        "w": 757,
+        "h": 44
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 141,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I94:18659;134:8170",
+      "name": "Frame 37",
+      "type": "FRAME",
+      "box": {
+        "x": 201.5,
+        "y": 70.5,
+        "w": 189,
+        "h": 44
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 16,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4405",
+      "name": "Frame 4",
+      "type": "INSTANCE",
+      "box": {
+        "x": 201.5,
+        "y": 70.5,
+        "w": 149,
+        "h": 44
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 16,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 10,
+        "padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1540"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4405;2:1537",
+      "name": "أحجز الآن",
+      "type": "TEXT",
+      "box": {
+        "x": 245.5,
+        "y": 80.5,
+        "w": 61,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "أحجز الآن",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;134:8271",
+      "name": "ri:english-input",
+      "type": "FRAME",
+      "box": {
+        "x": 366.5,
+        "y": 80.5,
+        "w": 24,
+        "h": 24
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;134:8272",
+      "name": "Vector",
+      "type": "VECTOR",
+      "box": {
+        "x": 368.5,
+        "y": 84.5,
+        "w": 21,
+        "h": 16
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "id": "I94:18659;20:4406",
+      "name": "Frame 2",
+      "type": "FRAME",
+      "box": {
+        "x": 531.5,
+        "y": 80.5,
+        "w": 427,
+        "h": 24
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 32,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4407",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 531.5,
+        "y": 80.5,
+        "w": 68,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4407;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 531.5,
+        "y": 80.5,
+        "w": 68,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفعاليات",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4408",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 631.5,
+        "y": 80.5,
+        "w": 42,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4408;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 631.5,
+        "y": 80.5,
+        "w": 42,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأخبار",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4409",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 705.5,
+        "y": 80.5,
+        "w": 55,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4409;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 705.5,
+        "y": 80.5,
+        "w": 55,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفنانين",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4410",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 792.5,
+        "y": 80.5,
+        "w": 74,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4410;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 792.5,
+        "y": 80.5,
+        "w": 74,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأكاديمية",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I94:18659;20:4411",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 898.5,
+        "y": 80.5,
+        "w": 60,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I94:18659;20:4411;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 898.5,
+        "y": 80.5,
+        "w": 60,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الرئيسية ",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I94:18659;20:4412",
+      "name": "{08021A4D-2034-4BE6-921C-4EDFD089381B} 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": 1043.5,
+        "y": 50,
+        "w": 196,
+        "h": 85
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "fda196e4f0045f2151f357c1b4ffa3952855a40b",
+          "scaleMode": "STRETCH"
+        }
+      ]
+    }
+  ]
+}
