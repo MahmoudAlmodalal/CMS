@@ -50,5 +50,58 @@
     "contactHeading": "التواصل",
     "regionsHeading": "الانتشار الإقليمي",
     "languageHeading": "لغة الواجهة"
+  },
+  "home": {
+    "heroPrimaryCta": "اكتشف الفنانين",
+    "heroSecondaryCta": "احجز الآن",
+    "aboutHeading": "من *نحن*",
+    "aboutImageAlt": "عازف من فرقة أندلسيا",
+    "aboutCta": "تعرّف على فنانينا ←",
+    "artistsHeading": "أصوات تصنع التاريخ",
+    "artistsCta": "عرض جميع الفنانين ←",
+    "testimonialsHeading": "يقولون عن *أندلسيا*",
+    "editorialHeading": "نكتب كي لا تضيع التفاصيل",
+    "eventsHeading": "نلتقي في المكان. في اللحظة",
+    "eventsCta": "عرض كل الفعاليات",
+    "bookingHeadingFallback": "مناسبتك تستحق موسيقى حقيقية",
+    "bookingBodyFallback": "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.",
+    "bookingCta": "ابدأ حجزك الآن ♪"
+  },
+  "testimonials": {
+    "region": "يقولون عن أندلسيا",
+    "previous": "الشهادة السابقة",
+    "next": "الشهادة التالية",
+    "rating": "تقييم 5 من 5",
+    "indicators": "مؤشرات الشهادات",
+    "goTo": "الانتقال إلى الشهادة {index}"
+  },
+  "artist": {
+    "viewProfile": "عرض الملف الشخصي للفنان {name}",
+    "portraitAlt": "صورة الفنان {name}"
+  },
+  "article": {
+    "read": "اقرأ المقال"
+  },
+  "event": {
+    "bookTicket": "احجز تذكرة {title}",
+    "bookSeat": "احجز مقعدك",
+    "bookExternal": "حجز التذاكر (خارجي)",
+    "bookingRegion": "حجز فرقة أندلسيا"
+  },
+  "categories": {
+    "articleCulture": "ثقافة وفكر",
+    "articleArtists": "حوارات فنية",
+    "articleAcademy": "تعليم وتراث",
+    "articleEvents": "تغطيات وفعاليات",
+    "articleFallback": "ثقافة",
+    "eventConcert": "حفل غنائي",
+    "eventFestival": "مهرجان ثقافي",
+    "eventEvening": "أمسية موسيقية",
+    "eventWorkshop": "ورشة تدريبية",
+    "eventFallback": "فعالية",
+    "eventShortConcert": "حفل",
+    "eventShortFestival": "مهرجان",
+    "eventShortEvening": "أمسية",
+    "eventShortWorkshop": "ورشة"
   }
 }

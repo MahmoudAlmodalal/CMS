@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatArabicDate } from "@/lib/formatters";
 import type { Article } from "@/lib/dal/articles";
@@ -8,11 +9,12 @@ export interface ArticleCardProps {
   article: Article;
 }
 
-const CATEGORY_LABELS: Record<Article["category"], string> = {
-  culture: "ثقافة وفكر",
-  artists: "حوارات فنية",
-  academy: "تعليم وتراث",
-  events: "تغطيات وفعاليات",
+/** Article category -> key under the `categories` message namespace. */
+const CATEGORY_LABEL_KEYS: Record<Article["category"], string> = {
+  culture: "articleCulture",
+  artists: "articleArtists",
+  academy: "articleAcademy",
+  events: "articleEvents",
 };
 
 /**
@@ -26,7 +28,9 @@ const CATEGORY_LABELS: Record<Article["category"], string> = {
  * - Excerpt bounded to 2 lines
  */
 export function ArticleCard({ article }: ArticleCardProps) {
-  const categoryLabel = CATEGORY_LABELS[article.category] || "ثقافة";
+  const t = useTranslations("article");
+  const c = useTranslations("categories");
+  const categoryLabel = c(CATEGORY_LABEL_KEYS[article.category] ?? "articleFallback");
   const dateFormatted = formatArabicDate(article.published_at);
 
   return (
@@ -75,7 +79,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
 
           {/* Read More link cue */}
           <div className="pt-2 border-t border-brand-espresso/5 flex items-center justify-between text-xs font-bold text-brand-primary">
-            <span>اقرأ المقال</span>
+            <span>{t("read")}</span>
             <span className="transition-transform group-hover:-translate-x-1 rtl:group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
               <ArrowEndIcon size={14} />
             </span>

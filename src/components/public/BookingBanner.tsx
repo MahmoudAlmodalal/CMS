@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { PublicButton } from "./PublicButton";
 import type { SiteSettings } from "@/lib/dal/site-settings";
@@ -17,15 +18,17 @@ interface BookingBannerProps {
  * - CTA Action: Canonical PublicButton (variant="primary", size="md", 48px->56px hover expansion)
  */
 export function BookingBanner({ settings }: BookingBannerProps) {
-  const headline = settings.booking_banner_title || "مناسبتك تستحق موسيقى حقيقية";
+  const t = useTranslations("home");
+  const ev = useTranslations("event");
+  const headline = settings.booking_banner_title || t("bookingHeadingFallback");
   const body =
     settings.booking_banner_body ||
-    "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.";
+    t("bookingBodyFallback");
 
   return (
     <section
       className="relative min-h-[498px] lg:h-[498px] bg-[#2B1D14] text-brand-tint overflow-hidden flex items-center justify-center"
-      aria-label="حجز فرقة أندلسيا"
+      aria-label={ev("bookingRegion")}
     >
       {/* 1. Base Photo Texture Fill (Figma ref: caeb7e573a02cd1ecf364f1737b1246ad2984677) */}
       <div
@@ -79,7 +82,7 @@ export function BookingBanner({ settings }: BookingBannerProps) {
               size="md"
               className="text-[#ECE6D0]"
             >
-              ابدأ حجزك الآن ♪
+              {t("bookingCta")}
             </PublicButton>
           </div>
         </div>

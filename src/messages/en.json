@@ -50,5 +50,58 @@
     "contactHeading": "Contact",
     "regionsHeading": "Where we play",
     "languageHeading": "Interface language"
+  },
+  "home": {
+    "heroPrimaryCta": "Discover the artists",
+    "heroSecondaryCta": "Book now",
+    "aboutHeading": "Who *we are*",
+    "aboutImageAlt": "A musician from the Andalusia collective",
+    "aboutCta": "Meet our artists →",
+    "artistsHeading": "Voices that make history",
+    "artistsCta": "View all artists →",
+    "testimonialsHeading": "They say about *Andalusia*",
+    "editorialHeading": "We write so the details are never lost",
+    "eventsHeading": "We meet in the place. In the moment",
+    "eventsCta": "View all events",
+    "bookingHeadingFallback": "Your occasion deserves real music",
+    "bookingBodyFallback": "Book Andalusia for your party, your restaurant, your festival — and make a moment no one forgets.",
+    "bookingCta": "Start your booking ♪"
+  },
+  "testimonials": {
+    "region": "What people say about Andalusia",
+    "previous": "Previous testimonial",
+    "next": "Next testimonial",
+    "rating": "Rated 5 out of 5",
+    "indicators": "Testimonial indicators",
+    "goTo": "Go to testimonial {index}"
+  },
+  "artist": {
+    "viewProfile": "View the profile of {name}",
+    "portraitAlt": "Portrait of {name}"
+  },
+  "article": {
+    "read": "Read the article"
+  },
+  "event": {
+    "bookTicket": "Book a ticket for {title}",
+    "bookSeat": "Book your seat",
+    "bookExternal": "Book tickets (external)",
+    "bookingRegion": "Book Andalusia"
+  },
+  "categories": {
+    "articleCulture": "Culture & ideas",
+    "articleArtists": "Artist interviews",
+    "articleAcademy": "Teaching & heritage",
+    "articleEvents": "Coverage & events",
+    "articleFallback": "Culture",
+    "eventConcert": "Concert",
+    "eventFestival": "Cultural festival",
+    "eventEvening": "Musical evening",
+    "eventWorkshop": "Workshop",
+    "eventFallback": "Event",
+    "eventShortConcert": "Concert",
+    "eventShortFestival": "Festival",
+    "eventShortEvening": "Evening",
+    "eventShortWorkshop": "Workshop"
   }
 }

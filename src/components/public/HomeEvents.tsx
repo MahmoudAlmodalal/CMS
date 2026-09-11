@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { toArabicDigits } from "@/lib/formatters";
 import type { Event } from "@/lib/dal/events";
 
@@ -8,11 +9,12 @@ interface HomeEventsProps {
   events: Event[];
 }
 
-const CATEGORY_MAP: Record<string, string> = {
-  concert: "حفل",
-  festival: "مهرجان",
-  evening: "أمسية",
-  workshop: "ورشة",
+/** Event type -> key under the `categories` message namespace (short badge wording). */
+const CATEGORY_KEY_MAP: Record<string, string> = {
+  concert: "eventShortConcert",
+  festival: "eventShortFestival",
+  evening: "eventShortEvening",
+  workshop: "eventShortWorkshop",
 };
 
 /**
@@ -32,6 +34,10 @@ const CATEGORY_MAP: Record<string, string> = {
  * Ticket links stay on /booking?event_id=... — the project forbids /events/[slug].
  */
 export function HomeEvents({ events }: HomeEventsProps) {
+  const t = useTranslations("home");
+  const ev = useTranslations("event");
+  const c = useTranslations("categories");
+
   if (!events || events.length === 0) {
     return null;
   }
@@ -67,7 +73,7 @@ export function HomeEvents({ events }: HomeEventsProps) {
 
           {/* Section Header (Figma 87:14481 — Qahwa 48px/40) */}
           <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[48px] font-bold text-brand-espresso leading-[0.834] pb-12">
-            نلتقي في المكان. في اللحظة
+            {t("eventsHeading")}
           </h2>
 
           {/* Event Rows (Figma Nodes 87:14484, 87:14499, 87:14514 — 8px gap) */}
@@ -76,14 +82,15 @@ export function HomeEvents({ events }: HomeEventsProps) {
               const eventDate = new Date(event.event_date);
               const day = toArabicDigits(eventDate.getDate());
               const month = new Intl.DateTimeFormat("ar-EG", { month: "long" }).format(eventDate);
-              const categoryLabel = CATEGORY_MAP[event.category] || event.category;
+              const categoryKey = CATEGORY_KEY_MAP[event.category];
+              const categoryLabel = categoryKey ? c(categoryKey) : event.category;
 
               return (
                 <Link
                   key={event.id}
                   href={`/booking?event_id=${event.id}`}
                   className="group flex items-center gap-4 sm:gap-6 bg-white rounded-[16px] px-4 sm:px-7 h-[110.65px] transition-shadow duration-200 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-                  aria-label={`احجز تذكرة ${event.title}`}
+                  aria-label={ev("bookTicket", { title: event.title })}
                 >
                   {/* Date Badge (Figma 87:14485 — 72x53.98, radius 8) */}
                   <div className="w-[72px] h-[54px] rounded-lg bg-brand-primary text-primary-50 flex flex-col items-center justify-center shrink-0">
@@ -128,7 +135,7 @@ export function HomeEvents({ events }: HomeEventsProps) {
               href="/events"
               className="inline-flex items-center justify-center h-12 px-[26px] rounded-[16px] bg-brand-primary text-primary-50 font-sans font-bold text-[14.4px] hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
             >
-              عرض كل الفعاليات
+              {t("eventsCta")}
             </Link>
           </div>
         </div>
