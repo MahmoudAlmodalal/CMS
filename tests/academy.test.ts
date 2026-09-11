@@ -10,6 +10,7 @@ import {
 } from "../src/lib/academy.ts";
 import { academyCourseSchema } from "../src/lib/validations/cms.ts";
 import { publicNewsletterSubmissionSchema } from "../src/lib/validations/newsletter.ts";
+import { arMessages } from "./helpers/i18n.ts";
 
 const root = path.resolve(".");
 
@@ -25,7 +26,9 @@ test("Task 36 — 1. Canonical Academy Tracks Data & Zod Validation", () => {
 
   const expectedSlugs = ["oud-school", "performance-art", "vocal-tarab"];
   const expectedTitles = ["مدرسة العود", "فن الأداء", "الصوت والطرب"];
-  const expectedCategories = ["مدرسة التراث", "فن الأداء", "الصوت والطرب"];
+  // The third card labels itself "صوت ومجموع" in Figma node 91:16468, which is not
+  // its title; the design is the authority on the copy it draws.
+  const expectedCategories = ["مدرسة التراث", "فن الأداء", "صوت ومجموع"];
 
   CANONICAL_ACADEMY_COURSES.forEach((course, index) => {
     assert.equal(course.slug, expectedSlugs[index], `Track ${index + 1} slug mismatch`);
@@ -122,7 +125,6 @@ test("Task 36 — 3. Server Action & DAL Implementation Verification", () => {
 // ============================================================================
 test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
   const expectedFiles = [
-    "src/components/public/academy/AcademyHeader.tsx",
     "src/components/public/academy/AcademyValueProps.tsx",
     "src/components/public/academy/TrackCard.tsx",
     "src/components/public/academy/AcademyTracks.tsx",
@@ -136,64 +138,115 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
     assert.ok(fs.existsSync(fullPath), `Expected academy file to exist: ${rel}`);
   }
 
-  // Header verification (Figma 91:16119 / 91:16346 / 91:16345)
-  const headerCode = fs.readFileSync(
-    path.join(root, "src/components/public/academy/AcademyHeader.tsx"),
-    "utf-8"
+  // The copy lives in the message catalogue, not in the components, so the frame's
+  // own words are asserted there and the components are asserted on structure.
+  assert.match(
+    arMessages["academy.title"],
+    /تعلّم من <em>اليد التي تعرف الطريق<\/em>/,
+    "Headline matches Figma node 91:16346, with its primary-500 phrase marked up"
   );
-  assert.match(headerCode, /تعلّم من اليد التي تعرف الطريق/, "Header must contain confirmed Figma title");
-  assert.match(headerCode, /subtitle/, "Header must accept dynamic subtitle");
+  assert.match(
+    arMessages["academy.tracksHeading"],
+    /ثلاثة <em>مسارات<\/em>، موهبة واحدة/,
+    "Tracks heading matches Figma node 91:16347"
+  );
+  assert.equal(
+    arMessages["academy.valuesHeading"],
+    "التعلّم هنا مختلف",
+    "Value-props heading matches Figma node 91:16352"
+  );
+  for (const [key, expected] of [
+    ["academy.value1Title", "مجموعات صغيرة"],
+    ["academy.value2Title", "فنانون من الواقع"],
+    ["academy.value3Title", "أداء حقيقي"],
+    ["academy.newsletterHeading", "رسالة واحدة في الشهر."],
+    ["academy.newsletterTagline", "♪ لكنها تستحق كل الانتظار."],
+    ["academy.newsletterPlaceholder", "بريدك الإلكتروني"],
+  ] as const) {
+    assert.equal(arMessages[key], expected, `${key} must match the frame`);
+  }
 
-  // Value Props verification (Figma 91:16352 / 91:16359 / 91:16366 / 91:16373)
+  // Value-props band 91:16348 — full-bleed espresso, the arabesque mark once at the
+  // top-left, a 888-wide grid of three 270.44 columns. No cards, no numerals.
   const valuePropsCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/AcademyValueProps.tsx"),
     "utf-8"
   );
-  assert.match(valuePropsCode, /التعلّم هنا مختلف/, "Value props must contain confirmed heading");
-  assert.match(valuePropsCode, /مجموعات صغيرة/, "Pillar 1 'مجموعات صغيرة' must be present");
-  assert.match(valuePropsCode, /فنانون من الواقع/, "Pillar 2 'فنانون من الواقع' must be present");
-  assert.match(valuePropsCode, /أداء حقيقي/, "Pillar 3 'أداء حقيقي' must be present");
+  assert.match(valuePropsCode, /bg-brand-espresso/, "Value props sit on the espresso band");
+  assert.match(valuePropsCode, /band-mark\.png/, "Value props carry the arabesque corner mark");
+  assert.match(valuePropsCode, /lg:w-\[888px\]/, "Value-props grid is 888 wide");
+  assert.match(valuePropsCode, /270\.44px/, "Value-props columns are 270.44 wide");
+  assert.doesNotMatch(valuePropsCode, /<Card/, "The design draws no cards in this band");
 
-  // Tracks Section verification (Figma 91:16347 / 91:16438)
+  // Tracks 91:16347 / 91:16437 — the heading anchored 560px in from the start edge,
+  // the grid 1136 wide at 154 from that edge on a flat 325.61 row.
   const tracksCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/AcademyTracks.tsx"),
     "utf-8"
   );
-  assert.match(tracksCode, /ثلاثة مسارات، موهبة واحدة/, "Tracks section must contain confirmed title");
+  assert.match(tracksCode, /lg:ms-\[560px\]/, "Tracks heading starts 560px in");
+  assert.match(tracksCode, /lg:ms-\[154px\]/, "Tracks grid starts 154px in");
+  assert.match(tracksCode, /lg:w-\[1136px\]/, "Tracks grid is 1136 wide");
+  assert.match(tracksCode, /lg:grid-rows-\[325\.61px\]/, "Tracks row is a flat 325.61");
+  assert.doesNotMatch(tracksCode, /tracksSubtitle/, "The design draws no standfirst here");
 
-  // Newsletter Section verification (Figma 91:16423 / 91:16425 / 91:16431)
+  // Track card 91:16439 — 20px radius on a 0.833px hairline, the numeral and the
+  // register link at the inline end, everything else at the inline start.
+  const trackCardCode = fs.readFileSync(
+    path.join(root, "src/components/public/academy/TrackCard.tsx"),
+    "utf-8"
+  );
+  assert.match(trackCardCode, /rounded-\[20px\] border-\[0\.833px\] border-secondary-400/,
+    "Track card geometry matches the frame");
+  assert.match(trackCardCode, /text-\[60px\] font-black leading-\[60px\]/,
+    "Track numeral is Cairo Black 60/60");
+  assert.match(trackCardCode, /mt-auto self-end/, "Register link is pinned to the card's far corner");
+  assert.doesNotMatch(trackCardCode, /instructor_name/, "The design draws no instructor line");
+
+  // Newsletter 91:16420 — the 491 field first so Arabic puts it on the right, then
+  // the 149x44 button.
   const newsletterCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/AcademyNewsletter.tsx"),
     "utf-8"
   );
-  assert.match(newsletterCode, /'use client'/, "Newsletter component must be client-interactive");
-  assert.match(newsletterCode, /رسالة واحدة في الشهر\./, "Newsletter must contain confirmed heading");
-  assert.match(newsletterCode, /لكنها تستحق كل الانتظار\./, "Newsletter must contain confirmed tagline");
+  assert.match(newsletterCode, /"use client"/, "Newsletter component must be client-interactive");
   assert.match(newsletterCode, /_hp/, "Newsletter must include honeypot field");
   assert.match(newsletterCode, /subscribeNewsletter/, "Newsletter must invoke subscribeNewsletter action");
+  assert.match(newsletterCode, /sm:w-\[491px\]/, "Email field is 491 wide");
+  assert.match(newsletterCode, /sm:w-\[149px\]/, "Submit button is 149 wide");
+  assert.ok(
+    newsletterCode.indexOf("type=\"email\"") < newsletterCode.indexOf("type=\"submit\""),
+    "Field must precede the button so Arabic puts it on the right"
+  );
 
   // Barrel export verification
   const barrelCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/index.ts"),
     "utf-8"
   );
-  assert.match(barrelCode, /export \{ AcademyHeader \}/);
   assert.match(barrelCode, /export \{ AcademyValueProps/);
   assert.match(barrelCode, /export \{ TrackCard \}/);
   assert.match(barrelCode, /export \{ AcademyTracks \}/);
   assert.match(barrelCode, /export \{ AcademyNewsletter \}/);
 
-  // Page Route verification
+  // Page 91:16119 — hero band 611 tall with the block 185 down and the headline at
+  // 72/90, then tracks, then the pillars. The page led with the pillars before.
   const pageCode = fs.readFileSync(
     path.join(root, "src/app/[locale]/(public)/academy/page.tsx"),
     "utf-8"
   );
   assert.match(pageCode, /getSiteSettings/, "Page must fetch site settings");
   assert.match(pageCode, /getPublishedAcademyCourses/, "Page must fetch published academy courses");
-  assert.match(pageCode, /AcademyHeader/, "Page must render AcademyHeader");
+  assert.match(pageCode, /height=\{611\}/, "Academy hero band is 611px tall");
+  assert.match(pageCode, /contentTop=\{185\}/, "Hero block opens 185px down the band");
+  assert.match(pageCode, /titleSize=\{72\}/, "Academy headline is 72px");
   assert.match(pageCode, /AcademyValueProps/, "Page must render AcademyValueProps");
   assert.match(pageCode, /AcademyTracks/, "Page must render AcademyTracks");
   assert.match(pageCode, /AcademyNewsletter/, "Page must render AcademyNewsletter");
+  assert.ok(
+    pageCode.indexOf("<AcademyTracks") < pageCode.indexOf("<AcademyValueProps"),
+    "The frame puts the tracks above the pillars"
+  );
 });
 
 // ============================================================================

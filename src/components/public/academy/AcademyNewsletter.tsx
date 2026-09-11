@@ -1,18 +1,25 @@
-'use client';
+"use client";
 
 import React, { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Container } from "@/components/ui/LayoutPrimitives";
-import { Button } from "@/components/ui/Button";
 import { subscribeNewsletter } from "@/actions/newsletter";
 
 /**
- * Academy Newsletter Subscription Section
- * Figma Node: 91:16119 / 91:16420 / 91:16423 / 91:16425 / 91:16431 / 186:1061
- * - Heading: "رسالة واحدة في الشهر."
- * - Tagline: "♪ لكنها تستحق كل الانتظار."
- * - Validated Email ingestion into newsletter_subscribers
- * - Honeypot anti-spam protection
+ * Academy newsletter band — Figma node 91:16420 in frame 91:16119.
+ *
+ * Full-bleed on the page's own cream, 96px of padding top and bottom, everything
+ * centred:
+ * - Heading (91:16423) in Qahwa Arabic 40/36 #2B1D14.
+ * - Tagline (91:16425) in Cairo 16.8/25.2 primary-500, 8px down.
+ * - Form (91:16427) 40px down, 652 wide and 51 tall: the email field first so
+ *   Arabic puts it on the right — 491 wide on #ECE6D0 under a 1.333px 15% #2B1D14
+ *   hairline at a 16px radius — then 12px of gap and the 149x44 primary-500 button.
+ *
+ * Two notes on the design's own copy. The button is the booking CTA component
+ * dropped in whole, so it reads "أحجز الآن" over a form that subscribes; the label
+ * is drawn as the design has it and the accessible name says what the control
+ * really does. And the design draws no standfirst, no privacy line and no feedback
+ * state, so those are rendered only once the reader submits.
  */
 export function AcademyNewsletter() {
   const t = useTranslations("academy");
@@ -39,97 +46,77 @@ export function AcademyNewsletter() {
           setFeedback({ type: "error", message: result.message });
         }
       } catch {
-        setFeedback({
-          type: "error",
-          message: t("newsletterError"),
-        });
+        setFeedback({ type: "error", message: t("newsletterError") });
       }
     });
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-brand-espresso text-white relative overflow-hidden" id="newsletter">
-      {/* Subtle background glow */}
-      <div
-        className="absolute top-1/2 end-10 -translate-y-1/2 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
-      <Container className="relative z-10 max-w-3xl text-center">
-        {/* Confirmed Figma Copy */}
-        <h2 className="font-calligraphic text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-white">
+    <section
+      id="newsletter"
+      aria-labelledby="academy-newsletter-heading"
+      className="w-full px-6 py-16 lg:py-24"
+    >
+      <div className="mx-auto flex w-full max-w-[1393px] flex-col items-center">
+        <h2
+          id="academy-newsletter-heading"
+          className="text-center font-display text-[32px] leading-[1.2] text-brand-espresso sm:text-[40px] lg:whitespace-nowrap lg:leading-[36px]"
+        >
           {t("newsletterHeading")}
         </h2>
 
-        <p className="text-primary-400 font-bold text-lg sm:text-xl font-sans mb-8">
+        <p className="pt-2 text-center text-[16.8px] leading-[25.2px] text-brand-primary">
           {t("newsletterTagline")}
         </p>
 
-        <p className="text-secondary-100/70 text-sm sm:text-base font-sans max-w-xl mx-auto mb-10 leading-relaxed">
-          {t("newsletterBody")}
-        </p>
-
-        {/* Subscription Form */}
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 text-start">
-          {/* Honeypot field (hidden from real users, caught by bots) */}
+        <form onSubmit={handleSubmit} className="w-full pt-10">
+          {/* Honeypot: hidden from readers, caught on bots. */}
           <div className="sr-only" aria-hidden="true">
             <label htmlFor="_hp_newsletter">{t("newsletterHoneypot")}</label>
-            <input
-              type="text"
-              id="_hp_newsletter"
-              name="_hp"
-              tabIndex={-1}
-              autoComplete="off"
-            />
+            <input type="text" id="_hp_newsletter" name="_hp" tabIndex={-1} autoComplete="off" />
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <input
-                type="email"
-                name="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t("newsletterPlaceholder")}
-                dir="ltr"
-                disabled={isPending}
-                className="w-full h-[48px] bg-white/10 text-white placeholder:text-secondary-100/50 placeholder:text-sm placeholder:font-sans rounded-input px-4 py-3 border border-white/20 focus:outline-none focus:border-primary-400 focus:bg-white/15 transition-all text-start"
-              />
-            </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="md"
-              isLoading={isPending}
+          <div className="mx-auto flex w-full max-w-[652px] flex-col items-stretch gap-3 sm:flex-row sm:items-start">
+            <label htmlFor="academy-newsletter-email" className="sr-only">
+              {t("newsletterPlaceholder")}
+            </label>
+            <input
+              id="academy-newsletter-email"
+              type="email"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t("newsletterPlaceholder")}
               disabled={isPending}
-              className="sm:w-auto px-8"
+              className="h-[51px] w-full rounded-[16px] border-[1.333px] border-[rgba(43,29,20,0.15)] bg-brand-surface px-4 py-[13.6px] text-start text-[14.4px] leading-normal text-brand-espresso transition-colors placeholder:text-[rgba(43,29,20,0.5)] focus:border-brand-primary focus:outline-hidden sm:w-[491px]"
+            />
+
+            <button
+              type="submit"
+              disabled={isPending}
+              aria-label={t("newsletterSubmitLabel")}
+              className="h-11 w-full shrink-0 rounded-[16px] bg-brand-primary text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70 sm:w-[149px]"
             >
               {t("newsletterSubmit")}
-            </Button>
+            </button>
           </div>
 
-          {/* Feedback messages */}
           {feedback.message && (
             <div
               role="alert"
               aria-live="polite"
-              className={`p-3.5 rounded-button text-xs sm:text-sm font-sans font-medium text-center transition-all ${
+              className={`mx-auto mt-4 max-w-[652px] rounded-[16px] p-3.5 text-center text-sm font-medium ${
                 feedback.type === "success"
-                  ? "bg-primary-500/20 text-primary-300 border border-primary-500/30"
-                  : "bg-alert-error/20 text-red-200 border border-alert-error/30"
+                  ? "bg-brand-primary/15 text-brand-primary"
+                  : "bg-alert-error/15 text-alert-error"
               }`}
             >
               {feedback.message}
             </div>
           )}
-
-          <p className="text-center text-xs text-secondary-100/50 font-sans mt-3">
-            {t("newsletterPrivacy")}
-          </p>
         </form>
-      </Container>
+      </div>
     </section>
   );
 }
