@@ -29,10 +29,14 @@ export default async function PublicLayout({
       {/* 3. Mobile Top Bar + Drawer (Figma Component 17: 56px) */}
       <MobileNavbar />
 
-      {/* 4. Primary Page Viewport */}
+      {/* 4. Primary Page Viewport
+          No top padding: in Figma every page opens on a full-bleed hero at y=0 with
+          the floating navbar sitting *over* it (top 50px on interior pages, 118px on
+          home). Padding here would push every row below the fold out of alignment
+          with the design. Pages that open on a light surface own their own spacing. */}
       <main
         id="main-content"
-        className="flex-1 pt-14 lg:pt-24 focus:outline-hidden"
+        className="flex-1 focus:outline-hidden"
         tabIndex={-1}
       >
         {children}

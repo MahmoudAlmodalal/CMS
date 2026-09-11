@@ -49,7 +49,12 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
   assert.match(content, /85px|h-\[85px\]/, "Navbar must enforce Figma confirmed height: 85px");
   assert.match(content, /rounded-\[32px\]/, "Navbar must enforce Figma confirmed corner radius: 32px");
   assert.match(content, /#F2EEE0/, "Navbar must use Figma secondary-300 fill #F2EEE0");
-  assert.match(content, /fixed top-6/, "Navbar must be floating at top on desktop");
+  // The bar floats, but its offset is per-frame, not global: measured off the 1:1
+  // reference renders it is 33px on home, 40px on events and artist profiles,
+  // 57px on academy and 50px elsewhere.
+  assert.match(content, /fixed start-0 end-0/, "Navbar must be floating at top on desktop");
+  assert.match(content, /NAVBAR_TOP/, "Navbar must resolve its top offset per route");
+  assert.match(content, /"\/": "top-\[33px\]"/, "Home navbar offset must be the measured 33px");
   assert.match(content, /hidden lg:flex/, "Navbar must be desktop-only (hidden on mobile)");
 
   // Brand identity
