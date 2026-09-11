@@ -40,6 +40,15 @@ CROPS = [
      "رحلة مصور في أزقة المدينة القديمة", True),
     ("news-desktop", 130, 922, 385, 192, "public/assets/articles/article-3.png",
      "الإعلان عن جدول فعاليات الصيف الموسيقية", True),
+    # Arabesque corner marks. Both are flat artwork on an opaque espresso ground,
+    # so a crop carries its own background and needs no alpha. The footer's mark
+    # (I94:18509;87:14546) is declared 6.39% x 14.14% of a 1454-wide footer that
+    # starts 14px off the artboard, so only the right 79px of it is ever drawn.
+    ("booking-desktop", 0, 1568, 79, 55, "public/assets/branding/footer-mark.png",
+     "arabesque mark, footer top-left", False),
+    # The booking sidebar's card (91:17251) carries the same mark at 18.75% x 21.35%.
+    ("booking-desktop", 149, 676, 77, 61, "public/assets/branding/card-mark.png",
+     "arabesque mark, dark card top-left", False),
 ]
 
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in

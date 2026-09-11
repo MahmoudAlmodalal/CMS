@@ -26,6 +26,26 @@ const EVENT_TYPE_OPTIONS = [
 ];
 
 /**
+ * Figma 91:17109 form geometry, node by node.
+ *
+ * Controls (91:17182 and siblings) are a flat 48px on a 16px radius with a
+ * 1.333px rgba(43,29,20,0.12) hairline, 16px of horizontal padding and Cairo
+ * 12/15 placeholders in gradscale-400. Labels (91:17180) are Cairo Bold 13/19.5
+ * in gradscale-900 with 7.2px of lead-out. The form itself carries no card: it
+ * sits straight on the page surface, 672 wide.
+ */
+const FIELD_CLASS =
+  "h-12 w-full rounded-[16px] border-[1.333px] bg-white px-4 text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
+const SELECT_CLASS = `${FIELD_CLASS} appearance-none pe-10`;
+const TEXTAREA_CLASS =
+  "h-[138px] w-full resize-none rounded-[16px] border-[1.333px] bg-white px-4 py-[13.6px] text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
+const FIELD_BORDER = "border-[rgba(43,29,20,0.12)] hover:border-brand-primary/50";
+const FIELD_BORDER_ERROR = "border-red-500 ring-1 ring-red-500/20";
+const LABEL_CLASS = "block pb-[7.2px] text-[13px] font-bold leading-[19.5px] text-gradscale-900";
+const LEGEND_CLASS =
+  "flex w-full items-center gap-2 border-b-2 border-[rgba(198,72,23,0.12)] pb-3 text-start text-[16px] font-bold leading-[24px] text-brand-primary";
+
+/**
  * Booking Form Component
  * Verified against Figma Screen "الحجز" (Node 91:17109 / Form Frame 91:17171):
  * - Form Group 1: "♪ معلوماتك الشخصية" (Node 91:17174)
@@ -99,10 +119,17 @@ export function BookingForm({
       key={submittedAgainKey}
       action={formAction}
       noValidate
-      className="w-full bg-white rounded-2xl p-6 sm:p-10 border border-brand-espresso/10 shadow-sm flex flex-col gap-8 text-start"
+      className="flex w-full flex-col text-start lg:w-[672px] lg:pb-[52.8px]"
     >
       {/* Hidden Event Preselection Linkage */}
       {defaultEventId && <input type="hidden" name="event_id" value={defaultEventId} />}
+
+      {/* The design draws no free-text artist field — node 91:17222 is the artist
+          select alone — but arriving from an event or an artist page still carries a
+          performer name the request should record, so it travels hidden. */}
+      {defaultPreferredArtist && (
+        <input type="hidden" name="preferred_artist" value={defaultPreferredArtist} />
+      )}
 
       {/* General Alert Error Banner */}
       {state.error && (
@@ -128,16 +155,16 @@ export function BookingForm({
       {/* ================================================================== */}
       {/* Group 1: Personal Information (Figma Node 91:17174)                 */}
       {/* ================================================================== */}
-      <fieldset className="flex flex-col gap-5 p-0 m-0 border-0">
-        <legend className="w-full pb-3 border-b-2 border-brand-primary/15 text-start font-bold text-brand-primary text-base sm:text-lg flex items-center gap-2">
+      <fieldset className="m-0 flex flex-col border-0 p-0">
+        <legend className={LEGEND_CLASS}>
           <span>♪</span>
           <span>{t("groupPersonal")}</span>
         </legend>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-[318px_246px]">
           {/* Full Name */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="full_name" className="text-sm font-semibold text-brand-espresso">
+          <div className="flex flex-col text-start">
+            <label htmlFor="full_name" className={LABEL_CLASS}>
               {t("fieldName")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
@@ -149,11 +176,7 @@ export function BookingForm({
               aria-invalid={!!state.fieldErrors?.full_name}
               aria-describedby={state.fieldErrors?.full_name ? "full_name-error" : undefined}
               placeholder={t("fieldNamePlaceholder")}
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                state.fieldErrors?.full_name
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
+              className={`${FIELD_CLASS} ${state.fieldErrors?.full_name ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.full_name && (
               <p id="full_name-error" className="text-red-500 text-xs mt-1">
@@ -163,8 +186,8 @@ export function BookingForm({
           </div>
 
           {/* Email Address */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="email" className="text-sm font-semibold text-brand-espresso">
+          <div className="flex flex-col text-start">
+            <label htmlFor="email" className={LABEL_CLASS}>
               {t("fieldEmail")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
@@ -176,12 +199,8 @@ export function BookingForm({
               dir="ltr"
               aria-invalid={!!state.fieldErrors?.email}
               aria-describedby={state.fieldErrors?.email ? "email-error" : undefined}
-              placeholder="name@example.com"
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary text-start ${
-                state.fieldErrors?.email
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
+              placeholder={t("fieldEmailPlaceholder")}
+              className={`${FIELD_CLASS} ${state.fieldErrors?.email ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.email && (
               <p id="email-error" className="text-red-500 text-xs mt-1 text-start">
@@ -191,11 +210,11 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-4 pt-4 md:grid-cols-[318px_246px] md:pt-[20.3px]">
           {/* Phone Number */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="phone" className="text-sm font-semibold text-brand-espresso">
-              {t("fieldPhone")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
+          <div className="flex flex-col text-start">
+            <label htmlFor="phone" className={LABEL_CLASS}>
+              {t("fieldPhone")}
             </label>
             <input
               id="phone"
@@ -204,12 +223,8 @@ export function BookingForm({
               dir="ltr"
               aria-invalid={!!state.fieldErrors?.phone}
               aria-describedby={state.fieldErrors?.phone ? "phone-error" : undefined}
-              placeholder="+961 70 123 456"
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary text-start ${
-                state.fieldErrors?.phone
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
+              placeholder={t("fieldPhonePlaceholder")}
+              className={`${FIELD_CLASS} ${state.fieldErrors?.phone ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.phone && (
               <p id="phone-error" className="text-red-500 text-xs mt-1 text-start">
@@ -219,9 +234,9 @@ export function BookingForm({
           </div>
 
           {/* Budget Range */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="budget_range" className="text-sm font-semibold text-brand-espresso">
-              {t("fieldBudget")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
+          <div className="flex flex-col text-start">
+            <label htmlFor="budget_range" className={LABEL_CLASS}>
+              {t("fieldBudget")}
             </label>
             <input
               id="budget_range"
@@ -230,11 +245,7 @@ export function BookingForm({
               aria-invalid={!!state.fieldErrors?.budget_range}
               aria-describedby={state.fieldErrors?.budget_range ? "budget_range-error" : undefined}
               placeholder={t("fieldBudgetPlaceholder")}
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                state.fieldErrors?.budget_range
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
+              className={`${FIELD_CLASS} ${state.fieldErrors?.budget_range ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.budget_range && (
               <p id="budget_range-error" className="text-red-500 text-xs mt-1">
@@ -248,16 +259,16 @@ export function BookingForm({
       {/* ================================================================== */}
       {/* Group 2: Event Details (Figma Node 91:17207)                       */}
       {/* ================================================================== */}
-      <fieldset className="flex flex-col gap-5 p-0 m-0 border-0">
-        <legend className="w-full pb-3 border-b-2 border-brand-primary/15 text-start font-bold text-brand-primary text-base sm:text-lg flex items-center gap-2">
+      <fieldset className="m-0 flex flex-col border-0 pt-10 md:pt-[43px]">
+        <legend className={LEGEND_CLASS}>
           <span>♪</span>
           <span>{t("groupOccasion")}</span>
         </legend>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-4 pt-6 md:grid-cols-[320px_246px]">
           {/* Event Type */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="event_type" className="text-sm font-semibold text-brand-espresso">
+          <div className="flex flex-col text-start">
+            <label htmlFor="event_type" className={LABEL_CLASS}>
               {t("fieldOccasionType")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <div className="relative w-full">
@@ -269,11 +280,7 @@ export function BookingForm({
                 aria-required="true"
                 aria-invalid={!!state.fieldErrors?.event_type}
                 aria-describedby={state.fieldErrors?.event_type ? "event_type-error" : undefined}
-                className={`w-full appearance-none rounded-xl border bg-white py-2.5 ps-4 pe-10 text-sm text-brand-espresso transition-colors focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                  state.fieldErrors?.event_type
-                    ? "border-red-500"
-                    : "border-brand-espresso/15 hover:border-brand-primary/50"
-                }`}
+                className={`${SELECT_CLASS} ${state.fieldErrors?.event_type ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
               >
                 {EVENT_TYPE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -293,8 +300,8 @@ export function BookingForm({
           </div>
 
           {/* Event Date */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="event_date" className="text-sm font-semibold text-brand-espresso">
+          <div className="flex flex-col text-start">
+            <label htmlFor="event_date" className={LABEL_CLASS}>
               {t("fieldDate")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
@@ -306,11 +313,7 @@ export function BookingForm({
               aria-required="true"
               aria-invalid={!!state.fieldErrors?.event_date}
               aria-describedby={state.fieldErrors?.event_date ? "event_date-error" : undefined}
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                state.fieldErrors?.event_date
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
+              className={`${FIELD_CLASS} ${state.fieldErrors?.event_date ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.event_date && (
               <p id="event_date-error" className="text-red-500 text-xs mt-1">
@@ -320,11 +323,11 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-4 pt-4 md:w-[582px] md:grid-cols-1 md:pt-[26px]">
           {/* Artist Dropdown */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="artist_id" className="text-sm font-semibold text-brand-espresso">
-              {t("fieldArtist")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
+          <div className="flex flex-col text-start">
+            <label htmlFor="artist_id" className={LABEL_CLASS}>
+              {t("fieldArtist")}
             </label>
             <div className="relative w-full">
               <select
@@ -334,13 +337,9 @@ export function BookingForm({
                 onChange={(e) => setSelectedArtistId(e.target.value)}
                 aria-invalid={!!state.fieldErrors?.artist_id}
                 aria-describedby={state.fieldErrors?.artist_id ? "artist_id-error" : undefined}
-                className={`w-full appearance-none rounded-xl border bg-white py-2.5 ps-4 pe-10 text-sm text-brand-espresso transition-colors focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                  state.fieldErrors?.artist_id
-                    ? "border-red-500"
-                    : "border-brand-espresso/15 hover:border-brand-primary/50"
-                }`}
+                className={`${SELECT_CLASS} md:mt-[9.4px] ${state.fieldErrors?.artist_id ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
               >
-                <option value="">{t("fieldArtistAny")}</option>
+                <option value="">{t("fieldArtistPlaceholder")}</option>
                 {artists.map((artist) => (
                   <option key={artist.id} value={artist.id}>
                     {artist.name}
@@ -358,36 +357,11 @@ export function BookingForm({
             )}
           </div>
 
-          {/* Preferred Artist Free Text */}
-          <div className="flex flex-col gap-1.5 text-start">
-            <label htmlFor="preferred_artist" className="text-sm font-semibold text-brand-espresso">
-              {t("fieldSpecificArtist")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
-            </label>
-            <input
-              id="preferred_artist"
-              name="preferred_artist"
-              type="text"
-              defaultValue={defaultPreferredArtist}
-              aria-invalid={!!state.fieldErrors?.preferred_artist}
-              aria-describedby={state.fieldErrors?.preferred_artist ? "preferred_artist-error" : undefined}
-              placeholder={t("fieldSpecificArtistPlaceholder")}
-              className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-                state.fieldErrors?.preferred_artist
-                  ? "border-red-500 ring-1 ring-red-500/20"
-                  : "border-brand-espresso/15 hover:border-brand-primary/50"
-              }`}
-            />
-            {state.fieldErrors?.preferred_artist && (
-              <p id="preferred_artist-error" className="text-red-500 text-xs mt-1">
-                {state.fieldErrors.preferred_artist[0]}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Message / Additional Details */}
-        <div className="flex flex-col gap-1.5 text-start">
-          <label htmlFor="message" className="text-sm font-semibold text-brand-espresso">
+        <div className="flex flex-col pt-4 text-start md:w-[580px] md:pb-[6.5px]">
+          <label htmlFor="message" className={LABEL_CLASS}>
             {t("fieldDetails")} <span className="text-brand-primary" aria-hidden="true">*</span>
           </label>
           <textarea
@@ -400,41 +374,29 @@ export function BookingForm({
             aria-invalid={!!state.fieldErrors?.message}
             aria-describedby={state.fieldErrors?.message ? "message-error" : undefined}
             placeholder={t("fieldDetailsPlaceholder")}
-            className={`w-full rounded-xl border bg-white p-3.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary min-h-[120px] ${
-              state.fieldErrors?.message
-                ? "border-red-500 ring-1 ring-red-500/20"
-                : "border-brand-espresso/15 hover:border-brand-primary/50"
-            }`}
+            className={`${TEXTAREA_CLASS} ${state.fieldErrors?.message ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
           />
           {state.fieldErrors?.message ? (
             <p id="message-error" className="text-red-500 text-xs mt-1">
               {state.fieldErrors.message[0]}
             </p>
-          ) : (
-            <span className="text-xs text-brand-espresso/50">
-              {t("fieldDetailsHint")}
-            </span>
-          )}
+          ) : null}
         </div>
       </fieldset>
 
       {/* ================================================================== */}
       {/* Legal Disclaimer Notice (Figma Node 91:17246)                      */}
       {/* ================================================================== */}
-      <div className="p-4 rounded-xl bg-brand-cream/50 border border-brand-espresso/5 text-xs text-brand-espresso/70 leading-relaxed text-start">
-        {t("consent")}
-      </div>
+      <div className="flex flex-col items-start gap-4 pb-6 text-start md:w-[507px]">
+        <p className="text-[12px] leading-[15px] text-gradscale-400">{t("consent")}</p>
 
-      {/* ================================================================== */}
-      {/* Submit Action Button (Figma Node 186:1827)                         */}
-      {/* ================================================================== */}
-      <div>
+        {/* Submit (91:17789): 175x44 on a 16px radius, Cairo Bold 16/24. */}
         <Button
           type="submit"
           variant="primary"
           size="lg"
           disabled={isPending}
-          className="w-full py-3.5 text-base font-bold shadow-md hover:shadow-lg transition-all rounded-xl"
+          className="h-11 w-[175px] rounded-[16px] text-[16px] font-bold leading-[24px]"
         >
           {isPending ? (
             <span className="inline-flex items-center gap-2">
