@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import {
   BookingHeader,
@@ -10,18 +11,24 @@ import {
 } from "@/components/public";
 import { getBookingPageData } from "@/lib/dal/booking";
 
-export const metadata: Metadata = {
-  title: "حجز الفعاليات والعروض الخاصة | فرقة أندلسيا للموسيقى والتراث",
-  description:
-    "احجز فرقة أندلسيا لحفلتك الخاصة، زفافك، أو مهرجانك القادم في لبنان، المغرب، والخليج. تواصل مباشر وتنسيق فني متكامل.",
-  openGraph: {
-    title: "حجز الفعاليات والعروض الخاصة | فرقة أندلسيا",
-    description:
-      "احجز فرقة أندلسيا لحفلتك الخاصة، زفافك، أو مهرجانك القادم. ننسق معك مباشرة لتقديم أرقى التواشيح والموشحات الأندلسية.",
-    locale: "ar_AR",
-    type: "website",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  return {
+    title: t("bookingTitle"),
+    description: t("bookingDescription"),
+    openGraph: {
+      title: t("bookingTitle"),
+      description: t("bookingDescription"),
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+      type: "website",
+    },
+  };
+}
 
 interface BookingPageProps {
   searchParams?: Promise<{
@@ -43,6 +50,7 @@ interface BookingPageProps {
  *   - ?course=[slug] -> Pre-fills academy registration inquiry
  */
 export default async function BookingPage({ searchParams }: BookingPageProps) {
+  const t = await getTranslations("page");
   const resolvedParams = searchParams ? await searchParams : {};
   const eventIdParam = resolvedParams.event_id;
   const artistParam = resolvedParams.artist || resolvedParams.artist_id;
@@ -75,8 +83,8 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
       preferredArtistName = eventContext.performer_name;
     }
     defaultEventType = "festival";
-    defaultMessage = `طلب حجز تذاكر واستفسار بخصوص حضور فعالية: "${eventContext.title}"${
-      eventContext.venue ? ` المقامة في ${eventContext.venue}` : ""
+    defaultMessage = `${t("bookingPrefillEvent", { title: eventContext.title })}${
+      eventContext.venue ? t("bookingPrefillVenue", { venue: eventContext.venue }) : ""
     }.`;
   }
 
@@ -97,14 +105,14 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   // 3. Academy course preselection (?course=...)
   if (courseParam && !eventContext) {
     defaultEventType = "other";
-    defaultMessage = `طلب تسجيل واستفسار عن مسار الأكاديمية: "${courseParam}". يرجى تزويدي بالمواعيد المتاحة والشروط.`;
+    defaultMessage = t("bookingPrefillCourse", { course: courseParam });
   }
 
   return (
     <div className="w-full bg-brand-cream min-h-screen">
       <PageHero
-        eyebrow="حجز الفعاليات والعروض الخاصة ♪"
-        title="مناسبتك تستحق موسيقى حقيقية."
+        eyebrow={t("bookingEyebrow")}
+        title={t("bookingTitle")}
         subtitle={subtitle}
       />
       <Container>

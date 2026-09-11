@@ -493,12 +493,18 @@ test("Milestone 2 — 10. Public Home Integration & ISR Data Contracts", () => {
   // Metadata verification
   assert.match(
     pageSrc,
+    /t\("homeTitle"\)/,
+    "HomePage metadata must be built from the meta message namespace"
+  );
+  assert.match(
+    arMessages["meta.homeTitle"],
     /فرقة أندلسيا للموسيقى والتراث/,
     "HomePage metadata must declare canonical Arabic title"
   );
+  assert.ok(enMessages["meta.homeTitle"], "HomePage metadata title must exist in English");
   assert.match(
     pageSrc,
-    /locale:\s*["']ar_AR["']/,
-    "HomePage metadata must declare Arabic RTL OpenGraph locale"
+    /locale: locale === "ar" \? "ar_AR" : "en_US"/,
+    "HomePage OpenGraph locale must follow the active locale, with Arabic still ar_AR"
   );
 });

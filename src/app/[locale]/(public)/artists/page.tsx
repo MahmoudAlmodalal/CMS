@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { getPublishedArtists } from "@/lib/dal/artists";
 import { getSiteSettings } from "@/lib/dal/site-settings";
@@ -16,33 +17,40 @@ import {
 export const revalidate = 3600;
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "الفنانين | فرقة أندلسيا",
-  description:
-    "دليل فناني فرقة أندلسيا للموسيقى العربية والتراث الأندلسي والمقامات الشرقية. تعرف على نخبة العازفين والمغنين واحجز عروضهم الموسيقية.",
-  alternates: {
-    canonical: "/artists",
-  },
-  openGraph: {
-    title: "الفنانين | فرقة أندلسيا",
-    description:
-      "دليل فناني فرقة أندلسيا للموسيقى العربية والتراث الأندلسي والمقامات الشرقية.",
-    url: "/artists",
-    type: "website",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const path = locale === "ar" ? "/artists" : "/en/artists";
+  return {
+    title: t("artistsTitle"),
+    description: t("artistsDescription"),
+    alternates: { canonical: path },
+    openGraph: {
+      title: t("artistsTitle"),
+      description: t("artistsDescription"),
+      url: path,
+      type: "website",
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+    },
+  };
+}
 
 export default async function ArtistsPage() {
-  const [artists, settings] = await Promise.all([
+  const [artists, settings, t] = await Promise.all([
     getPublishedArtists(),
     getSiteSettings(),
+    getTranslations("page"),
   ]);
 
   return (
     <div>
       <PageHero
-        eyebrow="دليل الفنانين ♪"
-        title="أصوات تصنع التاريخ"
+        eyebrow={t("artistsEyebrow")}
+        title={t("artistsTitle")}
         subtitle={settings.artists_subtitle}
       />
       <Container>

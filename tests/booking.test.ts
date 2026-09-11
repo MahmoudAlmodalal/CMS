@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 import {
   publicBookingSubmissionSchema,
   adminBookingUpdateSchema,
@@ -179,11 +180,13 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
     path.join(root, "src/components/public/BookingHeader.tsx"),
     "utf-8"
   );
+  assert.match(headerContent, /t\("title"\)/, "BookingHeader must render the booking.title message");
   assert.match(
-    headerContent,
+    arMessages["booking.title"],
     /مناسبتك تستحق موسيقى حقيقية/,
-    "BookingHeader must match Figma headline Node 91:17126"
+    "Arabic booking headline matches Figma Node 91:17126"
   );
+  assert.ok(enMessages["booking.title"], "The booking headline must exist in English too");
 
   const formContent = fs.readFileSync(
     path.join(root, "src/components/public/BookingForm.tsx"),
@@ -191,19 +194,23 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
   );
   assert.match(
     formContent,
-    /معلوماتك الشخصية/,
+    /groupPersonal/,
     "BookingForm must contain Fieldset Legend 1 (Figma Node 91:17174)"
   );
+  assert.equal(arMessages["booking.groupPersonal"], "معلوماتك الشخصية", "Arabic legend 1 is confirmed by Figma");
+  assert.equal(arMessages["booking.groupOccasion"], "تفاصيل المناسبة", "Arabic legend 2 is confirmed by Figma");
   assert.match(
     formContent,
-    /تفاصيل المناسبة/,
+    /groupOccasion/,
     "BookingForm must contain Fieldset Legend 2 (Figma Node 91:17207)"
   );
+  assert.match(formContent, /t\("consent"\)/, "BookingForm must render the legal terms notice (Figma Node 91:17246)");
   assert.match(
-    formContent,
-    /بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية/,
-    "BookingForm must contain legal terms notice (Figma Node 91:17246)"
+    arMessages["booking.consent"],
+    /^بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية/,
+    "Arabic legal terms copy is confirmed by Figma"
   );
+  assert.ok(enMessages["booking.consent"], "The legal terms notice must exist in English too");
   assert.match(
     formContent,
     /أرسل الطلب/,
@@ -216,18 +223,25 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
   );
   assert.match(
     sidebarContent,
-    /تواصل مباشرة/,
+    /t\("contactHeading"\)/,
     "BookingSidebar must include direct contact card (Figma Node 91:17253)"
   );
+  assert.equal(arMessages["booking.contactHeading"], "تواصل مباشرة", "Arabic contact card heading is confirmed by Figma");
+  assert.ok(enMessages["booking.contactHeading"], "The contact card heading must exist in English too");
   assert.match(
     sidebarContent,
-    /ماذا يحدث بعد ذلك؟/,
+    /t\("stepsHeading"\)/,
     "BookingSidebar must include 4-step milestone progression (Figma Node 91:17275)"
   );
-  assert.match(sidebarContent, /نستلم طلبك ونراجعه/);
-  assert.match(sidebarContent, /نتواصل معك خلال ٤٨ ساعة/);
-  assert.match(sidebarContent, /نقترح الفنان والبرنامج/);
-  assert.match(sidebarContent, /تأكيد الحجز والتفاصيل/);
+  assert.equal(arMessages["booking.stepsHeading"], "ماذا يحدث بعد ذلك؟", "Arabic milestone heading is confirmed by Figma");
+  for (const step of [1, 2, 3, 4]) {
+    assert.ok(arMessages[`booking.step${step}Title`], `Step ${step} must have Arabic copy`);
+    assert.ok(enMessages[`booking.step${step}Title`], `Step ${step} must have English copy`);
+  }
+  assert.equal(arMessages["booking.step1Title"], "نستلم طلبك ونراجعه");
+  assert.equal(arMessages["booking.step2Title"], "نتواصل معك خلال ٤٨ ساعة");
+  assert.equal(arMessages["booking.step3Title"], "نقترح الفنان والبرنامج");
+  assert.equal(arMessages["booking.step4Title"], "تأكيد الحجز والتفاصيل");
 });
 
 test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {

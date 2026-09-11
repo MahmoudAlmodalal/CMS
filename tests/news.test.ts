@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 // NOTE: node --test cannot resolve the `@/` alias (or next/headers), so data
 // is imported from the runtime-safe `src/lib/articles.ts` module (its only
 // `@/` import is `import type`, elided by type-stripping). The DAL module
@@ -61,14 +62,17 @@ test("Task 37 — 2. News Listing Page ISR & Metadata Specifications", () => {
   // Canonical URL and SEO metadata
   assert.match(
     newsPageContent,
-    /canonical:\s*["']\/news["']/,
-    "News listing page must declare canonical URL '/news'"
+    /const path = locale === "ar" \? "\/news" : "\/en\/news";/,
+    "News listing page must declare a per-locale canonical URL, Arabic staying at '/news'"
   );
-  assert.match(
-    newsPageContent,
-    /الأخبار والمقالات الثقافية/,
+  assert.match(newsPageContent, /alternates: \{ canonical: path \}/, "The canonical URL must be applied");
+  assert.match(newsPageContent, /t\("newsTitle"\)/, "News listing metadata must come from the meta namespace");
+  assert.equal(
+    arMessages["meta.newsTitle"],
+    "الأخبار والمقالات الثقافية | فرقة أندلسيا",
     "News listing metadata must contain primary title in Arabic"
   );
+  assert.ok(enMessages["meta.newsTitle"], "News listing metadata title must exist in English");
 
   // Semantics and component composition
   assert.match(newsPageContent, /<NewsHero/);
