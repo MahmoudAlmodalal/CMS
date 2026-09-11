@@ -7,6 +7,11 @@ export interface AcademyCourse {
   track_category: string;
   description: string;
   instructor_name?: string | null;
+  /** Optional English translations; null falls back to the Arabic field. */
+  title_en?: string | null;
+  track_category_en?: string | null;
+  description_en?: string | null;
+  instructor_name_en?: string | null;
   instructor_id?: string | null;
   image_url?: string | null;
   display_order: number;

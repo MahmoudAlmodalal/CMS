@@ -1,10 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
+import { localizeContent, localizeContentList } from "./localize";
 
 export interface Testimonial {
   id: string;
   quote: string;
   author_name: string;
   author_role: string;
+  /** Optional English translations; null falls back to the Arabic field. */
+  quote_en?: string | null;
+  author_name_en?: string | null;
+  author_role_en?: string | null;
   avatar_image_url?: string | null;
   display_order: number;
   is_published: boolean;
@@ -48,7 +53,7 @@ export const CANONICAL_TESTIMONIALS: Testimonial[] = [
  * Fetch published testimonials for the homepage carousel.
  * Strictly queries is_published = true ordered by display_order ASC.
  */
-export async function getPublishedTestimonials(): Promise<Testimonial[]> {
+async function getPublishedTestimonialsRaw(): Promise<Testimonial[]> {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return CANONICAL_TESTIMONIALS;
   }
@@ -70,4 +75,13 @@ export async function getPublishedTestimonials(): Promise<Testimonial[]> {
   } catch {
     return CANONICAL_TESTIMONIALS;
   }
+}
+
+/*
+ * Public readers resolve content into the request's locale. Arabic rows are
+ * returned untouched; English falls back to Arabic per field when a
+ * translation has not been written yet.
+ */
+export async function getPublishedTestimonials(): Promise<Testimonial[]> {
+  return localizeContentList("testimonials", await getPublishedTestimonialsRaw());
 }
