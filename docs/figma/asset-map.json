@@ -100,6 +100,42 @@
       ],
       "subject": "arabesque mark, dark card top-left",
       "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/band-mark.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        0,
+        1210,
+        92,
+        55
+      ],
+      "subject": "arabesque mark, dark band top-left",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-start.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        0,
+        839,
+        74,
+        112
+      ],
+      "subject": "dotted mark, tracks grid inline end",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/dots-end.png",
+      "frame": "academy-desktop",
+      "nodeRect": [
+        1354,
+        1066,
+        86,
+        112
+      ],
+      "subject": "dotted mark, tracks grid inline start",
+      "scrubbed": null
     }
   ],
   "outstanding": [
@@ -108,6 +144,19 @@
       "frame": "news-desktop",
       "node": "91:17298",
       "reason": "headline and gradient are composited over the photo"
+    },
+    {
+      "file": "public/assets/figma/booking-hero.png",
+      "frame": "booking-desktop",
+      "node": "91:17110",
+      "reason": "headline and gradient are composited over the photo"
+    },
+    {
+      "file": "public/assets/figma/academy-hero.png",
+      "frame": "academy-desktop",
+      "node": "91:16330",
+      "reason": "headline, pill and gradient are composited over the photo"
     }
-  ]
+  ],
+  "blockedBy": "figma.com and api.figma.com are refused by the environment's egress policy, so the MCP asset URLs for these fills cannot be fetched. Every page hero shares /assets/figma/hero-stage-landscape.png until they can be exported."
 }

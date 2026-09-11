@@ -16,10 +16,14 @@ export interface AcademyCourse {
 }
 
 /**
- * The 3 canonical educational curriculum tracks confirmed by Figma and Content Inventory:
- * 1. "مدرسة العود" (oud-school) - مدرسة التراث
- * 2. "فن الأداء" (performance-art) - فن الأداء
- * 3. "الصوت والطرب" (vocal-tarab) - الصوت والطرب
+ * The three curriculum tracks, with their labels and bodies taken verbatim from
+ * Figma nodes 91:16439, 91:16452 and 91:16465 in frame 91:16119:
+ * 1. "مدرسة العود" (oud-school) — مدرسة التراث
+ * 2. "فن الأداء" (performance-art) — فن الأداء
+ * 3. "الصوت والطرب" (vocal-tarab) — صوت ومجموع
+ *
+ * instructor_name and image_url stay on the record for the admin side; the design
+ * draws neither on the public card.
  */
 export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
@@ -28,7 +32,7 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     slug: "oud-school",
     track_category: "مدرسة التراث",
     description:
-      "برنامج تدريبي مكثف على أصول العزف والانتقال بين المقامات الموسيقية والارتجال المتقن والتكنيك الأندلسي الأصيل.",
+      "تعلّم على يد خبراء مدرّبين على الأسلوب الموسيقي الكلاسيكي الأصيل. تعرّف على فنون العزف والألحان الأندلسية.",
     instructor_name: "طارق العود",
     image_url: "/assets/academy-oud.png",
     display_order: 1,
@@ -40,7 +44,7 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     slug: "performance-art",
     track_category: "فن الأداء",
     description:
-      "تطوير الحضور المسرحي والتفاعل الحي مع الجمهور وبناء الثقة الإبداعية والتناغم الجماعي فوق خشبة المسرح.",
+      "طوّر أداءك المسرحي، تعلّم وقوف الجمهور ووجود المسرح أمام جماهير حقيقية في بيئة آمنة.",
     instructor_name: "هيئة التدريب",
     image_url: "/assets/academy-performance.png",
     display_order: 2,
@@ -50,9 +54,9 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
     id: "c3-vocal-tarab",
     title: "الصوت والطرب",
     slug: "vocal-tarab",
-    track_category: "الصوت والطرب",
+    track_category: "صوت ومجموع",
     description:
-      "تقنيات التنفس السليم، تدريب الأحبال الصوتية، وأداء الموشحات والمقامات التراثية الأصيلة بإحساس فني عميق.",
+      "تعرّف على معلمين من الكفاءة العالية وتعلّم فنون الغناء والطرب المعاصر والكلاسيكي.",
     instructor_name: "سارة الصوت",
     image_url: "/assets/academy-vocal.png",
     display_order: 3,
