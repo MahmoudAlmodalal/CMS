@@ -82,7 +82,7 @@ export async function submitBookingAction(
       message: submission.message,
       status: "pending",
       admin_notes: null,
-    } as any);
+    } as unknown as Record<string, string | null>);
 
     if (error) {
       console.error("[Booking Submission DB Error]:", error.message);
