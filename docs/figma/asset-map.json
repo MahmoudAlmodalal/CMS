@@ -1,0 +1,113 @@
+{
+  "source": "cropped 1:1 from docs/figma-reference",
+  "note": "Page heroes are not croppable: the design composites the headline and gradient onto the photograph, so a crop would bake the text in. Those need a real export from Figma.",
+  "cropped": [
+    {
+      "file": "public/assets/articles/news-side-1.png",
+      "frame": "news-desktop",
+      "nodeRect": [
+        150,
+        249,
+        352,
+        192
+      ],
+      "subject": "حوار مع النحات أحمد محمود",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/articles/news-side-2.png",
+      "frame": "news-desktop",
+      "nodeRect": [
+        150,
+        539,
+        352,
+        192
+      ],
+      "subject": "ورشة عمل جديدة في النحت الكلاسيكي",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/articles/article-1.png",
+      "frame": "news-desktop",
+      "nodeRect": [
+        951,
+        922,
+        385,
+        192
+      ],
+      "subject": "تطور الفن الرقمي في العالم العربي",
+      "scrubbed": [
+        295,
+        14,
+        370,
+        41
+      ]
+    },
+    {
+      "file": "public/assets/articles/article-2.png",
+      "frame": "news-desktop",
+      "nodeRect": [
+        541,
+        922,
+        385,
+        192
+      ],
+      "subject": "رحلة مصور في أزقة المدينة القديمة",
+      "scrubbed": [
+        295,
+        14,
+        370,
+        41
+      ]
+    },
+    {
+      "file": "public/assets/articles/article-3.png",
+      "frame": "news-desktop",
+      "nodeRect": [
+        130,
+        922,
+        385,
+        192
+      ],
+      "subject": "الإعلان عن جدول فعاليات الصيف الموسيقية",
+      "scrubbed": [
+        295,
+        14,
+        370,
+        41
+      ]
+    },
+    {
+      "file": "public/assets/branding/footer-mark.png",
+      "frame": "booking-desktop",
+      "nodeRect": [
+        0,
+        1568,
+        79,
+        55
+      ],
+      "subject": "arabesque mark, footer top-left",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/branding/card-mark.png",
+      "frame": "booking-desktop",
+      "nodeRect": [
+        149,
+        676,
+        77,
+        61
+      ],
+      "subject": "arabesque mark, dark card top-left",
+      "scrubbed": null
+    }
+  ],
+  "outstanding": [
+    {
+      "file": "public/assets/figma/news-hero.png",
+      "frame": "news-desktop",
+      "node": "91:17298",
+      "reason": "headline and gradient are composited over the photo"
+    }
+  ]
+}

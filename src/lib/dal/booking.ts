@@ -50,8 +50,9 @@ type BookingSettingsRow = {
   social_links?: Record<string, string> | null;
 };
 
+/** Node 91:17125 in frame 91:17109 — the standfirst the design draws on the band. */
 export const DEFAULT_BOOKING_SUBTITLE =
-  "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى بصحبة نخبة من الموسيقيين والمطربين المبدعين.";
+  "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني.";
 
 export const DEFAULT_BOOKING_SUBTITLE_EN =
   "Book Andalusia for your concert, your restaurant, your festival — and make a moment nobody forgets, with some of the finest musicians and singers around.";

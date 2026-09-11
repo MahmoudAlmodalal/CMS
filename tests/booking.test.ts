@@ -180,10 +180,12 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
     path.join(root, "src/components/public/BookingHeader.tsx"),
     "utf-8"
   );
-  assert.match(headerContent, /t\("title"\)/, "BookingHeader must render the booking.title message");
+  // Node 91:17126 sets the middle phrase in primary-500 against 80% white, so the
+  // catalog carries an <em> around it and the component renders the message rich.
+  assert.match(headerContent, /t\.rich\("title"/, "BookingHeader must render the booking.title message");
   assert.match(
     arMessages["booking.title"],
-    /مناسبتك تستحق موسيقى حقيقية/,
+    /مناسبتك تستحق <em>موسيقى<\/em> حقيقية/,
     "Arabic booking headline matches Figma Node 91:17126"
   );
   assert.ok(enMessages["booking.title"], "The booking headline must exist in English too");
@@ -205,9 +207,10 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
     "BookingForm must contain Fieldset Legend 2 (Figma Node 91:17207)"
   );
   assert.match(formContent, /t\("consent"\)/, "BookingForm must render the legal terms notice (Figma Node 91:17246)");
-  assert.match(
+  // Node 91:17246 is one nowrap line, not the paragraph the first build shipped.
+  assert.equal(
     arMessages["booking.consent"],
-    /^بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية/,
+    "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة الخصوصية.",
     "Arabic legal terms copy is confirmed by Figma"
   );
   assert.ok(enMessages["booking.consent"], "The legal terms notice must exist in English too");
@@ -257,7 +260,9 @@ test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
     /DEFAULT_BOOKING_SUBTITLE\s*=\s*"[^"]{10,}"/,
     "DAL must export a non-trivial DEFAULT_BOOKING_SUBTITLE fallback"
   );
-  assert.match(dalContent, /احجز فرقة أندلسيا/);
+  // The standfirst the design draws on the band is node 91:17125, not the longer
+  // marketing line the first build shipped.
+  assert.match(dalContent, /برامج تعليمية موسيقية مع فنانين حقيقيين/);
   for (const slug of ["sara-alsawt", "tariq-aloud", "layla-al-qanun", "karim-percussion"]) {
     assert.match(
       dalContent,
@@ -276,4 +281,56 @@ test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
   assert.match(pageContent, /artist/);
   assert.match(pageContent, /course/);
   assert.match(pageContent, /BookingContextBanner/);
+});
+
+test("Figma 91:17109 — booking page and footer geometry match the frame", () => {
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/booking/page.tsx"), "utf-8");
+  const hero = fs.readFileSync(path.join(root, "src/components/public/PageHero.tsx"), "utf-8");
+  const headerContent = fs.readFileSync(path.join(root, "src/components/public/BookingHeader.tsx"), "utf-8");
+  const sidebar = fs.readFileSync(path.join(root, "src/components/public/BookingSidebar.tsx"), "utf-8");
+  const form = fs.readFileSync(path.join(root, "src/components/public/BookingForm.tsx"), "utf-8");
+  const footer = fs.readFileSync(path.join(root, "src/components/public/Footer.tsx"), "utf-8");
+
+  // The hero band takes its height and its copy offset from the frame, and is not
+  // vertically centred — 91:17123 sits 247px down a 611px band.
+  assert.match(hero, /--hero-height/, "PageHero must take its band height from the frame");
+  assert.match(hero, /--hero-content-top/, "PageHero must take its copy offset from the frame");
+  assert.match(headerContent, /height=\{611\}/, "Booking hero band is 611px tall");
+  assert.match(headerContent, /contentTop=\{247\}/, "Booking hero copy sits 247px down the band");
+
+  // Content row 91:17792: sidebar 412, form 672, 58px apart, pair centred at 1142.
+  assert.match(page, /lg:w-\[1142px\]/, "Content row must be the 1142 the two columns make");
+  assert.match(page, /lg:gap-\[58px\]/, "Sidebar and form sit 58px apart");
+  assert.match(page, /lg:pt-\[65px\]/, "Content row opens 65px under the hero band");
+  assert.match(sidebar, /lg:w-\[412px\]/, "Sidebar is 412 wide");
+  assert.match(form, /lg:w-\[672px\]/, "Form is 672 wide");
+  // The form is rendered first so RTL places it on the right, where the design draws it.
+  assert.ok(
+    page.indexOf("<BookingForm") < page.indexOf("<BookingSidebar"),
+    "Form must precede the sidebar so Arabic puts it on the right"
+  );
+
+  // The form sits straight on the page surface; the design draws no card around it.
+  // Scoped to the <form> element's own class list — the success panel below it is a
+  // state the design never draws, so it keeps its card.
+  const formRoot = form.slice(form.indexOf("<form"), form.indexOf("<form") + 400);
+  assert.match(
+    formRoot,
+    /className="flex w-full flex-col text-start lg:w-\[672px\]/,
+    "Form root is a plain column, not a card"
+  );
+  assert.doesNotMatch(formRoot, /bg-white|shadow|rounded-2xl/, "The form carries no card");
+  assert.match(form, /h-12 w-full rounded-\[16px\] border-\[1\.333px\]/, "Controls are 48px on a 16px radius");
+
+  // Footer 94:18509 places its four columns at absolute offsets in a 736x190 block.
+  assert.match(footer, /lg:w-\[736px\]/, "Footer content block is 736 wide");
+  assert.match(footer, /lg:left-\[594px\]/, "Brand column sits at 594");
+  assert.match(footer, /lg:left-\[290px\]/, "Explore column sits at 290");
+  assert.match(footer, /lg:left-\[90px\]/, "Contact column sits at 90");
+  assert.match(footer, /lg:left-\[-193px\]/, "Booking column overhangs the block at -193");
+  // The mark is drawn once in the corner, not tiled over the whole surface.
+  assert.match(footer, /footer-mark\.png/, "Footer must use the corner mark cropped from the reference");
+  assert.doesNotMatch(footer, /bg-repeat/, "The arabesque is not a repeating field in the design");
+  // Strapline left, copyright right — the reverse of source order in Arabic.
+  assert.match(footer, /sm:flex-row-reverse/, "Bottom bar order is reversed against the reading direction");
 });
