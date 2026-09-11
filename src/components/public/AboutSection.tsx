@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { PublicButton } from "./PublicButton";
@@ -20,6 +21,8 @@ interface AboutSectionProps {
  * - Ornaments (112:627, 112:732): 122.7x111.56 vector, opposite corners
  */
 export function AboutSection({ settings }: AboutSectionProps) {
+  const t = useTranslations("home");
+
   return (
     <section className="relative py-16 lg:py-0 min-h-[879px] lg:h-[879px] bg-[#F9F7F0] overflow-hidden flex flex-col justify-center">
       {/* Decorative corner ornaments (Figma Nodes 112:627 / 112:732) */}
@@ -43,7 +46,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
       <Container className="relative z-10">
         {/* Section Title (Figma Node 112:626 — Cairo Bold 61px, CENTERED) */}
         <h2 className="font-sans text-3xl sm:text-4xl lg:text-[61px] font-bold text-black leading-[1.5] text-center">
-          <Highlight text="من *نحن*" />
+          <Highlight text={t("aboutHeading")} />
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center pt-10 lg:pt-12">
@@ -51,7 +54,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
           <div className="lg:col-span-6 lg:order-2 flex justify-center lg:justify-start">
             <Image
               src={settings.about_image_url || "/assets/figma/about-musician.png"}
-              alt="عازف من فرقة أندلسيا"
+              alt={t("aboutImageAlt")}
               width={551}
               height={491}
               className="w-full max-w-[551px] h-auto lg:h-[491px] object-cover lg:-ml-4"
@@ -73,7 +76,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
 
             {/* CTA (Figma Node 112:620 — solid 207x48 primary) */}
             <PublicButton href="/artists" variant="primary" size="md">
-              تعرّف على فنانينا ←
+              {t("aboutCta")}
             </PublicButton>
           </div>
         </div>

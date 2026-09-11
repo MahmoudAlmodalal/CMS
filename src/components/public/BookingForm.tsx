@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useActionState, useState } from "react";
+import { useTranslations } from "next-intl";
 import { submitBookingAction, INITIAL_BOOKING_ACTION_STATE } from "@/actions/booking";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/Icons";
@@ -15,12 +16,13 @@ interface BookingFormProps {
   defaultPreferredArtist?: string;
 }
 
+/** Option values are stored verbatim; labels come from the `booking` message namespace. */
 const EVENT_TYPE_OPTIONS = [
-  { value: "private_concert", label: "حفل موسيقي خاص" },
-  { value: "wedding", label: "حفل زفاف أو خطوبة" },
-  { value: "festival", label: "مهرجان أو فعالية ثقافية" },
-  { value: "hotel", label: "فندق أو أمسية مطعم راقية" },
-  { value: "other", label: "مناسبة أخرى (حدد في التفاصيل)" },
+  { value: "private_concert", labelKey: "occasionPrivateConcert" },
+  { value: "wedding", labelKey: "occasionWedding" },
+  { value: "festival", labelKey: "occasionFestival" },
+  { value: "hotel", labelKey: "occasionHotel" },
+  { value: "other", labelKey: "occasionOther" },
 ];
 
 /**
@@ -44,6 +46,7 @@ export function BookingForm({
   defaultMessage = "",
   defaultPreferredArtist = "",
 }: BookingFormProps) {
+  const t = useTranslations("booking");
   const [state, formAction, isPending] = useActionState(
     submitBookingAction,
     INITIAL_BOOKING_ACTION_STATE
@@ -63,16 +66,16 @@ export function BookingForm({
         </div>
 
         <h2 className="font-calligraphic text-2xl sm:text-3xl font-bold text-brand-espresso mb-3">
-          تم استلام طلب الحجز بنجاح! ♪
+          {t("successTitle")}
         </h2>
 
         <p className="max-w-lg mx-auto text-base text-brand-espresso/80 leading-relaxed mb-8">
-          {state.message || "شكراً لتواصلك معنا. سنراجع طلبك ونتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الترتيبات."}
+          {state.message || t("successBody")}
         </p>
 
         <div className="p-4 rounded-xl bg-brand-cream/60 border border-brand-espresso/5 max-w-md mx-auto mb-8 text-start text-xs text-brand-espresso/70 space-y-1">
-          <p className="font-semibold text-brand-espresso">ملاحظة هامة:</p>
-          <p>تم تسجيل طلبك ضمن سجلات الحجوزات الخاصة الآمنة، وسيتولى المنسق الفني التواصل معك مباشرة عبر الهاتف أو البريد الإلكتروني.</p>
+          <p className="font-semibold text-brand-espresso">{t("successNoteLabel")}</p>
+          <p>{t("successNote")}</p>
         </div>
 
         <Button
@@ -85,7 +88,7 @@ export function BookingForm({
           }}
           className="px-8"
         >
-          تقديم طلب حجز آخر
+          {t("successAgain")}
         </Button>
       </div>
     );
@@ -128,14 +131,14 @@ export function BookingForm({
       <fieldset className="flex flex-col gap-5 p-0 m-0 border-0">
         <legend className="w-full pb-3 border-b-2 border-brand-primary/15 text-start font-bold text-brand-primary text-base sm:text-lg flex items-center gap-2">
           <span>♪</span>
-          <span>معلوماتك الشخصية</span>
+          <span>{t("groupPersonal")}</span>
         </legend>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Full Name */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="full_name" className="text-sm font-semibold text-brand-espresso">
-              الاسم الكامل <span className="text-brand-primary" aria-hidden="true">*</span>
+              {t("fieldName")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
               id="full_name"
@@ -145,7 +148,7 @@ export function BookingForm({
               aria-required="true"
               aria-invalid={!!state.fieldErrors?.full_name}
               aria-describedby={state.fieldErrors?.full_name ? "full_name-error" : undefined}
-              placeholder="مثال: أحمد عبد الله"
+              placeholder={t("fieldNamePlaceholder")}
               className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
                 state.fieldErrors?.full_name
                   ? "border-red-500 ring-1 ring-red-500/20"
@@ -162,7 +165,7 @@ export function BookingForm({
           {/* Email Address */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="email" className="text-sm font-semibold text-brand-espresso">
-              البريد الإلكتروني <span className="text-brand-primary" aria-hidden="true">*</span>
+              {t("fieldEmail")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
               id="email"
@@ -192,7 +195,7 @@ export function BookingForm({
           {/* Phone Number */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="phone" className="text-sm font-semibold text-brand-espresso">
-              رقم الهاتف أو الواتساب <span className="text-xs font-normal text-brand-espresso/60">(اختياري)</span>
+              {t("fieldPhone")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
             </label>
             <input
               id="phone"
@@ -218,7 +221,7 @@ export function BookingForm({
           {/* Budget Range */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="budget_range" className="text-sm font-semibold text-brand-espresso">
-              الميزانية التقريبية <span className="text-xs font-normal text-brand-espresso/60">(اختياري)</span>
+              {t("fieldBudget")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
             </label>
             <input
               id="budget_range"
@@ -226,7 +229,7 @@ export function BookingForm({
               type="text"
               aria-invalid={!!state.fieldErrors?.budget_range}
               aria-describedby={state.fieldErrors?.budget_range ? "budget_range-error" : undefined}
-              placeholder="مثال: ١٠٠٠ - ٥٠٠٠ دولار"
+              placeholder={t("fieldBudgetPlaceholder")}
               className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
                 state.fieldErrors?.budget_range
                   ? "border-red-500 ring-1 ring-red-500/20"
@@ -248,14 +251,14 @@ export function BookingForm({
       <fieldset className="flex flex-col gap-5 p-0 m-0 border-0">
         <legend className="w-full pb-3 border-b-2 border-brand-primary/15 text-start font-bold text-brand-primary text-base sm:text-lg flex items-center gap-2">
           <span>♪</span>
-          <span>تفاصيل المناسبة</span>
+          <span>{t("groupOccasion")}</span>
         </legend>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Event Type */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="event_type" className="text-sm font-semibold text-brand-espresso">
-              نوع المناسبة <span className="text-brand-primary" aria-hidden="true">*</span>
+              {t("fieldOccasionType")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <div className="relative w-full">
               <select
@@ -274,7 +277,7 @@ export function BookingForm({
               >
                 {EVENT_TYPE_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
-                    {opt.label}
+                    {t(opt.labelKey)}
                   </option>
                 ))}
               </select>
@@ -292,7 +295,7 @@ export function BookingForm({
           {/* Event Date */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="event_date" className="text-sm font-semibold text-brand-espresso">
-              تاريخ الفعالية المفضل <span className="text-brand-primary" aria-hidden="true">*</span>
+              {t("fieldDate")} <span className="text-brand-primary" aria-hidden="true">*</span>
             </label>
             <input
               id="event_date"
@@ -321,7 +324,7 @@ export function BookingForm({
           {/* Artist Dropdown */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="artist_id" className="text-sm font-semibold text-brand-espresso">
-              اختر الفنان / الفرقة <span className="text-xs font-normal text-brand-espresso/60">(اختياري)</span>
+              {t("fieldArtist")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
             </label>
             <div className="relative w-full">
               <select
@@ -337,7 +340,7 @@ export function BookingForm({
                     : "border-brand-espresso/15 hover:border-brand-primary/50"
                 }`}
               >
-                <option value="">فرقة أندلسيا الكاملة / باقة تراثية متكاملة</option>
+                <option value="">{t("fieldArtistAny")}</option>
                 {artists.map((artist) => (
                   <option key={artist.id} value={artist.id}>
                     {artist.name}
@@ -358,7 +361,7 @@ export function BookingForm({
           {/* Preferred Artist Free Text */}
           <div className="flex flex-col gap-1.5 text-start">
             <label htmlFor="preferred_artist" className="text-sm font-semibold text-brand-espresso">
-              فنان محدد أو عازف معين <span className="text-xs font-normal text-brand-espresso/60">(اختياري)</span>
+              {t("fieldSpecificArtist")} <span className="text-xs font-normal text-brand-espresso/60">{t("optional")}</span>
             </label>
             <input
               id="preferred_artist"
@@ -367,7 +370,7 @@ export function BookingForm({
               defaultValue={defaultPreferredArtist}
               aria-invalid={!!state.fieldErrors?.preferred_artist}
               aria-describedby={state.fieldErrors?.preferred_artist ? "preferred_artist-error" : undefined}
-              placeholder="مثال: عازف عود منفرد أو تخت شرقي خماسي"
+              placeholder={t("fieldSpecificArtistPlaceholder")}
               className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
                 state.fieldErrors?.preferred_artist
                   ? "border-red-500 ring-1 ring-red-500/20"
@@ -385,7 +388,7 @@ export function BookingForm({
         {/* Message / Additional Details */}
         <div className="flex flex-col gap-1.5 text-start">
           <label htmlFor="message" className="text-sm font-semibold text-brand-espresso">
-            تفاصيل إضافية عن الفعالية <span className="text-brand-primary" aria-hidden="true">*</span>
+            {t("fieldDetails")} <span className="text-brand-primary" aria-hidden="true">*</span>
           </label>
           <textarea
             id="message"
@@ -396,7 +399,7 @@ export function BookingForm({
             aria-required="true"
             aria-invalid={!!state.fieldErrors?.message}
             aria-describedby={state.fieldErrors?.message ? "message-error" : undefined}
-            placeholder="يرجى ذكر مكان الفعالية (المدينة، القاعة)، التوقيت التقريبي، عدد الحضور المتوقع، وأي رغبات خاصة في الموشحات أو الأغاني..."
+            placeholder={t("fieldDetailsPlaceholder")}
             className={`w-full rounded-xl border bg-white p-3.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary min-h-[120px] ${
               state.fieldErrors?.message
                 ? "border-red-500 ring-1 ring-red-500/20"
@@ -409,7 +412,7 @@ export function BookingForm({
             </p>
           ) : (
             <span className="text-xs text-brand-espresso/50">
-              أدخل ٥ أحرف على الأقل لوصف متطلبات الحفل.
+              {t("fieldDetailsHint")}
             </span>
           )}
         </div>
@@ -419,7 +422,7 @@ export function BookingForm({
       {/* Legal Disclaimer Notice (Figma Node 91:17246)                      */}
       {/* ================================================================== */}
       <div className="p-4 rounded-xl bg-brand-cream/50 border border-brand-espresso/5 text-xs text-brand-espresso/70 leading-relaxed text-start">
-        بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية وشروط حجز الفعاليات لدى فرقة أندلسيا. تبقى كافة المعلومات سرية ولأغراض تنسيق الفعالية حصراً.
+        {t("consent")}
       </div>
 
       {/* ================================================================== */}
@@ -436,10 +439,10 @@ export function BookingForm({
           {isPending ? (
             <span className="inline-flex items-center gap-2">
               <span className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-              <span>جارٍ إرسال الطلب...</span>
+              <span>{t("submitting")}</span>
             </span>
           ) : (
-            <span>أرسل الطلب ♪</span>
+            <span>{t("submit")}</span>
           )}
         </Button>
       </div>

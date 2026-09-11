@@ -1,0 +1,7 @@
+{
+  "_note": "Three mobile frames per language are all named الفنانين in Figma, so the layer name cannot identify them. Desktop has 7 screens per language while mobile name-matching only yields 5, so the two unnamed ones are almost certainly news and booking. Open docs/figma-reference/unresolved-*.png after `npm run figma:sync` and replace each null with the screen slug: home | academy | events | booking | news | artists | artist-detail.",
+  "141:15629": null,
+  "141:15199": null,
+  "144:20146": null,
+  "144:20463": null
+}

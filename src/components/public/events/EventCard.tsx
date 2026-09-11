@@ -1,5 +1,6 @@
 import React from "react";
-import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { toArabicDigits } from "@/lib/formatters";
 import { CATEGORY_MAP, type EventItem } from "@/lib/types/events";
@@ -19,10 +20,14 @@ export interface EventCardProps {
  * - 91:16814 (Action Button: "احجز" -> /booking?event_id=[id])
  */
 export function EventCard({ event }: EventCardProps) {
+  const t = useTranslations("events");
+  const locale = useLocale();
   const eventDate = new Date(event.event_date);
   const dayNumber = eventDate.getDate();
-  const dayArabic = toArabicDigits(dayNumber);
-  const monthArabic = new Intl.DateTimeFormat("ar-EG", { month: "long" }).format(eventDate);
+  const dayArabic = locale === "ar" ? toArabicDigits(dayNumber) : String(dayNumber);
+  const monthArabic = new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
+    month: "long",
+  }).format(eventDate);
 
   const categoryLabel = CATEGORY_MAP[event.category] || event.category;
   const performerCityString = `${event.performer_name} · ${event.city}`;
@@ -45,7 +50,7 @@ export function EventCard({ event }: EventCardProps) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-secondary-300 text-brand-espresso/30 font-bold">
-            أندلسيا
+            {t("posterFallback")}
           </div>
         )}
 
@@ -94,7 +99,7 @@ export function EventCard({ event }: EventCardProps) {
             rel={isExternalTicket ? "noopener noreferrer" : undefined}
             className="inline-flex items-center justify-center w-full h-[42px] px-4 rounded-button bg-primary-500 text-white font-bold text-sm shadow-xs hover:bg-primary-400 active:bg-primary-600 transition-colors active:scale-[0.98]"
           >
-            {isExternalTicket ? "احجز تذكرتك" : "احجز"}
+            {isExternalTicket ? t("bookTicket") : t("book")}
           </Link>
         </div>
       </div>

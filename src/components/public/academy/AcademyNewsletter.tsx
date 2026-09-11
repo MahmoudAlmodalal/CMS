@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Button } from "@/components/ui/Button";
 import { subscribeNewsletter } from "@/actions/newsletter";
@@ -14,6 +15,7 @@ import { subscribeNewsletter } from "@/actions/newsletter";
  * - Honeypot anti-spam protection
  */
 export function AcademyNewsletter() {
+  const t = useTranslations("academy");
   const [email, setEmail] = useState("");
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<{
@@ -39,7 +41,7 @@ export function AcademyNewsletter() {
       } catch {
         setFeedback({
           type: "error",
-          message: "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى لاحقاً.",
+          message: t("newsletterError"),
         });
       }
     });
@@ -56,22 +58,22 @@ export function AcademyNewsletter() {
       <Container className="relative z-10 max-w-3xl text-center">
         {/* Confirmed Figma Copy */}
         <h2 className="font-calligraphic text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-white">
-          رسالة واحدة في الشهر.
+          {t("newsletterHeading")}
         </h2>
 
         <p className="text-primary-400 font-bold text-lg sm:text-xl font-sans mb-8">
-          ♪ لكنها تستحق كل الانتظار.
+          {t("newsletterTagline")}
         </p>
 
         <p className="text-secondary-100/70 text-sm sm:text-base font-sans max-w-xl mx-auto mb-10 leading-relaxed">
-          نشارك فيها مستجدات ورشات العمل، مقالات فكرية وموسيقية حصرية، وتفاصيل العروض القادمة قبل الجميع.
+          {t("newsletterBody")}
         </p>
 
         {/* Subscription Form */}
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 text-start">
           {/* Honeypot field (hidden from real users, caught by bots) */}
           <div className="sr-only" aria-hidden="true">
-            <label htmlFor="_hp_newsletter">لا تملأ هذا الحقل</label>
+            <label htmlFor="_hp_newsletter">{t("newsletterHoneypot")}</label>
             <input
               type="text"
               id="_hp_newsletter"
@@ -89,7 +91,7 @@ export function AcademyNewsletter() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="بريدك الإلكتروني (name@example.com)"
+                placeholder={t("newsletterPlaceholder")}
                 dir="ltr"
                 disabled={isPending}
                 className="w-full h-[48px] bg-white/10 text-white placeholder:text-secondary-100/50 placeholder:text-sm placeholder:font-sans rounded-input px-4 py-3 border border-white/20 focus:outline-none focus:border-primary-400 focus:bg-white/15 transition-all text-start"
@@ -104,7 +106,7 @@ export function AcademyNewsletter() {
               disabled={isPending}
               className="sm:w-auto px-8"
             >
-              اشترك
+              {t("newsletterSubmit")}
             </Button>
           </div>
 
@@ -124,7 +126,7 @@ export function AcademyNewsletter() {
           )}
 
           <p className="text-center text-xs text-secondary-100/50 font-sans mt-3">
-            خصوصيتك محفوظة بالكامل. يمكنك إلغاء الاشتراك في أي وقت بنقرة واحدة.
+            {t("newsletterPrivacy")}
           </p>
         </form>
       </Container>

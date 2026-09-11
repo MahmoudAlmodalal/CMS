@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { MusicIcon } from "@/components/ui/Icons";
 
 export interface ArtistsEmptyStateProps {
@@ -16,6 +17,7 @@ export function ArtistsEmptyState({
   onResetFilter,
   className = "",
 }: ArtistsEmptyStateProps) {
+  const t = useTranslations("artists");
   const isFiltered = category !== "all";
 
   return (
@@ -29,14 +31,10 @@ export function ArtistsEmptyState({
 
       <div className="space-y-2">
         <h3 className="font-sans text-2xl font-bold text-brand-espresso">
-          {isFiltered
-            ? "لا يوجد فنانون في هذا التصنيف حالياً"
-            : "لم يتم نشر فنانين بعد"}
+          {isFiltered ? t("emptyFilteredTitle") : t("emptyTitle")}
         </h3>
         <p className="text-sm text-gradscale-400 max-w-sm mx-auto leading-relaxed">
-          {isFiltered
-            ? "جرب اختيار تصنيف آخر أو استعرض جميع الفنانين للتعرف على نخبة عازفي أندلسيا."
-            : "يجري إعداد وتحديث قائمة فناني أندلسيا. تفضل بزيارتنا قريباً للاطلاع على جديدنا."}
+          {isFiltered ? t("emptyFilteredBody") : t("emptyBody")}
         </p>
       </div>
 
@@ -46,7 +44,7 @@ export function ArtistsEmptyState({
           onClick={onResetFilter}
           className="mt-2 px-6 py-2.5 rounded-full bg-brand-primary text-white text-sm font-bold shadow-subtle hover:bg-brand-primary-pressed transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
-          عرض جميع الفنانين
+          {t("showAll")}
         </button>
       )}
     </div>

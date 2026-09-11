@@ -80,14 +80,23 @@ test("Task 27 — 4. Logout & Cookie Removal", () => {
 test("Task 27 — 5. Middleware & Protected /admin/* Routes", () => {
   const middlewareSrc = fs.readFileSync(path.resolve("src/middleware.ts"), "utf-8");
 
-  // Matcher includes both /admin/:path* and /login
+  // The matcher is now broad so locale rewriting reaches the public site; the guard
+  // itself must still single out /admin and /login as unlocalised, protected routes.
   assert.ok(
-    middlewareSrc.includes('"/admin/:path*"') || middlewareSrc.includes("'/admin/:path*'"),
-    "Matcher must include '/admin/:path*'"
+    middlewareSrc.includes('pathname.startsWith("/admin/")') && middlewareSrc.includes('pathname === "/admin"'),
+    "Middleware must treat every /admin route as unlocalised and guarded"
   );
   assert.ok(
-    middlewareSrc.includes('"/login"') || middlewareSrc.includes("'/login'"),
-    "Matcher must include '/login'"
+    middlewareSrc.includes('pathname === "/login"'),
+    "Middleware must treat /login as unlocalised and guarded"
+  );
+  assert.ok(
+    !/matcher:\s*\[\s*\]/.test(middlewareSrc) && middlewareSrc.includes("matcher"),
+    "Middleware must still declare a matcher"
+  );
+  assert.ok(
+    middlewareSrc.includes("_next"),
+    "Matcher must exclude Next internals so static assets skip the guard"
   );
 
   // Uses getUser() - NEVER getSession()

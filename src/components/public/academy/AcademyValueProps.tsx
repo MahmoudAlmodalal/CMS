@@ -1,33 +1,23 @@
 import React from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Container, Grid } from "@/components/ui/LayoutPrimitives";
 import { Card, CardContent } from "@/components/ui/Card";
+import { toArabicDigits } from "@/lib/formatters";
 
 export interface ValuePropItem {
   id: string;
-  title: string;
-  description: string;
-  number: string;
+  /** Key under the `academy` message namespace. */
+  titleKey: string;
+  descriptionKey: string;
+  /** 1-based position, rendered as a zero-padded numeral in the reader's script. */
+  index: number;
 }
 
+/** Copy lives in the `academy` message namespace; the numerals are locale-formatted at render. */
 export const CANONICAL_VALUE_PROPS: ValuePropItem[] = [
-  {
-    id: "small-groups",
-    title: "مجموعات صغيرة",
-    description: "لا تتجاوز ثمانية مشاركين لضمان جودة التركيز والتوجيه الفردي وتطوير الأداء لكل طالب.",
-    number: "٠١",
-  },
-  {
-    id: "active-artists",
-    title: "فنانون من الواقع",
-    description: "أساتذة هم فنانون نشطون في مجالهم، ينقلون خبراتهم العملية الحقيقية من المسارح والاستوديوهات.",
-    number: "٠٢",
-  },
-  {
-    id: "live-performance",
-    title: "أداء حقيقي",
-    description: "كل برنامج ينتهي بعرض متكامل أمام جمهور حقيقي يمنح الطالب تجربة الوقوف الفعلي على المسرح.",
-    number: "٠٣",
-  },
+  { id: "small-groups", titleKey: "value1Title", descriptionKey: "value1Body", index: 1 },
+  { id: "active-artists", titleKey: "value2Title", descriptionKey: "value2Body", index: 2 },
+  { id: "live-performance", titleKey: "value3Title", descriptionKey: "value3Body", index: 3 },
 ];
 
 /**
@@ -37,19 +27,28 @@ export const CANONICAL_VALUE_PROPS: ValuePropItem[] = [
  * - 3 Pillars: "مجموعات صغيرة", "فنانون من الواقع", "أداء حقيقي"
  */
 export function AcademyValueProps() {
+  const t = useTranslations("academy");
+  const locale = useLocale();
+
+  // Figma numbers these pillars ٠١ / ٠٢ / ٠٣ in Arabic; English reads 01 / 02 / 03.
+  const formatOrdinal = (index: number) => {
+    const padded = String(index).padStart(2, "0");
+    return locale === "ar" ? toArabicDigits(padded) : padded;
+  };
+
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-secondary-100/50 border-y border-brand-espresso-subtle">
       <Container>
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12 lg:mb-16">
           <span className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-2 inline-block">
-            رؤيتنا التعليمية
+            {t("valuesKicker")}
           </span>
           <h2 className="font-calligraphic text-2xl sm:text-3xl md:text-4xl font-bold text-brand-espresso mb-3">
-            التعلّم هنا مختلف
+            {t("valuesHeading")}
           </h2>
           <p className="text-sm sm:text-base text-gradscale-400 font-sans">
-            منهجية تدريب حية تبني المهارة من التجربة المباشرة لا التلقين النظري.
+            {t("valuesSubtitle")}
           </p>
         </div>
 
@@ -64,7 +63,7 @@ export function AcademyValueProps() {
               <CardContent className="p-0 space-y-4 text-start">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-xl sm:text-2xl font-bold text-primary-500/40">
-                    {prop.number}
+                    {formatOrdinal(prop.index)}
                   </span>
                   <div className="w-8 h-8 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center text-xs font-bold font-mono">
                     ♪
@@ -72,11 +71,11 @@ export function AcademyValueProps() {
                 </div>
 
                 <h3 className="text-lg sm:text-xl font-bold text-brand-espresso font-sans">
-                  {prop.title}
+                  {t(prop.titleKey)}
                 </h3>
 
                 <p className="text-sm text-gradscale-400 font-sans leading-relaxed">
-                  {prop.description}
+                  {t(prop.descriptionKey)}
                 </p>
               </CardContent>
             </Card>

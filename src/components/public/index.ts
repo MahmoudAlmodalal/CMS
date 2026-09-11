@@ -3,6 +3,7 @@ export { MobileNavbar } from "./MobileNavbar";
 export { MobileDrawer, type MobileDrawerProps } from "./MobileDrawer";
 export { Footer } from "./Footer";
 export { SkipToContent } from "./SkipToContent";
+export { LocaleSwitcher } from "./LocaleSwitcher";
 
 // Home Page components
 export { HeroSection } from "./HeroSection";
@@ -26,6 +27,7 @@ export { BookingHeader } from "./BookingHeader";
 export { BookingSidebar } from "./BookingSidebar";
 export { BookingForm } from "./BookingForm";
 export { BookingContextBanner } from "./BookingContextBanner";
+export { PageHero } from "./PageHero";
 export { NewsHero, type NewsHeroProps } from "./NewsHero";
 export { NewsGrid, type NewsGridProps } from "./NewsGrid";
 export { NewsFilterTabs, type NewsFilterTabsProps } from "./NewsFilterTabs";
@@ -39,4 +41,3 @@ export {
   AcademyTracks,
   AcademyNewsletter,
 } from "./academy";
-

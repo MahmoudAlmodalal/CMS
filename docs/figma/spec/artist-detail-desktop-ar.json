@@ -1,0 +1,8369 @@
+{
+  "frame": "artist-detail-desktop-ar",
+  "nodes": [
+    {
+      "depth": 0,
+      "id": "134:4420",
+      "name": "الفنان",
+      "type": "FRAME",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 2968
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9F7F0",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4421",
+      "name": "Group 161",
+      "type": "GROUP",
+      "box": {
+        "x": -61,
+        "y": 708,
+        "w": 122.7,
+        "h": 111.56
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4422",
+      "name": "Fill 1",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4423",
+      "name": "Fill 3",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4424",
+      "name": "Fill 5",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4425",
+      "name": "Fill 7",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4426",
+      "name": "Fill 9",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4427",
+      "name": "Fill 11",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4428",
+      "name": "Fill 13",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 721.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4429",
+      "name": "Group 17",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 721.34,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4430",
+      "name": "Clip 16",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 721.34,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4431",
+      "name": "Fill 15",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 721.34,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4432",
+      "name": "Fill 18",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4433",
+      "name": "Fill 20",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4434",
+      "name": "Fill 22",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4435",
+      "name": "Fill 24",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4436",
+      "name": "Fill 26",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4437",
+      "name": "Fill 28",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4438",
+      "name": "Fill 30",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 708.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4439",
+      "name": "Group 34",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 708,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4440",
+      "name": "Clip 33",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 708,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4441",
+      "name": "Fill 32",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 708,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4442",
+      "name": "Fill 35",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4443",
+      "name": "Fill 37",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4444",
+      "name": "Fill 39",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4445",
+      "name": "Fill 41",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4446",
+      "name": "Fill 43",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4447",
+      "name": "Fill 45",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4448",
+      "name": "Fill 47",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 734.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4449",
+      "name": "Group 51",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 734.69,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4450",
+      "name": "Clip 50",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 734.69,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4451",
+      "name": "Fill 49",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 734.69,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4452",
+      "name": "Fill 52",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4453",
+      "name": "Fill 54",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4454",
+      "name": "Fill 56",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4455",
+      "name": "Fill 58",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4456",
+      "name": "Fill 60",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4457",
+      "name": "Fill 62",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4458",
+      "name": "Fill 64",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 747.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4459",
+      "name": "Group 68",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 748.03,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4460",
+      "name": "Clip 67",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 748.03,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4461",
+      "name": "Fill 66",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 748.03,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4462",
+      "name": "Fill 69",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4463",
+      "name": "Fill 71",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4464",
+      "name": "Fill 73",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4465",
+      "name": "Fill 75",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4466",
+      "name": "Fill 77",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4467",
+      "name": "Fill 79",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4468",
+      "name": "Fill 81",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 761.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4469",
+      "name": "Group 85",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 760.78,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4470",
+      "name": "Clip 84",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 760.78,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4471",
+      "name": "Fill 83",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 760.78,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4472",
+      "name": "Fill 86",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4473",
+      "name": "Fill 88",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4474",
+      "name": "Fill 90",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4475",
+      "name": "Fill 92",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4476",
+      "name": "Fill 94",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4477",
+      "name": "Fill 96",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4478",
+      "name": "Fill 98",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 774.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4479",
+      "name": "Group 102",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 774.12,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4480",
+      "name": "Clip 101",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 774.12,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4481",
+      "name": "Fill 100",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 774.12,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4482",
+      "name": "Fill 103",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4483",
+      "name": "Fill 105",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4484",
+      "name": "Fill 107",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4485",
+      "name": "Fill 109",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4486",
+      "name": "Fill 111",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4487",
+      "name": "Fill 113",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4488",
+      "name": "Fill 115",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 787.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4489",
+      "name": "Group 119",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 787.47,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4490",
+      "name": "Clip 118",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 787.47,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4491",
+      "name": "Fill 117",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 787.47,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4492",
+      "name": "Fill 120",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4493",
+      "name": "Fill 122",
+      "type": "VECTOR",
+      "box": {
+        "x": -28,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4494",
+      "name": "Fill 124",
+      "type": "VECTOR",
+      "box": {
+        "x": -44,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4495",
+      "name": "Fill 126",
+      "type": "VECTOR",
+      "box": {
+        "x": -11,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4496",
+      "name": "Fill 128",
+      "type": "VECTOR",
+      "box": {
+        "x": 6,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4497",
+      "name": "Fill 130",
+      "type": "VECTOR",
+      "box": {
+        "x": 39,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4498",
+      "name": "Fill 132",
+      "type": "VECTOR",
+      "box": {
+        "x": 22,
+        "y": 800.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4499",
+      "name": "Group 136",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 800.81,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4500",
+      "name": "Clip 135",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 800.81,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4501",
+      "name": "Fill 134",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 800.81,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4502",
+      "name": "Group 139",
+      "type": "GROUP",
+      "box": {
+        "x": -61,
+        "y": 813.56,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4503",
+      "name": "Clip 138",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 813.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4504",
+      "name": "Fill 137",
+      "type": "VECTOR",
+      "box": {
+        "x": -61,
+        "y": 813.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4505",
+      "name": "Group 142",
+      "type": "GROUP",
+      "box": {
+        "x": -28.01,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4506",
+      "name": "Clip 141",
+      "type": "VECTOR",
+      "box": {
+        "x": -28.01,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4507",
+      "name": "Fill 140",
+      "type": "VECTOR",
+      "box": {
+        "x": -28.01,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4508",
+      "name": "Group 145",
+      "type": "GROUP",
+      "box": {
+        "x": -44.51,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4509",
+      "name": "Clip 144",
+      "type": "VECTOR",
+      "box": {
+        "x": -44.51,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4510",
+      "name": "Fill 143",
+      "type": "VECTOR",
+      "box": {
+        "x": -44.51,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4511",
+      "name": "Group 148",
+      "type": "GROUP",
+      "box": {
+        "x": -11.5,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4512",
+      "name": "Clip 147",
+      "type": "VECTOR",
+      "box": {
+        "x": -11.5,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4513",
+      "name": "Fill 146",
+      "type": "VECTOR",
+      "box": {
+        "x": -11.5,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4514",
+      "name": "Group 151",
+      "type": "GROUP",
+      "box": {
+        "x": 5.4,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4515",
+      "name": "Clip 150",
+      "type": "VECTOR",
+      "box": {
+        "x": 5.4,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4516",
+      "name": "Fill 149",
+      "type": "VECTOR",
+      "box": {
+        "x": 5.4,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4517",
+      "name": "Group 154",
+      "type": "GROUP",
+      "box": {
+        "x": 38.39,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4518",
+      "name": "Clip 153",
+      "type": "VECTOR",
+      "box": {
+        "x": 38.39,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4519",
+      "name": "Fill 152",
+      "type": "VECTOR",
+      "box": {
+        "x": 38.39,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4520",
+      "name": "Group 157",
+      "type": "GROUP",
+      "box": {
+        "x": 21.89,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4521",
+      "name": "Clip 156",
+      "type": "VECTOR",
+      "box": {
+        "x": 21.89,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4522",
+      "name": "Fill 155",
+      "type": "VECTOR",
+      "box": {
+        "x": 21.89,
+        "y": 813.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4523",
+      "name": "Group 160",
+      "type": "GROUP",
+      "box": {
+        "x": 55.3,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4524",
+      "name": "Clip 159",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4525",
+      "name": "Fill 158",
+      "type": "VECTOR",
+      "box": {
+        "x": 55.3,
+        "y": 813.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4526",
+      "name": "Group 162",
+      "type": "GROUP",
+      "box": {
+        "x": 1377,
+        "y": 1696,
+        "w": 122.7,
+        "h": 111.56
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4527",
+      "name": "Fill 1",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4528",
+      "name": "Fill 3",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4529",
+      "name": "Fill 5",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4530",
+      "name": "Fill 7",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4531",
+      "name": "Fill 9",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4532",
+      "name": "Fill 11",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4533",
+      "name": "Fill 13",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1709.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4534",
+      "name": "Group 17",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1709.34,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4535",
+      "name": "Clip 16",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1709.34,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4536",
+      "name": "Fill 15",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1709.34,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4537",
+      "name": "Fill 18",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4538",
+      "name": "Fill 20",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4539",
+      "name": "Fill 22",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4540",
+      "name": "Fill 24",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4541",
+      "name": "Fill 26",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4542",
+      "name": "Fill 28",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4543",
+      "name": "Fill 30",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1696.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4544",
+      "name": "Group 34",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1696,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4545",
+      "name": "Clip 33",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1696,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4546",
+      "name": "Fill 32",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1696,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4547",
+      "name": "Fill 35",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4548",
+      "name": "Fill 37",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4549",
+      "name": "Fill 39",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4550",
+      "name": "Fill 41",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4551",
+      "name": "Fill 43",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4552",
+      "name": "Fill 45",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4553",
+      "name": "Fill 47",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1722.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4554",
+      "name": "Group 51",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1722.69,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4555",
+      "name": "Clip 50",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1722.69,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4556",
+      "name": "Fill 49",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1722.69,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4557",
+      "name": "Fill 52",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4558",
+      "name": "Fill 54",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4559",
+      "name": "Fill 56",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4560",
+      "name": "Fill 58",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4561",
+      "name": "Fill 60",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4562",
+      "name": "Fill 62",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4563",
+      "name": "Fill 64",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1735.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4564",
+      "name": "Group 68",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1736.03,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4565",
+      "name": "Clip 67",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1736.03,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4566",
+      "name": "Fill 66",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1736.03,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4567",
+      "name": "Fill 69",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4568",
+      "name": "Fill 71",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4569",
+      "name": "Fill 73",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4570",
+      "name": "Fill 75",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4571",
+      "name": "Fill 77",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4572",
+      "name": "Fill 79",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4573",
+      "name": "Fill 81",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1749.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4574",
+      "name": "Group 85",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1748.78,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4575",
+      "name": "Clip 84",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1748.78,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4576",
+      "name": "Fill 83",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1748.78,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4577",
+      "name": "Fill 86",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4578",
+      "name": "Fill 88",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4579",
+      "name": "Fill 90",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4580",
+      "name": "Fill 92",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4581",
+      "name": "Fill 94",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4582",
+      "name": "Fill 96",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4583",
+      "name": "Fill 98",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1762.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4584",
+      "name": "Group 102",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1762.12,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4585",
+      "name": "Clip 101",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1762.12,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4586",
+      "name": "Fill 100",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1762.12,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4587",
+      "name": "Fill 103",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4588",
+      "name": "Fill 105",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4589",
+      "name": "Fill 107",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4590",
+      "name": "Fill 109",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4591",
+      "name": "Fill 111",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4592",
+      "name": "Fill 113",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4593",
+      "name": "Fill 115",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1775.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4594",
+      "name": "Group 119",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1775.47,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4595",
+      "name": "Clip 118",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1775.47,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4596",
+      "name": "Fill 117",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1775.47,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4597",
+      "name": "Fill 120",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4598",
+      "name": "Fill 122",
+      "type": "VECTOR",
+      "box": {
+        "x": 1410,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4599",
+      "name": "Fill 124",
+      "type": "VECTOR",
+      "box": {
+        "x": 1394,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4600",
+      "name": "Fill 126",
+      "type": "VECTOR",
+      "box": {
+        "x": 1427,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4601",
+      "name": "Fill 128",
+      "type": "VECTOR",
+      "box": {
+        "x": 1444,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4602",
+      "name": "Fill 130",
+      "type": "VECTOR",
+      "box": {
+        "x": 1477,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4603",
+      "name": "Fill 132",
+      "type": "VECTOR",
+      "box": {
+        "x": 1460,
+        "y": 1788.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4604",
+      "name": "Group 136",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1788.81,
+        "w": 6.4,
+        "h": 6.4
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4605",
+      "name": "Clip 135",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1788.81,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4606",
+      "name": "Fill 134",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1788.81,
+        "w": 6.4,
+        "h": 6.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4607",
+      "name": "Group 139",
+      "type": "GROUP",
+      "box": {
+        "x": 1377,
+        "y": 1801.56,
+        "w": 6,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4608",
+      "name": "Clip 138",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1801.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4609",
+      "name": "Fill 137",
+      "type": "VECTOR",
+      "box": {
+        "x": 1377,
+        "y": 1801.56,
+        "w": 6,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4610",
+      "name": "Group 142",
+      "type": "GROUP",
+      "box": {
+        "x": 1409.99,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4611",
+      "name": "Clip 141",
+      "type": "VECTOR",
+      "box": {
+        "x": 1409.99,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4612",
+      "name": "Fill 140",
+      "type": "VECTOR",
+      "box": {
+        "x": 1409.99,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4613",
+      "name": "Group 145",
+      "type": "GROUP",
+      "box": {
+        "x": 1393.49,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4614",
+      "name": "Clip 144",
+      "type": "VECTOR",
+      "box": {
+        "x": 1393.49,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4615",
+      "name": "Fill 143",
+      "type": "VECTOR",
+      "box": {
+        "x": 1393.49,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4616",
+      "name": "Group 148",
+      "type": "GROUP",
+      "box": {
+        "x": 1426.5,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4617",
+      "name": "Clip 147",
+      "type": "VECTOR",
+      "box": {
+        "x": 1426.5,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4618",
+      "name": "Fill 146",
+      "type": "VECTOR",
+      "box": {
+        "x": 1426.5,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4619",
+      "name": "Group 151",
+      "type": "GROUP",
+      "box": {
+        "x": 1443.4,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4620",
+      "name": "Clip 150",
+      "type": "VECTOR",
+      "box": {
+        "x": 1443.4,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4621",
+      "name": "Fill 149",
+      "type": "VECTOR",
+      "box": {
+        "x": 1443.4,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4622",
+      "name": "Group 154",
+      "type": "GROUP",
+      "box": {
+        "x": 1476.39,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4623",
+      "name": "Clip 153",
+      "type": "VECTOR",
+      "box": {
+        "x": 1476.39,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4624",
+      "name": "Fill 152",
+      "type": "VECTOR",
+      "box": {
+        "x": 1476.39,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4625",
+      "name": "Group 157",
+      "type": "GROUP",
+      "box": {
+        "x": 1459.89,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4626",
+      "name": "Clip 156",
+      "type": "VECTOR",
+      "box": {
+        "x": 1459.89,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4627",
+      "name": "Fill 155",
+      "type": "VECTOR",
+      "box": {
+        "x": 1459.89,
+        "y": 1801.56,
+        "w": 6.42,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4628",
+      "name": "Group 160",
+      "type": "GROUP",
+      "box": {
+        "x": 1493.3,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4629",
+      "name": "Clip 159",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "id": "134:4630",
+      "name": "Fill 158",
+      "type": "VECTOR",
+      "box": {
+        "x": 1493.3,
+        "y": 1801.56,
+        "w": 6.4,
+        "h": 6
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4631",
+      "name": "From Klickpin.com- Trending bridal shower themes that feel curated elegant and easy enough to recreate this weekend for your next Pinterest save-p 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": -98,
+        "y": -37,
+        "w": 1581,
+        "h": 655
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "276b3e146e949e9e417ac06dddefb07a8eaefcfb",
+          "scaleMode": "FILL"
+        },
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 0.2
+        },
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 0.2
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4632",
+      "name": "Rectangle 1",
+      "type": "VECTOR",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 611
+      },
+      "fills": [
+        {
+          "type": "gradient_linear",
+          "alpha": 1,
+          "stops": [
+            {
+              "position": 0,
+              "hex": "#000000",
+              "alpha": 1
+            },
+            {
+              "position": 1,
+              "hex": "#000000",
+              "alpha": 0.1
+            }
+          ],
+          "handles": [
+            {
+              "x": 0.46,
+              "y": -0.05
+            },
+            {
+              "x": 0.45,
+              "y": 0.78
+            },
+            {
+              "x": 0.42,
+              "y": -0.03
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4633",
+      "name": "Footer",
+      "type": "INSTANCE",
+      "box": {
+        "x": -7,
+        "y": 2583,
+        "w": 1454,
+        "h": 384.67
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 1
+        },
+        {
+          "type": "image",
+          "imageRef": "da60c98546b43a3524b1bbd7667d8f518e1c7ee3",
+          "scaleMode": "STRETCH"
+        }
+      ],
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "91:18221"
+    },
+    {
+      "depth": 2,
+      "id": "I134:4633;87:14546",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 80,
+        "y": 2583,
+        "w": 1280,
+        "h": 384.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          64,
+          24,
+          32,
+          24
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I134:4633;87:14547",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 352,
+        "y": 2647,
+        "w": 736,
+        "h": 190
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4633;87:14548",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 946,
+        "y": 2646.74,
+        "w": 297,
+        "h": 179.5
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;89:15223",
+      "name": "{E2E66FB0-8A42-40AA-991C-0F4FC8CD0D61} 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": 989.25,
+        "y": 2646.74,
+        "w": 210.5,
+        "h": 85.5
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "36933f1934caf98ea74a606eef28c9ab40a63e84",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14550",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 991.5,
+        "y": 2732.24,
+        "w": 206,
+        "h": 55
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14551",
+      "name": "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيق",
+      "type": "TEXT",
+      "box": {
+        "x": 991.5,
+        "y": 2748.24,
+        "w": 206,
+        "h": 39
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14552",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 946,
+        "y": 2787.24,
+        "w": 297,
+        "h": 39
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14553",
+      "name": "♪ من رحم المعاناة ولدت الموسيقى",
+      "type": "TEXT",
+      "box": {
+        "x": 994.5,
+        "y": 2807.24,
+        "w": 200,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ من رحم المعاناة ولدت الموسيقى",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4633;87:14554",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2646.74,
+        "w": 156,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14555",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2646.74,
+        "w": 156,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14556",
+      "name": "استكشف",
+      "type": "TEXT",
+      "box": {
+        "x": 691.5,
+        "y": 2646.74,
+        "w": 57,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "استكشف",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14557",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2666.74,
+        "w": 155.7,
+        "h": 42
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14558",
+      "name": "الفنانون",
+      "type": "TEXT",
+      "box": {
+        "x": 697.85,
+        "y": 2686.74,
+        "w": 44,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفنانون",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14559",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2708.74,
+        "w": 155.7,
+        "h": 30.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14560",
+      "name": "الفعاليات",
+      "type": "TEXT",
+      "box": {
+        "x": 694.85,
+        "y": 2717.54,
+        "w": 50,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفعاليات",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14561",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2739.54,
+        "w": 155.7,
+        "h": 30.8
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14562",
+      "name": "الأخبار",
+      "type": "TEXT",
+      "box": {
+        "x": 704.35,
+        "y": 2748.34,
+        "w": 31,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأخبار",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14563",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 642,
+        "y": 2770.34,
+        "w": 155.7,
+        "h": 39.6
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8.8,
+          null,
+          8.8,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14564",
+      "name": "الأكاديمية",
+      "type": "TEXT",
+      "box": {
+        "x": 692.35,
+        "y": 2779.14,
+        "w": 55,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأكاديمية",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4633;87:14565",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 442,
+        "y": 2647,
+        "w": 156,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14566",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 442,
+        "y": 2647,
+        "w": 156,
+        "h": 20
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14567",
+      "name": "تواصل",
+      "type": "TEXT",
+      "box": {
+        "x": 501,
+        "y": 2647,
+        "w": 38,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تواصل",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14568",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 442,
+        "y": 2667,
+        "w": 155.69,
+        "h": 40
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14569",
+      "name": "hello@andalusia.art",
+      "type": "TEXT",
+      "box": {
+        "x": 464.34,
+        "y": 2687,
+        "w": 111,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "hello@andalusia.art",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14570",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 442,
+        "y": 2707,
+        "w": 155.69,
+        "h": 28
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14571",
+      "name": "Instagram · TikTok",
+      "type": "TEXT",
+      "box": {
+        "x": 469.84,
+        "y": 2715,
+        "w": 100,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "Instagram · TikTok",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14572",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 442,
+        "y": 2735,
+        "w": 155.69,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          null,
+          8,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14573",
+      "name": "لبنان · المغرب · الخليج",
+      "type": "TEXT",
+      "box": {
+        "x": 463.84,
+        "y": 2743,
+        "w": 112,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "لبنان · المغرب · الخليج",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4633;87:14574",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 159,
+        "y": 2646.74,
+        "w": 235,
+        "h": 190
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14575",
+      "name": "Heading 4",
+      "type": "FRAME",
+      "box": {
+        "x": 159,
+        "y": 2646.74,
+        "w": 235,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14576",
+      "name": "حفلتك القادمة تبدأ من هنا.",
+      "type": "TEXT",
+      "box": {
+        "x": 159,
+        "y": 2646.74,
+        "w": 213,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "حفلتك القادمة تبدأ من هنا.",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14577",
+      "name": "Paragraph:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 159,
+        "y": 2670.74,
+        "w": 235,
+        "h": 73.4
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          10.4,
+          null,
+          24,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14578",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 159,
+        "y": 2681.14,
+        "w": 235,
+        "h": 39
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "I134:4633;87:14579",
+      "name": "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن",
+      "type": "TEXT",
+      "box": {
+        "x": 159,
+        "y": 2681.14,
+        "w": 201,
+        "h": 39
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نتفاعل مع الجمهور، نبني شعوراً جديداً — موسيقى، فن، مشاعر، وحدة.",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 13,
+        "lineHeight": 19.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;89:15227",
+      "name": "button",
+      "type": "INSTANCE",
+      "box": {
+        "x": 159,
+        "y": 2744.14,
+        "w": 150,
+        "h": 48
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 10,
+        "padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "27:11897"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;89:15227;27:11898",
+      "name": "placeholder",
+      "type": "TEXT",
+      "box": {
+        "x": 117,
+        "y": 2756.64,
+        "w": 234,
+        "h": 23
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ابدأ حجزك الآن ♪",
+        "font": "SF Pro",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 22.4,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I134:4633;87:14583",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 104,
+        "y": 2837,
+        "w": 1232,
+        "h": 98.67
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          56,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4633;87:14584",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 104,
+        "y": 2893,
+        "w": 1232,
+        "h": 42.67
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#ECE6D0",
+            "alpha": 0.15
+          }
+        ],
+        "weight": 1,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 12,
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14585",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 104,
+        "y": 2919.17,
+        "w": 125,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14586",
+      "name": "موسيقى · ثقافة · قدرة",
+      "type": "TEXT",
+      "box": {
+        "x": 104,
+        "y": 2919.17,
+        "w": 125,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "موسيقى · ثقافة · قدرة",
+        "font": "Cairo",
+        "weight": 600,
+        "size": 9.92,
+        "lineHeight": 14.88,
+        "letterSpacing": 1.39,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4633;87:14587",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 1131,
+        "y": 2917.67,
+        "w": 205,
+        "h": 18
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4633;87:14588",
+      "name": "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة",
+      "type": "TEXT",
+      "box": {
+        "x": 1131,
+        "y": 2917.67,
+        "w": 205,
+        "h": 18
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 12,
+        "lineHeight": 18,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4634",
+      "name": "Heading 1",
+      "type": "FRAME",
+      "box": {
+        "x": 602,
+        "y": 241,
+        "w": 236,
+        "h": 64
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          20,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4635",
+      "name": "سارة الصوت",
+      "type": "TEXT",
+      "box": {
+        "x": 634,
+        "y": 241,
+        "w": 204,
+        "h": 44
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "سارة الصوت",
+        "font": "Qahwa Arabic",
+        "weight": 700,
+        "size": 48,
+        "lineHeight": 44,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4636",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 480.33,
+        "y": 285,
+        "w": 357.67,
+        "h": 52
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          24,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4637",
+      "name": "♪ \"الصوت هو المرآة الأصدق للروح.\"",
+      "type": "TEXT",
+      "box": {
+        "x": 602,
+        "y": 285,
+        "w": 236,
+        "h": 28
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪ \"الصوت هو المرآة الأصدق للروح.\"",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 16.8,
+        "lineHeight": 27.72,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4638",
+      "name": "مغنية مصرية تختصص في الطرب الأصيل والغناء العاطفي.",
+      "type": "TEXT",
+      "box": {
+        "x": 495,
+        "y": 332,
+        "w": 458,
+        "h": 56
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "مغنية مصرية تختصص في الطرب الأصيل والغناء العاطفي. صوتها يحمل دفء الأرض وعمق التراث، مع لمسة معاصرة تلامس الأجيال.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 14.72,
+        "lineHeight": 27.97,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4639",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 549,
+        "y": 449,
+        "w": 357.67,
+        "h": 47.07
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 16,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4640",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 549,
+        "y": 449,
+        "w": 135,
+        "h": 47.07
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 7.2,
+        "padding": [
+          12,
+          28,
+          12,
+          28
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4641",
+      "name": "احجز الفنان ♪",
+      "type": "TEXT",
+      "box": {
+        "x": 577,
+        "y": 461.53,
+        "w": 79,
+        "h": 22
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "احجز الفنان ♪",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 14.4,
+        "lineHeight": 21.6,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4642",
+      "name": "Button",
+      "type": "FRAME",
+      "box": {
+        "x": 700,
+        "y": 449,
+        "w": 147.47,
+        "h": 47.07
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#ECE6D0",
+            "alpha": 0.45
+          }
+        ],
+        "weight": 1.33,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 7.2,
+        "padding": [
+          11.2,
+          26.4,
+          11.2,
+          26.4
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4643",
+      "name": "تواصل مباشرة",
+      "type": "TEXT",
+      "box": {
+        "x": 727.73,
+        "y": 461.53,
+        "w": 92,
+        "h": 22
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تواصل مباشرة",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 14.4,
+        "lineHeight": 21.6,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4644",
+      "name": "Section",
+      "type": "FRAME",
+      "box": {
+        "x": 80,
+        "y": 911,
+        "w": 1280,
+        "h": 450.98
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          24,
+          40,
+          24,
+          40
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4645",
+      "name": "Heading 2",
+      "type": "FRAME",
+      "box": {
+        "x": 120,
+        "y": 935,
+        "w": 1200,
+        "h": 59
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4646",
+      "name": "الفن في لحظته الأصدق",
+      "type": "TEXT",
+      "box": {
+        "x": 517,
+        "y": 951,
+        "w": 406,
+        "h": 43
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفن في لحظته الأصدق",
+        "font": "Cairo",
+        "weight": 900,
+        "size": 48,
+        "lineHeight": 42.27,
+        "letterSpacing": -0.56,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4647",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 120,
+        "y": 994,
+        "w": 1200,
+        "h": 343.98
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          48,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4648",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 290.33,
+        "y": 1042,
+        "w": 859.33,
+        "h": 295.98
+      },
+      "layout": {
+        "mode": "GRID",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4649",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 883.99,
+        "y": 1042,
+        "w": 265.68,
+        "h": 295.98
+      },
+      "radius": 12,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4650",
+      "name": "Image",
+      "type": "FRAME",
+      "box": {
+        "x": 883.67,
+        "y": 1042,
+        "w": 266,
+        "h": 267
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "6758904e99a7af4e9c134e73062aba8d5471d802",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "id": "134:4651",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 572.01,
+        "y": 1042,
+        "w": 295.98,
+        "h": 295.98
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 12,
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 24,
+        "padding": [
+          48,
+          40,
+          48,
+          40
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4652",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 707,
+        "y": 1089.49,
+        "w": 26,
+        "h": 56
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4653",
+      "name": "♪",
+      "type": "TEXT",
+      "box": {
+        "x": 707,
+        "y": 1089.49,
+        "w": 26,
+        "h": 56
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.79
+        }
+      ],
+      "text": {
+        "characters": "♪",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 56,
+        "lineHeight": 56,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4654",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 612,
+        "y": 1169.49,
+        "w": 216,
+        "h": 80
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4655",
+      "name": "\"الصوت هو المرآة الأصدق للروح — لا تكذب على جمهورك",
+      "type": "TEXT",
+      "box": {
+        "x": 612,
+        "y": 1169.49,
+        "w": 216,
+        "h": 80
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "\"الصوت هو المرآة الأصدق للروح — لا تكذب على جمهورك أبداً.\"",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 26.4,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4656",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 678,
+        "y": 1273.49,
+        "w": 84,
+        "h": 17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4657",
+      "name": "— ريم الحسيني",
+      "type": "TEXT",
+      "box": {
+        "x": 678,
+        "y": 1273.49,
+        "w": 84,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "— ريم الحسيني",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 11.2,
+        "lineHeight": 16.8,
+        "letterSpacing": 1.12,
+        "align": "RIGHT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4658",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 290.33,
+        "y": 1042,
+        "w": 265.68,
+        "h": 295.98
+      },
+      "radius": 12,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4659",
+      "name": "Image",
+      "type": "FRAME",
+      "box": {
+        "x": 290.33,
+        "y": 1042,
+        "w": 265.68,
+        "h": 265.68
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "0e9235f8cd30db34d439439a6d0bc6726d983a7a",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "id": "134:4660",
+      "name": "Section",
+      "type": "FRAME",
+      "box": {
+        "x": -5,
+        "y": 2085,
+        "w": 1449,
+        "h": 498
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "caeb7e573a02cd1ecf364f1737b1246ad2984677",
+          "scaleMode": "FILL"
+        },
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 0.88
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4661",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": -5,
+        "y": 2085,
+        "w": 1449,
+        "h": 498
+      },
+      "opacity": 0.08,
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "da60c98546b43a3524b1bbd7667d8f518e1c7ee3",
+          "scaleMode": "STRETCH"
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "id": "134:4662",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": -5,
+        "y": 2142.2,
+        "w": 1433,
+        "h": 66
+      },
+      "opacity": 0.7,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4663",
+      "name": "♪",
+      "type": "TEXT",
+      "box": {
+        "x": 701.5,
+        "y": 2142.2,
+        "w": 20,
+        "h": 66
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "♪",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 44,
+        "lineHeight": 66,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4664",
+      "name": "Heading 2",
+      "type": "FRAME",
+      "box": {
+        "x": 51,
+        "y": 2262,
+        "w": 1213,
+        "h": 74
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          24,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4665",
+      "name": "تريد ريم الحسيني في مناسبتك؟",
+      "type": "TEXT",
+      "box": {
+        "x": 339.5,
+        "y": 2286,
+        "w": 636,
+        "h": 50
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "تريد ريم الحسيني في مناسبتك؟",
+        "font": "Qahwa Arabic",
+        "weight": 700,
+        "size": 48,
+        "lineHeight": 49.31,
+        "letterSpacing": -0.66,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4666",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": -5,
+        "y": 2336,
+        "w": 1433,
+        "h": 91
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          20,
+          null,
+          40,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4667",
+      "name": "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع ل",
+      "type": "TEXT",
+      "box": {
+        "x": 552,
+        "y": 2356,
+        "w": 319,
+        "h": 31
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 0.45
+        }
+      ],
+      "text": {
+        "characters": "تواصل معنا وسنصمم لك تجربة موسيقية لا تُنسى.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 16,
+        "lineHeight": 30.4,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4668",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": -5,
+        "y": 2427.2,
+        "w": 1433,
+        "h": 54
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4669",
+      "name": "Link",
+      "type": "FRAME",
+      "box": {
+        "x": 617,
+        "y": 2427,
+        "w": 188,
+        "h": 54.4
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 16,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 7.2,
+        "padding": [
+          15.2,
+          40,
+          15.2,
+          40
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4670",
+      "name": "ابدأ حجزك الآن ♪",
+      "type": "TEXT",
+      "box": {
+        "x": 657,
+        "y": 2442.2,
+        "w": 108,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#ECE6D0",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ابدأ حجزك الآن ♪",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4671",
+      "name": "Section",
+      "type": "FRAME",
+      "box": {
+        "x": 4,
+        "y": 623,
+        "w": 1431,
+        "h": 256.83
+      },
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#EFEBD9",
+            "alpha": 1
+          }
+        ],
+        "weight": 1,
+        "align": "INSIDE"
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          48,
+          null,
+          48,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4672",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 4,
+        "y": 671.83,
+        "w": 1431,
+        "h": 160
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4673",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 119.5,
+        "y": 671.83,
+        "w": 1200,
+        "h": 160
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 40,
+        "padding": [
+          null,
+          32,
+          null,
+          32
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4674",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 151.5,
+        "y": 671.83,
+        "w": 160,
+        "h": 160
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "673a8c746162c2fc8ad39fcb653d9fdb63cf3722",
+          "scaleMode": "FILL"
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#C54716",
+            "alpha": 0.2
+          }
+        ],
+        "weight": 3.33,
+        "align": "INSIDE"
+      },
+      "radius": 27962000
+    },
+    {
+      "depth": 4,
+      "id": "134:4675",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 351.5,
+        "y": 674.33,
+        "w": 936,
+        "h": 155
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4676",
+      "name": "Heading 3",
+      "type": "FRAME",
+      "box": {
+        "x": 351.5,
+        "y": 674.33,
+        "w": 936,
+        "h": 47
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4677",
+      "name": "سارة الصوت",
+      "type": "TEXT",
+      "box": {
+        "x": 1120.5,
+        "y": 674.33,
+        "w": 167,
+        "h": 47
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "سارة الصوت",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 31,
+        "lineHeight": 46.5,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4678",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 351.5,
+        "y": 721.33,
+        "w": 936.02,
+        "h": 28
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4679",
+      "name": "الصوت • الغناء الأندلسي • الطرب الأصيل",
+      "type": "TEXT",
+      "box": {
+        "x": 1032.52,
+        "y": 729.33,
+        "w": 255,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الصوت • الغناء الأندلسي • الطرب الأصيل",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 14,
+        "lineHeight": 20,
+        "letterSpacing": 0.35,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4680",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 351.5,
+        "y": 749.33,
+        "w": 936.02,
+        "h": 80
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4681",
+      "name": "سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل وال",
+      "type": "TEXT",
+      "box": {
+        "x": 350.52,
+        "y": 765.33,
+        "w": 937,
+        "h": 64
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2B1D14",
+          "alpha": 0.7
+        }
+      ],
+      "text": {
+        "characters": "سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل والغناء الأندلسي، صوتها يجمع بين الأصالة والمعاصرة، تجوب المسارح العربية والدولية منذ أكثر من عقد من الزمن.",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 16,
+        "lineHeight": 32,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4682",
+      "name": "Section",
+      "type": "FRAME",
+      "box": {
+        "x": 0,
+        "y": 1442,
+        "w": 1440,
+        "h": 647.16
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          96,
+          null,
+          96,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4683",
+      "name": "Heading 2",
+      "type": "FRAME",
+      "box": {
+        "x": 647.82,
+        "y": 1538,
+        "w": 144.36,
+        "h": 52
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          12,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4684",
+      "name": "مسيرتها الفنية",
+      "type": "TEXT",
+      "box": {
+        "x": 594.5,
+        "y": 1550,
+        "w": 251,
+        "h": 40
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "مسيرتها الفنية",
+        "font": "Qahwa Arabic",
+        "weight": 700,
+        "size": 48,
+        "lineHeight": 40,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 2,
+      "id": "134:4685",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 0,
+        "y": 1590,
+        "w": 1440,
+        "h": 403.16
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "134:4686",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 120,
+        "y": 1590,
+        "w": 1200,
+        "h": 403.16
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          32,
+          null,
+          32
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4687",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1590,
+        "w": 1136.02,
+        "h": 37.67
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 16,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "primary": "MAX",
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4688",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 1028.68,
+        "y": 1590,
+        "w": 259.33,
+        "h": 37.67
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 8,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4689",
+      "name": "Button",
+      "type": "FRAME",
+      "box": {
+        "x": 1028.68,
+        "y": 1590,
+        "w": 74.67,
+        "h": 37.67
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 0.08
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#FFFFFF",
+            "alpha": 0.15
+          }
+        ],
+        "weight": 0.83,
+        "align": "INSIDE"
+      },
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          20,
+          8,
+          20
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4690",
+      "name": "أغاني",
+      "type": "TEXT",
+      "box": {
+        "x": 1049.52,
+        "y": 1598.83,
+        "w": 33,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.7
+        }
+      ],
+      "text": {
+        "characters": "أغاني",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 14,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4691",
+      "name": "Button",
+      "type": "FRAME",
+      "box": {
+        "x": 1111.35,
+        "y": 1590,
+        "w": 79.67,
+        "h": 37.67
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 0.08
+        }
+      ],
+      "strokes": {
+        "paints": [
+          {
+            "type": "solid",
+            "hex": "#FFFFFF",
+            "alpha": 0.15
+          }
+        ],
+        "weight": 0.83,
+        "align": "INSIDE"
+      },
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          20,
+          8,
+          20
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4692",
+      "name": "حفلات",
+      "type": "TEXT",
+      "box": {
+        "x": 1132.18,
+        "y": 1598.83,
+        "w": 38,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.7
+        }
+      ],
+      "text": {
+        "characters": "حفلات",
+        "font": "Cairo",
+        "weight": 500,
+        "size": 14,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4693",
+      "name": "Button",
+      "type": "FRAME",
+      "box": {
+        "x": 1199.02,
+        "y": 1590,
+        "w": 89,
+        "h": 36
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          8,
+          20,
+          8,
+          20
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4694",
+      "name": "ألبومات",
+      "type": "TEXT",
+      "box": {
+        "x": 1219.02,
+        "y": 1598,
+        "w": 49,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ألبومات",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 14,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "CENTER",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "134:4695",
+      "name": "Container:margin",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1627.67,
+        "w": 1136.02,
+        "h": 365.49
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          40,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "134:4696",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1667.67,
+        "w": 1136.02,
+        "h": 325.49
+      },
+      "layout": {
+        "mode": "GRID",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4697",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 325.49
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4698",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 269
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2A1D13",
+          "alpha": 1
+        }
+      ],
+      "radius": 14,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4699",
+      "name": "Image (نسمة من الأندلس)",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 269
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "12eae1b27d527f39685db30d4f87ef9a51d5995c",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "id": "134:4700",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 1205.49,
+        "y": 1679.66,
+        "w": 80,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          4,
+          10,
+          4,
+          10
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4701",
+      "name": "ألبوم استوديو",
+      "type": "TEXT",
+      "box": {
+        "x": 1215.49,
+        "y": 1683.66,
+        "w": 60,
+        "h": 12
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ألبوم استوديو",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 8,
+        "lineHeight": 12,
+        "letterSpacing": 0.8,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4702",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1936.66,
+        "w": 269.01,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4703",
+      "name": "نسمة من الأندلس",
+      "type": "TEXT",
+      "box": {
+        "x": 1161.01,
+        "y": 1952.66,
+        "w": 127,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F0EBE1",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "نسمة من الأندلس",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4704",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1972.66,
+        "w": 269.01,
+        "h": 21
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          4,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4705",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 1019,
+        "y": 1977.66,
+        "w": 31,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4706",
+      "name": "١٢ أغنية",
+      "type": "TEXT",
+      "box": {
+        "x": 1019,
+        "y": 1977.66,
+        "w": 31,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.4
+        }
+      ],
+      "text": {
+        "characters": "١٢ أغنية",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4707",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 1268.01,
+        "y": 1976.66,
+        "w": 20,
+        "h": 17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4708",
+      "name": "٢٠٢٣",
+      "type": "TEXT",
+      "box": {
+        "x": 1268.01,
+        "y": 1976.66,
+        "w": 20,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "٢٠٢٣",
+        "font": "DM Mono",
+        "weight": 400,
+        "size": 11,
+        "lineHeight": 16.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4709",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1667.67,
+        "w": 269,
+        "h": 325.49
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4710",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1667.67,
+        "w": 269,
+        "h": 269.01
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2A1D13",
+          "alpha": 1
+        }
+      ],
+      "radius": 14,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4711",
+      "name": "Image (حنين)",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1667.67,
+        "w": 269,
+        "h": 269.01
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "9863852d2735000b7482f5cb20e3110fad1113fb",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "id": "134:4712",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 916.51,
+        "y": 1679.66,
+        "w": 80,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          4,
+          10,
+          4,
+          10
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4713",
+      "name": "ألبوم استوديو",
+      "type": "TEXT",
+      "box": {
+        "x": 926.51,
+        "y": 1683.66,
+        "w": 60,
+        "h": 12
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ألبوم استوديو",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 8,
+        "lineHeight": 12,
+        "letterSpacing": 0.8,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4714",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1936.68,
+        "w": 269,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4715",
+      "name": "حنين",
+      "type": "TEXT",
+      "box": {
+        "x": 966,
+        "y": 1952.68,
+        "w": 33,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F0EBE1",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "حنين",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4716",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1972.68,
+        "w": 269,
+        "h": 21
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          4,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4717",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 730.01,
+        "y": 1977.68,
+        "w": 31,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4718",
+      "name": "٩ أغاني",
+      "type": "TEXT",
+      "box": {
+        "x": 730.01,
+        "y": 1977.68,
+        "w": 31,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.4
+        }
+      ],
+      "text": {
+        "characters": "٩ أغاني",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4719",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 982,
+        "y": 1976.68,
+        "w": 17,
+        "h": 17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4720",
+      "name": "٢٠٢١",
+      "type": "TEXT",
+      "box": {
+        "x": 982,
+        "y": 1976.68,
+        "w": 17,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "٢٠٢١",
+        "font": "DM Mono",
+        "weight": 400,
+        "size": 11,
+        "lineHeight": 16.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4721",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 325.49
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4722",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 269
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2A1D13",
+          "alpha": 1
+        }
+      ],
+      "radius": 14,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4723",
+      "name": "Image (ليالي بيروت)",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1667.67,
+        "w": 269.01,
+        "h": 269
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "33f1931cde1427ff194ad3f5dc684b5ea1d0c1fe",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "id": "134:4724",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 645.29,
+        "y": 1679.66,
+        "w": 58,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          4,
+          10,
+          4,
+          10
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4725",
+      "name": "ألبوم حي",
+      "type": "TEXT",
+      "box": {
+        "x": 655.29,
+        "y": 1683.66,
+        "w": 38,
+        "h": 12
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ألبوم حي",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 8,
+        "lineHeight": 12,
+        "letterSpacing": 0.8,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4726",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1936.66,
+        "w": 269.01,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4727",
+      "name": "ليالي بيروت",
+      "type": "TEXT",
+      "box": {
+        "x": 632.01,
+        "y": 1952.66,
+        "w": 78,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F0EBE1",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ليالي بيروت",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4728",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1972.66,
+        "w": 269.01,
+        "h": 21
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          4,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4729",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 441,
+        "y": 1977.66,
+        "w": 31,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4730",
+      "name": "١٠ أغاني",
+      "type": "TEXT",
+      "box": {
+        "x": 441,
+        "y": 1977.66,
+        "w": 31,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.4
+        }
+      ],
+      "text": {
+        "characters": "١٠ أغاني",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4731",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 693.01,
+        "y": 1976.66,
+        "w": 17,
+        "h": 17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4732",
+      "name": "٢٠١٩",
+      "type": "TEXT",
+      "box": {
+        "x": 693.01,
+        "y": 1976.66,
+        "w": 17,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "٢٠١٩",
+        "font": "DM Mono",
+        "weight": 400,
+        "size": 11,
+        "lineHeight": 16.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 6,
+      "id": "134:4733",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1667.67,
+        "w": 269,
+        "h": 325.49
+      },
+      "radius": 16,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4734",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1667.67,
+        "w": 269,
+        "h": 269.01
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#2A1D13",
+          "alpha": 1
+        }
+      ],
+      "radius": 14,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4735",
+      "name": "Image (عطر الماضي)",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1667.67,
+        "w": 269,
+        "h": 269.01
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "3445c76dd8c06f894f1881ad0d125a09f3a64188",
+          "scaleMode": "FILL"
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "id": "134:4736",
+      "name": "Text",
+      "type": "FRAME",
+      "box": {
+        "x": 338.5,
+        "y": 1679.66,
+        "w": 80,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 27962000,
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          4,
+          10,
+          4,
+          10
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4737",
+      "name": "ألبوم استوديو",
+      "type": "TEXT",
+      "box": {
+        "x": 348.5,
+        "y": 1683.66,
+        "w": 60,
+        "h": 12
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#FFFFFF",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "ألبوم استوديو",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 8,
+        "lineHeight": 12,
+        "letterSpacing": 0.8,
+        "align": "LEFT",
+        "verticalAlign": "TOP",
+        "case": "UPPER"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4738",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1936.68,
+        "w": 269,
+        "h": 36
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          16,
+          null,
+          null,
+          null
+        ],
+        "counter": "MAX",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4739",
+      "name": "عطر الماضي",
+      "type": "TEXT",
+      "box": {
+        "x": 336,
+        "y": 1952.68,
+        "w": 85,
+        "h": 20
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F0EBE1",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "عطر الماضي",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 20,
+        "letterSpacing": 0,
+        "align": "RIGHT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 7,
+      "id": "134:4740",
+      "name": "Container",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1972.68,
+        "w": 269,
+        "h": 21
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "padding": [
+          4,
+          null,
+          null,
+          null
+        ],
+        "primary": "SPACE_BETWEEN",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4741",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 152,
+        "y": 1977.68,
+        "w": 32,
+        "h": 15
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4742",
+      "name": "٨ أغاني",
+      "type": "TEXT",
+      "box": {
+        "x": 152,
+        "y": 1977.68,
+        "w": 32,
+        "h": 15
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 0.4
+        }
+      ],
+      "text": {
+        "characters": "٨ أغاني",
+        "font": "Cairo",
+        "weight": 400,
+        "size": 10,
+        "lineHeight": 15,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 8,
+      "id": "134:4743",
+      "name": "Paragraph",
+      "type": "FRAME",
+      "box": {
+        "x": 403,
+        "y": 1976.68,
+        "w": 18,
+        "h": 17
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 9,
+      "id": "134:4744",
+      "name": "٢٠١٧",
+      "type": "TEXT",
+      "box": {
+        "x": 403,
+        "y": 1976.68,
+        "w": 18,
+        "h": 17
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "٢٠١٧",
+        "font": "DM Mono",
+        "weight": 400,
+        "size": 11,
+        "lineHeight": 16.5,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 1,
+      "id": "134:4745",
+      "name": "Frame 30",
+      "type": "INSTANCE",
+      "box": {
+        "x": 158,
+        "y": 40,
+        "w": 1123,
+        "h": 85
+      },
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "hex": "#000000",
+          "alpha": 0.25,
+          "offset": {
+            "x": 0,
+            "y": 4
+          },
+          "radius": 30
+        }
+      ],
+      "layout": {
+        "mode": "VERTICAL",
+        "gap": 116,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "22:4530"
+    },
+    {
+      "depth": 2,
+      "id": "I134:4745;20:4403",
+      "name": "Frame 7",
+      "type": "FRAME",
+      "box": {
+        "x": 158,
+        "y": 40,
+        "w": 1123,
+        "h": 85
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F2EEE0",
+          "alpha": 1
+        }
+      ],
+      "radius": 32,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 85,
+        "padding": [
+          24,
+          24,
+          24,
+          24
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I134:4745;20:4404",
+      "name": "Frame 6",
+      "type": "FRAME",
+      "box": {
+        "x": 200.5,
+        "y": 60.5,
+        "w": 757,
+        "h": 44
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 141,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 4,
+      "id": "I134:4745;134:8170",
+      "name": "Frame 37",
+      "type": "FRAME",
+      "box": {
+        "x": 200.5,
+        "y": 60.5,
+        "w": 189,
+        "h": 44
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 16,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4405",
+      "name": "Frame 4",
+      "type": "INSTANCE",
+      "box": {
+        "x": 200.5,
+        "y": 60.5,
+        "w": 149,
+        "h": 44
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#C54716",
+          "alpha": 1
+        }
+      ],
+      "radius": 16,
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 10,
+        "padding": [
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary": "CENTER",
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1540"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4405;2:1537",
+      "name": "أحجز الآن",
+      "type": "TEXT",
+      "box": {
+        "x": 244.5,
+        "y": 70.5,
+        "w": 61,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#F9EDE8",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "أحجز الآن",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;134:8271",
+      "name": "ri:english-input",
+      "type": "FRAME",
+      "box": {
+        "x": 365.5,
+        "y": 70.5,
+        "w": 24,
+        "h": 24
+      }
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;134:8272",
+      "name": "Vector",
+      "type": "VECTOR",
+      "box": {
+        "x": 367.5,
+        "y": 74.5,
+        "w": 21,
+        "h": 16
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#000000",
+          "alpha": 1
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "id": "I134:4745;20:4406",
+      "name": "Frame 2",
+      "type": "FRAME",
+      "box": {
+        "x": 530.5,
+        "y": 70.5,
+        "w": 427,
+        "h": 24
+      },
+      "layout": {
+        "mode": "HORIZONTAL",
+        "gap": 32,
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "counter": "CENTER",
+        "wrap": "NO_WRAP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4407",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 530.5,
+        "y": 70.5,
+        "w": 68,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4407;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 530.5,
+        "y": 70.5,
+        "w": 68,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفعاليات",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4408",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 630.5,
+        "y": 70.5,
+        "w": 42,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4408;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 630.5,
+        "y": 70.5,
+        "w": 42,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأخبار",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4409",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 704.5,
+        "y": 70.5,
+        "w": 55,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4409;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 704.5,
+        "y": 70.5,
+        "w": 55,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الفنانين",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4410",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 791.5,
+        "y": 70.5,
+        "w": 74,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4410;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 791.5,
+        "y": 70.5,
+        "w": 74,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الأكاديمية",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 5,
+      "id": "I134:4745;20:4411",
+      "name": "Link",
+      "type": "INSTANCE",
+      "box": {
+        "x": 897.5,
+        "y": 70.5,
+        "w": 60,
+        "h": 24
+      },
+      "layout": {
+        "mode": "VERTICAL",
+        "padding": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "wrap": "NO_WRAP"
+      },
+      "componentId": "2:1520"
+    },
+    {
+      "depth": 6,
+      "id": "I134:4745;20:4411;2:1316",
+      "name": "الفنانين",
+      "type": "TEXT",
+      "box": {
+        "x": 897.5,
+        "y": 70.5,
+        "w": 60,
+        "h": 24
+      },
+      "fills": [
+        {
+          "type": "solid",
+          "hex": "#1B1B1B",
+          "alpha": 1
+        }
+      ],
+      "text": {
+        "characters": "الرئيسية ",
+        "font": "Cairo",
+        "weight": 700,
+        "size": 16,
+        "lineHeight": 24,
+        "letterSpacing": 0,
+        "align": "LEFT",
+        "verticalAlign": "TOP"
+      }
+    },
+    {
+      "depth": 3,
+      "id": "I134:4745;20:4412",
+      "name": "{08021A4D-2034-4BE6-921C-4EDFD089381B} 1",
+      "type": "RECTANGLE",
+      "box": {
+        "x": 1042.5,
+        "y": 40,
+        "w": 196,
+        "h": 85
+      },
+      "fills": [
+        {
+          "type": "image",
+          "imageRef": "fda196e4f0045f2151f357c1b4ffa3952855a40b",
+          "scaleMode": "STRETCH"
+        }
+      ]
+    }
+  ]
+}
