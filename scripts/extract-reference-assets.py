@@ -26,6 +26,13 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# The release-type badge of node 134:4700 and its siblings, as an inclusive rect in
+# a 269-wide cover crop: 20 tall at 11.99 down, its inline end 2.5px inside the
+# cover, and as wide as its label. Two extra pixels of pad take the feathered edge
+# of the composite with it.
+STUDIO_BADGE = (184, 10, 268, 34)
+LIVE_BADGE = (202, 10, 264, 34)
+
 CROPS = [
     # /news floating card — Figma nodes 91:17309 and 91:17316.
     ("news-desktop", 150, 249, 352, 192, "public/assets/articles/news-side-1.png",
@@ -101,6 +108,29 @@ CROPS = [
      "thumbnail, ورشة الإيقاع الشرقي", False),
     ("events-desktop", 1201, 1450, 140, 105, "public/assets/events/event-5.png",
      "thumbnail, حفل الذكرى الخامسة", False),
+    # الفنان (134:4420). The profile portrait (134:4674) is a 160 circle with a 20%
+    # primary ring drawn inside it; the crop carries the ring, and the card's own
+    # rounding clips the cream that sits outside the circle.
+    ("artist-detail-desktop", 151, 671, 160, 160,
+     "public/assets/artists/sara-alsawt-profile.png", "portrait, artist profile card", False),
+    # The two stage photographs flanking the quote card (134:4650, 134:4659). The
+    # design draws them clean, and both are section artwork rather than per-artist
+    # media — there is no gallery table for them to come from.
+    ("artist-detail-desktop", 884, 1042, 266, 266, "public/assets/artists/stage-1.png",
+     "stage photograph, gallery inline start", False),
+    ("artist-detail-desktop", 290, 1042, 266, 266, "public/assets/artists/stage-2.png",
+     "stage photograph, gallery inline end", False),
+    # The four release covers (134:4699 and siblings), read right to left, newest
+    # first. Each carries the release-type badge composited onto the photograph, so
+    # the badge is painted out and ArtistDiscography re-renders it in place.
+    ("artist-detail-desktop", 1019, 1668, 269, 269, "public/assets/releases/release-1.png",
+     "cover, نسمة من الأندلس", STUDIO_BADGE),
+    ("artist-detail-desktop", 730, 1668, 269, 269, "public/assets/releases/release-2.png",
+     "cover, حنين", STUDIO_BADGE),
+    ("artist-detail-desktop", 441, 1668, 269, 269, "public/assets/releases/release-3.png",
+     "cover, ليالي بيروت", LIVE_BADGE),
+    ("artist-detail-desktop", 152, 1668, 269, 269, "public/assets/releases/release-4.png",
+     "cover, عطر الماضي", STUDIO_BADGE),
 ]
 
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in
@@ -152,7 +182,7 @@ for name, x, y, w, h, dest, note, wash in CROPS:
     out = ROOT / dest
     out.parent.mkdir(parents=True, exist_ok=True)
     crop = image.crop((x, y, x + w, y + h))
-    overlay = wash_box(w) if wash else None
+    overlay = wash_box(w) if wash is True else (tuple(wash) if wash else None)
     if overlay:
         scrub(crop, overlay)
     written.append({
@@ -183,6 +213,12 @@ index.write_text(json.dumps({
          "node": "91:16331", "reason": "headline and gradient are composited over the photo"},
         {"file": "public/assets/figma/events-hero.png", "frame": "events-desktop",
          "node": "91:16745", "reason": "headline and gradient are composited over the photo"},
+        {"file": "public/assets/figma/artist-detail-hero.png", "frame": "artist-detail-desktop",
+         "node": "134:4631", "reason": "the artist name, quote, standfirst and CTAs are "
+                                       "composited over the photo"},
+        {"file": "public/assets/branding/booking-banner.png", "frame": "artist-detail-desktop",
+         "node": "134:4660", "reason": "the 88% espresso wash and every line of copy are "
+                                       "composited over the photo"},
     ],
     "blockedBy": "The outstanding files need a real export from Figma. The MCP asset "
                  "URLs live on www.figma.com, which this environment's egress policy "
