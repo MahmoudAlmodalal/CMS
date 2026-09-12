@@ -40,7 +40,7 @@ const SELECT_CLASS = `${FIELD_CLASS} appearance-none pe-10`;
 const TEXTAREA_CLASS =
   "h-[138px] w-full resize-none rounded-[16px] border-[1.333px] bg-white px-4 py-[13.6px] text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
 const FIELD_BORDER = "border-[rgba(43,29,20,0.12)] hover:border-brand-primary/50";
-const FIELD_BORDER_ERROR = "border-red-500 ring-1 ring-red-500/20";
+const FIELD_BORDER_ERROR = "border-alert-error ring-1 ring-alert-error/20";
 const LABEL_CLASS = "block pb-[7.2px] text-[13px] font-bold leading-[19.5px] text-gradscale-900";
 const LEGEND_CLASS =
   "flex w-full items-center gap-2 border-b-2 border-[rgba(198,72,23,0.12)] pb-3 text-start text-[16px] font-bold leading-[24px] text-brand-primary";
@@ -138,7 +138,7 @@ export function BookingForm({
           aria-live="polite"
           className="p-4 rounded-xl bg-red-50 text-red-800 text-sm border border-red-200 flex items-start gap-3"
         >
-          <span className="text-red-500 font-bold shrink-0 mt-0.5">⚠️</span>
+          <span className="text-alert-error font-bold shrink-0 mt-0.5">⚠️</span>
           <div>
             <p className="font-semibold">{state.error}</p>
             {state.fieldErrors && Object.keys(state.fieldErrors).length > 0 && (
@@ -179,7 +179,7 @@ export function BookingForm({
               className={`${FIELD_CLASS} ${state.fieldErrors?.full_name ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.full_name && (
-              <p id="full_name-error" className="text-red-500 text-xs mt-1">
+              <p id="full_name-error" className="text-alert-error text-xs mt-1">
                 {state.fieldErrors.full_name[0]}
               </p>
             )}
@@ -203,7 +203,7 @@ export function BookingForm({
               className={`${FIELD_CLASS} ${state.fieldErrors?.email ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.email && (
-              <p id="email-error" className="text-red-500 text-xs mt-1 text-start">
+              <p id="email-error" className="text-alert-error text-xs mt-1 text-start">
                 {state.fieldErrors.email[0]}
               </p>
             )}
@@ -227,7 +227,7 @@ export function BookingForm({
               className={`${FIELD_CLASS} ${state.fieldErrors?.phone ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.phone && (
-              <p id="phone-error" className="text-red-500 text-xs mt-1 text-start">
+              <p id="phone-error" className="text-alert-error text-xs mt-1 text-start">
                 {state.fieldErrors.phone[0]}
               </p>
             )}
@@ -248,7 +248,7 @@ export function BookingForm({
               className={`${FIELD_CLASS} ${state.fieldErrors?.budget_range ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.budget_range && (
-              <p id="budget_range-error" className="text-red-500 text-xs mt-1">
+              <p id="budget_range-error" className="text-alert-error text-xs mt-1">
                 {state.fieldErrors.budget_range[0]}
               </p>
             )}
@@ -293,7 +293,7 @@ export function BookingForm({
               </div>
             </div>
             {state.fieldErrors?.event_type && (
-              <p id="event_type-error" className="text-red-500 text-xs mt-1">
+              <p id="event_type-error" className="text-alert-error text-xs mt-1">
                 {state.fieldErrors.event_type[0]}
               </p>
             )}
@@ -316,7 +316,7 @@ export function BookingForm({
               className={`${FIELD_CLASS} ${state.fieldErrors?.event_date ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
             />
             {state.fieldErrors?.event_date && (
-              <p id="event_date-error" className="text-red-500 text-xs mt-1">
+              <p id="event_date-error" className="text-alert-error text-xs mt-1">
                 {state.fieldErrors.event_date[0]}
               </p>
             )}
@@ -351,7 +351,7 @@ export function BookingForm({
               </div>
             </div>
             {state.fieldErrors?.artist_id && (
-              <p id="artist_id-error" className="text-red-500 text-xs mt-1">
+              <p id="artist_id-error" className="text-alert-error text-xs mt-1">
                 {state.fieldErrors.artist_id[0]}
               </p>
             )}
@@ -377,7 +377,7 @@ export function BookingForm({
             className={`${TEXTAREA_CLASS} ${state.fieldErrors?.message ? FIELD_BORDER_ERROR : FIELD_BORDER}`}
           />
           {state.fieldErrors?.message ? (
-            <p id="message-error" className="text-red-500 text-xs mt-1">
+            <p id="message-error" className="text-alert-error text-xs mt-1">
               {state.fieldErrors.message[0]}
             </p>
           ) : null}
