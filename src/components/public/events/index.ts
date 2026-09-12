@@ -1,4 +1,3 @@
-export { EventsHeader, type EventsHeaderProps } from "./EventsHeader";
 export { EventsFilterTabs, type EventsFilterTabsProps } from "./EventsFilterTabs";
 export { FeaturedEventBanner, type FeaturedEventBannerProps } from "./FeaturedEventBanner";
 export { EventCard, type EventCardProps } from "./EventCard";

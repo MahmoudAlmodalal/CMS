@@ -15,8 +15,17 @@ export interface EventsCatalogViewProps {
 }
 
 /**
- * Client catalog coordinator for /events
- * Provides instant category filtering, URL synchronization, responsive grid, and empty state.
+ * الفعاليات catalogue — the filter bar of node 91:16930 over the two columns of
+ * 91:16914 and 91:16793 in frame 91:16532.
+ *
+ * The bar is 55px in from the artboard's inline start and the two columns sit in a
+ * 1262-wide band 78px in, the list against the inline start and the featured panel
+ * against the inline end. The list opens 13px below the panel and its rows are
+ * 16px apart — a 166.135 pitch on a 150.135 row.
+ *
+ * The design draws no result count, no section headings and no card around either
+ * column. Filtering, the ?category= sync, the tablist and the empty state are
+ * behaviour the design cannot express and are kept as they were.
  */
 export function EventsCatalogView({
   initialEvents,
@@ -41,84 +50,76 @@ export function EventsCatalogView({
         params.set("category", category);
       }
       const newQuery = params.toString();
-      const newPath = newQuery ? `/events?${newQuery}` : "/events";
-      router.replace(newPath, { scroll: false });
+      router.replace(newQuery ? `/events?${newQuery}` : "/events", { scroll: false });
     });
   };
 
-  // Filter events based on active category
   const filteredEvents =
     selectedCategory === "all"
       ? initialEvents
       : initialEvents.filter((item) => item.category === selectedCategory);
 
-  // Show featured banner when "all" is active or if featured event matches selected category
   const shouldShowFeatured =
     featuredEvent &&
     (selectedCategory === "all" || featuredEvent.category === selectedCategory);
 
   return (
-    <div className="space-y-10 sm:space-y-12">
-      {/* 1. Featured Event Hero Banner */}
-      {shouldShowFeatured && (
-        <section aria-label={t("featuredRegion")}>
-          <FeaturedEventBanner event={featuredEvent} />
-        </section>
-      )}
+    <div className="flex w-full flex-col">
+      {/* 1. Filter bar 91:16930 */}
+      <EventsFilterTabs
+        activeCategory={selectedCategory}
+        onSelectCategory={handleCategoryChange}
+        className="lg:ms-[55px]"
+      />
 
-      {/* 2. Filter Tabs Section */}
-      <section aria-label={t("filterTabs")} className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-brand-espresso/10 pb-4">
-          <EventsFilterTabs
-            activeCategory={selectedCategory}
-            onSelectCategory={handleCategoryChange}
-          />
-
-          <span className="text-xs text-gradscale-400 font-medium self-end sm:self-auto">
-            {filteredEvents.length > 0
-              ? t("count", { count: filteredEvents.length })
-              : t("countNone")}
-          </span>
-        </div>
-
-        {/* 3. Events Cards Grid */}
+      {/* 2. The list and the featured panel, side by side */}
+      <div className="mt-6 flex flex-col gap-10 lg:ms-[78px] lg:w-[1262px] lg:flex-row lg:justify-between lg:gap-0">
         {filteredEvents.length > 0 ? (
           <div
             id="events-catalog-grid"
             role="region"
             aria-label={t("listRegion")}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pt-2"
+            className="flex flex-col gap-4 lg:mt-[13px] lg:w-[713px]"
           >
-            {filteredEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+            {filteredEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} priority={index < 3} />
             ))}
           </div>
         ) : (
-          /* 4. Empty State */
-          <div className="text-center py-16 px-4 rounded-card bg-white border border-dashed border-brand-espresso/20 space-y-4 max-w-lg mx-auto">
-            <div className="w-12 h-12 rounded-full bg-primary-50 text-primary-500 flex items-center justify-center mx-auto text-xl font-bold">
+          /* Empty state — a filter result the design never draws. */
+          <div
+            id="events-catalog-grid"
+            role="region"
+            aria-label={t("listRegion")}
+            className="flex flex-col items-center gap-4 rounded-[16px] border border-dashed border-brand-espresso/20 bg-white px-4 py-16 text-center lg:mt-[13px] lg:w-[713px]"
+          >
+            <span aria-hidden="true" className="text-xl font-bold text-primary-500">
               ♪
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="font-calligraphic text-xl font-bold text-brand-espresso">
-                {t("emptyTitle")}
-              </h3>
-              <p className="text-xs sm:text-sm text-gradscale-400 leading-relaxed">
-                {t("emptyBody")}
-              </p>
-            </div>
+            </span>
+            <h2 className="font-display text-xl font-bold text-brand-espresso">
+              {t("emptyTitle")}
+            </h2>
+            <p className="max-w-md text-sm leading-relaxed text-brand-espresso/60">
+              {t("emptyBody")}
+            </p>
             {selectedCategory !== "all" && (
               <button
                 type="button"
                 onClick={() => handleCategoryChange("all")}
-                className="inline-flex items-center justify-center px-6 py-2.5 rounded-button bg-primary-50 text-primary-500 font-bold text-xs hover:bg-primary-100 transition-colors cursor-pointer"
+                className="cursor-pointer rounded-badge bg-primary-50 px-6 py-2.5 text-xs font-bold text-primary-500 transition-colors hover:bg-primary-100"
               >
                 {t("showAll")}
               </button>
             )}
           </div>
         )}
-      </section>
+
+        {shouldShowFeatured && (
+          <section aria-label={t("featuredRegion")} className="lg:w-[503px]">
+            <FeaturedEventBanner event={featuredEvent} />
+          </section>
+        )}
+      </div>
     </div>
   );
 }

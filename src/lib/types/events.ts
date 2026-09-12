@@ -16,6 +16,13 @@ export interface EventItem {
   artist_id?: string | null;
   description?: string | null;
   image_url: string;
+  /**
+   * The featured panel (91:16914) draws a different photograph from the one the
+   * event's own row draws — a 503x397 cover against a 140x105 thumbnail — so a
+   * featured event carries both. There is no such column in Supabase yet, so it
+   * stays optional and FeaturedEventBanner falls back to image_url without it.
+   */
+  cover_image_url?: string | null;
   ticket_url?: string | null;
   is_featured: boolean;
   status: EventStatus;

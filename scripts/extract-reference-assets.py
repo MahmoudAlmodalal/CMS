@@ -78,6 +78,29 @@ CROPS = [
      "portrait, artists row 1 card 3", False),
     ("artists-desktop", 113, 846, 296, 314, "public/assets/artists/artist-4.png",
      "portrait, artists row 1 card 4", False),
+    # The same dotted marks again on الفعاليات (91:16533, 91:16638), hanging off the
+    # artboard by 61 and 1376 respectively.
+    ("events-desktop", 0, 705, 62, 112, "public/assets/branding/dots-events-start.png",
+     "dotted mark, events list inline end", False),
+    ("events-desktop", 1376, 1682, 64, 112, "public/assets/branding/dots-events-end.png",
+     "dotted mark, events list inline start", False),
+    # The featured panel's cover (91:16915) is 503x397 of clean photograph: the
+    # panel's arabesque mark sits in the background layer underneath it and the
+    # 225-tall node above it carries no fill, so nothing is composited on top.
+    ("events-desktop", 100, 748, 503, 397, "public/assets/events/featured-cover.png",
+     "cover, featured event panel", False),
+    # The five row thumbnails (91:16816 and siblings) are each a 140x105 clip at
+    # the inline start of the row, one per row down the list.
+    ("events-desktop", 1201, 786, 140, 105, "public/assets/events/event-1.png",
+     "thumbnail, ليلة الطرب الأندلسي", False),
+    ("events-desktop", 1201, 952, 140, 105, "public/assets/events/event-2.png",
+     "thumbnail, أمسية العود والكلمة", False),
+    ("events-desktop", 1201, 1118, 140, 105, "public/assets/events/event-3.png",
+     "thumbnail, مهرجان الربيع الموسيقي", False),
+    ("events-desktop", 1201, 1284, 140, 105, "public/assets/events/event-4.png",
+     "thumbnail, ورشة الإيقاع الشرقي", False),
+    ("events-desktop", 1201, 1450, 140, 105, "public/assets/events/event-5.png",
+     "thumbnail, حفل الذكرى الخامسة", False),
 ]
 
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in
@@ -154,6 +177,15 @@ index.write_text(json.dumps({
     "outstanding": [
         {"file": "public/assets/figma/news-hero.png", "frame": "news-desktop",
          "node": "91:17298", "reason": "headline and gradient are composited over the photo"},
+        {"file": "public/assets/figma/booking-hero.png", "frame": "booking-desktop",
+         "node": "91:17111", "reason": "headline and gradient are composited over the photo"},
+        {"file": "public/assets/figma/academy-hero.png", "frame": "academy-desktop",
+         "node": "91:16331", "reason": "headline and gradient are composited over the photo"},
+        {"file": "public/assets/figma/events-hero.png", "frame": "events-desktop",
+         "node": "91:16745", "reason": "headline and gradient are composited over the photo"},
     ],
+    "blockedBy": "The outstanding files need a real export from Figma. The MCP asset "
+                 "URLs live on www.figma.com, which this environment's egress policy "
+                 "blocks (403 on CONNECT), so they cannot be fetched from here.",
 }, ensure_ascii=False, indent=2) + "\n")
 print(f"\nwrote {index.relative_to(ROOT)}")
