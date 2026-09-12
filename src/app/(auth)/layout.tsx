@@ -3,9 +3,11 @@ import "../globals.css";
 import { DirectionProvider } from "@/lib/direction";
 import { fontVariables } from "@/lib/fonts";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
+
 /** Sign-in sits outside the localized site and stays Arabic, like the panel it guards. */
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: "تسجيل الدخول — أندلسيا",
   robots: { index: false, follow: false },
 };
