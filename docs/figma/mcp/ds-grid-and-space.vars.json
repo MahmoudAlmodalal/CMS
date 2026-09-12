@@ -1,0 +1,14 @@
+{
+  "frame": { "slug": "ds-grid-and-space", "nodeId": "27:12129", "name": "gride and space", "canvas": [2820, 1762], "source": "mcp:get_variable_defs" },
+  "vars": {
+    "Foundation /primary/primary-500": "#C54716",
+    "Foundation /primary/primary-100": "#BBEDF4",
+    "Foundation /gradescale/gradescale-900": "#424242",
+    "white": "#ffffff",
+    "grid 8": "8", "grid 16": "16", "grid 24": "24", "grid 32": "32", "grid 40": "40",
+    "grid 56": "56", "grid 64": "64", "grid 72": "72", "grid 84": "84", "grid 88": "88",
+    "grid 96": "96", "grid 104": "104", "grid 112": "112",
+    "Mobile/4xl/Bold": "Font(family: \"SF Pro\", style: Bold, size: 25, weight: 700, lineHeight: 35, letterSpacing: 0)",
+    "Desktop/4xl/SemiBold": "Font(family: \"Inter\", style: Semi Bold, size: 49, weight: 600, lineHeight: 73.5, letterSpacing: 0)"
+  }
+}

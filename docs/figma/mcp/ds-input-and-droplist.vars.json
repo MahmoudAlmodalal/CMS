@@ -1,0 +1,29 @@
+{
+  "frame": { "slug": "ds-input-and-droplist", "nodeId": "27:12015", "name": "input and droplist", "canvas": [5142, 2036], "source": "mcp:get_variable_defs" },
+  "vars": {
+    "Foundation /primary/primary-500": "#C54716",
+    "Foundation /primary/primary-100": "#EDC6B7",
+    "Foundation /primary/primary-50": "#F9EDE8",
+    "Foundation /gradescale/gradescale-100": "#E1E1E1",
+    "Foundation /gradescale/gradescale-200": "#D2D2D2",
+    "Foundation /gradescale/gradescale-500": "#9E9E9E",
+    "Foundation /gradescale/gradescale-600": "#909090",
+    "Foundation /gradescale/gradescale-900": "#424242",
+    "Foundation /neutral/neutral-100": "#E1E1E1",
+    "Foundation /neutral/neutral-900": "#424242",
+    "Foundation /success/success-500": "#4CAF50",
+    "Foundation /error/error-500": "#F44336",
+    "white": "#ffffff",
+    "Color": "#ffffff",
+    "8 grid": "8", "16 grid": "16", "12 RC": "12",
+    "Desktop/lg/Bold": "Font(family: \"Inter\", style: Bold, size: 20, weight: 700, lineHeight: 30, letterSpacing: 0)",
+    "Desktop/base/Medium": "Font(family: \"Inter\", style: Medium, size: 16, weight: 500, lineHeight: 24, letterSpacing: 0)",
+    "Desktop/xs-1/Regular": "Font(family: \"Inter\", style: Regular, size: 13, weight: 400, lineHeight: 19.5, letterSpacing: 0)",
+    "Mobile/lg/Bold": "Font(family: \"SF Pro\", style: Bold, size: 16, weight: 700, lineHeight: 22.4, letterSpacing: 0)",
+    "Mobile/4xl/Bold": "Font(family: \"SF Pro\", style: Bold, size: 25, weight: 700, lineHeight: 35, letterSpacing: 0)"
+  },
+  "anomalies": [
+    "Foundation /primary/primary-100 resolves to #EDC6B7 here but #BBEDF4 in frame 27:12129 (gride and space) — the Figma file itself is inconsistent for this variable.",
+    "Foundation /neutral/* duplicates Foundation /gradescale/* values (100 -> #E1E1E1, 900 -> #424242)."
+  ]
+}
