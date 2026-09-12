@@ -28,12 +28,17 @@ test("UI Foundation — Color Tokens Verification against Figma values", () => {
 });
 
 test("UI Foundation — Spacing Tokens Verification", () => {
-  assert.equal(FIGMA_TOKENS.spacing[1], "8px");
-  assert.equal(FIGMA_TOKENS.spacing[2], "16px");
-  assert.equal(FIGMA_TOKENS.spacing[3], "24px");
-  assert.equal(FIGMA_TOKENS.spacing[4], "32px");
-  assert.equal(FIGMA_TOKENS.spacing[8], "64px");
-  assert.equal(FIGMA_TOKENS.spacing[12], "96px");
+  // Keyed by value, matching Figma's own variable names in "gride and space"
+  // (27:12129): the variable is `grid 8`, not "step 1". The old 1..14 ordinal
+  // keys implied a continuous scale and interpolated a 48 that Figma does not
+  // define — the real scale jumps 40 -> 56.
+  assert.equal(FIGMA_TOKENS.spacing[8], "8px");
+  assert.equal(FIGMA_TOKENS.spacing[16], "16px");
+  assert.equal(FIGMA_TOKENS.spacing[24], "24px");
+  assert.equal(FIGMA_TOKENS.spacing[32], "32px");
+  assert.equal(FIGMA_TOKENS.spacing[64], "64px");
+  assert.equal(FIGMA_TOKENS.spacing[96], "96px");
+  assert.ok(!(48 in FIGMA_TOKENS.spacing), "48 is not one of Figma's grid steps");
 });
 
 test("UI Foundation — Radii Tokens Verification", () => {
