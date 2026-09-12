@@ -133,6 +133,42 @@ CROPS = [
      "cover, عطر الماضي", STUDIO_BADGE),
 ]
 
+# الرئيسية draws its من نحن band (112:850) at half strength: the component is a
+# button instance left in its disabled state, so the frame renders every child of
+# it — photograph, dot marks, heading, copy and button — through one opacity of
+# 0.5. Sampling the render confirms it exactly, with #C54716 landing on
+# (223,159,131) and #1B1B1B on (138,137,134) over the band's #F9F7F0 ground.
+#
+# A plain crop of that region would therefore be washed out, but it is exactly
+# recoverable. Over a flat ground the composite c = f*(a*s + (1-a)*g) + (1-f)*g
+# collapses to c = f*a*s + (1-f*a)*g, so dividing back through f recovers the
+# artwork composited over its own ground at full strength — feathered edges
+# included, since those only vary `a`. Pixels the artwork does not cover invert to
+# the ground itself, so the result needs no transparency to sit on that same
+# ground, which is what the band draws it on.
+UNVEIL = [
+    # The blob portrait of node I112:850;112:624, a 551x491 box hung 2px off the
+    # artboard. Its top-left corner carries the dot mark that the band draws over
+    # it (node I112:850;112:627, x -24..98.7, y 881..992.6); the blob itself is a
+    # narrow cap up there, reaching no further in than x=140 before the mark ends,
+    # so that corner is ground and is restored to ground rather than baked in —
+    # AboutSection draws the mark itself, at its own coordinates.
+    ("home-desktop", -2, 958, 551, 491, "public/assets/figma/about-musician.png",
+     "blob portrait, من نحن band", 0.5, (249, 247, 240), (0, 0, 101, 36)),
+]
+
+
+def unveil(crop, factor, ground):
+    """Divide a flat-ground composite back out of `factor` opacity, in place."""
+    pixels = crop.load()
+    for y in range(crop.height):
+        for x in range(crop.width):
+            pixels[x, y] = tuple(
+                min(255, max(0, round((c - (1 - factor) * g) / factor)))
+                for c, g in zip(pixels[x, y], ground)
+            )
+
+
 # The news grid draws a date wash on the cover: 72x24 at 16px down and 16px in
 # from the inline end, measured off the reference at node 91:17380. It is design
 # chrome, not photograph, so it is painted out of the asset and re-rendered by
@@ -195,6 +231,35 @@ for name, x, y, w, h, dest, note, wash in CROPS:
     crop.save(out)
     scrubbed = f"  scrubbed overlay {overlay}" if overlay else ""
     print(f"{dest}  <-  {name} [{x},{y} {w}x{h}]  ({note}){scrubbed}")
+
+for name, x, y, w, h, dest, note, factor, ground, clear in UNVEIL:
+    frame = frames[name]
+    reference = ROOT / frame["referenceImage"]
+    if not reference.exists():
+        print(f"skip {dest}: {reference} is missing")
+        continue
+    image = Image.open(reference).convert("RGB")
+    # The box may hang off the artboard; the part that does is ground by definition.
+    crop = Image.new("RGB", (w, h), ground)
+    left, top = max(0, x), max(0, y)
+    right, bottom = min(image.width, x + w), min(image.height, y + h)
+    crop.paste(image.crop((left, top, right, bottom)), (left - x, top - y))
+    unveil(crop, factor, ground)
+    if clear:
+        crop.paste(ground, tuple(clear))
+    out = ROOT / dest
+    out.parent.mkdir(parents=True, exist_ok=True)
+    crop.save(out)
+    written.append({
+        "file": dest,
+        "frame": name,
+        "nodeRect": [x, y, w, h],
+        "subject": note,
+        "unveiledFrom": factor,
+        "ground": list(ground),
+        "clearedToGround": list(clear) if clear else None,
+    })
+    print(f"{dest}  <-  {name} [{x},{y} {w}x{h}]  ({note})  unveiled from {factor}")
 
 index = ROOT / "docs/figma/asset-map.json"
 index.parent.mkdir(parents=True, exist_ok=True)
