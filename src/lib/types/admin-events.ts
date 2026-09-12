@@ -23,6 +23,12 @@ export interface AdminEvent {
   performer_name: string;
   artist_id: string | null;
   description: string | null;
+  /** Optional English translations; null falls back to the Arabic field. */
+  title_en: string | null;
+  location_en: string | null;
+  city_en: string | null;
+  performer_name_en: string | null;
+  description_en: string | null;
   image_url: string;
   ticket_url: string | null;
   is_featured: boolean;

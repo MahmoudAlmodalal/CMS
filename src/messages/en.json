@@ -10,7 +10,8 @@
     "brandHome": "Andalusia — home page",
     "openMenu": "Open navigation menu",
     "closeMenu": "Close navigation menu",
-    "exploreLinks": "Explore links"
+    "exploreLinks": "Explore links",
+    "loadingPage": "Loading the page"
   },
   "locale": {
     "switchTo": "ع",
@@ -315,5 +316,12 @@
     "newsHiddenSubtitle": "In-depth writing on the history of the maqamat, coverage of the major festivals, and exclusive interviews with leading artists and craftspeople.",
     "academyEyebrow": "The Andalusia Music Academy",
     "academyTitle": "Learn from the hand that knows the way"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "We couldn't find that page",
+    "body": "The link may be out of date, or the page may have moved. Head back to the home page, or pick a section below.",
+    "home": "Back to the home page",
+    "exploreHeading": "Or carry on from here"
   }
 }

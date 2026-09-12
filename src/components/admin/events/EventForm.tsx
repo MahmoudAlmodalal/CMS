@@ -6,7 +6,7 @@
 import type { Artist } from "@/lib/dal/artists";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field } from "@/components/admin/ManagerKit";
+import { Field, TranslationField } from "@/components/admin/ManagerKit";
 import { EVENT_CATEGORY_LABELS, EVENT_STATUS_LABELS, EVENT_CATEGORIES, EVENT_STATUSES } from "@/lib/types/admin-events";
 import type { EventFormValues } from "./EventsTable";
 
@@ -29,6 +29,7 @@ export function EventForm({
       <Field id="event-title" label="عنوان الفعالية">
         <Input id="event-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
       </Field>
+      <TranslationField id="event-title-en" label="عنوان الفعالية" value={values.title_en} onChange={(value) => setField("title_en", value)} />
       <Field id="event-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
         <Input id="event-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
       </Field>
@@ -74,12 +75,15 @@ export function EventForm({
       <Field id="event-location" label="المكان">
         <Input id="event-location" value={values.location} onChange={(event) => setField("location", event.target.value)} required />
       </Field>
+      <TranslationField id="event-location-en" label="المكان" value={values.location_en} onChange={(value) => setField("location_en", value)} />
       <Field id="event-city" label="المدينة">
         <Input id="event-city" value={values.city} onChange={(event) => setField("city", event.target.value)} required />
       </Field>
+      <TranslationField id="event-city-en" label="المدينة" value={values.city_en} onChange={(value) => setField("city_en", value)} />
       <Field id="event-performer" label="اسم المؤدي أو الفرقة">
         <Input id="event-performer" value={values.performer_name} onChange={(event) => setField("performer_name", event.target.value)} required />
       </Field>
+      <TranslationField id="event-performer-en" label="اسم المؤدي أو الفرقة" value={values.performer_name_en} onChange={(value) => setField("performer_name_en", value)} />
       <Field id="event-artist" label="ربط بملف فنان" required={false} help="اختياري — يربط الفعالية بملف فنان موجود.">
         <select
           id="event-artist"
@@ -102,6 +106,7 @@ export function EventForm({
       <Field id="event-description" label="الوصف" required={false}>
         <Textarea id="event-description" rows={4} value={values.description ?? ""} onChange={(event) => setField("description", event.target.value || null)} />
       </Field>
+      <TranslationField id="event-description-en" label="الوصف" multiline rows={4} value={values.description_en} onChange={(value) => setField("description_en", value)} />
       {eventId && (
         <Field id="event-booking-link" label="رابط الحجز" required={false} help="رابط للاستخدام في صفحات الحجز الخارجية، انسخه عند الحاجة.">
           <Input id="event-booking-link" readOnly dir="ltr" value={`/booking?event_id=${eventId}`} onFocus={(event) => event.target.select()} />

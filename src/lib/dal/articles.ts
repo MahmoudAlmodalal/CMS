@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { localizeContent, localizeContentList } from "./localize";
 import {
   type Article,
   ARTICLE_CATEGORIES,
@@ -33,7 +34,7 @@ export {
  * is_published = true AND published_at <= now().
  * Optional category filtering ('all' or specific slug).
  */
-export async function getPublishedArticles(options?: {
+async function getPublishedArticlesRaw(options?: {
   category?: string;
   limit?: number;
 }): Promise<Article[]> {
@@ -99,7 +100,7 @@ export async function getPublishedArticles(options?: {
  * Fetch featured published articles.
  * Strictly checks is_published = true AND is_featured = true AND published_at <= now().
  */
-export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
+async function getFeaturedArticlesRaw(limit = 3): Promise<Article[]> {
   const nowIso = new Date().toISOString();
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -144,7 +145,7 @@ export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
  * Returns null if the article does not exist, is draft (is_published = false),
  * or has a future publication timestamp (published_at > now()).
  */
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+async function getArticleBySlugRaw(slug: string): Promise<Article | null> {
   const nowIso = new Date().toISOString();
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -184,7 +185,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
  * Fetch related articles for a given article.
  * Prioritizes the same category, excludes the current article, returns up to limit.
  */
-export async function getRelatedArticles(
+async function getRelatedArticlesRaw(
   currentSlug: string,
   category?: string,
   limit = 3
@@ -238,3 +239,21 @@ export async function getAllPublishedArticleSlugs(): Promise<{ slug: string }[]>
   }
 }
 
+/*
+ * Public readers resolve content into the request's locale. Arabic rows are
+ * returned untouched; English falls back to Arabic per field when a
+ * translation has not been written yet.
+ */
+export async function getPublishedArticles(options?: { category?: string; limit?: number }): Promise<Article[]> {
+  return localizeContentList("articles", await getPublishedArticlesRaw(options));
+}
+export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
+  return localizeContentList("articles", await getFeaturedArticlesRaw(limit));
+}
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const row = await getArticleBySlugRaw(slug);
+  return row ? localizeContent("articles", row) : null;
+}
+export async function getRelatedArticles(currentSlug: string, category?: string, limit = 3): Promise<Article[]> {
+  return localizeContentList("articles", await getRelatedArticlesRaw(currentSlug, category, limit));
+}
