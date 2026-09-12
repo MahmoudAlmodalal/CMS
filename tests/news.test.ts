@@ -366,3 +366,40 @@ test("Figma 91:17296 — grid carries the three articles the featured band does 
     "Hero standfirst must be the copy in node 91:17306"
   );
 });
+
+/**
+ * الأخبار on the 390 frame — 141:15199.
+ *
+ * Everything the frame specifies is pinned below and measures exact. Its total
+ * height is not gateable, for two reasons recorded in docs/figma/DECISIONS.md:
+ * `Featured News` (141:15396) is an empty 390x668 reservation, so the mobile hero's
+ * internal composition is undesigned; and the frame's own footer sits at 2163 with a
+ * height of 882, which overruns its 3037 canvas by 8.
+ */
+test("الأخبار — the 390 frame's grid band", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8"));
+  const grid = strip(fs.readFileSync(path.join(root, "src/components/public/NewsGrid.tsx"), "utf-8"));
+  const card = strip(fs.readFileSync(path.join(root, "src/components/public/ArticleCard.tsx"), "utf-8"));
+
+  // `Frame 34` opens at 715, 47 under the reserved hero box, and the cards close at
+  // 2102.5 against a footer at 2163.
+  assert.match(page, /px-6 pb-\[60\.5px\] pt-\[47px\]/, "47 opens the band and 60.5 closes it, on the 24 that makes the grid 342");
+  assert.match(page, /lg:px-0 lg:pb-\[151\.5px\] lg:pt-\[181px\]/, "The 1440 frame's own figures are untouched");
+  assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
+
+  // `Heading 2` is 48 tall with its 40 line 8 down, at both widths.
+  assert.match(grid, /leading-\[40px\]/, "The heading line box is 40");
+  assert.match(grid, /items-start pt-2/, "…set 8 down, which makes the block 48");
+
+  // The 72 inside `Section - Grid Layout` is a 1440 figure; on the 390 frame that
+  // box's bottom would fall 11.5 past the footer.
+  assert.match(grid, /lg:grid-cols-3 lg:pb-\[72px\]/, "The 72 of trailing space is lg-only");
+  assert.doesNotMatch(grid, /gap-6 pb-\[72px\]/, "…and must not apply on the 390 frame");
+
+  // 141:15080 is 342x422.5: a 1px border, a 192 image and a 228.5 body.
+  assert.match(card, /h-\[422\.5px\]/, "The card is 422.5 on the 390 frame");
+  assert.match(card, /lg:h-\[423\.5px\]/, "…and 423.5 on the 1440 one");
+  assert.match(card, /h-\[192px\]/, "The image is 192 at both widths");
+});

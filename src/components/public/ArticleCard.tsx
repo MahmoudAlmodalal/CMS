@@ -39,7 +39,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   // cover, a 229.5px body and 1px border. Below lg the card hugs its content,
   // since the 390px frame stacks the cards and sets its own height.
   return (
-    <article className="group flex min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
+    <article className="group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
       <Link href={`/news/${article.slug}`} className="flex flex-1 flex-col">
         <div className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface">
           <Image

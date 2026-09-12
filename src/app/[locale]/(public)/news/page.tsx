@@ -68,7 +68,12 @@ export default async function NewsPage() {
           centred at the design width and falls back to a fluid gutter below it. */}
       {/* Trailing space is 151.5px, not 154: node 91:17798 ends at y=1416.5 and the
           footer instance 94:18553 starts at 1568. */}
-      <div className="mx-auto w-full max-w-[1440px] px-5 pb-24 pt-16 sm:px-8 lg:px-0 lg:pb-[151.5px] lg:pt-[181px]">
+      {/* On the 390 frame (141:15199) `Frame 34` opens at 715 — 47 under the hero's
+          reserved 668 box — and the footer is at 2163 with the cards closing at
+          2102.5, so 60.5 closes the band. The 24 of side padding is what makes the
+          grid the 342 the frame draws; there is no tablet frame to step it up at
+          sm:, so it holds until the 1440 one takes over. */}
+      <div className="mx-auto w-full max-w-[1440px] px-6 pb-[60.5px] pt-[47px] lg:px-0 lg:pb-[151.5px] lg:pt-[181px]">
         <div className="w-full lg:ms-[103px] lg:w-[1208px]">
           <NewsGrid articles={gridArticles} />
         </div>
