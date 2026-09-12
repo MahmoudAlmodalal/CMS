@@ -72,27 +72,47 @@ export const FIGMA_TOKENS = {
       goldSoft: "#FFE15A",
       alertError: "#FF4B55",
       alertSuccess: "#73AF00",
+      primaryDisabled: "#E4AA94",
       white: "#FFFFFF",
       black: "#000000",
     },
+    // Editorial palette — read from Figma nodes 91:17296 / 94:18289. Distinct from
+    // the brand ramp: the eyebrow is a deeper rust than primary-500 and card ink is
+    // warmer than espresso. Kept as its own group so the parity loop covers it;
+    // these were CSS-only before and drifted outside any check.
+    editorial: {
+      eyebrow: "#9F3600",
+      eyebrowMuted: "#625E51",
+      inkHeading: "#251915",
+      inkBody: "#58423A",
+      tintHero: "#FFF1EC",
+      borderCard: "rgba(223, 192, 181, 0.4)",
+      overlayPrimary: "rgba(159, 54, 0, 0.9)",
+      ruleFooter: "rgba(236, 230, 208, 0.15)",
+    },
   },
 
-  // Spacing system directly from Figma "gride and space"
+  // Spacing system directly from Figma "gride and space" (27:12129), persisted in
+  // docs/figma/mcp/ds-grid-and-space.vars.json.
+  //
+  // Keyed by value, because that is how Figma names them: the variable is literally
+  // `grid 8`, not "step 1". The previous 1..14 ordinal map implied a continuous
+  // scale and interpolated a 48 that Figma does not define — Figma has THIRTEEN
+  // steps, jumping 40 → 56.
   spacing: {
-    1: "8px",   // 0.5rem
-    2: "16px",  // 1rem
-    3: "24px",  // 1.5rem
-    4: "32px",  // 2rem
-    5: "40px",  // 2.5rem
-    6: "48px",  // 3rem
-    7: "56px",  // 3.5rem
-    8: "64px",  // 4rem
-    9: "72px",  // 4.5rem
-    10: "84px",
-    11: "88px",
-    12: "96px", // 6rem
-    13: "104px",
-    14: "112px",// 7rem
+    8: "8px",
+    16: "16px",
+    24: "24px",
+    32: "32px",
+    40: "40px",
+    56: "56px",
+    64: "64px",
+    72: "72px",
+    84: "84px",
+    88: "88px",
+    96: "96px",
+    104: "104px",
+    112: "112px",
   },
 
   // Corner radii from Figma.

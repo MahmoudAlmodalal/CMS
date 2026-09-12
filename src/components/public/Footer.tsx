@@ -36,7 +36,9 @@ export function Footer() {
 
       {/* Outer container (Figma Node 87:14546 — padding 64px 24px 32px, max 1454px) */}
       <div className="relative z-10 mx-auto w-full max-w-[1454px] px-6 pb-8 pt-16 lg:[transform:translateX(-7px)]">
-        <div className="mx-auto w-full max-w-[1280px]">
+        {/* max-w-desktop is --container-desktop (1280px), confirmed by this very
+            node: the footer instance is 1454 wide and its inner Container is 1280. */}
+        <div className="mx-auto w-full max-w-desktop">
           {/* Content block 87:14547 is 736x190 and its four columns are placed at
               absolute offsets inside it — two of them overhanging it, at -193 and
               at 594+297 — so the row is neither an even grid nor centred. Below
