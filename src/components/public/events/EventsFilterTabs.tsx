@@ -12,13 +12,22 @@ export interface EventsFilterTabsProps {
 }
 
 /**
- * Events Filter Tabs Component
- * Derived directly from Figma Node 91:16532 / Nodes:
- * - 186:1781 ("الكل")
- * - 186:1778 ("حفلات")
- * - 186:1775 ("مهرجانات")
- * - 186:1772 ("أمسيات")
- * - 186:1769 ("ورش")
+ * Events filter bar — Figma node 91:16930 in frame 91:16532.
+ *
+ * A 415x53.12 secondary-50 pill with a 16px radius, 20px of side padding and 8px
+ * top and bottom, holding five tabs 14px apart and centred. Each tab is a 4px
+ * padded box around a 4px padded label in Cairo Bold 14.08/21.12: 62 wide and
+ * gradscale-900 when idle, 75 wide on primary-500 with 80% white when active.
+ *
+ * The frame draws them left to right as ورش · أمسيات · مهرجانات · حفلات · الكل,
+ * which read right to left on the Arabic artboard is CATEGORY_TABS in its own
+ * order — unlike الفنانين, this row needs no reordering.
+ *
+ * The five widths plus four gaps come to 379 against 375 of content box, so the
+ * row overflows its padding by 2px each side exactly as the frame does.
+ *
+ * Filtering, the tablist roles and the ?category= sync are behaviour the design
+ * cannot express and are unchanged.
  */
 export function EventsFilterTabs({
   activeCategory,
@@ -26,12 +35,14 @@ export function EventsFilterTabs({
   className,
 }: EventsFilterTabsProps) {
   const t = useTranslations("events");
+
   return (
     <div
       role="tablist"
       aria-label={t("filterTabs")}
       className={cn(
-        "flex items-center gap-2.5 overflow-x-auto py-2 scrollbar-none no-scrollbar",
+        "flex flex-wrap items-center justify-center gap-[14px] rounded-badge bg-secondary-50 px-5 py-2",
+        "lg:h-[53.12px] lg:w-[415px] lg:flex-nowrap",
         className
       )}
     >
@@ -46,13 +57,14 @@ export function EventsFilterTabs({
             aria-controls="events-catalog-grid"
             onClick={() => onSelectCategory(tab.id)}
             className={cn(
-              "inline-flex items-center justify-center h-[38px] px-5 text-sm font-bold font-sans rounded-badge select-none transition-all duration-150 cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2",
+              "shrink-0 cursor-pointer rounded-badge py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
+              "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
               isActive
-                ? "bg-primary-500 text-white shadow-subtle scale-100"
-                : "bg-primary-50 text-gradscale-900 border border-primary-100 hover:bg-primary-100/80 active:scale-95"
+                ? "w-[75px] bg-primary-500 text-white/80"
+                : "w-[62px] text-gradscale-900"
             )}
           >
-            {tab.label}
+            <span className="block py-1">{tab.label}</span>
           </button>
         );
       })}

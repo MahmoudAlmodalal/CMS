@@ -1,92 +1,150 @@
 import React from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { Container } from "@/components/ui/LayoutPrimitives";
-import { PublicButton } from "./PublicButton";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
+/**
+ * Two frames draw this band and they are not the same drawing, so the shape is
+ * one component with two measured variants.
+ *
+ * Both are a 1449x498 section hung 5px off the artboard's inline start: a
+ * photograph under a flat rgba(43,29,20,0.88) wash, with the arabesque mark at
+ * 8% over its top-left corner at 6.39% x 12.05% of the band. Every content block
+ * is absolutely placed and none is centred on the artboard — the 1433px columns
+ * they sit in put the stack 8.5px left of centre. A start margin of 2d inside a
+ * centring flex row moves its content d towards the inline start, which is how
+ * each block's own offset is reproduced.
+ *
+ * - "home" (87:14534, nodes 87:14535-89:15225): the ♪ at 80.2, the headline at
+ *   131.2 in Qahwa Arabic 60/60 brand-tint over 636px, the body at 294 in Cairo
+ *   16/30.4 brand-tint, and a 207x48 12px-rounded button at 348.4 whose label is
+ *   SF Pro Bold 16/22.4 — a baked-in font fallback in the design itself, so the
+ *   system stack is what gets asked for.
+ * - "artist" (134:4660, nodes 134:4661-134:4670): the ♪ at 57.2, the headline at
+ *   177 in Qahwa Arabic 48/49.315 tracked -0.6575 brand-surface and 54px further
+ *   left again, the body at 271 in Cairo 16/30.4 at 45% brand-surface, and a
+ *   16px-rounded button at 342 padded 40/15.2 with a Cairo Bold 16/24 label.
+ *
+ * The photograph is a licensed fill that cannot be exported from here; it is
+ * recorded in docs/figma/asset-map.json.
+ */
+export type BookingBannerVariant = "home" | "artist";
+
 interface BookingBannerProps {
-  settings: SiteSettings;
+  settings?: SiteSettings;
+  variant?: BookingBannerVariant;
+  /** Overrides the settings copy — الفنان addresses the artist by name. */
+  headline?: string;
+  body?: string;
+  ctaHref?: string;
 }
 
-/**
- * Verified against Figma Section 87:14534 (Nodes 87:14535, 87:14537, 87:14539, 87:14541, 89:15225):
- * - Canvas Dimensions: Fixed 1449x498px desktop height (min-h-[498px] lg:h-[498px])
- * - Background Composite: Espresso #2B1D14 at 88% overlay over texture (caeb7e57... + da60c985...)
- * - Musical Glyph: Cairo Regular 44px "♪" in brand-primary terracotta #C54716 (Node 87:14537)
- * - Headline: Qahwa Arabic Bold 60px (font-calligraphic text-[60px], Node 87:14539)
- * - Subtitle: Cairo Regular 16px in warm tint #F9EDE8/90 (Node 87:14541)
- * - CTA Action: Canonical PublicButton (variant="primary", size="md", 48px->56px hover expansion)
- */
-export function BookingBanner({ settings }: BookingBannerProps) {
+const VARIANTS = {
+  home: {
+    glyphTop: 80.2,
+    headingTop: 155.2,
+    headingShift: 17,
+    ctaShift: 17,
+    heading: "text-[28px] leading-tight text-brand-tint sm:text-[40px] lg:text-[60px] lg:leading-[60px]",
+    bodyTop: 294,
+    body: "text-brand-tint",
+    ctaTop: 348.4,
+    cta: "h-[48px] w-[207px] rounded-[12px] font-system leading-[22.4px]",
+  },
+  artist: {
+    glyphTop: 57.2,
+    headingTop: 201,
+    headingShift: 125,
+    ctaShift: 18,
+    heading:
+      "text-[28px] leading-tight tracking-[-0.6575px] text-brand-surface sm:text-[36px] lg:text-[48px] lg:leading-[49.315px]",
+    bodyTop: 271,
+    body: "text-brand-surface/45",
+    ctaTop: 342,
+    cta: "rounded-[16px] px-[40px] py-[15.2px] leading-[24px]",
+  },
+} as const;
+
+export function BookingBanner({
+  settings,
+  variant = "home",
+  headline,
+  body,
+  ctaHref = "/booking",
+}: BookingBannerProps) {
   const t = useTranslations("home");
   const ev = useTranslations("event");
-  const headline = settings.booking_banner_title || t("bookingHeadingFallback");
-  const body =
-    settings.booking_banner_body ||
-    t("bookingBodyFallback");
+  const v = VARIANTS[variant];
+  const title = headline || settings?.booking_banner_title || t("bookingHeadingFallback");
+  const copy = body || settings?.booking_banner_body || t("bookingBodyFallback");
 
   return (
     <section
-      className="relative min-h-[498px] lg:h-[498px] bg-[#2B1D14] text-brand-tint overflow-hidden flex items-center justify-center"
+      className="relative isolate h-auto w-full overflow-hidden bg-brand-espresso py-14 text-brand-tint lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
-      {/* 1. Base Photo Texture Fill (Figma ref: caeb7e573a02cd1ecf364f1737b1246ad2984677) */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity pointer-events-none"
-        style={{
-          backgroundImage: "url('/assets/branding/concert-stage.png')",
-        }}
-        data-texture-ref="caeb7e573a02cd1ecf364f1737b1246ad2984677"
         aria-hidden="true"
+        className="absolute inset-0 bg-[url('/assets/branding/concert-stage.png')] bg-cover bg-center"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-[rgba(43,29,20,0.88)]" />
+      <div
+        aria-hidden="true"
+        className="absolute left-0 top-0 h-[12.05%] w-[6.39%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat opacity-[0.08]"
       />
 
-      {/* 2. Andalusian Arabesque Stretch Pattern (Figma Node 87:14535, ref: da60c98546b43a3524b1bbd7667d8f518e1c7ee3) */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-screen bg-repeat bg-[url('/assets/branding/arabesque-texture.png')]"
-        aria-hidden="true"
-        data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
-      />
-
-      {/* 3. Solid Espresso #2B1D14 Overlay at strictly 88% opacity (Figma 87:14534) */}
-      <div
-        className="absolute inset-0 bg-[#2B1D14]/88 pointer-events-none"
-        aria-hidden="true"
-      />
-
-      {/* 4. Foreground Content (Max width 3xl centered) */}
-      <Container className="relative z-10 py-12 lg:py-0">
-        <div className="max-w-3xl mx-auto flex flex-col items-center text-center space-y-6">
-          {/* Musical Glyph (Figma Node 87:14537 — Cairo Regular 44px in Terracotta #C54716) */}
-          <div
-            className="font-sans text-[44px] font-normal leading-none text-brand-primary select-none"
-            aria-hidden="true"
-          >
+      <div className="relative flex flex-col items-center gap-6 px-5 text-center lg:block lg:gap-0 lg:px-0">
+        {/* ♪ — 87:14537 / 134:4663 */}
+        <div
+          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
+          style={{ top: `${v.glyphTop}px` }}
+        >
+          <p aria-hidden="true" className="text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
             ♪
-          </div>
-
-          {/* Headline (Figma Node 87:14539 — Qahwa Arabic Bold 60px) */}
-          <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[60px] font-bold text-brand-tint leading-none tracking-tight">
-            {headline}
-          </h2>
-
-          {/* Subtitle / Body (Figma Node 87:14541 — Cairo Regular 16px) */}
-          <p className="font-sans text-sm sm:text-base text-brand-tint/90 leading-relaxed max-w-xl">
-            {body}
           </p>
-
-          {/* CTA Action: Canonical PublicButton with 12px radius and 48px->56px hover expansion */}
-          <div className="pt-2">
-            <PublicButton
-              href="/booking"
-              variant="primary"
-              size="md"
-              className="text-[#ECE6D0]"
-            >
-              {t("bookingCta")}
-            </PublicButton>
-          </div>
         </div>
-      </Container>
+
+        {/* Headline — 87:14539 / 134:4665 */}
+        <div
+          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
+          style={{ top: `${v.headingTop}px` }}
+        >
+          <h2
+            className={`max-w-[636px] font-display lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
+            style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
+          >
+            {title}
+          </h2>
+        </div>
+
+        {/* Body — 87:14541 / 134:4667 */}
+        <div
+          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
+          style={{ top: `${v.bodyTop}px` }}
+        >
+          <p
+            className={`max-w-[636px] text-[15px] leading-[26px] lg:ms-[17px] lg:max-w-none lg:text-[16px] lg:leading-[30.4px] ${v.body}`}
+          >
+            {copy}
+          </p>
+        </div>
+
+        {/* CTA — 89:15225 / 134:4669 */}
+        <div
+          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
+          style={{ top: `${v.ctaTop}px` }}
+        >
+          <Link
+            href={ctaHref}
+            className={`inline-flex items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
+            style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
+          >
+            {t("bookingCta")}
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
+
+export default BookingBanner;

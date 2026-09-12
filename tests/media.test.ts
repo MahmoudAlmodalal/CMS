@@ -106,12 +106,20 @@ test("Task 39 — 4. Keyboard access & bidi-safe timeline", () => {
 });
 
 test("Task 39 — 5. Scope guard: only Figma-confirmed media", () => {
-  // CONTENT_INVENTORY.md confirms ONLY the audio player (134:4420). No gallery
-  // grid and no video providers carry Figma node IDs — they must not exist as
-  // speculative components.
+  // Media surfaces exist only where a Figma node draws them: the audio player,
+  // and the three-up plate grid the الفنان frame draws at node 134:4644. No
+  // video provider carries a node ID, and no other gallery may be invented.
   const publicDir = path.join(root, "src/components/public");
   const files = fs.readdirSync(publicDir, { recursive: true }) as string[];
-  const names = files.join("\n").toLowerCase();
+  const confirmedGallery = "artist/ArtistGallery.tsx";
+  assert.ok(
+    files.some((f) => f.replace(/\\/g, "/") === confirmedGallery),
+    "The Figma-confirmed gallery (134:4644) must live at " + confirmedGallery
+  );
+  const names = files
+    .filter((f) => f.replace(/\\/g, "/") !== confirmedGallery)
+    .join("\n")
+    .toLowerCase();
   assert.doesNotMatch(names, /gallery/, "No speculative gallery component allowed");
   assert.doesNotMatch(names, /video|youtube|vimeo/, "No speculative video provider allowed");
 

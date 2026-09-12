@@ -11,6 +11,10 @@ export interface HeroSectionProps {
 
 /**
  * Verified against Figma Component 20 (Node 148:3708, 1441x740):
+ * - The band starts at y=0 with the floating navbar over it. It carries no top
+ *   offset of its own: the public layout stopped padding for the navbar, so the
+ *   negative margin that used to cancel that padding would now lift the whole
+ *   page 96px out of alignment with the frame.
  * - Backdrop: photo fill + 2x rgba(0,0,0,.2) + linear-gradient(180deg, #000 0%,
  *   rgba(0,0,0,.1) 78%) — the scrim is heaviest at the TOP, under the navbar.
  * - Headline (148:3671): Cairo Bold 64px/93px desktop and 32px/55px mobile, fill #EFEBD9, with `لاكتشاف` and
@@ -24,7 +28,7 @@ export function HeroSection({ settings }: HeroSectionProps) {
   const t = useTranslations("home");
 
   return (
-    <section className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint -mt-14 lg:-mt-24 pt-14 lg:pt-24 min-h-[740px] lg:h-[740px] flex items-center justify-center">
+    <section className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint min-h-[740px] lg:h-[740px] flex items-center justify-center">
       {/* Background Stage Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div

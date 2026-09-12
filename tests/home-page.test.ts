@@ -395,11 +395,12 @@ test("Milestone 2 — 8. Stage 7: Booking CTA Banner Geometry & Dark Espresso Ov
     "BookingBanner headline must declare 60px display font size"
   );
 
-  // CTA link to /booking
+  // CTA link to /booking. الفنان (134:4660) reuses the band with the artist
+  // pre-selected, so the target is a prop whose default is the home frame's.
   assert.match(
     bookingSrc,
-    /href="\/booking"/,
-    "BookingBanner CTA button must route to /booking"
+    /ctaHref = "\/booking"/,
+    "BookingBanner CTA button must route to /booking by default"
   );
 
   assert.match(bookingSrc, /<section[\s>]/, "BookingBanner must use semantic <section> tag");
