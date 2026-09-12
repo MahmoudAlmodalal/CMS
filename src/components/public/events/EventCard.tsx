@@ -34,8 +34,14 @@ export interface EventCardProps {
  * and draws nothing, so it is not reproduced.
  *
  * The design draws no scrim, no hover growth, no venue line and no second link.
- * Below lg the three blocks fall back to a plain flex row, which the 390 frame
- * will replace in its own pass.
+ *
+ * The 390 frame (144:19913) draws the same three blocks as a real row, 370.33x150.33
+ * on 8.667 of padding with 19 between them, each vertically centred: the 93x105
+ * thumbnail at the inline start, the 144x120 text block, then the 78x149 date block
+ * at the inline end. That is the desktop order, so the row is reversed on mobile —
+ * the source order puts the date first, which RTL would otherwise draw on the right.
+ * The thumbnail is 93 wide there against 140 on desktop and the date chip 54 against
+ * 70, both of which the frame states outright.
  */
 export function EventCard({ event, priority = false, className = "" }: EventCardProps) {
   const t = useTranslations("events");
@@ -64,12 +70,14 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
   return (
     <article
       data-testid={`event-card-${event.slug}`}
-      className={`relative flex w-full items-center gap-4 overflow-hidden rounded-[16px] border-[0.667px] border-brand-espresso/10 bg-white p-4 lg:block lg:h-[150.135px] lg:p-0 ${className}`}
+      className={`relative flex h-[150.333px] w-full flex-row-reverse items-center gap-[19px] overflow-hidden rounded-[16px] border-[0.667px] border-brand-espresso/10 bg-white p-[8.667px] lg:block lg:h-[150.135px] lg:p-0 ${className}`}
     >
       {/* Date block 91:16805 */}
-      <div className="flex shrink-0 flex-col items-start lg:absolute lg:end-0 lg:top-0 lg:h-[148.802px] lg:w-[110px] lg:p-5">
+      {/* 78x149 on the 390 frame: the 54-wide chip is wider than the 38 its padded
+          box leaves, so it overhangs symmetrically — which is 12 of side padding. */}
+      <div className="flex h-[149px] w-[78px] shrink-0 flex-col items-center px-3 py-5 lg:absolute lg:end-0 lg:top-0 lg:h-[148.802px] lg:w-[110px] lg:items-start lg:p-5">
         <div className="w-full pb-3">
-          <div className="min-w-[70px] rounded-[8px] bg-brand-espresso px-4 py-3">
+          <div className="w-[54px] rounded-[8px] bg-brand-espresso px-4 py-3 lg:w-auto lg:min-w-[70px]">
             <p className="text-center text-[24px] font-black leading-[24px] text-[#e9ebf8]">
               {dayArabic}
             </p>
@@ -92,8 +100,10 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Text block 91:16797 */}
-      <div className="flex min-w-0 flex-1 flex-col items-start text-start lg:absolute lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-[418px] lg:flex-none lg:p-5">
-        <div className="relative h-[32.313px] w-full">
+      <div className="flex h-[120px] w-[144px] min-w-0 shrink-0 flex-col items-start pt-5 text-start lg:absolute lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-[418px] lg:flex-none lg:p-5 lg:pt-5">
+        {/* The eyebrow is a bare 64x20 line on the 390 frame, not the 32.313 row the
+            1440 one leaves above the title. */}
+        <div className="relative h-5 w-full lg:h-[32.313px]">
           <span className="absolute start-0 top-[4.27px] flex h-[20.042px] w-[44.948px] items-center justify-center rounded-[2px] border-[0.667px] border-primary-500/25 bg-primary-100/20 text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500">
             {categoryLabel}
           </span>
@@ -109,7 +119,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Thumbnail 91:16815 */}
-      <div className="relative h-[72px] w-[96px] shrink-0 overflow-hidden bg-brand-surface/40 sm:h-[105px] sm:w-[140px] lg:absolute lg:start-[21px] lg:top-[24.33px]">
+      <div className="relative h-[105px] w-[93px] shrink-0 overflow-hidden bg-brand-surface/40 lg:absolute lg:start-[21px] lg:top-[24.33px] lg:w-[140px]">
         {event.image_url ? (
           <Image
             src={event.image_url}
