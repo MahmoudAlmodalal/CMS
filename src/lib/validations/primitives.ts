@@ -148,6 +148,27 @@ export function optionalTrimmedString(max: number = 255) {
 }
 
 /**
+ * An optional English translation of an Arabic content field.
+ *
+ * Admin forms post an empty string for a field left untranslated. That empty
+ * string is normalized to null so the column stores "no translation yet" —
+ * pickLocalized then falls back to the Arabic text instead of rendering a blank.
+ */
+export function translationString(max: number = 255) {
+  return z
+    .union([z.string(), z.null()])
+    .optional()
+    .transform((val) => {
+      if (val === null || val === undefined) return null;
+      const trimmed = val.trim();
+      return trimmed === "" ? null : trimmed;
+    })
+    .refine((val) => val === null || val.length <= max, {
+      message: `يجب ألا يتجاوز طول الترجمة الإنجليزية ${max} حرفاً`,
+    });
+}
+
+/**
  * Safe HTTP/HTTPS URL validator with maximum length limit.
  * Strictly rejects dangerous pseudo-protocols like javascript:, data:, ftp:, file:.
  */

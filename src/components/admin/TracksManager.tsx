@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
 import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
 import type { AdminTrack, ArtistOption } from "@/lib/types/admin-tracks";
 import type { TrackInput } from "@/lib/validations";
@@ -31,6 +31,7 @@ function emptyTrack(defaultArtistId: string): TrackFormValues {
   return {
     artist_id: defaultArtistId,
     title: "",
+    title_en: null,
     audio_file_url: "",
     duration_seconds: 0,
     cover_image_url: "",
@@ -43,6 +44,7 @@ function trackToForm(track: AdminTrack): TrackFormValues {
   return {
     artist_id: track.artist_id,
     title: track.title,
+    title_en: track.title_en ?? null,
     audio_file_url: track.audio_file_url,
     duration_seconds: track.duration_seconds,
     cover_image_url: track.cover_image_url ?? "",
@@ -291,6 +293,7 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
               <Field id="track-title" label="عنوان المقطع">
                 <Input id="track-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
               </Field>
+              <TranslationField id="track-title-en" label="عنوان المقطع" value={values.title_en} onChange={(value) => setField("title_en", value)} />
               <Field
                 id="track-audio-url"
                 label="رابط الملف الصوتي"

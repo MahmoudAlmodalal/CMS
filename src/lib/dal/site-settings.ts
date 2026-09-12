@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { localizeContent } from "./localize";
 
 export interface SiteSettings {
   id: string;
@@ -24,6 +25,20 @@ export interface SiteSettings {
   operational_regions: string;
   footer_mission: string;
   copyright_text: string;
+  // Optional English translations; null or absent falls back to the Arabic field.
+  hero_headline_en?: string | null;
+  hero_subheadline_en?: string | null;
+  about_headline_en?: string | null;
+  about_body_en?: string | null;
+  booking_banner_title_en?: string | null;
+  booking_banner_body_en?: string | null;
+  artists_subtitle_en?: string | null;
+  events_subtitle_en?: string | null;
+  academy_subtitle_en?: string | null;
+  booking_subtitle_en?: string | null;
+  operational_regions_en?: string | null;
+  footer_mission_en?: string | null;
+  copyright_text_en?: string | null;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -56,6 +71,24 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   operational_regions: "لبنان · المغرب · الخليج",
   footer_mission: "مجموعة فنانين يؤمنون أن الإبداع هو الحياة والموسيقى هي الشعلة.",
   copyright_text: "© أندلسيا ٢٠٢٥ — جميع الحقوق محفوظة",
+  // English defaults so the /en site reads in English before any row is authored.
+  hero_headline_en: "Your first place to *discover* and support artistic and cultural *talent*",
+  hero_subheadline_en:
+    "Andalusia represents and supports creative talent, connecting artists with the places and occasions that deserve beauty.",
+  about_headline_en: "We discover · We connect · We celebrate",
+  about_body_en:
+    "We were born from a deep belief that art is not a luxury but a necessity. We work to close the distance between a talented artist and the audience waiting for them, and between an occasion and the artistic moment that makes it unforgettable. Andalusia represents and supports creative talent, connecting artists with the places and occasions that deserve beauty.",
+  booking_banner_title_en: "Your occasion deserves real music",
+  booking_banner_body_en:
+    "Book Andalusia for your party, your restaurant, your festival — and make a moment no one forgets.",
+  artists_subtitle_en:
+    "Every artist at Andalusia carries a story, plays the soul of the East, and turns heritage into a sound for the future.",
+  events_subtitle_en: "Dates that leave a beautiful mark on anyone who loves music with roots.",
+  academy_subtitle_en: "Learn from the hand that knows the way and the secrets of the maqamat.",
+  booking_subtitle_en: "Book your private evening, or bring us into your next event.",
+  operational_regions_en: "Lebanon · Morocco · The Gulf",
+  footer_mission_en: "A collective of artists who believe creativity is life and music is the spark.",
+  copyright_text_en: "© Andalusia 2025 — All rights reserved",
 };
 
 /**
@@ -63,6 +96,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
  * Falls back to DEFAULT_SITE_SETTINGS if not found or on connection error.
  */
 export async function getSiteSettings(): Promise<SiteSettings> {
+  return localizeContent("site_settings", await getSiteSettingsRaw());
+}
+
+async function getSiteSettingsRaw(): Promise<SiteSettings> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return DEFAULT_SITE_SETTINGS;

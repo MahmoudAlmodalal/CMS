@@ -30,6 +30,11 @@ export interface AdminArticle {
   content: string;
   cover_image_url: string;
   author_name: string;
+  /** Optional English translations; null falls back to the Arabic field. */
+  title_en: string | null;
+  excerpt_en: string | null;
+  content_en: string | null;
+  author_name_en: string | null;
   featured_artist_id: string | null;
   published_at: string;
   is_featured: boolean;
@@ -38,7 +43,8 @@ export interface AdminArticle {
 }
 
 const ARTICLE_COLUMNS =
-  "id, title, slug, category, excerpt, content, cover_image_url, author_name, featured_artist_id, published_at, is_featured, is_published, created_at";
+  "id, title, slug, category, excerpt, content, cover_image_url, author_name, featured_artist_id, published_at, is_featured, is_published, created_at, " +
+  "title_en, excerpt_en, content_en, author_name_en";
 
 /** True only when the row is both flagged published and its scheduled time has arrived. */
 export function isArticleLive(article: Pick<AdminArticle, "is_published" | "published_at">): boolean {
