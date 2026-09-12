@@ -109,6 +109,30 @@ async function capture(ws, frame) {
       throw new Error(`${frame.name}: page never rendered (${pageUrl}) — last state: ${diagnosis}${detail}`);
     }
 
+    // next/image lazy-loads anything below the fold, and Chromium only fires that
+    // for content near the viewport. captureBeyondViewport extends the shot without
+    // ever bringing the lower bands into view, so on a 5165px page every photograph
+    // past roughly 2000px stayed blank and scored as a full-area difference against
+    // the reference — the editorial covers and the الفعاليات photograph among them.
+    // Walk the page down a viewport at a time to put each band in view, return to
+    // the top, and wait for the loads that started along the way.
+    const { result: docHeight } = await cdp(ws, "Runtime.evaluate",
+      { expression: "document.documentElement.scrollHeight", returnByValue: true }, sessionId);
+    const pageHeight = Number(docHeight?.result?.value) || height;
+    for (let y = 0; y < pageHeight; y += viewportHeight) {
+      await cdp(ws, "Runtime.evaluate", { expression: `window.scrollTo(0, ${y})` }, sessionId);
+      await new Promise((r) => setTimeout(r, 150));
+    }
+    await cdp(ws, "Runtime.evaluate", { expression: "window.scrollTo(0, 0)" }, sessionId);
+    // An image that never started loading also reports complete, so require pixels.
+    // A genuinely broken one keeps naturalWidth at 0 and simply spends the timeout.
+    const DECODED = `Array.from(document.images).every((i) => i.complete && i.naturalWidth > 0)`;
+    for (let i = 0; i < 60; i += 1) {
+      const { result } = await cdp(ws, "Runtime.evaluate", { expression: DECODED, returnByValue: true }, sessionId);
+      if (result?.result?.value === true) break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+
     // Wait for the paint to settle. CSS background-image has no load event to
     // await and the hero art is the slowest thing on every page, so settling is
     // observed rather than predicted. Only the hero band is polled: re-shooting a
