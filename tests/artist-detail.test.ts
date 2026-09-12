@@ -115,7 +115,11 @@ test("الفنان 134:4420 — 5. Career band geometry (134:4682-134:4744)", ()
   assert.match(src, /bg-gradscale-900/, "Band is gradscale-900 (#1B1B1B)");
   assert.match(src, /lg:py-\[96px\]/, "96px of air either side");
   assert.match(src, /pt-\[12px\][\s\S]*?lg:h-\[52px\]/, "H2 box is 52px with a 12px top pad");
-  assert.match(src, /lg:text-\[48px\] lg:leading-\[40px\]/, "H2 is 48/40");
+  // 48 on the 1440 frame, 32 on the 390 one, but the 40 line box is shared: the
+  // 390 frame's own heading block is 52 too (141:16469 is 52 with its 40 line 12
+  // down), so the leading is not lg-gated.
+  assert.match(src, /leading-\[40px\][\s\S]*?lg:text-\[48px\]/, "H2 is 48/40 on the 1440 frame");
+  assert.doesNotMatch(src, /lg:leading-\[40px\]/, "…and the 40 line box is shared with the 390 frame");
   assert.match(src, /text-brand-tint/, "H2 is brand-tint");
   // Filter row 134:4687 — drawn right to left as ألبومات, حفلات, أغاني
   assert.match(src, /lg:h-\[37\.667px\]/, "Filter row is 37.667px tall");
@@ -229,4 +233,46 @@ test("الفنان 134:4420 — 8. Page assembles the frame's bands in order", (
   assert.match(src, /from\s*["']next\/navigation["']/);
   assert.match(src, /export async function generateMetadata\(/);
   assert.match(src, /canonical/);
+});
+
+/**
+ * الفنان on the 390 frame — 141:16217.
+ *
+ * The career band is the part of this frame that is fully determined, and it is
+ * pinned here. Two things on the frame are not, and are recorded in
+ * docs/figma/DECISIONS.md rather than guessed at: the frame carries no counterpart
+ * to the closing booking band, and its quote/gallery column is drawn at 735 against
+ * a rendered 1181.
+ */
+test("الفنان — the 390 frame's career band", () => {
+  const src = read("src/components/public/artist/ArtistDiscography.tsx");
+
+  // `Section` 141:16468 declares 671.16, which is exactly
+  // 96 + 52 heading + 24 + 37.67 tabs + 40 + 325.49 albums + 96.
+  assert.match(src, /py-24 lg:py-\[96px\]/, "96 either side at both widths");
+  assert.match(src, /pt-6[\s\S]*?lg:pt-0/, "The tab row sits 24 under the heading on the 390 frame");
+
+  // Its content sits 31 in from the inline start, not the 20 a page gutter gives:
+  // the tab row lands at 99.67..359 and the album row at 30..359.
+  assert.match(src, /px-\[31px\] lg:px-\[32px\]/, "The band's own 31px inset");
+  assert.doesNotMatch(src, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
+
+  // 259.33 is exactly 74.67 + 79.67 + 89 and two 8px gaps, so the tabs must not wrap.
+  assert.doesNotMatch(src, /flex-wrap/, "The tab row fits its 259.33 and must not wrap");
+
+  // The four releases are one horizontal RTL row: 269 wide on a 289 step, the first
+  // flush to the row's inline start and the rest scrolled off to the left.
+  assert.match(src, /flex gap-\[20px\] overflow-x-auto/, "The albums are a carousel on the 390 frame");
+  assert.match(src, /w-\[269px\] shrink-0/, "Each release is 269 wide");
+  assert.match(src, /lg:grid lg:grid-cols-4/, "…and four to a row above lg");
+  assert.match(src, /\[scrollbar-width:none\]/, "Scrollbar gutters are suppressed, as on the other carousels");
+});
+
+test("الفنان — the band height is per-frame, not a shared default", () => {
+  const hero = read("src/components/public/artist/ArtistHero.tsx");
+
+  // 141:16220 is 390x688 hung at y=-10, so the band is 0..678 on the 390 frame.
+  assert.match(hero, /h-\[678px\] w-full/, "The band is 678 on the 390 frame");
+  assert.match(hero, /lg:h-\[611px\]/, "…and 611 on the 1440 one");
+  assert.doesNotMatch(hero, /sm:h-\[500px\]/, "The invented tablet band height is gone");
 });

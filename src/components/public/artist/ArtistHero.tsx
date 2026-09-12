@@ -39,7 +39,10 @@ export function ArtistHero({ artist, contactHref = "mailto:hello@andalusia.art" 
 
   return (
     <section
-      className="relative isolate h-[430px] w-full overflow-hidden bg-brand-espresso text-white sm:h-[500px] lg:h-[611px]"
+      // 678 on the 390 frame (141:16220 is 390x688 hung at y=-10), 611 on the 1440
+      // one. The 500 that sat at sm: was invented — Figma has no tablet artboard —
+      // so the band holds its measured mobile height until the 1440 one takes over.
+      className="relative isolate h-[678px] w-full overflow-hidden bg-brand-espresso text-white lg:h-[611px]"
       style={{
         backgroundImage: "url(/assets/figma/hero-stage-landscape.png)",
         backgroundSize: "cover",
