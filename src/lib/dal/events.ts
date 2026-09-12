@@ -131,13 +131,29 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
 ];
 
 /**
- * Fetch upcoming published events for the homepage.
- * Queries is_published = true AND event_date >= now(), ordered by event_date ASC.
+ * The three events الرئيسية draws in نلتقي في المكان. في اللحظة (87:14466).
+ *
+ * The band is a curated shortlist, not the next three dates: the frame draws
+ * ليلة الطرب الأندلسي, then مهرجان الربيع الموسيقي, then أمسية العود والكلمة —
+ * which is the catalogue's top three by display_order, presented chronologically.
+ * Ordering by date alone would put ورشة الإيقاع الشرقي third instead, because it
+ * shares 28 مارس with مهرجان and both fall before أمسية's 05 أبريل.
+ *
+ * So the rank picks the rows and the date orders them, and both the Supabase and
+ * the offline path do it the same way — otherwise the band would reshuffle the
+ * moment real records appeared.
  */
+function shortlist(rows: EventItem[], limit: number): EventItem[] {
+  return [...rows]
+    .sort((a, b) => a.display_order - b.display_order)
+    .slice(0, limit)
+    .sort((a, b) => a.event_date.localeCompare(b.event_date));
+}
+
 export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return CANONICAL_UPCOMING_EVENTS.slice(0, limit);
+      return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
     }
 
     const supabase = await createClient();
@@ -147,16 +163,16 @@ export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
       .select(EVENT_COLUMNS)
       .eq("is_published", true)
       .gte("event_date", nowIso)
-      .order("event_date", { ascending: true })
+      .order("display_order", { ascending: true })
       .limit(limit);
 
     if (error || !data || data.length === 0) {
-      return CANONICAL_UPCOMING_EVENTS.slice(0, limit);
+      return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
     }
 
-    return data as unknown as EventItem[];
+    return shortlist(data as unknown as EventItem[], limit);
   } catch {
-    return CANONICAL_UPCOMING_EVENTS.slice(0, limit);
+    return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
   }
 }
 
