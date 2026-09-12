@@ -23,6 +23,8 @@ export function BookingHeader({ subtitle }: BookingHeaderProps) {
 
   return (
     <PageHero
+      // 141:15632 is 390x688 hung at y=-10, so the band is 0..678 here.
+      mobileHeight={678}
       height={611}
       contentTop={247}
       title={t.rich("title", {

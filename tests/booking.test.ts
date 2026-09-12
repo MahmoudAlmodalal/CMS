@@ -316,7 +316,7 @@ test("Figma 91:17109 — booking page and footer geometry match the frame", () =
   const formRoot = form.slice(form.indexOf("<form"), form.indexOf("<form") + 400);
   assert.match(
     formRoot,
-    /className="flex w-full flex-col text-start lg:w-\[672px\]/,
+    /className="flex w-full flex-col text-start pb-\[52\.8px\] lg:w-\[672px\]/,
     "Form root is a plain column, not a card"
   );
   assert.doesNotMatch(formRoot, /bg-white|shadow|rounded-2xl/, "The form carries no card");
@@ -355,4 +355,54 @@ test("Figma 91:17109 — booking page and footer geometry match the frame", () =
   assert.match(footer, /ms-px/, "Brand block sits 1 from the inline start");
   assert.match(footer, /ms-3 flex h-\[190px\]/, "Explore column sits 12 from the inline start");
   assert.match(footer, /ms-\[25px\]/, "Booking pitch sits 25 from the inline start");
+});
+
+/**
+ * الحجز on the 390 frame — 141:15629.
+ *
+ * The frame is the 1440 layout crushed into 390: several of its boxes are narrower
+ * than their own children and `Frame 43` clips 23.6px of content. What it does
+ * specify is pinned here; the 10px that remain are traced in
+ * docs/figma/DECISIONS.md §14 and are a question for the designer.
+ */
+test("الحجز — the 390 frame's form and sidebar", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(
+    fs.readFileSync(path.join(root, "src/app/[locale]/(public)/booking/page.tsx"), "utf-8")
+  );
+  const header = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingHeader.tsx"), "utf-8")
+  );
+  const formSrc = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingForm.tsx"), "utf-8")
+  );
+  const sidebar = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingSidebar.tsx"), "utf-8")
+  );
+
+  // 141:15632 is 390x688 hung at y=-10.
+  assert.match(header, /mobileHeight=\{678\}/, "The booking hero band is 678 on the 390 frame");
+
+  // Form 141:15488 at (13,762) 363 wide; sidebar 141:15442 at (50,1598) 288 wide.
+  assert.match(page, /gap-\[7px\] px-5 pb-\[390\.2px\] pt-\[84px\]/, "84 opens the column stack, 7 separates it, 390.2 closes it");
+  assert.match(page, /ms-\[-6px\] w-\[363px\] min-w-0/, "The form column is 363 wide at x=13");
+  assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
+  assert.match(sidebar, /ms-8 flex w-\[288px\]/, "The sidebar is 288 wide at x=50");
+  assert.match(sidebar, /lg:ms-0 lg:w-\[412px\]/, "…and 412 on the 1440 frame");
+
+  // The decisive read: the 390 frame puts TWO fields per row, not one. Frame 42 is
+  // الاسم الكامل (175) + رقم الهاتف (175); Frame 43 is الميزانية (164) + البريد (197).
+  const pairedRows = formSrc.match(/grid grid-cols-2 gap-4 pt-\d/g) ?? [];
+  assert.equal(pairedRows.length, 3, "All three paired rows carry two fields at 390 too");
+  assert.doesNotMatch(
+    formSrc,
+    /grid grid-cols-1 gap-4 pt-6/,
+    "No paired row may fall back to a single column"
+  );
+
+  // 141:15565 is a trailing empty 363x52.79 Container — it closes the form at both
+  // widths, so it is not an lg:-only figure.
+  assert.match(formSrc, /flex w-full flex-col text-start pb-\[52\.8px\]/, "The trailing 52.79 closes the form at both widths");
+  assert.doesNotMatch(formSrc, /lg:pb-\[52\.8px\]/, "…and is no longer lg:-only");
 });
