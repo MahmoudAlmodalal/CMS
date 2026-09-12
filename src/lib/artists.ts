@@ -48,8 +48,11 @@ export type ArtistCategoryId = (typeof ARTIST_CATEGORIES)[number]["id"];
  * Figma frame 91:17844 draws two rows of four on /artists, so there are eight; the
  * frame repeats one placeholder artist across all eight cards, which is a stand-in,
  * not copy to reproduce, so the records carry real people and the design's own four
- * photographs, each used twice exactly as the frame does. The first four stay
- * featured, which is what the homepage shows.
+ * photographs, each used twice exactly as the frame does.
+ *
+ * The first six are featured, because the الرئيسية rail (87:14241) draws six tiles
+ * — five of them inside its 1200px box and the sixth clipped at the edge — and
+ * getFeaturedArtists(6) is what fills them.
  */
 export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
   {
@@ -145,7 +148,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
       "قضت منى سنوات في تتبع النوبات الأندلسية بين مخطوطات تطوان وفاس قبل أن تعيد تقديمها حية.",
     specialties: "الموشحات • النوبة الأندلسية • الزجل",
     portrait_image_url: "/assets/artists/artist-4.png",
-    is_featured: false,
+    is_featured: true,
     is_published: true,
     display_order: 5,
     created_at: "2026-09-10T00:00:00Z",
@@ -165,7 +168,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
       "درس كريم في المعهد العالي للموسيقى بتونس، ويعمل اليوم مع الفرقة على توزيع النوبات.",
     specialties: "القانون • التقاسيم • التوزيع",
     portrait_image_url: "/assets/artists/artist-3.png",
-    is_featured: false,
+    is_featured: true,
     is_published: true,
     display_order: 6,
     created_at: "2026-09-10T00:00:00Z",

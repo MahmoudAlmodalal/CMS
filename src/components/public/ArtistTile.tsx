@@ -14,9 +14,19 @@ export interface ArtistTileProps {
  * Home-page artist tile — Figma Nodes 87:14242…87:14286 (Frame 14 rail).
  *
  * Deliberately much barer than the shared <ArtistCard /> used by the /artists
- * directory: 220x293.33 dark photo tile (#2A1D13, r=16) with a bottom-up scrim and
- * two lines of text. Figma carries no category pill, city badge, quote, specialties
- * or booking button here.
+ * directory: a 220x293 tile on #2A1D13 rounded 16 and clipping its own overflow,
+ * carrying a 220x293.333 photograph, a scrim over it, and one text block. Figma
+ * carries no category pill, city badge, quote, specialties or booking button here.
+ *
+ * The text block (87:14245) is placed against the tile at top 208.54 rather than
+ * hung off its bottom, and pads 20 all round: the name in Cairo Bold 16.8/25.2 on
+ * #F0EBE1, then a 20px-tall box padded 4 at the top holding the genre in DM Mono
+ * 10.4/15.6 tracked 1.04 on #C8441B. That comes to 85.2 against the 86 the frame
+ * gives it, and runs 1.5px past the tile, which the tile clips.
+ *
+ * The tile's fourth child (87:14250) is a 40px box whose only paint is 40px of
+ * transparent left and top border — a corner spacer that draws nothing — so it is
+ * not reproduced.
  */
 export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
   const t = useTranslations("artist");
@@ -51,14 +61,18 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       {/* Scrim: linear-gradient(0deg, rgba(23,16,10,.92) 0%, transparent 55%) */}
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,16,10,0.92)_0%,rgba(23,16,10,0)_55%)] pointer-events-none" />
 
-      {/* Text block (Figma EL-64a077da — y=208.54, padding 20) */}
-      <div className="absolute inset-x-0 bottom-0 p-5">
-        <p className="font-sans text-[16.8px] font-bold leading-[1.5] text-[#F0EBE1] line-clamp-1">
+      {/* Text block 87:14245 — placed at 208.54, padded 20. */}
+      <div className="absolute inset-x-0 top-[208.54px] flex flex-col items-start p-[20px] text-start">
+        {/* 87:14246 */}
+        <p className="w-full truncate font-sans text-[16.8px] font-bold leading-[25.2px] text-[#F0EBE1]">
           {artist.name}
         </p>
-        <p className="font-mono text-[10.4px] tracking-[0.1em] leading-[1.5] text-[#C8441B] pt-1 line-clamp-1">
-          {artist.genre_tag}
-        </p>
+        {/* 87:14248 */}
+        <div className="h-[20px] w-[180px] max-w-full pt-[4px]">
+          <p className="truncate font-mono text-[10.4px] leading-[15.6px] tracking-[1.04px] text-[#C8441B]">
+            {artist.genre_tag}
+          </p>
+        </div>
       </div>
     </Link>
   );
