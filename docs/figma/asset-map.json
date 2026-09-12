@@ -408,6 +408,29 @@
         268,
         34
       ]
+    },
+    {
+      "file": "public/assets/figma/about-musician.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        -2,
+        958,
+        551,
+        491
+      ],
+      "subject": "blob portrait, من نحن band",
+      "unveiledFrom": 0.5,
+      "ground": [
+        249,
+        247,
+        240
+      ],
+      "clearedToGround": [
+        0,
+        0,
+        101,
+        36
+      ]
     }
   ],
   "outstanding": [
