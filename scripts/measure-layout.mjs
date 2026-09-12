@@ -81,6 +81,16 @@ async function measure(frame, port) {
       if (result?.result?.value === "complete") break;
       await new Promise((r) => setTimeout(r, 250));
     }
+    // Measure on the real faces, not the fallback. Every face is font-display: swap,
+    // so probing inside the swap window reports line boxes for Cairo-substituted
+    // text and reads back a scrollHeight the page never settles at. Same wait as
+    // capture-visual.mjs, or the two tools disagree about the same page.
+    for (let i = 0; i < 60; i += 1) {
+      const { result } = await cdp(ws, "Runtime.evaluate",
+        { expression: `document.fonts.status === "loaded"`, returnByValue: true }, sessionId);
+      if (result?.result?.value === true) break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
     await new Promise((r) => setTimeout(r, 600));
     const { result } = await cdp(ws, "Runtime.evaluate", { expression: probe(selectors), returnByValue: true }, sessionId);
     ws.close();
