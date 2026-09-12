@@ -77,7 +77,26 @@
   },
   "artist": {
     "viewProfile": "View the profile of {name}",
-    "portraitAlt": "Portrait of {name}"
+    "portraitAlt": "Portrait of {name}",
+    "bookCta": "Book the artist ♪",
+    "contactCta": "Get in touch",
+    "galleryRegion": "Artist gallery",
+    "galleryTitle": "<em>Art</em> at its truest moment",
+    "stageAlt": "A moment from an Andalusia live performance",
+    "quoteAttribution": "— {name}",
+    "careerTitle": "Her career",
+    "careerFilters": "Career categories",
+    "careerFilter": {
+      "albums": "Albums",
+      "concerts": "Concerts",
+      "songs": "Songs"
+    },
+    "releaseStudio": "Studio album",
+    "releaseLive": "Live album",
+    "coverAlt": "Cover of the album {title}",
+    "trackCount": "{count, plural, =0 {No tracks} one {{value} track} other {{value} tracks}}",
+    "bookingHeadline": "Want {name} at your occasion?",
+    "bookingBody": "Talk to us and we will shape a musical experience no one forgets."
   },
   "article": {
     "read": "Read the article",

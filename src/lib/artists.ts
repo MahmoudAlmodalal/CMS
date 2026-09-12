@@ -16,6 +16,14 @@ export type Artist = Omit<
   full_bio: string;
   specialties: string;
   portrait_image_url: string;
+  /**
+   * The profile card of الفنان (134:4674) draws a different photograph from the
+   * card the الفنانين grid draws for the same artist: the grid reuses four
+   * placeholder photographs across its eight cards while the detail frame carries
+   * the artist's own portrait. There is no such column in Supabase yet, so it
+   * stays optional and the profile card falls back to portrait_image_url.
+   */
+  profile_image_url?: string | null;
   is_featured: boolean;
   is_published: boolean;
   display_order: number;
@@ -51,12 +59,15 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
     category: "singing",
     genre_tag: "غناء عربي أصيل",
     city: "الدار البيضاء",
-    quote: "الصوت هو المرآة الأصدق للروح، وفي المقامات الأندلسية تتسع الروح لتحتضن العالم.",
-    spotlight_quote: null,
-    short_bio: "صوت طربي أصيل يجمع بين عمق التراث المغاربي وسحر الموشحات الأندلسية.",
-    full_bio: "نشأت سارة في بيئة فنية عريقة، وتتلمذت على يد كبار أساتذة الطرب الأندلسي في فاس والرباط.",
+    quote: "الصوت هو المرآة الأصدق للروح.",
+    spotlight_quote: "الصوت هو المرآة الأصدق للروح — لا تكذب على جمهورك أبداً.",
+    short_bio:
+      "مغنية مصرية تختصص في الطرب الأصيل والغناء العاطفي. صوتها يحمل دفء الأرض وعمق التراث، مع لمسة معاصرة تلامس الأجيال.",
+    full_bio:
+      "سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل والغناء الأندلسي، صوتها يجمع بين الأصالة والمعاصرة، تجوب المسارح العربية والدولية منذ أكثر من عقد من الزمن.",
     specialties: "الصوت • الغناء الأندلسي • الطرب الأصيل",
     portrait_image_url: "/assets/artists/artist-1.png",
+    profile_image_url: "/assets/artists/sara-alsawt-profile.png",
     is_featured: true,
     is_published: true,
     display_order: 1,

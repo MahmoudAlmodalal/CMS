@@ -11,7 +11,7 @@
     "figma:spec": "node scripts/figma-spec.mjs",
     "figma:manifest": "node scripts/figma-manifest.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/i18n.test.ts tests/ui-foundation.test.ts tests/empirical-m1-challenge.test.ts tests/token-parity.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts tests/booking.test.ts tests/academy.test.ts tests/news.test.ts tests/media.test.ts tests/public-integration.test.ts tests/home-page.test.ts tests/admin-shell.test.ts tests/admin-dashboard.test.ts tests/admin-settings.test.ts tests/admin-artists.test.ts tests/admin-tracks.test.ts tests/admin-events.test.ts tests/admin-academy.test.ts tests/admin-articles.test.ts tests/admin-bookings.test.ts",
+    "test": "node --experimental-strip-types --test tests/rtl-foundation.test.ts tests/i18n.test.ts tests/ui-foundation.test.ts tests/empirical-m1-challenge.test.ts tests/token-parity.test.ts tests/admin-auth.test.ts tests/storage.test.ts tests/server-validation.test.ts tests/public-shell.test.ts tests/events-page.test.ts tests/artist-detail.test.ts tests/booking.test.ts tests/academy.test.ts tests/news.test.ts tests/media.test.ts tests/public-integration.test.ts tests/home-page.test.ts tests/admin-shell.test.ts tests/admin-dashboard.test.ts tests/admin-settings.test.ts tests/admin-artists.test.ts tests/admin-tracks.test.ts tests/admin-events.test.ts tests/admin-academy.test.ts tests/admin-articles.test.ts tests/admin-bookings.test.ts",
     "visual:screenshots": "node scripts/capture-visual.mjs",
     "visual:diff": "python3 scripts/visual-diff.py"
   },

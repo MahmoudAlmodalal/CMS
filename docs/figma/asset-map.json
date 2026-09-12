@@ -304,6 +304,110 @@
       ],
       "subject": "thumbnail, حفل الذكرى الخامسة",
       "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/sara-alsawt-profile.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        151,
+        671,
+        160,
+        160
+      ],
+      "subject": "portrait, artist profile card",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/stage-1.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        884,
+        1042,
+        266,
+        266
+      ],
+      "subject": "stage photograph, gallery inline start",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/artists/stage-2.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        290,
+        1042,
+        266,
+        266
+      ],
+      "subject": "stage photograph, gallery inline end",
+      "scrubbed": null
+    },
+    {
+      "file": "public/assets/releases/release-1.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        1019,
+        1668,
+        269,
+        269
+      ],
+      "subject": "cover, نسمة من الأندلس",
+      "scrubbed": [
+        184,
+        10,
+        268,
+        34
+      ]
+    },
+    {
+      "file": "public/assets/releases/release-2.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        730,
+        1668,
+        269,
+        269
+      ],
+      "subject": "cover, حنين",
+      "scrubbed": [
+        184,
+        10,
+        268,
+        34
+      ]
+    },
+    {
+      "file": "public/assets/releases/release-3.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        441,
+        1668,
+        269,
+        269
+      ],
+      "subject": "cover, ليالي بيروت",
+      "scrubbed": [
+        202,
+        10,
+        264,
+        34
+      ]
+    },
+    {
+      "file": "public/assets/releases/release-4.png",
+      "frame": "artist-detail-desktop",
+      "nodeRect": [
+        152,
+        1668,
+        269,
+        269
+      ],
+      "subject": "cover, عطر الماضي",
+      "scrubbed": [
+        184,
+        10,
+        268,
+        34
+      ]
     }
   ],
   "outstanding": [
@@ -330,6 +434,18 @@
       "frame": "events-desktop",
       "node": "91:16745",
       "reason": "headline and gradient are composited over the photo"
+    },
+    {
+      "file": "public/assets/figma/artist-detail-hero.png",
+      "frame": "artist-detail-desktop",
+      "node": "134:4631",
+      "reason": "the artist name, quote, standfirst and CTAs are composited over the photo"
+    },
+    {
+      "file": "public/assets/branding/booking-banner.png",
+      "frame": "artist-detail-desktop",
+      "node": "134:4660",
+      "reason": "the 88% espresso wash and every line of copy are composited over the photo"
     }
   ],
   "blockedBy": "The outstanding files need a real export from Figma. The MCP asset URLs live on www.figma.com, which this environment's egress policy blocks (403 on CONNECT), so they cannot be fetched from here."
