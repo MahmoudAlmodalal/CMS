@@ -306,6 +306,18 @@
       "scrubbed": null
     },
     {
+      "file": "public/assets/events/home-band.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        0,
+        3550,
+        505,
+        678
+      ],
+      "subject": "photograph, نلتقي band",
+      "scrubbed": null
+    },
+    {
       "file": "public/assets/artists/sara-alsawt-profile.png",
       "frame": "artist-detail-desktop",
       "nodeRect": [

@@ -45,8 +45,14 @@ const CATEGORY_KEY_MAP: Record<string, string> = {
  * throughout. Row 2's event is also drawn as 20 مارس here and 28 مارس on the
  * الفعاليات frame (91:16532); the catalogue's date is the one kept.
  *
+ * The photograph (87:14467) is band artwork rather than an event's own picture:
+ * the frame draws one fixed image beside the panel, and the rows carry no
+ * thumbnails to source it from. Its node is 509 wide hung 4px off the artboard, so
+ * only 505 of it is ever drawn and the asset is cut to what shows.
+ *
  * Ticket links stay on /booking?event_id=... — the project forbids /events/[slug].
  */
+const BAND_PHOTOGRAPH = "/assets/events/home-band.png";
 export function HomeEvents({ events }: HomeEventsProps) {
   const t = useTranslations("home");
   const ev = useTranslations("event");
@@ -56,7 +62,6 @@ export function HomeEvents({ events }: HomeEventsProps) {
     return null;
   }
 
-  const featuredImage = events[0]?.image_url || "/assets/events/default-event.png";
   const day = new Intl.DateTimeFormat("ar-EG", { day: "numeric", timeZone: "UTC" });
   const month = new Intl.DateTimeFormat("ar-EG", { month: "long", timeZone: "UTC" });
 
@@ -144,14 +149,14 @@ export function HomeEvents({ events }: HomeEventsProps) {
         </div>
       </div>
 
-      {/* Photograph 87:14467 — 509 wide, hanging 4px off the inline end. */}
-      <div className="relative mt-8 h-64 w-full overflow-hidden rounded-s-[16px] bg-brand-espresso sm:h-80 lg:absolute lg:end-[-4px] lg:top-0 lg:mt-0 lg:h-[678px] lg:w-[509px]">
+      {/* Photograph 87:14467 — 509 wide hung 4px off the inline end, 505 drawn. */}
+      <div className="relative mt-8 h-64 w-full overflow-hidden rounded-s-[16px] bg-brand-espresso sm:h-80 lg:absolute lg:end-0 lg:top-0 lg:mt-0 lg:h-[678px] lg:w-[505px]">
         <Image
-          src={featuredImage}
+          src={BAND_PHOTOGRAPH}
           alt=""
           aria-hidden="true"
           fill
-          sizes="(max-width: 1023px) 100vw, 509px"
+          sizes="(max-width: 1023px) 100vw, 505px"
           quality={90}
           className="object-cover"
         />

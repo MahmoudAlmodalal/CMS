@@ -108,6 +108,13 @@ CROPS = [
      "thumbnail, ورشة الإيقاع الشرقي", False),
     ("events-desktop", 1201, 1450, 140, 105, "public/assets/events/event-5.png",
      "thumbnail, حفل الذكرى الخامسة", False),
+    # الرئيسية's نلتقي band draws one photograph (87:14467) rather than an event's
+    # own picture: a 509x678 box hung 4px off the artboard, so only 505 of it is
+    # ever drawn, rounded 16 on its inner edge where the cream shows through the
+    # corners. Nothing is composited on it — the panel and its copy sit beside it,
+    # not over it — so the crop is the photograph as drawn, at the size it is drawn.
+    ("home-desktop", 0, 3550, 505, 678, "public/assets/events/home-band.png",
+     "photograph, نلتقي band", False),
     # الفنان (134:4420). The profile portrait (134:4674) is a 160 circle with a 20%
     # primary ring drawn inside it; the crop carries the ring, and the card's own
     # rounding clips the cream that sits outside the circle.
