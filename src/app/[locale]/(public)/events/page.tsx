@@ -1,11 +1,7 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { Container } from "@/components/ui/LayoutPrimitives";
-import {
-  EventsHeader,
-  EventsCatalogView,
-} from "@/components/public/events";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { EventsCatalogView } from "@/components/public/events";
 import { PageHero } from "@/components/public";
 import {
   getPublishedEvents,
@@ -15,14 +11,16 @@ import {
 import type { CategoryFilterId } from "@/lib/types/events";
 
 /**
- * Task 35 — Events (/events)
- * Canonical spec:
- * - Content Inventory §7 (Figma Node 91:16532)
- * - Display published events with category, date, venue, city, image, and ticket/booking action
- * - Implement only confirmed filters and fields
- * - Link internal booking to /booking?event_id=...
- * - STRICT RULE: NO dynamic event detail route (no event slug route)
- * - ISR: revalidate = 1800 (APPLICATION_ARCHITECTURE.md §3)
+ * الفعاليات — Figma frame 91:16532.
+ *
+ * The frame is 1440x2290 on brand-cream: the hero band 0-611, the filter bar at
+ * 671, the two columns from 748 to 1576, the footer at 1905. The 329px of air
+ * under the list is the frame's, not a rhythm — it is what leaves room for the
+ * dotted mark at 1682.
+ *
+ * STRICT RULE: there is no per-event detail route. Every booking, from the row
+ * link or the featured panel, goes to /booking?event_id=...
+ * ISR: revalidate = 1800 (APPLICATION_ARCHITECTURE.md §3).
  */
 export const revalidate = 1800;
 
@@ -46,55 +44,62 @@ export async function generateMetadata({
 }
 
 interface EventsPageProps {
-  searchParams?: Promise<{
-    category?: string;
-  }>;
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ category?: string }>;
 }
 
-export default async function EventsPage({ searchParams }: EventsPageProps) {
-  const params = searchParams ? await searchParams : {};
-  const requestedCategory = (params.category as CategoryFilterId) || "all";
+export default async function EventsPage({ params, searchParams }: EventsPageProps) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-  // Fetch dynamic content via Data Access Layer
+  const query = searchParams ? await searchParams : {};
+  const requestedCategory = (query.category as CategoryFilterId) || "all";
+
   const [events, featuredEvent, subtitle, t] = await Promise.all([
     getPublishedEvents(),
     getFeaturedEvent(),
     getEventsSubtitle(),
-    getTranslations("page"),
+    getTranslations("events"),
   ]);
 
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col bg-brand-cream">
+      {/* Hero band 91:16745/91:16746 — 611 tall, the headline 247 down in Qahwa
+          Arabic 64/91.5 with the first word in primary-500, the standfirst 24px
+          under it. This frame draws no pill. */}
       <PageHero
-        eyebrow={t("eventsEyebrow")}
-        title={t("eventsTitle")}
+        title={t.rich("title", {
+          em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+        })}
         subtitle={subtitle}
+        height={611}
+        contentTop={247}
+        titleSize={64}
+        titleLeading={91.5}
+        titleTone="text-brand-tint"
       />
-      <Container className="space-y-10 sm:space-y-12">
-        {/* 1. Header (Figma 91:16532 / 91:16748) */}
-        <div className="sr-only"><EventsHeader title={t("eventsTitle")} subtitle={subtitle} /></div>
 
-        {/* 2. Catalog View with Suspense for useSearchParams boundary */}
-        <Suspense
-          fallback={
-            <div className="space-y-8 animate-pulse">
-              <div className="h-64 sm:h-80 bg-secondary-200 rounded-card w-full" />
-              <div className="h-10 bg-secondary-200 rounded-badge w-64" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="h-80 bg-secondary-200 rounded-card" />
-                <div className="h-80 bg-secondary-200 rounded-card" />
-                <div className="h-80 bg-secondary-200 rounded-card" />
-              </div>
-            </div>
-          }
-        >
+      {/* Catalogue band — the bar 60px under the hero, the columns 24px under it,
+          and 329px of air down to the footer. */}
+      <section className="relative w-full overflow-hidden pb-[120px] pt-10 lg:pb-[329px] lg:pt-[60px]">
+        {/* Dotted marks 91:16533 and 91:16638, both hanging off the artboard. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-[94px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-events-start.png')] bg-cover bg-no-repeat lg:block"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-0 top-[1071px] hidden h-[112px] w-[64px] bg-[url('/assets/branding/dots-events-end.png')] bg-cover bg-no-repeat lg:block"
+        />
+
+        <Suspense fallback={<div className="min-h-[828px]" />}>
           <EventsCatalogView
             initialEvents={events}
             featuredEvent={featuredEvent}
             initialCategory={requestedCategory}
           />
         </Suspense>
-      </Container>
+      </section>
     </div>
   );
 }

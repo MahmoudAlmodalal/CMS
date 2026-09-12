@@ -14,7 +14,6 @@ const root = path.resolve(".");
 test("Task 35 — 1. Events Page Architecture & Component Files", () => {
   const expectedFiles = [
     "src/app/[locale]/(public)/events/page.tsx",
-    "src/components/public/events/EventsHeader.tsx",
     "src/components/public/events/EventsFilterTabs.tsx",
     "src/components/public/events/FeaturedEventBanner.tsx",
     "src/components/public/events/EventCard.tsx",
@@ -33,7 +32,6 @@ test("Task 35 — 1. Events Page Architecture & Component Files", () => {
     path.join(root, "src/components/public/events/index.ts"),
     "utf-8"
   );
-  assert.match(barrelContent, /export \{ EventsHeader/);
   assert.match(barrelContent, /export \{ EventsFilterTabs/);
   assert.match(barrelContent, /export \{ FeaturedEventBanner/);
   assert.match(barrelContent, /export \{ EventCard/);
@@ -85,86 +83,117 @@ test("Task 35 — 3. Confirmed Category Filter Tabs Mapping (Figma 186:1781-186:
   assert.match(tabsContent, /role="tablist"/, "Tabs container must use role='tablist'");
   assert.match(tabsContent, /role="tab"/, "Tab items must use role='tab'");
   assert.match(tabsContent, /aria-selected/, "Tab items must reflect aria-selected state");
-  assert.match(tabsContent, /bg-primary-500/, "Active tab must use primary-500 token");
-  assert.match(tabsContent, /rounded-badge/, "Tabs must use rounded-badge token");
+
+  // Node 91:16930 — a 415x53.12 secondary-50 pill, 14px gaps, 62-wide idle tabs
+  // and a 75-wide primary-500 active tab, all at Cairo Bold 14.08/21.12.
+  assert.match(tabsContent, /lg:w-\[415px\]/, "Filter bar is 415 wide on the frame");
+  assert.match(tabsContent, /bg-secondary-50/, "Filter bar sits on secondary-50");
+  assert.match(tabsContent, /gap-\[14px\]/, "Tabs are 14px apart");
+  assert.match(tabsContent, /text-\[14\.08px\]/, "Tab labels are Cairo Bold 14.08");
+  assert.match(tabsContent, /w-\[75px\] bg-primary-500/, "Active tab is 75 wide on primary-500");
+  assert.match(tabsContent, /w-\[62px\]/, "Idle tabs are 62 wide");
+  assert.match(tabsContent, /rounded-badge/, "Tabs use the 16px badge radius");
 });
 
-test("Task 35 — 4. Featured Event Banner Specification (Figma 91:16919-91:16925)", () => {
+test("Task 35 — 4. Featured Event Panel (Figma 91:16914)", () => {
   const bannerContent = fs.readFileSync(
     path.join(root, "src/components/public/events/FeaturedEventBanner.tsx"),
     "utf-8"
   );
 
-  assert.match(
-    bannerContent,
-    /الفعالية الأبرز/,
-    "Featured banner must display confirmed kicker badge 'الفعالية الأبرز'"
+  // Copy lives in the catalogue; the component carries the frame's geometry.
+  assert.equal(
+    arMessages["events.featuredBadge"],
+    "الفعالية الأبرز",
+    "The panel's eyebrow is confirmed by node 91:16919"
   );
-  assert.match(bannerContent, /event\.title/, "Banner must render event title");
-  assert.match(bannerContent, /event\.performer_name/, "Banner must render performer attribution");
-  assert.match(bannerContent, /dateLocationString/, "Banner must format date and location string");
+  assert.equal(
+    arMessages["events.bookNow"],
+    "أحجز الآن",
+    "The panel's button carries the frame's own spelling (I91:16963;2:1537)"
+  );
+
+  assert.match(bannerContent, /lg:h-\[669px\] lg:w-\[503px\]/, "Panel is 503x669");
+  assert.match(bannerContent, /rounded-card/, "Panel uses the 24px card radius");
+  assert.match(bannerContent, /bg-brand-espresso/, "Panel sits on espresso");
+  assert.match(bannerContent, /lg:h-\[397px\]/, "Cover is 397 tall");
+  assert.match(bannerContent, /text-\[9\.92px\][\s\S]*?tracking-\[1\.3888px\]/, "Eyebrow is 9.92 with 1.3888 tracking");
+  assert.match(bannerContent, /text-\[20px\] font-bold leading-\[27px\]/, "Title is Cairo Bold 20/27");
+  assert.match(bannerContent, /text-\[13\.6px\] leading-\[20\.4px\]/, "Performer is Cairo 13.6/20.4");
+  assert.match(bannerContent, /text-\[13\.12px\] leading-\[19\.68px\]/, "Date line is Cairo 13.12/19.68");
+  assert.match(bannerContent, /h-11 w-full max-w-\[341px\]/, "Button is 341x44");
+
+  assert.match(bannerContent, /event\.title/, "Panel must render the event title");
+  assert.match(bannerContent, /event\.performer_name/, "Panel must render performer attribution");
+  assert.match(bannerContent, /dateLocationString/, "Panel must format date and place");
   assert.match(
     bannerContent,
     /\/booking\?event_id=/,
-    "Banner CTA must link internal booking to /booking?event_id=[id]"
-  );
-  assert.match(
-    bannerContent,
-    /احجز الآن/,
-    "Banner button must display confirmed label 'احجز الآن'"
+    "Panel CTA must link internal booking to /booking?event_id=[id]"
   );
 });
 
-test("Task 35 — 5. Event Card Specification (Figma 91:16800-91:16814 & Component 16)", () => {
+test("Task 35 — 5. Event Row (Figma 91:16794)", () => {
   const cardContent = fs.readFileSync(
     path.join(root, "src/components/public/events/EventCard.tsx"),
     "utf-8"
   );
 
-  // Category badge
-  assert.match(cardContent, /categoryLabel/, "Event card must display category badge");
-  assert.match(cardContent, /rounded-badge/, "Category badge must use rounded-badge token");
+  assert.equal(arMessages["events.book"], "احجز", "The row's link label is confirmed by node 91:16814");
 
-  // Date block
-  assert.match(cardContent, /font-mono/, "Date day must use DM Mono font");
-  assert.match(cardContent, /dayArabic/, "Date day must format Arabic digits");
-  assert.match(cardContent, /monthArabic/, "Date month must use Cairo Arabic month");
+  // Row shell and the three blocks the frame places on it.
+  assert.match(cardContent, /lg:h-\[150\.135px\]/, "Row is 150.135 tall");
+  assert.match(cardContent, /border-\[0\.667px\] border-brand-espresso\/10/, "Row hairline is 10% espresso");
+  assert.match(cardContent, /lg:end-0 lg:top-0 lg:h-\[148\.802px\] lg:w-\[110px\]/, "Date block is 110 wide at the inline end");
+  assert.match(cardContent, /lg:end-\[110\.33px\] lg:top-\[14\.33px\]/, "Text block starts 110.33 in, 14.33 down");
+  assert.match(cardContent, /lg:start-\[21px\] lg:top-\[24\.33px\]/, "Thumbnail is 21 in from the inline start");
 
-  // Performer & City string
-  assert.match(cardContent, /performerCityString/, "Event card must format 'performer · city' string");
+  // Date chip 91:16807 — Cairo Black 24/24 over Cairo SemiBold 9.6/14.4.
+  assert.match(cardContent, /dayArabic/, "Date day is formatted for the locale");
+  assert.match(cardContent, /monthArabic/, "Date month is formatted for the locale");
+  assert.match(cardContent, /timeZone: "UTC"/, "Dates are formatted in UTC so the day cannot slide");
+  assert.match(cardContent, /text-\[24px\] font-black leading-\[24px\]/, "Day is Cairo Black 24/24");
+  assert.match(cardContent, /text-\[9\.6px\] font-semibold/, "Month is Cairo SemiBold 9.6");
 
-  // Title & Location
-  assert.match(cardContent, /event\.title/, "Event card must render title");
-  assert.match(cardContent, /event\.location/, "Event card must render location");
+  // Category pill 91:16799 — a 2px radius, not a badge.
+  assert.match(cardContent, /categoryLabel/, "Row must display the category label");
+  assert.match(cardContent, /rounded-\[2px\] border-\[0\.667px\] border-primary-500\/25/, "Category pill is a 2px box");
 
-  // Action Button
+  assert.match(cardContent, /event\.title/, "Row must render the title");
+  assert.match(cardContent, /performerCityString/, "Row must format 'performer · place'");
   assert.match(
     cardContent,
     /\/booking\?event_id=/,
-    "Event card action button must route to /booking?event_id=[id]"
-  );
-  assert.match(
-    cardContent,
-    /["']احجز["']/,
-    "Event card action button must display confirmed label 'احجز'"
+    "Row link must route to /booking?event_id=[id]"
   );
 });
 
-test("Task 35 — 6. Events Header & Subtitle Integration", () => {
-  const headerContent = fs.readFileSync(
-    path.join(root, "src/components/public/events/EventsHeader.tsx"),
+test("Task 35 — 6. Hero Band & Subtitle Integration (Figma 91:16746)", () => {
+  const pageContent = fs.readFileSync(
+    path.join(root, "src/app/[locale]/(public)/events/page.tsx"),
     "utf-8"
   );
 
-  assert.match(headerContent, /t\("title"\)/, "Events header must render the events.title message");
+  assert.ok(
+    !fs.existsSync(path.join(root, "src/components/public/events/EventsHeader.tsx")),
+    "The frame draws no separate events header; the band is the shared PageHero"
+  );
+
+  assert.match(pageContent, /<PageHero/, "Events opens on the shared hero band");
+  assert.match(pageContent, /height=\{611\}/, "Hero band is 611 tall");
+  assert.match(pageContent, /contentTop=\{247\}/, "Headline sits 247 down");
+  assert.match(pageContent, /titleSize=\{64\}/, "Headline is 64px on this frame");
+  assert.match(pageContent, /titleTone="text-brand-tint"/, "Uncoloured run is primary-50, not secondary-400");
+  assert.doesNotMatch(pageContent, /eyebrow=/, "This frame draws no eyebrow pill");
+  assert.match(pageContent, /t\.rich\("title"/, "Headline colours its first word");
+  assert.match(pageContent, /subtitle=\{subtitle\}/, "Standfirst comes from site_settings");
+
   assert.equal(
     arMessages["events.title"],
-    "مواعيد تترك أثراً جميلاً.",
-    "Arabic events title is confirmed by Figma"
+    "<em>مواعيد</em> تترك أثراً جميلاً.",
+    "Arabic events headline is confirmed by node 91:16748"
   );
-  assert.ok(enMessages["events.title"], "The events title must exist in English too");
-  assert.match(headerContent, /subtitle/, "Events header must accept subtitle from site_settings");
-  assert.match(headerContent, /font-calligraphic/, "Events title must use calligraphic font");
+  assert.ok(enMessages["events.title"], "The events headline must exist in English too");
 });
 
 test("Task 35 — 7. Events Data Access Layer (DAL)", () => {

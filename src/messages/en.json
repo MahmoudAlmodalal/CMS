@@ -166,21 +166,17 @@
   },
   "events": {
     "kicker": "Show and event schedule",
-    "title": "Dates that leave a beautiful mark.",
+    "title": "<em>Dates</em> that leave a beautiful mark.",
     "filterTabs": "Event categories",
     "featuredRegion": "Featured event",
     "featuredBadge": "Featured event",
     "listRegion": "Event list",
-    "count": "Showing {count} events",
-    "countNone": "No events",
     "emptyTitle": "No events scheduled right now",
     "emptyBody": "Nothing is published in this category at the moment. Browse all events, or check back soon.",
     "showAll": "View all events",
     "book": "Book",
     "bookNow": "Book now",
-    "bookTicket": "Book your ticket",
-    "privateRequest": "Private booking request",
-    "posterFallback": "Andalusia"
+    "bookTicket": "Book your ticket"
   },
   "booking": {
     "kicker": "Booking events and private shows",
