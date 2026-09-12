@@ -30,7 +30,8 @@ export interface ArtistTileProps {
  */
 export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
   const t = useTranslations("artist");
-  const resolved = resolveMediaUrl("artists", artist.portrait_image_url?.trim() || "");
+  const tileImage = artist.rail_image_url?.trim() || artist.portrait_image_url?.trim() || "";
+  const resolved = resolveMediaUrl("artists", tileImage);
 
   return (
     <Link
