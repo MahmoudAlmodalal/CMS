@@ -37,7 +37,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
     <Link
       href={`/artists/${artist.slug}`}
       data-testid={`artist-tile-${artist.slug}`}
-      className="group relative block w-[220px] h-[293px] shrink-0 rounded-[16px] overflow-hidden bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className="group relative block h-[239px] w-[160px] shrink-0 rounded-[16px] lg:h-[293px] lg:w-[220px] overflow-hidden bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       aria-label={t("viewProfile", { name: artist.name })}
     >
       {resolved ? (
@@ -45,7 +45,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
           src={resolved}
           alt={t("portraitAlt", { name: artist.name })}
           fill
-          sizes="220px"
+          sizes="(max-width: 1023px) 160px, 220px"
           priority={priority}
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
@@ -63,7 +63,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,16,10,0.92)_0%,rgba(23,16,10,0)_55%)] pointer-events-none" />
 
       {/* Text block 87:14245 — placed at 208.54, padded 20. */}
-      <div className="absolute inset-x-0 top-[208.54px] flex flex-col items-start p-[20px] text-start">
+      <div className="absolute inset-x-0 top-[163px] flex flex-col items-start p-[20px] text-start lg:top-[208.54px]">
         {/* 87:14246 */}
         <p className="w-full truncate font-sans text-[16.8px] font-bold leading-[25.2px] text-[#F0EBE1]">
           {artist.name}

@@ -80,7 +80,7 @@ export function BookingBanner({
 
   return (
     <section
-      className="relative isolate h-auto w-full overflow-hidden bg-brand-espresso py-14 text-brand-tint lg:h-[498px] lg:py-0"
+      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-14 text-brand-tint lg:block lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
       <div

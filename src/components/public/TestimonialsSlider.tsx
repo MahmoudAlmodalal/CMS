@@ -21,6 +21,14 @@ interface TestimonialsSliderProps {
  *   beneath it, and a 36x36 round avatar alongside (176:1822), 9px gap
  * - Arrows (176:5834): 48px white pills, radius 50px
  * - Indicators (176:2369): 24x12 terracotta pill + 12x12 white dots
+ *
+ * The 390 frame (136:5416, 0..450 at y=2516) draws none of the carousel furniture:
+ * no arrows and no indicators, just the heading 83 down in a 48 box and one white
+ * 305x167 card 48 under it, at x=32 — 33 in from the Container's own start edge.
+ * Inside the card the lockup comes first (136:7490, 36 tall, 26.5 down, the avatar
+ * at the inline start) and the quote under it (136:7506, a 78 block whose 66 of
+ * text is 12 down). The band closes 104 under the card, and the next one opens 30
+ * after that, which the page carries.
  */
 export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
   const t = useTranslations("testimonials");
@@ -63,38 +71,38 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
 
   return (
     <section
-      className="min-h-[597px] lg:h-[597px] bg-[#F9F7F0] flex flex-col justify-center relative overflow-hidden py-16 lg:py-0"
+      className="relative flex h-[450px] flex-col overflow-hidden bg-[#F9F7F0] pt-[83px] lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:pt-0"
       aria-roledescription="carousel"
       aria-label={t("region")}
     >
       <Container>
-        <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-10">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:space-y-10">
           {/* Section Header (Figma 87:14314 — Cairo Bold 64px, 2-fill) */}
-          <h2 className="font-sans text-3xl sm:text-4xl lg:text-[64px] font-bold text-black leading-[1.4296875]">
+          <h2 className="font-sans text-[32px] font-bold leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
             <Highlight text={home("testimonialsHeading")} />
           </h2>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
-          <div className="w-full max-w-[805px] min-h-[161px] mx-auto flex items-center justify-between gap-4 sm:gap-6">
+          <div className="ms-[33px] mt-[48px] h-[167px] w-[305px] rounded-[16px] bg-white lg:mx-auto lg:ms-0 lg:mt-0 lg:flex lg:h-auto lg:min-h-[161px] lg:w-full lg:max-w-[805px] lg:items-center lg:justify-between lg:gap-6 lg:rounded-none lg:bg-transparent">
             {/* Previous Arrow (Logical RTL: right arrow moves back) */}
             <button
               type="button"
               onClick={handlePrev}
-              className="h-12 px-3 rounded-[50px] bg-white flex items-center justify-center text-brand-espresso hover:text-brand-primary active:scale-95 transition-all shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="hidden h-12 shrink-0 items-center justify-center rounded-[50px] bg-white px-3 text-brand-espresso transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:flex"
               aria-label={t("previous")}
             >
               <ChevronStartIcon size={24} />
             </button>
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
-            <div className="flex-1 max-w-[553px] flex flex-col items-center text-center gap-4">
+            <div className="flex h-full flex-col-reverse items-start px-[20.67px] pt-[26.5px] text-start lg:h-auto lg:max-w-[553px] lg:flex-1 lg:flex-col lg:items-center lg:gap-4 lg:p-0 lg:text-center">
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
-              <blockquote className="font-sans text-base sm:text-lg lg:text-[20px] text-black font-medium leading-[1.52] max-w-[540px]">
+              <blockquote className="h-[78px] w-full pt-[12px] font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
                 &ldquo;{current.quote}&rdquo;
               </blockquote>
 
               {/* Author lockup: name + stars, avatar alongside (176:2353, gap 9) */}
-              <div className="flex items-center gap-[9px]">
+              <div className="flex h-[36px] items-center gap-[9px]">
                 <div className="flex flex-col items-end">
                   <cite className="font-sans text-[13.12px] font-bold text-black not-italic leading-[1.5]">
                     {current.author_name}
@@ -140,7 +148,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
 
               {/* Indicators (Frame 176:2369 — 24x12 pill + 12x12 dots) */}
               <div
-                className="flex items-center justify-center gap-0.5 pt-2"
+                className="hidden items-center justify-center gap-0.5 pt-2 lg:flex"
                 role="tablist"
                 aria-label={t("indicators")}
               >
@@ -164,7 +172,7 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
             <button
               type="button"
               onClick={handleNext}
-              className="h-12 px-3 rounded-[50px] bg-white flex items-center justify-center text-brand-espresso hover:text-brand-primary active:scale-95 transition-all shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="hidden h-12 shrink-0 items-center justify-center rounded-[50px] bg-white px-3 text-brand-espresso transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:flex"
               aria-label={t("next")}
             >
               <ChevronEndIcon size={24} />
