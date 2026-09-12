@@ -332,5 +332,27 @@ test("Figma 91:17109 — booking page and footer geometry match the frame", () =
   assert.match(footer, /footer-mark\.png/, "Footer must use the corner mark cropped from the reference");
   assert.doesNotMatch(footer, /bg-repeat/, "The arabesque is not a repeating field in the design");
   // Strapline left, copyright right — the reverse of source order in Arabic.
-  assert.match(footer, /sm:flex-row-reverse/, "Bottom bar order is reversed against the reading direction");
+  // Unconditional, not sm:-gated: the mobile instance 136:7847 draws the same
+  // single 342x42.667 row, so there is no breakpoint at which it stacks.
+  assert.match(footer, /flex flex-row-reverse/, "Bottom bar order is reversed against the reading direction");
+  assert.doesNotMatch(footer, /sm:flex-row-reverse/, "The reversed row is not breakpoint-gated in the design");
+
+  // Mobile instance 140:14746 is 390x882, bottom-anchored (2007 + 882 = 2889),
+  // and is a distinct rhythm rather than a reflow of the desktop footer. Its
+  // blocks are a column of four fixed boxes, each inset from the inline start.
+  assert.match(footer, /pb-\[26\.333px\] pt-\[21px\] lg:pb-8 lg:pt-16/, "Mobile footer opens on 21 and closes on 26.333");
+  assert.match(footer, /w-\[345px\]/, "Brand block is 345 wide on mobile");
+  assert.match(footer, /mb-\[46\.5px\]/, "46.5 separates the brand block from the explore column");
+  assert.match(footer, /h-\[190px\] w-\[156px\]/, "Explore column is a fixed 156x190 box");
+  assert.match(footer, /h-\[137px\] w-\[156px\]/, "Contact column is a fixed 156x137 box, flush under explore");
+  assert.match(footer, /mb-\[29px\]/, "29 separates the contact column from the booking pitch");
+  assert.match(footer, /h-\[190px\] w-\[321px\]/, "Booking pitch is a fixed 321x190 box");
+  assert.match(footer, /mt-5 flex flex-row-reverse/, "Bottom bar opens 20 under the booking pitch on mobile");
+  assert.match(footer, /lg:mt-14/, "Desktop keeps the 56px bottom-bar margin");
+  // The blocks sit 1, 12 and 25 from the inline start — inside the footer's own
+  // 24px padding, so the column has to break out of it.
+  assert.match(footer, /-mx-6 flex flex-col items-start/, "Mobile column spans the full 390");
+  assert.match(footer, /ms-px/, "Brand block sits 1 from the inline start");
+  assert.match(footer, /ms-3 flex h-\[190px\]/, "Explore column sits 12 from the inline start");
+  assert.match(footer, /ms-\[25px\]/, "Booking pitch sits 25 from the inline start");
 });
