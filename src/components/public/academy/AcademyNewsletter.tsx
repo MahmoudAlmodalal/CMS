@@ -55,17 +55,17 @@ export function AcademyNewsletter() {
     <section
       id="newsletter"
       aria-labelledby="academy-newsletter-heading"
-      className="w-full px-6 py-16 lg:py-24"
+      className="w-full px-6 py-24"
     >
       <div className="mx-auto flex w-full max-w-[1393px] flex-col items-center">
         <h2
           id="academy-newsletter-heading"
-          className="text-center font-display text-[32px] leading-[1.2] text-brand-espresso sm:text-[40px] lg:whitespace-nowrap lg:leading-[36px]"
+          className="text-center font-display text-[32px] leading-[36px] text-brand-espresso lg:whitespace-nowrap"
         >
           {t("newsletterHeading")}
         </h2>
 
-        <p className="pt-2 text-center text-[16.8px] leading-[25.2px] text-brand-primary">
+        <p className="pt-2 text-center text-[16.8px] leading-[26px] text-brand-primary">
           {t("newsletterTagline")}
         </p>
 
@@ -76,7 +76,7 @@ export function AcademyNewsletter() {
             <input type="text" id="_hp_newsletter" name="_hp" tabIndex={-1} autoComplete="off" />
           </div>
 
-          <div className="mx-auto flex w-full max-w-[652px] flex-col items-stretch gap-3 sm:flex-row sm:items-start">
+          <div className="-mx-[8.5px] flex w-auto items-start gap-3 lg:mx-auto lg:w-full lg:max-w-[652px]">
             <label htmlFor="academy-newsletter-email" className="sr-only">
               {t("newsletterPlaceholder")}
             </label>
@@ -89,14 +89,14 @@ export function AcademyNewsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("newsletterPlaceholder")}
               disabled={isPending}
-              className="h-[51px] w-full rounded-[16px] border-[1.333px] border-[rgba(43,29,20,0.15)] bg-brand-surface px-4 py-[13.6px] text-start text-[14.4px] leading-normal text-brand-espresso transition-colors placeholder:text-[rgba(43,29,20,0.5)] focus:border-brand-primary focus:outline-hidden sm:w-[491px]"
+              className="h-[51px] min-w-0 flex-1 rounded-[16px] border-[1.333px] border-[rgba(43,29,20,0.15)] bg-brand-surface px-4 py-[13.6px] text-start text-[14.4px] leading-normal text-brand-espresso transition-colors placeholder:text-[rgba(43,29,20,0.5)] focus:border-brand-primary focus:outline-hidden"
             />
 
             <button
               type="submit"
               disabled={isPending}
               aria-label={t("newsletterSubmitLabel")}
-              className="h-11 w-full shrink-0 rounded-[16px] bg-brand-primary text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70 sm:w-[149px]"
+              className="h-11 w-[149px] shrink-0 rounded-[16px] bg-brand-primary text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70"
             >
               {t("newsletterSubmit")}
             </button>

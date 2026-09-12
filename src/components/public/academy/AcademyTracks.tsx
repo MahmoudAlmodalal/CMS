@@ -26,6 +26,13 @@ interface AcademyTracksProps {
  * reference render, so they carry the page's cream ground with them, and they are
  * drawn only from lg up — below that the grid stacks and there is no margin to
  * hang them in.
+ *
+ * The 390 frame (139:12420) keeps the same card but re-lays the band: the heading
+ * (139:12432) is centred on a 286px measure at y=733 — 243 under the hero's 490 —
+ * and runs two lines in a 99px box, and the card container (139:13166) sits at
+ * (10,863), 362 wide, holding three 325.611px cards 16px apart. The band closes
+ * 31.16 under them, at 1903, which is where the value-props box opens. There is no
+ * tablet artboard, so the mobile figures hold until the 1440 ones take over.
  */
 export function AcademyTracks({ courses }: AcademyTracksProps) {
   const t = useTranslations("academy");
@@ -34,7 +41,7 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
     <section
       id="tracks"
       aria-labelledby="academy-tracks-heading"
-      className="relative w-full overflow-hidden pt-[102px]"
+      className="relative w-full overflow-hidden pb-[31.16px] pt-[243px] lg:pb-0 lg:pt-[102px]"
     >
       <div
         aria-hidden="true"
@@ -45,10 +52,10 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
         className="pointer-events-none absolute right-0 top-[455px] hidden h-[112px] w-[86px] bg-[url('/assets/branding/dots-end.png')] bg-contain bg-no-repeat lg:block"
       />
 
-      <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-0">
+      <div className="mx-auto w-full max-w-[1440px]">
         <h2
           id="academy-tracks-heading"
-          className="text-start font-display text-[32px] leading-[1.2] text-brand-espresso sm:text-[40px] lg:ms-[560px] lg:whitespace-nowrap lg:leading-[48px]"
+          className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:me-0 lg:ms-[560px] lg:w-auto lg:whitespace-nowrap lg:text-start lg:text-[40px] lg:leading-[48px]"
         >
           {t.rich("tracksHeading", {
             em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
@@ -56,11 +63,11 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
         </h2>
 
         {courses.length === 0 ? (
-          <div className="mt-[42px] rounded-[20px] border border-dashed border-brand-espresso/20 bg-white/50 p-8 py-16 text-center">
+          <div className="ms-[18px] mt-[31px] w-[362px] rounded-[20px] lg:ms-0 lg:mt-[42px] lg:w-auto border border-dashed border-brand-espresso/20 bg-white/50 p-8 py-16 text-center">
             <p className="text-gradscale-400">{t("tracksEmpty")}</p>
           </div>
         ) : (
-          <div className="mt-[42px] grid grid-cols-1 gap-6 md:grid-cols-2 lg:ms-[154px] lg:w-[1136px] lg:grid-cols-3 lg:grid-rows-[325.61px]">
+          <div className="ms-[18px] mt-[31px] grid w-[362px] auto-rows-[325.611px] grid-cols-1 gap-4 lg:ms-[154px] lg:mt-[42px] lg:w-[1136px] lg:grid-cols-3 lg:gap-6">
             {courses.map((course, idx) => (
               <TrackCard key={course.id || course.slug} course={course} index={idx} />
             ))}
