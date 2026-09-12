@@ -443,6 +443,110 @@
         101,
         36
       ]
+    },
+    {
+      "file": "public/assets/artists/rail-1.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        120,
+        1784,
+        220,
+        293
+      ],
+      "subject": "rail tile 1 and 2",
+      "descrimmed": {
+        "ground": [
+          23,
+          16,
+          10
+        ],
+        "alpha": 0.92,
+        "stop": 0.55
+      },
+      "scrubbed": [
+        0,
+        232,
+        219,
+        276
+      ]
+    },
+    {
+      "file": "public/assets/artists/rail-2.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        600,
+        1784,
+        220,
+        293
+      ],
+      "subject": "rail tile 3",
+      "descrimmed": {
+        "ground": [
+          23,
+          16,
+          10
+        ],
+        "alpha": 0.92,
+        "stop": 0.55
+      },
+      "scrubbed": [
+        0,
+        232,
+        219,
+        276
+      ]
+    },
+    {
+      "file": "public/assets/artists/rail-3.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        840,
+        1784,
+        220,
+        293
+      ],
+      "subject": "rail tile 4",
+      "descrimmed": {
+        "ground": [
+          23,
+          16,
+          10
+        ],
+        "alpha": 0.92,
+        "stop": 0.55
+      },
+      "scrubbed": [
+        0,
+        232,
+        219,
+        276
+      ]
+    },
+    {
+      "file": "public/assets/artists/rail-4.png",
+      "frame": "home-desktop",
+      "nodeRect": [
+        1080,
+        1784,
+        220,
+        293
+      ],
+      "subject": "rail tile 5",
+      "descrimmed": {
+        "ground": [
+          23,
+          16,
+          10
+        ],
+        "alpha": 0.92,
+        "stop": 0.55
+      },
+      "scrubbed": [
+        0,
+        232,
+        219,
+        276
+      ]
     }
   ],
   "outstanding": [

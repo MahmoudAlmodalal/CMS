@@ -208,6 +208,59 @@ def scrub(crop, box):
     crop.paste(patch, (left, top))
 
 
+# الرئيسية's أصوات rail (87:14241) draws its tiles under a scrim and two lines of
+# text, so a plain crop of one carries both. The scrim is a known gradient over a
+# known colour — linear-gradient(0deg, rgba(23,16,10,0.92) 0%, rgba(23,16,10,0) 55%)
+# — and a flat-colour composite inverts row by row: with coverage a at that height,
+# c = a*g + (1-a)*s gives s = (c - a*g) / (1-a). The reference confirms the geometry
+# before anything is inverted: the two tiles the frame repeats are identical above
+# local row 132, which is the 45% mark where the gradient's coverage first rises off
+# zero, and differ only by gradient dither below it (4 levels at most, nothing over
+# the diff threshold).
+#
+# Recovery loses precision toward the bottom, where 1-a falls to 0.08 and a clamped
+# pixel can be well out — but the same 1-a scales the error back down when the tile
+# re-composites its own scrim over the asset, so what survives is a fraction of it.
+#
+# The text cannot be inverted, only removed: it is opaque over the scrim, so those
+# rows carry no photograph to recover. They are painted over with the band above
+# them, and the tile draws its own name and genre back at those coordinates.
+TILE_SCRIM = {"ground": (23, 16, 10), "alpha": 0.92, "stop": 0.55}
+TILE_TEXT = (0, 232, 219, 276)
+
+SCRIMMED = [
+    # Four photographs across the five tiles the rail draws: the frame repeats its
+    # placeholder artist on the first two, so the first photograph is used twice,
+    # exactly as الفنانين reuses its four across eight cards.
+    ("home-desktop", 120, 1784, 220, 293, "public/assets/artists/rail-1.png",
+     "rail tile 1 and 2", TILE_SCRIM, TILE_TEXT),
+    ("home-desktop", 600, 1784, 220, 293, "public/assets/artists/rail-2.png",
+     "rail tile 3", TILE_SCRIM, TILE_TEXT),
+    ("home-desktop", 840, 1784, 220, 293, "public/assets/artists/rail-3.png",
+     "rail tile 4", TILE_SCRIM, TILE_TEXT),
+    ("home-desktop", 1080, 1784, 220, 293, "public/assets/artists/rail-4.png",
+     "rail tile 5", TILE_SCRIM, TILE_TEXT),
+]
+
+
+def descrim(crop, ground, alpha, stop):
+    """Divide a bottom-up linear scrim back out of a crop, in place."""
+    pixels = crop.load()
+    height = crop.height
+    for y in range(height):
+        # Height up the tile, measured at the pixel's centre.
+        fraction = (height - (y + 0.5)) / height
+        coverage = 0.0 if fraction >= stop else alpha * (1 - fraction / stop)
+        if coverage <= 0:
+            continue
+        rest = 1 - coverage
+        for x in range(crop.width):
+            pixels[x, y] = tuple(
+                min(255, max(0, round((c - coverage * g) / rest)))
+                for c, g in zip(pixels[x, y], ground)
+            )
+
+
 manifest = json.loads((ROOT / "docs/figma-reference-manifest.json").read_text())
 frames = {f["name"]: f for f in manifest["referenceFrames"]}
 
@@ -267,6 +320,29 @@ for name, x, y, w, h, dest, note, factor, ground, clear in UNVEIL:
         "clearedToGround": list(clear) if clear else None,
     })
     print(f"{dest}  <-  {name} [{x},{y} {w}x{h}]  ({note})  unveiled from {factor}")
+
+for name, x, y, w, h, dest, note, scrim, text in SCRIMMED:
+    frame = frames[name]
+    reference = ROOT / frame["referenceImage"]
+    if not reference.exists():
+        print(f"skip {dest}: {reference} is missing")
+        continue
+    image = Image.open(reference).convert("RGB")
+    crop = image.crop((x, y, x + w, y + h))
+    descrim(crop, scrim["ground"], scrim["alpha"], scrim["stop"])
+    scrub(crop, text)
+    out = ROOT / dest
+    out.parent.mkdir(parents=True, exist_ok=True)
+    crop.save(out)
+    written.append({
+        "file": dest,
+        "frame": name,
+        "nodeRect": [x, y, w, h],
+        "subject": note,
+        "descrimmed": scrim,
+        "scrubbed": list(text),
+    })
+    print(f"{dest}  <-  {name} [{x},{y} {w}x{h}]  ({note})  descrimmed, text scrubbed")
 
 index = ROOT / "docs/figma/asset-map.json"
 index.parent.mkdir(parents=True, exist_ok=True)

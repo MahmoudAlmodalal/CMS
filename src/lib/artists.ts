@@ -24,6 +24,13 @@ export type Artist = Omit<
    * stays optional and the profile card falls back to portrait_image_url.
    */
   profile_image_url?: string | null;
+  /**
+   * The الرئيسية rail (87:14241) draws a third photograph again, different from
+   * both the الفنانين card and the detail portrait, and the design carries four of
+   * them across its tiles. There is no such column in Supabase either, so it stays
+   * optional and ArtistTile falls back to portrait_image_url.
+   */
+  rail_image_url?: string | null;
   is_featured: boolean;
   is_published: boolean;
   display_order: number;
@@ -52,7 +59,10 @@ export type ArtistCategoryId = (typeof ARTIST_CATEGORIES)[number]["id"];
  *
  * The first six are featured, because the الرئيسية rail (87:14241) draws six tiles
  * — five of them inside its 1200px box and the sixth clipped at the edge — and
- * getFeaturedArtists(6) is what fills them.
+ * getFeaturedArtists(6) is what fills them. That rail draws four photographs across
+ * those five visible tiles, repeating its placeholder on the first two, so the
+ * records carry the same four the same number of times; the sixth tile is clipped
+ * away entirely, so nothing in the design says what belongs there.
  */
 export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
   {
@@ -70,6 +80,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
       "سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل والغناء الأندلسي، صوتها يجمع بين الأصالة والمعاصرة، تجوب المسارح العربية والدولية منذ أكثر من عقد من الزمن.",
     specialties: "الصوت • الغناء الأندلسي • الطرب الأصيل",
     portrait_image_url: "/assets/artists/artist-1.png",
+    rail_image_url: "/assets/artists/rail-1.png",
     profile_image_url: "/assets/artists/sara-alsawt-profile.png",
     is_featured: true,
     is_published: true,
@@ -90,6 +101,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
     full_bio: "عازف متمكن من تقنيات العود الشرقي والأندلسي، قدّم عروضاً في أرقى المسارح العربية والدولية.",
     specialties: "عزف العود • التأليف الموسيقي • الارتجال",
     portrait_image_url: "/assets/artists/artist-2.png",
+    rail_image_url: "/assets/artists/rail-1.png",
     is_featured: true,
     is_published: true,
     display_order: 2,
@@ -109,6 +121,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
     full_bio: "قادت مشاريع بحثية وموسيقية لإحياء التراث الغنائي الأندلسي المشترك بين المشرق والمغرب.",
     specialties: "الموشحات الأندلسية • النوبات • الأداء المسرحي",
     portrait_image_url: "/assets/artists/artist-3.png",
+    rail_image_url: "/assets/artists/rail-2.png",
     is_featured: true,
     is_published: true,
     display_order: 3,
@@ -128,6 +141,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
     full_bio: "يمتلك يوسف فهماً عميقاً للموازين الإيقاعية الأندلسية المركبة والدورات الإيقاعية التراثية.",
     specialties: "الرق • الدف • الإيقاعات المركبة",
     portrait_image_url: "/assets/artists/artist-4.png",
+    rail_image_url: "/assets/artists/rail-3.png",
     is_featured: true,
     is_published: true,
     display_order: 4,
@@ -148,6 +162,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
       "قضت منى سنوات في تتبع النوبات الأندلسية بين مخطوطات تطوان وفاس قبل أن تعيد تقديمها حية.",
     specialties: "الموشحات • النوبة الأندلسية • الزجل",
     portrait_image_url: "/assets/artists/artist-4.png",
+    rail_image_url: "/assets/artists/rail-4.png",
     is_featured: true,
     is_published: true,
     display_order: 5,
@@ -168,6 +183,7 @@ export const CANONICAL_FEATURED_ARTISTS: Artist[] = [
       "درس كريم في المعهد العالي للموسيقى بتونس، ويعمل اليوم مع الفرقة على توزيع النوبات.",
     specialties: "القانون • التقاسيم • التوزيع",
     portrait_image_url: "/assets/artists/artist-3.png",
+    rail_image_url: "/assets/artists/rail-2.png",
     is_featured: true,
     is_published: true,
     display_order: 6,
