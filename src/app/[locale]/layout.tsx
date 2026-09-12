@@ -7,6 +7,8 @@ import { DirectionProvider } from "@/lib/direction";
 import { fontVariables } from "@/lib/fonts";
 import { localeDirection, routing, type AppLocale } from "@/i18n/routing";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -19,7 +21,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "site" });
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    metadataBase: new URL(siteUrl),
     title: t("title"),
     description: t("description"),
   };
