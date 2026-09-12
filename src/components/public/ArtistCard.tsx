@@ -35,21 +35,24 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`group flex w-full flex-col overflow-hidden rounded-[16px] bg-white text-start lg:h-[422px] lg:w-[296px] ${className}`}
+      className={`group flex h-[422px] w-[296px] shrink-0 snap-start flex-col overflow-hidden rounded-[16px] bg-white text-start ${className}`}
     >
       <Link
         href={`/artists/${artist.slug}`}
         aria-label={a("viewProfile", { name: artist.name })}
         className="flex flex-1 flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
-        <div className="relative aspect-[296/314] w-full shrink-0 overflow-hidden bg-brand-surface/40 lg:aspect-auto lg:h-[314px]">
+        <div className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-surface/40">
           {portrait ? (
             <Image
               src={portrait}
               alt={a("portraitAlt", { name: artist.name })}
               fill
-              sizes="(min-width: 1024px) 296px, (min-width: 640px) 50vw, 100vw"
-              priority={priority}
+              sizes="296px"
+              // `priority` is deprecated in Next 16; the docs point at
+              // loading="eager" for an above-the-fold image that is not the LCP
+              // element, which is what the first row of cards is.
+              loading={priority ? "eager" : "lazy"}
               quality={90}
               className="object-cover"
             />

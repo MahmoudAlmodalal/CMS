@@ -15,7 +15,9 @@ export interface ArtistsDirectoryClientProps {
  * Artists directory — the filter bar of node 91:18144 over the grid of 91:18061.
  *
  * The frame puts 41.7px between them, which is not the rhythm anything else on the
- * page uses, so it is stated here rather than taken from a shared scale.
+ * page uses, so it is stated here rather than taken from a shared scale. The 390
+ * frame puts 32.467 there — the filter bar closes at 776.533 and the carousel opens
+ * at 809 — which is likewise its own figure.
  *
  * Filtering, the ?category= sync and the keyboard tablist are behaviour the design
  * cannot express and are kept as they were.
@@ -71,7 +73,7 @@ export function ArtistsDirectoryClient({
   }, [initialArtists, selectedCategory]);
 
   return (
-    <div className={`flex flex-col gap-8 lg:gap-[41.7px] ${className}`}>
+    <div className={`flex flex-col items-start gap-[32.467px] lg:items-stretch lg:gap-[41.7px] ${className}`}>
       {/* 1. Category Filter Tabs */}
       <ArtistFilterTabs
         activeCategory={selectedCategory}
