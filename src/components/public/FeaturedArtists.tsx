@@ -39,6 +39,13 @@ interface FeaturedArtistsProps {
  * The CTA is the outlined variant of the shared button, but the design sets its
  * label in SF Pro Bold 16/22.4 — a baked-in fallback in the file itself — so the
  * system stack is what gets asked for, as on the الرئيسية booking CTA.
+ *
+ * The 390 frame (136:7457, 0..775 at y=1741) draws no rail at all: it is a 2x2 grid
+ * of four 160x239 tiles, 336 wide and centred, 16 apart across and 29 down. Its
+ * rhythm is 52 to the heading, 48 for it, 38 to the grid, 38 from the grid to the
+ * 207x48 CTA, and 44 to close — which is the 775 the frame declares. The two tiles
+ * past the fourth are dropped rather than wrapped to a third row: the frame draws
+ * four, and a fifth row of one would be an invention.
  */
 export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
   const t = useTranslations("home");
@@ -49,20 +56,24 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-black py-12 lg:h-[615px] lg:py-0">
+    <section className="relative w-full overflow-hidden bg-black pb-[44px] pt-[52px] lg:h-[615px] lg:py-0">
       {/* Heading 87:14298 */}
-      <div className="px-5 lg:absolute lg:left-[152px] lg:right-[152px] lg:top-[52px] lg:px-0">
-        <h2 className="text-center font-display text-3xl leading-tight text-[#F9EDE8] sm:text-5xl lg:whitespace-nowrap lg:text-[64px] lg:leading-[48px]">
+      <div className="lg:absolute lg:left-[152px] lg:right-[152px] lg:top-[52px]">
+        <h2 className="text-center font-display text-[32px] leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
           {t("artistsHeading")}
         </h2>
       </div>
 
       {/* Rail 87:14241 */}
       <div
-        dir="ltr"
-        className="mt-10 w-full overflow-x-auto px-5 [scrollbar-width:none] lg:absolute lg:left-[120px] lg:top-[165px] lg:mt-0 lg:w-[1200px] lg:px-0 [&::-webkit-scrollbar]:hidden"
+        // The ltr that makes the 1440 rail hang its overflow off the right edge is
+        // set from lg up only: the 390 frame has no rail to overflow.
+        className="mt-[38px] w-full [scrollbar-width:none] lg:absolute lg:left-[120px] lg:top-[165px] lg:mt-0 lg:w-[1200px] lg:overflow-x-auto lg:[direction:ltr] [&::-webkit-scrollbar]:hidden"
       >
-        <div dir={direction} className="flex w-max flex-row-reverse gap-[20px]">
+        <div
+          dir={direction}
+          className="mx-auto grid w-[336px] grid-cols-2 gap-x-4 gap-y-[29px] lg:mx-0 lg:flex lg:w-max lg:flex-row-reverse lg:gap-[20px] [&>*:nth-child(n+5)]:hidden lg:[&>*:nth-child(n+5)]:block"
+        >
           {artists.slice(0, 6).map((artist, i) => (
             <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
           ))}
@@ -70,7 +81,7 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
       </div>
 
       {/* CTA 115:2179 */}
-      <div className="mt-10 flex justify-center lg:absolute lg:left-[616px] lg:top-[509px] lg:mt-0 lg:block">
+      <div className="mt-[38px] flex justify-center lg:absolute lg:left-[616px] lg:top-[509px] lg:mt-0 lg:block">
         <Link
           href="/artists"
           className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] border border-[#F9EDE8] font-system text-[16px] font-bold leading-[22.4px] text-[#F9EDE8] transition-colors hover:bg-[#F9EDE8]/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
