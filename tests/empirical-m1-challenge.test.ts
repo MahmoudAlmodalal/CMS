@@ -102,15 +102,24 @@ test("Challenger 2 — 4. Mobile Shell: MobileNavbar 390px viewport safety & no 
   const mobileNavPath = path.join(root, "src/components/public/MobileNavbar.tsx");
   const content = fs.readFileSync(mobileNavPath, "utf-8");
 
-  // Fixed top-0 start-0 end-0 with h-14 (56px)
-  assert.match(content, /fixed top-0 start-0 end-0/, "Mobile top bar must anchor start-0 end-0");
+  // Figma's Component 17/Navigation is a floating pill inset 10px inline, not a
+  // full-bleed bar, so the pill takes its width from the viewport via inset-x.
+  assert.match(content, /fixed inset-x-2\.5 top-\[44px\]/, "Mobile pill must anchor via inset-x, not start-0/end-0");
   assert.match(content, /h-14/, "Mobile top bar must have fixed 56px height (h-14)");
   assert.match(content, /lg:hidden/, "Mobile top bar must be hidden on desktop (lg:hidden)");
+  assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
 
-  // Button sizes and padding must not cause horizontal expansion > 390px
-  assert.match(content, /px-4 sm:px-6/, "Mobile navbar must use responsive horizontal padding");
-  assert.doesNotMatch(content, /min-w-\[\d{3,}px\]/, "Mobile navbar must not introduce rigid oversized min-width");
-  assert.doesNotMatch(content, /w-\[\d{3,}px\]/, "Mobile navbar must not hardcode rigid pixel width exceeding mobile");
+  // Nothing inside the pill may be wide enough to overflow a 390px viewport. The
+  // pill's own content box is 390 - 2*10 - 2*20 = 330px, so parse every hardcoded
+  // pixel width rather than pattern-matching digit counts: w-[104px] is fine,
+  // w-[400px] is not, and the old /\d{3,}/ regex could not tell them apart.
+  const PILL_CONTENT_WIDTH = 330;
+  for (const [, prop, value] of content.matchAll(/\b((?:min-)?w)-\[(\d+(?:\.\d+)?)px\]/g)) {
+    assert.ok(
+      Number(value) <= PILL_CONTENT_WIDTH,
+      `Mobile navbar ${prop} of ${value}px overflows the ${PILL_CONTENT_WIDTH}px pill content box`
+    );
+  }
 
   // Accessible drawer trigger
   // The label moved into next-intl when the site gained an English locale, so assert
