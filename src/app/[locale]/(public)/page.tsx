@@ -51,6 +51,12 @@ export async function generateMetadata({
  * Stage 6: Upcoming Events (Frame 28, Node 87:14466, y=3550, h=678px, split banner)
  * Stage 7: Booking CTA Banner (Section, Node 87:14534, y=4282, h=498px, #2B1D14 overlay)
  * Stage 8: Global Footer (Node 94:18289, y=4780, h=385px, #2B1D14 texture) [Rendered in PublicLayout]
+ *
+ * The bands are drawn at absolute coordinates and do not simply stack: the hero
+ * and المنهج overlap by 22px, أصوات starts 22px after المنهج ends, يقولون
+ * overlaps by 16px, نكتب is flush, نلتقي starts 26px later, and the booking band
+ * 54px after that. Stacking them flush walks the page 160px out of alignment by
+ * the footer, so each carries the frame's own offset at lg.
  */
 export default async function HomePage({
   params,
@@ -74,22 +80,32 @@ export default async function HomePage({
       <HeroSection settings={settings} />
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
-      <AboutSection settings={settings} />
+      <div className="lg:-mt-[22px]">
+        <AboutSection settings={settings} />
+      </div>
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
-      <FeaturedArtists artists={artists} />
+      <div className="lg:mt-[22px]">
+        <FeaturedArtists artists={artists} />
+      </div>
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
-      <TestimonialsSlider testimonials={testimonials} />
+      <div className="lg:-mt-[16px]">
+        <TestimonialsSlider testimonials={testimonials} />
+      </div>
 
       {/* Stage 5: Editorial Feature (Figma Frame 26, 709px, #1F0900, 4 cards) */}
       <EditorialFeature articles={articles} />
 
       {/* Stage 6: Upcoming Events Strip (Figma Frame 28, 678px, split banner) */}
-      <HomeEvents events={events} />
+      <div className="lg:mt-[26px]">
+        <HomeEvents events={events} />
+      </div>
 
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
-      <BookingBanner settings={settings} />
+      <div className="lg:mt-[54px]">
+        <BookingBanner settings={settings} />
+      </div>
     </>
   );
 }

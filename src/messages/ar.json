@@ -78,7 +78,26 @@
   },
   "artist": {
     "viewProfile": "عرض الملف الشخصي للفنان {name}",
-    "portraitAlt": "صورة الفنان {name}"
+    "portraitAlt": "صورة الفنان {name}",
+    "bookCta": "احجز الفنان ♪",
+    "contactCta": "تواصل مباشرة",
+    "galleryRegion": "معرض صور الفنان",
+    "galleryTitle": "<em>الفن</em> في لحظته الأصدق",
+    "stageAlt": "لقطة من عرض حي لفرقة أندلسيا",
+    "quoteAttribution": "— {name}",
+    "careerTitle": "مسيرتها الفنية",
+    "careerFilters": "تصنيفات المسيرة الفنية",
+    "careerFilter": {
+      "albums": "ألبومات",
+      "concerts": "حفلات",
+      "songs": "أغاني"
+    },
+    "releaseStudio": "ألبوم استوديو",
+    "releaseLive": "ألبوم حي",
+    "coverAlt": "غلاف ألبوم {title}",
+    "trackCount": "{count, plural, =0 {لا أغاني} one {أغنية واحدة} two {أغنيتان} few {{value} أغاني} many {{value} أغنية} other {{value} أغنية}}",
+    "bookingHeadline": "تريد {name} في مناسبتك؟",
+    "bookingBody": "تواصل معنا وسنصمم لك تجربة موسيقية لا تُنسى."
   },
   "article": {
     "read": "اقرأ المقال",
@@ -167,21 +186,17 @@
   },
   "events": {
     "kicker": "جدول العروض والفعاليات",
-    "title": "مواعيد تترك أثراً جميلاً.",
+    "title": "<em>مواعيد</em> تترك أثراً جميلاً.",
     "filterTabs": "تصنيفات الفعاليات",
     "featuredRegion": "الفعالية الأبرز",
     "featuredBadge": "الفعالية الأبرز",
     "listRegion": "قائمة الفعاليات",
-    "count": "عرض {count} فعالية",
-    "countNone": "لا توجد فعاليات",
     "emptyTitle": "لا توجد فعاليات مجدولة حالياً",
     "emptyBody": "لم يتم نشر عروض في هذا التصنيف في الوقت الحالي. يمكنك استعراض كافة الفعاليات أو العودة قريباً.",
     "showAll": "عرض كافة الفعاليات",
     "book": "احجز",
-    "bookNow": "احجز الآن",
-    "bookTicket": "احجز تذكرتك",
-    "privateRequest": "طلب حجز خاص",
-    "posterFallback": "أندلسيا"
+    "bookNow": "أحجز الآن",
+    "bookTicket": "احجز تذكرتك"
   },
   "booking": {
     "kicker": "حجز الفعاليات والعروض الخاصة",

@@ -17,7 +17,7 @@ export { EditorialFeature } from "./EditorialFeature";
 export { ArticleCard } from "./ArticleCard";
 export { HomeEvents } from "./HomeEvents";
 export { EventCard } from "./EventCard";
-export { BookingBanner } from "./BookingBanner";
+export { BookingBanner, type BookingBannerVariant } from "./BookingBanner";
 export { ArtistsHeader, type ArtistsHeaderProps } from "./ArtistsHeader";
 export { ArtistFilterTabs, type ArtistFilterTabsProps } from "./ArtistFilterTabs";
 export { ArtistsGrid, type ArtistsGridProps } from "./ArtistsGrid";
@@ -41,3 +41,11 @@ export {
   AcademyTracks,
   AcademyNewsletter,
 } from "./academy";
+
+// Artist profile components (Figma frame 134:4420)
+export {
+  ArtistHero,
+  ArtistProfileCard,
+  ArtistGallery,
+  ArtistDiscography,
+} from "./artist";

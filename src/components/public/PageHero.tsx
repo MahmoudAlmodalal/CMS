@@ -13,6 +13,8 @@ interface PageHeroProps {
   /** Headline size and line box on desktop; the frames do not agree on these. */
   titleSize?: number;
   titleLeading?: number;
+  /** Colour of the headline's uncoloured run. الفعاليات sets primary-50, not secondary-400. */
+  titleTone?: string;
 }
 
 /**
@@ -28,7 +30,8 @@ interface PageHeroProps {
  *   secondary-400 over at most 693px, 24px below it.
  * - The frame gives the block's offset from the top of the band, not from its
  *   centre — the block is not vertically centred — so callers pass `contentTop`.
- * - الحجز sets the headline 48/91.5 and الأكاديمية 72/90, so both are props.
+ * - الحجز sets the headline 48/91.5, الأكاديمية 72/90 and الفعاليات 64/91.5, so
+ *   both are props, as is the tone of the run the design leaves uncoloured.
  *
  * The scrim is an SVG in the design (91:17111, 91:16331) and the photograph is a
  * licensed fill; neither can be exported from here, so the scrim is a CSS
@@ -44,6 +47,7 @@ export function PageHero({
   contentTop = 247,
   titleSize = 48,
   titleLeading = 91.5,
+  titleTone = "text-secondary-400",
 }: PageHeroProps) {
   return (
     <section
@@ -78,7 +82,7 @@ export function PageHero({
         ) : null}
 
         <h1
-          className={`max-w-[924px] font-display text-[32px] leading-tight text-secondary-400 sm:text-[40px] lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
+          className={`max-w-[924px] font-display text-[32px] leading-tight ${titleTone} sm:text-[40px] lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
             eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
           }`}
         >
