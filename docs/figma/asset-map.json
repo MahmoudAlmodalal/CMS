@@ -587,5 +587,5 @@
       "reason": "the 88% espresso wash and every line of copy are composited over the photo"
     }
   ],
-  "blockedBy": "The outstanding files need a real export from Figma. The MCP asset URLs live on www.figma.com, which this environment's egress policy blocks (403 on CONNECT), so they cannot be fetched from here."
+  "blockedBy": "The outstanding files need a real export from Figma. The MCP asset URLs live on www.figma.com, which this environment's egress policy blocks (403 on CONNECT), so they cannot be fetched from here. Confirmed three independent ways: curl on a download_assets URL returns 'CONNECT tunnel failed, response 403'; the proxy status endpoint lists www.figma.com:443 as connect_rejected with 'gateway answered 403 to CONNECT (policy denial)'; and get_screenshot with enableBase64Response returns a rendered image block rather than decodable base64 text, so even the documented sandbox escape hatch cannot put bytes on disk. get_metadata, get_variable_defs and visual inspection via get_screenshot all work — it is only asset bytes that are unreachable. The remedy is administrative: allowlisting www.figma.com restores figma:sync and unblocks both these heroes and reference renders for the 20 frames that have no baseline."
 }
