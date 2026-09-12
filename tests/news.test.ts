@@ -17,6 +17,15 @@ import {
 
 const root = path.resolve(".");
 
+/**
+ * Drop comments so a source assertion reads code rather than prose. `//` is only
+ * treated as a comment at the start of a line, which leaves `https://` and any
+ * other mid-line double slash intact.
+ */
+function stripComments(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+}
+
 test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
   const expectedFiles = [
     "src/app/[locale]/(public)/news/page.tsx",
@@ -304,10 +313,32 @@ test("Figma 91:17296 — News page geometry matches the frame", () => {
   assert.doesNotMatch(grid, /import .*NewsFilterTabs/, "The news grid must not import the filter it no longer renders");
   assert.doesNotMatch(grid, /"use client"/, "The news grid is presentational and renders on the server");
 
+  // Assert against code, not prose. A docblock explaining why justify-between was
+  // wrong otherwise satisfies a grep for justify-between, and the same trap makes
+  // every match here pass on a comment that merely quotes the value.
+  const cardCode = stripComments(card);
+
   // Every row of the card reads from the inline start — flush right in Arabic.
-  assert.match(card, /justify-between p-6 text-start/, "Card body must read from the inline start");
-  assert.match(card, /absolute start-4 top-4/, "Date wash must sit at the inline-start corner of the cover");
-  assert.match(card, /h-\[192px\]/, "Cover strip must be a flat 192px");
+  assert.match(cardCode, /flex-col p-6 text-start/, "Card body must read from the inline start");
+  assert.match(cardCode, /absolute start-4 top-4/, "Date wash must sit at the inline-start corner of the cover");
+  assert.match(cardCode, /h-\[192px\]/, "Cover strip must be a flat 192px");
+
+  // Card 91:17378 is a flat 423.5px: 1px border + 192 cover + 229.5 body + 1px.
+  assert.match(cardCode, /lg:h-\[423\.5px\]/, "Card must be 423.5px tall on the desktop frame");
+  // Figma holds heading + excerpt at a constant 138.5px, pairing a 72px two-line
+  // heading with a 66.5px excerpt and a 42px one-line heading with a 96.5px one.
+  // So the excerpt absorbs the remainder and clips; it is not a spacer spread.
+  assert.match(cardCode, /min-h-0 flex-1 overflow-hidden/, "Excerpt must absorb the card's slack and clip");
+  assert.doesNotMatch(
+    cardCode,
+    /justify-between/,
+    "justify-between spreads slack across every gap, growing the row to 445px and " +
+      "knocking each card's rows out of alignment with its neighbours"
+  );
+
+  // Node 91:17798 ends at y=1416.5 and footer 94:18553 starts at 1568.
+  assert.match(page, /lg:pb-\[151\.5px\]/, "Grid section must leave 151.5px before the footer");
+  assert.match(page, /lg:pt-\[181px\]/, "Grid section must start 181px below the 668px hero band");
 });
 
 test("Figma 91:17296 — grid carries the three articles the featured band does not", () => {
