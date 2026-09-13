@@ -80,7 +80,7 @@ export function Navbar() {
       data-node-id={isEn ? "144:19176" : undefined}
     >
       <header
-        className="pointer-events-auto w-full max-w-[1123px] h-[85px] bg-[#F2EEE0] rounded-[32px] shadow-[0px_4px_15px_rgba(0,0,0,0.25)] flex items-center justify-between px-6 xl:px-[42.5px]"
+        className="pointer-events-auto flex h-16 w-full max-w-[1123px] items-center justify-between rounded-[24px] bg-[#F2EEE0] px-4 shadow-[0px_4px_15px_rgba(0,0,0,0.25)] lg:gap-4 xl:h-[85px] xl:rounded-[32px] xl:px-[42.5px]"
         role="banner"
         data-node-id={isEn ? "142:17048" : "94:18677"}
       >
@@ -99,14 +99,14 @@ export function Navbar() {
             // `priority` is deprecated in Next 16; the docs point at loading="eager"
             // for an above-the-fold image that is not the LCP element.
             loading="eager"
-            className="h-[85px] w-auto object-contain"
+            className="h-12 w-auto object-contain xl:h-[85px]"
             style={{ width: "auto" }}
           />
         </Link>
 
         {/* Center: Desktop Navigation Links (Figma Node 20:4406 / 134:8258 — gap 32) */}
         <nav
-          className="flex items-center gap-6 xl:gap-[32px]"
+          className="flex min-w-0 items-center gap-4 xl:gap-[32px]"
           aria-label={a11y("primaryNav")}
           data-node-id={isEn ? "I142:17048;134:8258" : "I94:18677;20:4406"}
         >
@@ -117,7 +117,7 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-[16px] leading-[24px] transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs whitespace-nowrap",
+                  "whitespace-nowrap rounded-xs text-sm leading-6 transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary xl:text-[16px]",
                   active
                     ? cn("text-brand-primary", isEn ? "font-medium" : "font-bold")
                     : "text-gradscale-900 hover:text-brand-primary font-bold"
@@ -132,7 +132,7 @@ export function Navbar() {
 
         {/* Inline End: CTA + language glyph (Figma Node 134:8170 / 134:8254 — gap 16) */}
         <div
-          className="flex items-center gap-[16px] shrink-0"
+          className="flex shrink-0 items-center gap-2 xl:gap-4"
           data-node-id={isEn ? "I142:17048;134:8254" : "I94:18677;134:8170"}
         >
           {/* Language switch (Figma Node 134:8271 / 134:8256 — 24px box) */}
@@ -141,7 +141,7 @@ export function Navbar() {
           {/* Primary CTA (Figma Node 20:4405 / 134:8255 — 149x44, radius 16) */}
           <Link
             href="/booking"
-            className="inline-flex items-center justify-center w-[149px] h-[44px] rounded-[16px] bg-brand-primary text-primary-50 text-[16px] leading-[24px] font-bold hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors duration-200 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 shrink-0"
+            className="inline-flex h-11 shrink-0 items-center justify-center rounded-2xl bg-brand-primary px-4 text-sm font-bold leading-6 text-primary-50 transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary xl:w-[149px] xl:px-0 xl:text-[16px]"
             data-node-id={isEn ? "I142:17048;134:8255" : "I94:18677;20:4405"}
           >
             {t("bookNow")}

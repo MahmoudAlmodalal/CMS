@@ -59,54 +59,54 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
       </div>
 
       {/* Cards 115:2436…115:2439 */}
-      <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-[64px] lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-[28px] lg:px-4">
+      <div className="mx-auto mt-8 grid w-full max-w-7xl grid-cols-1 gap-5 px-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 md:px-6 xl:mt-12 xl:grid-cols-4 xl:gap-7">
         {articles.slice(0, 4).map((article) => {
           return (
             <article
               key={article.id}
-              className="group w-full max-w-[273.115px] shrink-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-[273.115px]"
+              className="group w-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <Link
                 href={`/news/${article.slug}`}
-                className="flex h-[317.156px] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+                className="flex h-auto min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
               >
                 {/* Cover I115:2439;87:14439 */}
-                <div className="relative h-[170.688px] w-full shrink-0 overflow-hidden bg-brand-surface">
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
                   <Image
                     src={article.cover_image_url || "/assets/articles/default-article.png"}
                     alt=""
                     fill
-                    sizes="273px"
+                    sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
                     quality={90}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
 
                 {/* Body I115:2439;87:14440 */}
-                <div className="flex w-full flex-col items-start p-[24px]">
+                <div className="flex min-w-0 w-full flex-col items-start p-4 sm:p-5 lg:p-6">
                   {/* Meta row I115:2439;87:14441 — category leads, date opposite. */}
                   <div className="flex w-full items-center justify-between gap-2">
-                    <span className="whitespace-nowrap text-[12.28px] font-bold uppercase leading-[13.92px] tracking-[1.1136px] text-primary-500">
+                    <span className="min-w-0 truncate text-xs font-bold uppercase leading-5 tracking-wide text-primary-500">
                       {getArticleCardCategoryLabel(article.category)}
                     </span>
                     <time
                       dateTime={article.published_at}
-                      className="whitespace-nowrap text-[10px] leading-[15px] text-gradscale-400"
+                      className="shrink-0 text-[10px] leading-[15px] text-gradscale-400"
                     >
                       {formatArabicDate(article.published_at)}
                     </time>
                   </div>
 
                   {/* Title I115:2439;87:14446 */}
-                  <div className="w-full max-w-[225.115px] pt-[12px]">
-                    <h3 className="w-[196px] max-w-full text-[16px] font-bold leading-[24px] text-brand-espresso transition-colors group-hover:text-brand-primary">
+                  <div className="w-full pt-3">
+                    <h3 className="line-clamp-2 w-full text-base font-bold leading-6 text-brand-espresso transition-colors group-hover:text-brand-primary">
                       {article.title}
                     </h3>
                   </div>
 
                   {/* Standfirst I115:2439;87:14448 */}
-                  <div className="h-[26.4px] w-full max-w-[225.115px] overflow-hidden pt-[6.4px]">
-                    <p className="truncate text-[13px] font-medium leading-[19.5px] text-gradscale-300">
+                  <div className="w-full pt-1.5">
+                    <p className="line-clamp-2 text-[13px] font-medium leading-5 text-gradscale-300">
                       {article.excerpt}
                     </p>
                   </div>

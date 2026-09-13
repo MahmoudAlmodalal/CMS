@@ -62,7 +62,7 @@ export function PageHero({
       // The 500 that used to sit at sm: was invented — Figma has no tablet frame —
       // so the band holds its measured 390 height until the 1440 one takes over,
       // rather than passing through a figure no frame declares.
-      className="relative isolate h-[var(--hero-mobile-height)] w-full overflow-hidden bg-brand-espresso text-white lg:h-[var(--hero-height)]"
+      className="relative isolate flex min-h-[clamp(18rem,70svh,38rem)] w-full items-end overflow-hidden bg-brand-espresso py-12 text-white sm:min-h-[clamp(20rem,65svh,42rem)] lg:min-h-[clamp(30rem,70svh,38rem)] lg:items-start lg:py-0"
       style={
         {
           "--hero-height": `${height}px`,
@@ -84,7 +84,7 @@ export function PageHero({
       {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at
           x=376 on a 390 artboard), so the mobile offset of this block is not
           measurable from them and keeps the bottom anchor it already had. */}
-      <div className="absolute inset-x-0 bottom-10 flex flex-col items-center px-5 text-center lg:bottom-auto lg:top-[var(--hero-content-top)]">
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-4 text-center sm:px-6 lg:absolute lg:inset-x-0 lg:top-[var(--hero-content-top)] lg:px-8">
         {eyebrow ? (
           <span className="inline-flex items-center gap-2 rounded-full border-[0.833px] border-white/20 bg-white/10 px-5 py-2 backdrop-blur-[8px]">
             <span aria-hidden="true" className="text-[16px] leading-[24px] text-brand-primary">
@@ -97,7 +97,7 @@ export function PageHero({
         ) : null}
 
         <h1
-          className={`max-w-[924px] font-display text-[32px] leading-tight ${titleTone} sm:text-[40px] lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
+          className={`max-w-[924px] min-w-0 break-words font-display text-[clamp(1.75rem,5vw,4.5rem)] leading-tight ${titleTone} lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
             eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
           }`}
         >

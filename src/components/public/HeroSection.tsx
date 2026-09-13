@@ -43,7 +43,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
   const isVideo = isVideoUrl(heroUrl);
 
   return (
-    <section className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint min-h-[740px] lg:h-[740px] flex items-center justify-center">
+    <section className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso py-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:py-28 lg:min-h-[min(100svh,46.25rem)] lg:py-32">
       {/* Background Stage Video/Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {isVideo ? (
@@ -73,19 +73,19 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       </div>
 
       <Container className="relative z-10 w-full">
-        <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto space-y-8">
+        <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
-          <h1 className="font-display text-[32px] sm:text-5xl lg:text-[64px] font-normal text-[#EFEBD9] leading-[1.71875] sm:leading-[1.45] lg:leading-[1.453125] max-w-[881px]">
+          <h1 className="font-display text-[clamp(1.75rem,5vw,4rem)] font-normal leading-[1.3] text-[#EFEBD9]">
             <Highlight text={settings.hero_headline} />
           </h1>
 
           {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
-          <p className="font-sans text-base sm:text-lg lg:text-[25px] font-medium text-[#EFEBD9] leading-[2.34375] sm:leading-[1.5] max-w-[693px]">
+          <p className="max-w-[693px] text-[clamp(0.9375rem,2vw,1.5625rem)] font-medium leading-relaxed text-[#EFEBD9]">
             {settings.hero_subheadline}
           </p>
 
           {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
-          <div className="flex flex-wrap items-center justify-center gap-8 pt-4 w-full sm:w-auto">
+          <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:w-auto sm:flex-row sm:gap-6">
             {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
             <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
               {primaryCtaLabel || t("heroPrimaryCta")}
