@@ -145,14 +145,57 @@
 :root {
   --background: #F9F7F0;
   --foreground: #2B1D14;
+  /* Fluid display scale — desktop stays Figma-sized, small screens shrink smoothly. */
+  --text-display: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --text-h2: clamp(1.5rem, 1.15rem + 1.8vw, 2.25rem);
+  --text-h3: clamp(1.125rem, 1rem + 0.8vw, 1.5rem);
 }
 
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  /* Long Arabic/English strings wrap instead of forcing horizontal scroll. */
+  p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote {
+    overflow-wrap: break-word;
+  }
+}
+
+/* Hide scrollbars for scrollable tab rows while keeping scroll. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Scrollable tab/filter rows: horizontal scroll + snap, RTL-safe. */
+.scroll-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  padding-block: 0.25rem;
+}
+.scroll-row > * { scroll-snap-align: start; flex-shrink: 0; }
+
+/* Respect reduced motion on all viewports. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 /* Logical Bidi Isolation Helpers */

@@ -53,8 +53,8 @@ export function Footer() {
               has to span the full 390 — hence -mx-6 here and ms-* per block. */}
           <div className="-mx-6 flex flex-col items-start text-start lg:relative lg:mx-auto lg:block lg:h-[190px] lg:w-[736px]">
             {/* Column 1: Brand & Mission (Figma Node 87:14548; mobile 136:7852,
-                345x179.5 at y=21, everything flush to the inline start). */}
-            <div className="ms-px mb-[46.5px] flex w-[345px] flex-col items-start text-start lg:absolute lg:left-[594px] lg:top-0 lg:mb-0 lg:ms-0 lg:w-[297px] lg:max-w-none lg:items-center lg:text-center">
+                345x179.5 at y=21, everything flush to the inline start; LTR Figma 142:17241 at left: -241px). */}
+            <div className="ms-px mb-[46.5px] flex w-[345px] flex-col items-start text-start lg:absolute rtl:lg:left-[594px] ltr:lg:left-[-241px] lg:top-0 lg:mb-0 lg:ms-0 lg:w-[297px] lg:max-w-none lg:items-center lg:text-center">
               <Image
                 src="/assets/branding/logo-footer.png"
                 alt={a11y("brandHome")}
@@ -75,11 +75,8 @@ export function Footer() {
             </div>
 
             {/* Column 2: Explore Navigation (Figma Node 87:14554; mobile 136:7819,
-                156x190 at y=247, its own text centred inside that width). The 190
-                is taller than the 152.4 the heading and links occupy: the design
-                fixes the box and the slack below it is what separates this column
-                from the contact one, which starts flush at 437. */}
-            <div className="ms-3 flex h-[190px] w-[156px] flex-col items-center text-center lg:absolute lg:left-[290px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[156px]">
+                156x190 at y=247; LTR Figma 142:17247 at left: 188px). */}
+            <div className="ms-3 flex h-[190px] w-[156px] flex-col items-center text-center lg:absolute rtl:lg:left-[290px] ltr:lg:left-[188px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[156px]">
               <h4 className="text-[13px] font-bold leading-[20px] text-brand-primary">{t("exploreHeading")}</h4>
               <nav className="flex flex-col items-center pt-5 gap-[10.8px]" aria-label={a11y("exploreLinks")}>
                 {([
@@ -100,8 +97,8 @@ export function Footer() {
             </div>
 
             {/* Column 3: Contact & Presence (Figma Node 87:14565; mobile 136:7830,
-                156x137 at y=437 — flush under the explore column, no gap). */}
-            <div className="ms-3 mb-[29px] flex h-[137px] w-[156px] flex-col items-center text-center lg:absolute lg:left-[90px] lg:top-0 lg:mb-0 lg:ms-0 lg:h-auto lg:w-[156px]">
+                156x137 at y=437; LTR Figma 142:17258 at left: 368px). */}
+            <div className="ms-3 mb-[29px] flex h-[137px] w-[156px] flex-col items-center text-center lg:absolute rtl:lg:left-[90px] ltr:lg:left-[368px] lg:top-0 lg:mb-0 lg:ms-0 lg:h-auto lg:w-[156px]">
               <h4 className="text-[13px] font-bold leading-[20px] text-brand-primary">{t("contactHeading")}</h4>
               <div className="flex flex-col items-center pt-5 gap-2 text-[13px] font-medium leading-[20px] text-primary-50">
                 <a
@@ -117,10 +114,8 @@ export function Footer() {
             </div>
 
             {/* Column 4: Booking Pitch & CTA (Figma Node 87:14574 — 235px; mobile
-                136:7839, 321x190 at y=603). The 213 heading cap is the same in
-                both instances, but the body runs to 308 on mobile against 201 on
-                desktop — two lines either way. */}
-            <div className="ms-[25px] flex h-[190px] w-[321px] flex-col lg:absolute lg:left-[-193px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[235px] lg:max-w-none">
+                136:7839, 321x190 at y=603; LTR Figma 142:17267 at left: 666px). */}
+            <div className="ms-[25px] flex h-[190px] w-[321px] flex-col lg:absolute rtl:lg:left-[-193px] ltr:lg:left-[666px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[235px] lg:max-w-none">
               <h4 className="text-base font-bold text-[#ECE6D0] max-w-[213px]">
                 {t("bookingHeading")}
               </h4>
@@ -136,15 +131,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Bottom Bar (Figma Node 87:14584 — 0.667px rule, 24px top padding) */}
-          {/* Bottom bar 87:14584. The strapline is drawn on the physical left and
-              the copyright on the right, which in Arabic is the reverse of source
-              order — hence flex-row-reverse rather than a swapped DOM.
-              The mobile instance 136:7847 is the same single 342x42.667 row, not a
-              stack: 125 and 205 wide with 12 between them, both sitting on the
-              row's bottom edge. So the row is unconditional, and it opens 20px
-              under the booking column rather than the desktop 56. */}
-          <div className="mt-5 flex flex-row-reverse items-end justify-between gap-3 border-t-[0.667px] border-[rgba(236,230,208,0.15)] pt-6 text-primary-50 lg:mt-14">
+          {/* Bottom Bar (Figma Node 87:14584 — 0.667px rule, 24px top padding; LTR Figma 142:17275) */}
+          <div className="mt-5 flex flex-row-reverse ltr:flex-row items-end justify-between gap-3 border-t-[0.667px] border-[rgba(236,230,208,0.15)] pt-6 text-primary-50 lg:mt-14">
             <span className="text-[9.92px] font-semibold uppercase leading-[14.88px] tracking-[0.14em]">
               {t("strapline")}
             </span>

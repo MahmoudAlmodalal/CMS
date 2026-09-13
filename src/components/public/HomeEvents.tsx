@@ -6,6 +6,10 @@ import type { Event } from "@/lib/dal/events";
 
 interface HomeEventsProps {
   events: Event[];
+  /** Admin override for the section heading. Falls back to built-in copy. */
+  heading?: string;
+  /** Admin override for the CTA label. Falls back to built-in copy. */
+  ctaLabel?: string;
 }
 
 /** Event type -> key under the `categories` message namespace (short badge wording). */
@@ -66,7 +70,7 @@ const CATEGORY_KEY_MAP: Record<string, string> = {
  * trailing arrow glyph the 1440 rows carry.
  */
 const BAND_PHOTOGRAPH = "/assets/events/home-band.png";
-export function HomeEvents({ events }: HomeEventsProps) {
+export function HomeEvents({ events, heading, ctaLabel }: HomeEventsProps) {
   const t = useTranslations("home");
   const ev = useTranslations("event");
   const c = useTranslations("categories");
@@ -95,8 +99,8 @@ export function HomeEvents({ events }: HomeEventsProps) {
         {/* Content column 87:14472 */}
         <div className="contents text-start lg:absolute lg:start-[31.67px] lg:top-[96px] lg:block lg:w-[875.333px]">
           {/* Heading 87:14480 */}
-          <h2 className="order-1 mx-auto h-[64px] w-[326px] pt-[8px] text-start font-display text-[32px] leading-[32px] text-brand-espresso lg:mx-0 lg:h-[55.6px] lg:w-auto lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
-            {t("eventsHeading")}
+          <h2 className="order-1 mx-auto h-[64px] w-[326px] pt-[8px] text-start font-display text-[32px] font-normal leading-[32px] text-brand-espresso lg:mx-0 lg:h-[55.6px] lg:w-auto lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
+            {heading || t("eventsHeading")}
           </h2>
 
           {/* Rows 87:14483 */}
@@ -156,7 +160,7 @@ export function HomeEvents({ events }: HomeEventsProps) {
               href="/events"
               className="inline-flex h-[20px] items-center text-[14px] font-bold leading-[20px] text-primary-500 transition-colors hover:text-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 lg:h-[48px] lg:rounded-[16px] lg:bg-primary-500 lg:px-[26.4px] lg:text-[14.4px] lg:leading-[21.6px] lg:text-primary-50 lg:hover:bg-brand-primary-hover lg:active:bg-brand-primary-pressed"
             >
-              {t("eventsCta")}
+              {ctaLabel || t("eventsCta")}
             </Link>
           </div>
         </div>

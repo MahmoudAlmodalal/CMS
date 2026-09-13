@@ -431,6 +431,9 @@ export interface MediaReference {
 export const MEDIA_REFERENCES: readonly MediaReference[] = [
   { table: "site_settings", column: "hero_image_url", bucket: "site" },
   { table: "site_settings", column: "about_image_url", bucket: "site" },
+  { table: "site_settings", column: "events_hero_image_url", bucket: "site" },
+  { table: "site_settings", column: "artists_hero_image_url", bucket: "site" },
+  { table: "site_settings", column: "academy_hero_image_url", bucket: "site" },
   { table: "artists", column: "portrait_image_url", bucket: "artists" },
   { table: "releases", column: "cover_image_url", bucket: "releases" },
   { table: "events", column: "image_url", bucket: "events" },

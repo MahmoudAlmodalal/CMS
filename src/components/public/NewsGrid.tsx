@@ -6,6 +6,10 @@ import type { Article } from "@/lib/articles";
 export interface NewsGridProps {
   articles: Article[];
   title?: string;
+  /** Admin-set kicker rendered above the heading (only when provided). */
+  kicker?: string;
+  /** Admin-set standfirst rendered under the heading (only when provided). */
+  subtitle?: string;
   className?: string;
 }
 
@@ -21,12 +25,17 @@ export interface NewsGridProps {
  * section, so none are rendered. NewsFilterTabs is left in the tree unused rather
  * than deleted, since restoring filtering is a product decision, not a design one.
  */
-export function NewsGrid({ articles, title, className = "" }: NewsGridProps) {
+export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: NewsGridProps) {
   const t = useTranslations("news");
 
   return (
     <section aria-labelledby="news-grid-heading" className={`flex flex-col gap-6 ${className}`}>
       <div className="flex flex-col items-start pt-2">
+        {kicker && (
+          <p className="pb-2 text-sm font-bold uppercase tracking-[0.12em] text-brand-primary">
+            {kicker}
+          </p>
+        )}
         <h2
           id="news-grid-heading"
           // `Heading 2` is a 48-tall block on the 390 frame too, with the line 8
@@ -35,6 +44,11 @@ export function NewsGrid({ articles, title, className = "" }: NewsGridProps) {
         >
           {title ?? t("gridHeading")}
         </h2>
+        {subtitle && (
+          <p className="mt-3 max-w-[693px] text-start text-base leading-[28px] text-gradscale-900/70">
+            {subtitle}
+          </p>
+        )}
       </div>
 
       {articles.length === 0 ? (

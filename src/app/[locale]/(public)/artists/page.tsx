@@ -55,10 +55,15 @@ export default async function ArtistsPage() {
       {/* Hero band 91:18055/91:18057 — 611 tall, the block 247 down, the headline
           at 64/91.5 with its first word in primary-500. No pill on this frame. */}
       <PageHero
-        title={t.rich("title", {
-          em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-        })}
+        title={
+          settings.artists_title?.trim()
+            ? settings.artists_title
+            : t.rich("title", {
+                em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+              })
+        }
         subtitle={settings.artists_subtitle}
+        image={settings.artists_hero_image_url || undefined}
         height={611}
         mobileHeight={678}
         contentTop={247}
@@ -76,14 +81,14 @@ export default async function ArtistsPage() {
       <section className="relative w-full overflow-hidden pb-[298px] pt-[32px] lg:pb-[172px] lg:pt-[127px]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat lg:block"
+          className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-[1085px] hidden h-[112px] w-[63px] bg-[url('/assets/branding/dots-artists-end.png')] bg-contain bg-no-repeat lg:block"
+          className="pointer-events-none absolute bottom-[120px] right-0 hidden h-[112px] w-[63px] bg-[url('/assets/branding/dots-artists-end.png')] bg-contain bg-no-repeat xl:block"
         />
 
-        <div className="relative mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-0">
+        <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12 xl:px-8">
           <Suspense fallback={<div className="min-h-[888px]" />}>
             <ArtistsDirectoryClient initialArtists={artists} />
           </Suspense>

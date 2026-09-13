@@ -9,6 +9,7 @@ import {
   updateArtistAction,
 } from "@/actions/cms";
 import { TranslationField } from "@/components/admin/ManagerKit";
+import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -160,6 +161,11 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
+
+    if (!values.portrait_image_url.trim()) {
+      setNotice({ type: "error", text: "يرجى رفع الصورة الشخصية أو إدخال رابطها" });
+      return;
+    }
 
     const input: ArtistInput = { ...values };
     startTransition(async () => {
@@ -443,8 +449,16 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
               <Field id="artist-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="artist-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
               </Field>
-              <Field id="artist-portrait" label="رابط الصورة الشخصية / مرجع الوسائط" help="استخدم رابطاً عاماً آمناً؛ مراجع الرفع تنتمي إلى مجلد artists canonical.">
-                <Input id="artist-portrait" type="url" dir="ltr" value={values.portrait_image_url} onChange={(event) => setField("portrait_image_url", event.target.value)} required />
+              <Field id="artist-portrait-url" label="الصورة الشخصية" help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو الصق رابطاً مباشراً. تُحفظ في مجلد artists/portraits.">
+                <ImageUploadField
+                  id="artist-portrait"
+                  bucket="artists"
+                  folder="portraits"
+                  value={values.portrait_image_url}
+                  onChange={(url) => setField("portrait_image_url", url)}
+                  entityId={editingId ?? (values.slug.trim() || "new-artist")}
+                  disabled={pending}
+                />
               </Field>
               <Field id="artist-specialties" label="التخصصات">
                 <Input id="artist-specialties" value={values.specialties} onChange={(event) => setField("specialties", event.target.value)} required />

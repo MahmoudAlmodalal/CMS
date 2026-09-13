@@ -49,14 +49,17 @@ export function MobileNavbar() {
           >
             {/* The wordmark is raster, so the band name is carried by the alt text
                 rather than a second visible text node. `priority` is deprecated in
-                Next 16; the docs point at loading="eager" for a non-LCP image. */}
+                Next 16; the docs point at loading="eager" for a non-LCP image.
+                The file is 292x178 (1.64:1), so it renders at its natural aspect:
+                forcing the 104x32 box (3.25:1) letterboxed it to ~52px with 26px
+                of dead space each side. */}
             <Image
               src="/assets/branding/logo-navbar.png"
               alt={site("brand")}
-              width={104}
-              height={32}
+              width={292}
+              height={178}
               loading="eager"
-              className="h-8 w-26 object-contain"
+              className="h-8 w-auto object-contain"
             />
           </Link>
 

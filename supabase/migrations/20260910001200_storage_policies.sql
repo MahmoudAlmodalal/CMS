@@ -24,7 +24,7 @@ CREATE POLICY "storage_admin_insert"
   FOR INSERT
   TO authenticated
   WITH CHECK (
-    auth.is_admin()
+    public.is_admin()
     AND bucket_id IN ('site', 'artists', 'audio', 'releases', 'events', 'academy', 'articles')
   );
 
@@ -34,11 +34,11 @@ CREATE POLICY "storage_admin_update"
   FOR UPDATE
   TO authenticated
   USING (
-    auth.is_admin()
+    public.is_admin()
     AND bucket_id IN ('site', 'artists', 'audio', 'releases', 'events', 'academy', 'articles')
   )
   WITH CHECK (
-    auth.is_admin()
+    public.is_admin()
     AND bucket_id IN ('site', 'artists', 'audio', 'releases', 'events', 'academy', 'articles')
   );
 
@@ -48,6 +48,6 @@ CREATE POLICY "storage_admin_delete"
   FOR DELETE
   TO authenticated
   USING (
-    auth.is_admin()
+    public.is_admin()
     AND bucket_id IN ('site', 'artists', 'audio', 'releases', 'events', 'academy', 'articles')
   );

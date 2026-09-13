@@ -5,6 +5,8 @@ import type { AcademyCourse } from "@/lib/dal/academy";
 
 interface AcademyTracksProps {
   courses: AcademyCourse[];
+  /** Admin override for the section heading (`<em>` highlights). Falls back to built-in copy. */
+  heading?: string;
 }
 
 /**
@@ -34,7 +36,7 @@ interface AcademyTracksProps {
  * 31.16 under them, at 1903, which is where the value-props box opens. There is no
  * tablet artboard, so the mobile figures hold until the 1440 ones take over.
  */
-export function AcademyTracks({ courses }: AcademyTracksProps) {
+export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
   const t = useTranslations("academy");
 
   return (
@@ -57,7 +59,7 @@ export function AcademyTracks({ courses }: AcademyTracksProps) {
           id="academy-tracks-heading"
           className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:me-0 lg:ms-[560px] lg:w-auto lg:whitespace-nowrap lg:text-start lg:text-[40px] lg:leading-[48px]"
         >
-          {t.rich("tracksHeading", {
+          {heading || t.rich("tracksHeading", {
             em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
           })}
         </h2>

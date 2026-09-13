@@ -58,7 +58,7 @@ export type PublishableTable =
   | "articles"
   | "testimonials";
 
-export const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
+const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
   "artists",
   "tracks",
   "releases",
