@@ -13,6 +13,7 @@ import {
 } from "@/lib/articles";
 
 export { type Article, ARTICLE_CATEGORIES, type ArticleCategoryId, CATEGORY_LABELS, getArticleCategoryLabel, CARD_CATEGORY_LABELS, getArticleCardCategoryLabel, CANONICAL_ARTICLES, CANONICAL_FEATURED_ARTICLES };
+export const getNewsCardCategoryLabel = getArticleCardCategoryLabel;
 
 const demoArticles = (limit?: number) => {
   const now = new Date().toISOString();
