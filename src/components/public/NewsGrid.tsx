@@ -29,7 +29,9 @@ export function NewsGrid({ articles, title, className = "" }: NewsGridProps) {
       <div className="flex flex-col items-start pt-2">
         <h2
           id="news-grid-heading"
-          className="text-start font-display text-[32px] leading-[1.1] text-gradscale-900 sm:text-[40px] lg:text-[48px] lg:leading-[40px]"
+          // `Heading 2` is a 48-tall block on the 390 frame too, with the line 8
+          // down — the same pt-2 — so the line box is 40 at both widths.
+          className="text-start font-display text-[32px] leading-[40px] text-gradscale-900 lg:text-[48px]"
         >
           {title ?? t("gridHeading")}
         </h2>
@@ -41,7 +43,11 @@ export function NewsGrid({ articles, title, className = "" }: NewsGridProps) {
           <p className="mx-auto mt-2 max-w-md text-sm text-brand-espresso/70">{t("emptyBody")}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 pb-[72px] md:grid-cols-2 lg:grid-cols-3">
+        // The 72 of trailing space inside `Section - Grid Layout` is a 1440-frame
+        // figure: on the 390 one that box's bottom would fall 11.5 past the footer,
+        // so there the space between the last card and the footer is the band's own
+        // 60.5 instead.
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
           {articles.map((article) => (
             <ArticleCard key={article.id || article.slug} article={article} />
           ))}

@@ -70,6 +70,9 @@ export default async function AcademyPage({
         })}
         subtitle={settings.academy_subtitle}
         height={611}
+        // 139:13053 is 390x500 hung at y=-10, so this band is 0..490 — the one
+        // mobile frame whose band is not 678.
+        mobileHeight={490}
         contentTop={185}
         titleSize={72}
         titleLeading={90}
@@ -78,13 +81,17 @@ export default async function AcademyPage({
       {/* Tracks 91:16347/91:16437, opening 102px under the band. */}
       <AcademyTracks courses={courses} />
 
-      {/* Value-props band 91:16348, 81.4px under the tracks grid. */}
-      <div className="pt-[81px]">
+      {/* Value-props band 91:16348, 81.4px under the tracks grid. On the 390 frame
+          139:13444 opens 31.16 under the cards, and that gap is carried by the
+          tracks section itself, so nothing is added here. */}
+      <div className="lg:pt-[81px]">
         <AcademyValueProps />
       </div>
 
-      {/* Newsletter 91:16420, 48.7px under the band and 63px clear of the footer. */}
-      <div className="pb-[63px] pt-[49px]">
+      {/* Newsletter 91:16420, 48.7px under the band and 63px clear of the footer.
+          The 390 frame opens it 15.09 under the value-props band and runs it flush
+          into the footer at 3009. */}
+      <div className="pt-[15.09px] lg:pb-[63px] lg:pt-[49px]">
         <AcademyNewsletter />
       </div>
     </div>

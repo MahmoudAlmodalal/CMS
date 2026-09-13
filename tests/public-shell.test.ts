@@ -84,16 +84,35 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
   assert.match(content, /LocaleSwitcher/, "Navbar must include the locale switcher");
 });
 
-test("Task 31 — 3. Mobile Top Bar (Figma Component 17: 56px)", () => {
+test("Task 31 — 3. Mobile Top Bar (Figma Component 17/Navigation 139:12348 — 369.73x56)", () => {
   const content = fs.readFileSync(path.join(root, "src/components/public/MobileNavbar.tsx"), "utf-8");
 
   assert.match(content, /lg:hidden/, "Mobile top bar must be mobile-only (hidden on desktop)");
-  assert.match(content, /h-14|h-16/, "Mobile top bar must maintain 56px height specification");
-  assert.match(content, /site\("brand"\)/, "Mobile top bar must display band name");
-  assertLocalised(content, "nav.bookNow", "أحجز الآن", "Mobile top bar CTA");
-  assert.match(content, /href="\/booking"/, "Mobile top bar CTA must link to /booking");
+  assert.match(content, /h-14/, "Mobile top bar must maintain 56px height specification");
+
+  // Figma draws a floating pill, not a full-bleed bar: measured x=10..378, y=44..99
+  // on the 390px home-mobile canvas, r=20, fill #FFFFFF.
+  assert.match(content, /inset-x-2\.5/, "Mobile pill must be inset 10px inline per Figma");
+  assert.match(content, /top-\[44px\]/, "Mobile pill must sit 44px from the top per Figma");
+  assert.match(content, /rounded-\[20px\]/, "Mobile pill must carry the measured 20px radius");
+  assert.match(content, /bg-white/, "Mobile pill must carry the measured #FFFFFF fill");
+  assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
+
+  // The wordmark is a 104x32 raster, so the band name is the image's accessible name.
+  assert.match(content, /site\("brand"\)/, "Mobile top bar must name the band on the logo");
+  assert.match(content, /h-8 w-26/, "Mobile logo must occupy the 104x32 box of Node 139:12341");
+
   assertLocalised(content, "a11y.openMenu", "فتح قائمة التنقل", "Mobile top bar trigger");
+  assert.match(content, /size-6/, "Drawer toggle must occupy the 24x24 box of Node 139:12338");
   assert.match(content, /<MobileDrawer/, "Mobile top bar must integrate MobileDrawer");
+
+  // Component 17/Navigation has exactly two children — a hamburger and the logo.
+  // The booking CTA and the locale switcher live in the drawer instead, which the
+  // drawer test below covers. Asserting their absence keeps the invented bar from
+  // creeping back in.
+  assert.doesNotMatch(content, /href="\/booking"/, "Figma puts no booking CTA in the mobile bar");
+  assert.doesNotMatch(content, /nav\("bookNow"\)/, "Figma puts no booking CTA in the mobile bar");
+  assert.doesNotMatch(content, /LocaleSwitcher/, "Figma puts no locale switcher in the mobile bar");
 });
 
 test("Task 31 — 4. Mobile Drawer Navigation (Figma 139:12368)", () => {

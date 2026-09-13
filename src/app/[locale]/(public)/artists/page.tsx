@@ -60,6 +60,7 @@ export default async function ArtistsPage() {
         })}
         subtitle={settings.artists_subtitle}
         height={611}
+        mobileHeight={678}
         contentTop={247}
         titleSize={64}
         titleLeading={91.5}
@@ -67,8 +68,12 @@ export default async function ArtistsPage() {
 
       {/* The filter bar opens 128px under the band, and the grid's last row leaves
           171px before the footer at 1905. Both marks hang off their own edge of the
-          artboard, so they are drawn only where there is a margin to hang them in. */}
-      <section className="relative w-full overflow-hidden pb-[172px] pt-[127px]">
+          artboard, so they are drawn only where there is a margin to hang them in.
+          On the 390 frame the rhythm is its own: the band closes at 678, the filter
+          bar opens 32 under it at 710, the carousel opens at 809 and closes at 1709,
+          and the footer is bottom-anchored at 2007 — so 298 of air closes the
+          section, which is the widest gap anywhere on the frame. */}
+      <section className="relative w-full overflow-hidden pb-[298px] pt-[32px] lg:pb-[172px] lg:pt-[127px]">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat lg:block"

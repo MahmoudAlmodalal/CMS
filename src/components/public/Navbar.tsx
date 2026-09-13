@@ -77,7 +77,9 @@ export function Navbar() {
             alt={a11y("brandHome")}
             width={196}
             height={85}
-            priority
+            // `priority` is deprecated in Next 16; the docs point at loading="eager"
+            // for an above-the-fold image that is not the LCP element.
+            loading="eager"
             className="h-[85px] w-auto object-contain"
             style={{ width: "auto" }}
           />

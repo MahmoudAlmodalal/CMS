@@ -35,8 +35,11 @@ export function ArticleCard({ article }: ArticleCardProps) {
   const t = useTranslations("article");
   const dateFormatted = formatArabicDate(article.published_at);
 
+  // Card 91:17378 is a flat 423.5px on the desktop frame — 1px border, a 192px
+  // cover, a 229.5px body and 1px border. Below lg the card hugs its content,
+  // since the 390px frame stacks the cards and sets its own height.
   return (
-    <article className="group flex min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card">
+    <article className="group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
       <Link href={`/news/${article.slug}`} className="flex flex-1 flex-col">
         <div className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface">
           <Image
@@ -52,20 +55,31 @@ export function ArticleCard({ article }: ArticleCardProps) {
           </span>
         </div>
 
-        <div className="flex flex-1 flex-col justify-between p-6 text-start">
-          <span className="pb-2 text-[13px] font-bold leading-[19.5px] text-eyebrow">
+        {/* The excerpt is the row that gives way, not a spacer distribution. Figma
+            holds heading + excerpt at a constant 138.5px across all three cards:
+            card 91:17378 pairs a 72px two-line heading with a 66.5px excerpt block,
+            while 91:17397 and 91:17416 pair a 42px one-line heading with a 96.5px
+            one. So the heading takes what it needs and the excerpt absorbs the
+            remainder — which is flex-1 on the excerpt, clipped.
+
+            justify-between did the opposite: it spread the slack across every gap,
+            so a two-line heading grew the whole row to 445px instead of 423.5 and
+            pushed each card's rows out of alignment with its neighbours (headings
+            landed at y=1166 and y=1176 in the same row). */}
+        <div className="flex flex-1 flex-col p-6 text-start">
+          <span className="shrink-0 pb-2 text-[13px] font-bold leading-[19.5px] text-eyebrow">
             {getNewsCardCategoryLabel(article.category)}
           </span>
 
-          <h3 className="pb-3 text-[20px] font-bold leading-[30px] text-ink-heading transition-colors group-hover:text-brand-primary">
+          <h3 className="shrink-0 pb-3 text-[20px] font-bold leading-[30px] text-ink-heading transition-colors group-hover:text-brand-primary">
             {article.title}
           </h3>
 
-          <p className="pb-4 text-[16px] leading-[24px] text-ink-body">
+          <p className="min-h-0 flex-1 overflow-hidden pb-4 text-[16px] leading-[24px] text-ink-body">
             {article.excerpt}
           </p>
 
-          <span className="flex items-center justify-start gap-1 text-[10px] font-bold leading-[15px] text-eyebrow">
+          <span className="flex shrink-0 items-center justify-start gap-1 text-[10px] font-bold leading-[15px] text-eyebrow">
             {t("readMore")}
             <ArrowEndIcon size={10.667} className="shrink-0" />
           </span>

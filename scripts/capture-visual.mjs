@@ -133,6 +133,20 @@ async function capture(ws, frame) {
       await new Promise((r) => setTimeout(r, 250));
     }
 
+    // Wait for webfonts too. Every face here is font-display: swap, so a shot taken
+    // inside the swap window renders whole pages in fallback metrics — different
+    // line boxes, different wrapping, a different image. That made the pixel ratio
+    // wobble about a point between otherwise identical runs, which is the same
+    // order as the improvements being measured. fonts.ready resolves once the
+    // swap is done (and still resolves when a face fails, as Qahwa Arabic does
+    // while its woff2 is missing, so this cannot hang on the missing file).
+    for (let i = 0; i < 60; i += 1) {
+      const { result } = await cdp(ws, "Runtime.evaluate",
+        { expression: `document.fonts.status === "loaded"`, returnByValue: true }, sessionId);
+      if (result?.result?.value === true) break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+
     // Wait for the paint to settle. CSS background-image has no load event to
     // await and the hero art is the slowest thing on every page, so settling is
     // observed rather than predicted. Only the hero band is polled: re-shooting a
@@ -190,7 +204,15 @@ try {
   if (!version) throw new Error("Chromium never exposed its debugging port");
   const ws = new WebSocket(version.webSocketDebuggerUrl);
   await new Promise((r) => ws.addEventListener("open", r));
-  for (const frame of manifest.referenceFrames) {
+  // Optional frame filter, matching measure-layout.mjs's first argument. A full run
+  // is 28 frames and roughly a quarter of an hour, which is far too slow a loop for
+  // checking one screen:  node scripts/capture-visual.mjs news-desktop
+  const only = process.argv[2];
+  const selected = manifest.referenceFrames.filter((f) => !only || f.name === only);
+  if (only && selected.length === 0) {
+    throw new Error(`No frame named "${only}" in the manifest`);
+  }
+  for (const frame of selected) {
     console.log(`${frame.name}: ${await capture(ws, frame)}`);
   }
   ws.close();

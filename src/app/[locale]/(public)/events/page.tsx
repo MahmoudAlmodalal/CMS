@@ -73,6 +73,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
         })}
         subtitle={subtitle}
         height={611}
+        mobileHeight={678}
         contentTop={247}
         titleSize={64}
         titleLeading={91.5}
@@ -80,8 +81,10 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
       />
 
       {/* Catalogue band — the bar 60px under the hero, the columns 24px under it,
-          and 329px of air down to the footer. */}
-      <section className="relative w-full overflow-hidden pb-[120px] pt-10 lg:pb-[329px] lg:pt-[60px]">
+          and 329px of air down to the footer. The 390 frame runs on a 38px rhythm
+          instead — band 0-678, filter bar at 716, list at 808, featured panel at
+          1337 — and closes on 84 before the footer at 2007. */}
+      <section className="relative w-full overflow-hidden pb-[84px] pt-[38px] lg:pb-[329px] lg:pt-[60px]">
         {/* Dotted marks 91:16533 and 91:16638, both hanging off the artboard. */}
         <div
           aria-hidden="true"

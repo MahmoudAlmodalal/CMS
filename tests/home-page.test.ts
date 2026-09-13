@@ -222,10 +222,16 @@ test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ra
     "FeaturedArtists action link must route to /artists"
   );
 
-  // Tile geometry, Figma node 87:14241 — a 220x293 tile on a 16px radius.
+  // Tile geometry — a 16px-radius tile, 220x293 on the 1440 frame (87:14241) and
+  // 160x239 on the 390 one (136:5396), where the rail becomes a 2x2 grid.
   assert.match(
     artistTileSrc,
-    /w-\[220px\] h-\[293px\]/,
+    /h-\[239px\] w-\[160px\]/,
+    "ArtistTile must enforce the 390 frame's 160x239 tile"
+  );
+  assert.match(
+    artistTileSrc,
+    /lg:h-\[293px\] lg:w-\[220px\]/,
     "ArtistTile must enforce the frame's 220x293 tile"
   );
   assert.match(
@@ -508,4 +514,62 @@ test("Milestone 2 — 10. Public Home Integration & ISR Data Contracts", () => {
     /locale: locale === "ar" \? "ar_AR" : "en_US"/,
     "HomePage OpenGraph locale must follow the active locale, with Arabic still ar_AR"
   );
+});
+
+/**
+ * الرئيسية on the 390 frame — 136:5854.
+ *
+ * Every band matches the frame and the footer lands on the frame's own 5735. The
+ * 90px that remain are the frame overrunning its declared 6528 canvas
+ * (5735 + 882 = 6617), the same fault as news-mobile. See docs/figma/DECISIONS.md §16.
+ */
+test("الرئيسية — the 390 frame's seven bands", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(read(pub("page.tsx")));
+  const about = strip(read(comp("AboutSection.tsx")));
+  const artists = strip(read(comp("FeaturedArtists.tsx")));
+  const tile = strip(read(comp("ArtistTile.tsx")));
+  const quotes = strip(read(comp("TestimonialsSlider.tsx")));
+  const editorial = strip(read(comp("EditorialFeature.tsx")));
+  const events = strip(read(comp("HomeEvents.tsx")));
+  const banner = strip(read(comp("BookingBanner.tsx")));
+
+  // من نحن 740..1741: 48, a 61/91.5 kicker, 30, a 335x304 portrait, 30, the
+  // 324-wide column, 56.
+  assert.match(about, /pb-\[56px\] pt-\[48px\]/, "The about band opens 48 and closes 56");
+  assert.match(about, /text-\[61px\] font-bold leading-\[91\.5px\]/, "من نحن is 61/91.5 at both widths");
+  assert.match(about, /h-\[304px\] w-\[335px\]/, "The portrait is 335x304 on the 390 frame");
+  assert.match(about, /w-\[324px\] flex-col items-start gap-\[32px\]/, "The column is 324 wide on the same 32 gap");
+  assert.match(about, /leading-\[37\.5px\] text-\[16px\]/, "…and its manifesto is Cairo Medium 16/37.5, seven lines");
+
+  // أصوات 1741..2516: a 2x2 grid of 160x239 tiles, not a rail.
+  assert.match(artists, /pb-\[44px\] pt-\[52px\]/, "The artists band opens 52 and closes 44");
+  assert.match(artists, /grid w-\[336px\] grid-cols-2 gap-x-4 gap-y-\[29px\]/, "Four tiles in a 336-wide 2x2 grid");
+  assert.match(artists, /\[&>\*:nth-child\(n\+5\)\]:hidden/, "The frame draws four tiles, so the rest are dropped");
+  assert.match(tile, /h-\[239px\] w-\[160px\]/, "The 390 tile is 160x239");
+  assert.match(tile, /top-\[163px\]/, "…with its caption block 163 down");
+
+  // يقولون 2516..2966: one 305x167 card, no arrows and no indicators.
+  assert.match(quotes, /h-\[450px\]/, "The testimonials band is a flat 450 on the 390 frame");
+  assert.match(quotes, /ms-\[33px\] mt-\[48px\] h-\[167px\] w-\[305px\]/, "…holding one 305x167 card 48 under the heading");
+  assert.match(quotes, /flex-col-reverse/, "The lockup is drawn above the quote");
+  assert.match(page, /mb-\[30px\]/, "30 separates it from the editorial band");
+
+  // نكتب 2996..4582: four 317.156 cards 24 apart.
+  assert.match(editorial, /pb-\[89\.37px\] pt-\[52px\]/, "The editorial band opens 52 and closes 89.37");
+  assert.match(editorial, /mt-\[56px\] grid grid-cols-1 justify-items-center gap-\[24px\]/, "One column, 24 apart");
+  assert.doesNotMatch(editorial, /sm:grid-cols-2/, "There is no tablet artboard to pair the cards at");
+
+  // نلتقي 4582..5308: unsplit, ordered with display:contents, rows turned around.
+  assert.match(events, /pb-\[54px\] pt-\[48px\]/, "The events band opens 48 and closes 54");
+  assert.match(events, /contents lg:absolute lg:start-\[-4px\]/, "The panel flattens below lg so the photograph can sit between heading and rows");
+  assert.match(events, /order-2 mx-auto h-\[224px\] w-\[369\.735px\]/, "The photograph is 369.735x224 in flow");
+  assert.match(events, /h-\[80px\] flex-row-reverse/, "Rows are a flat 80 with the date badge on the physical left");
+  assert.match(events, /inline-flex h-\[20px\] items-center text-\[14px\]/, "The CTA is a 20-tall text link, not the 48px button");
+
+  // 136:5151 is an empty 401.73x427.99 reservation, and it is the home frame's
+  // alone: the artist page shares this band and its own 390 frame draws nothing there.
+  assert.match(page, /min-h-\[427\.992px\]/, "The closing band fills its reserved box");
+  assert.doesNotMatch(banner, /min-h-\[427/, "…and the reservation is not baked into the shared component");
 });
