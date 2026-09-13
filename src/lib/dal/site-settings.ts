@@ -46,6 +46,93 @@ export interface SiteSettings {
   operational_regions_en?: string | null;
   footer_mission_en?: string | null;
   copyright_text_en?: string | null;
+  // Page-hero overrides (null/blank = fall back to built-in copy).
+  events_title: string | null;
+  events_title_en?: string | null;
+  events_hero_image_url: string | null;
+  artists_title: string | null;
+  artists_title_en?: string | null;
+  artists_hero_image_url: string | null;
+  academy_title: string | null;
+  academy_title_en?: string | null;
+  academy_kicker: string | null;
+  academy_kicker_en?: string | null;
+  academy_hero_image_url: string | null;
+  academy_tracks_heading: string | null;
+  academy_tracks_heading_en?: string | null;
+  news_title: string | null;
+  news_title_en?: string | null;
+  news_subtitle: string | null;
+  news_subtitle_en?: string | null;
+  news_kicker: string | null;
+  news_kicker_en?: string | null;
+  // Home hero CTAs + about CTA overrides.
+  home_hero_primary_cta: string | null;
+  home_hero_primary_cta_en?: string | null;
+  home_hero_secondary_cta: string | null;
+  home_hero_secondary_cta_en?: string | null;
+  home_about_cta: string | null;
+  home_about_cta_en?: string | null;
+  // Home section headings + CTAs overrides.
+  home_artists_heading: string | null;
+  home_artists_heading_en?: string | null;
+  home_artists_cta: string | null;
+  home_artists_cta_en?: string | null;
+  home_testimonials_heading: string | null;
+  home_testimonials_heading_en?: string | null;
+  home_editorial_heading: string | null;
+  home_editorial_heading_en?: string | null;
+  home_events_heading: string | null;
+  home_events_heading_en?: string | null;
+  home_events_cta: string | null;
+  home_events_cta_en?: string | null;
+  // Academy value-props + newsletter band overrides.
+  academy_values_heading: string | null;
+  academy_values_heading_en?: string | null;
+  academy_value1_title: string | null;
+  academy_value1_title_en?: string | null;
+  academy_value1_body: string | null;
+  academy_value1_body_en?: string | null;
+  academy_value2_title: string | null;
+  academy_value2_title_en?: string | null;
+  academy_value2_body: string | null;
+  academy_value2_body_en?: string | null;
+  academy_value3_title: string | null;
+  academy_value3_title_en?: string | null;
+  academy_value3_body: string | null;
+  academy_value3_body_en?: string | null;
+  academy_newsletter_heading: string | null;
+  academy_newsletter_heading_en?: string | null;
+  academy_newsletter_tagline: string | null;
+  academy_newsletter_tagline_en?: string | null;
+  // SEO metadata overrides (null = fall back to built-in copy).
+  seo_home_title: string | null;
+  seo_home_title_en?: string | null;
+  seo_home_description: string | null;
+  seo_home_description_en?: string | null;
+  seo_events_title: string | null;
+  seo_events_title_en?: string | null;
+  seo_events_description: string | null;
+  seo_events_description_en?: string | null;
+  seo_news_title: string | null;
+  seo_news_title_en?: string | null;
+  seo_news_description: string | null;
+  seo_news_description_en?: string | null;
+  seo_artists_title: string | null;
+  seo_artists_title_en?: string | null;
+  seo_artists_description: string | null;
+  seo_artists_description_en?: string | null;
+  seo_academy_title: string | null;
+  seo_academy_title_en?: string | null;
+  seo_academy_description: string | null;
+  seo_academy_description_en?: string | null;
+  // Label overrides (null = fall back to built-in copy).
+  events_filter_all_label: string | null;
+  events_filter_all_label_en?: string | null;
+  artists_filter_all_label: string | null;
+  artists_filter_all_label_en?: string | null;
+  booking_cta_label: string | null;
+  booking_cta_label_en?: string | null;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -91,11 +178,96 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   artists_subtitle_en:
     "Every artist at Andalusia carries a story, plays the soul of the East, and turns heritage into a sound for the future.",
   events_subtitle_en: "Dates that leave a beautiful mark on anyone who loves music with roots.",
-  academy_subtitle_en: "Learn from the hand that knows the way and the secrets of the maqamat.",
+  academy_subtitle_en:
+    "Educational music programs with real artists in small, intensive environments — an experience that will change your artistic path.",
   booking_subtitle_en: "Book your private evening, or bring us into your next event.",
   operational_regions_en: "Lebanon · Morocco · The Gulf",
   footer_mission_en: "A collective of artists who believe creativity is life and music is the spark.",
   copyright_text_en: "© Andalusia 2025 — All rights reserved",
+  // Page-content overrides: null = no override, fall back to built-in copy.
+  events_title: null,
+  events_title_en: null,
+  events_hero_image_url: null,
+  artists_title: null,
+  artists_title_en: null,
+  artists_hero_image_url: null,
+  academy_title: null,
+  academy_title_en: null,
+  academy_kicker: null,
+  academy_kicker_en: null,
+  academy_hero_image_url: null,
+  academy_tracks_heading: null,
+  academy_tracks_heading_en: null,
+  news_title: null,
+  news_title_en: null,
+  news_subtitle: null,
+  news_subtitle_en: null,
+  news_kicker: null,
+  news_kicker_en: null,
+  home_hero_primary_cta: null,
+  home_hero_primary_cta_en: null,
+  home_hero_secondary_cta: null,
+  home_hero_secondary_cta_en: null,
+  home_about_cta: null,
+  home_about_cta_en: null,
+  home_artists_heading: null,
+  home_artists_heading_en: null,
+  home_artists_cta: null,
+  home_artists_cta_en: null,
+  home_testimonials_heading: null,
+  home_testimonials_heading_en: null,
+  home_editorial_heading: null,
+  home_editorial_heading_en: null,
+  home_events_heading: null,
+  home_events_heading_en: null,
+  home_events_cta: null,
+  home_events_cta_en: null,
+  academy_values_heading: null,
+  academy_values_heading_en: null,
+  academy_value1_title: null,
+  academy_value1_title_en: null,
+  academy_value1_body: null,
+  academy_value1_body_en: null,
+  academy_value2_title: null,
+  academy_value2_title_en: null,
+  academy_value2_body: null,
+  academy_value2_body_en: null,
+  academy_value3_title: null,
+  academy_value3_title_en: null,
+  academy_value3_body: null,
+  academy_value3_body_en: null,
+  academy_newsletter_heading: null,
+  academy_newsletter_heading_en: null,
+  academy_newsletter_tagline: null,
+  academy_newsletter_tagline_en: null,
+  // SEO metadata overrides
+  seo_home_title: null,
+  seo_home_title_en: null,
+  seo_home_description: null,
+  seo_home_description_en: null,
+  seo_events_title: null,
+  seo_events_title_en: null,
+  seo_events_description: null,
+  seo_events_description_en: null,
+  seo_news_title: null,
+  seo_news_title_en: null,
+  seo_news_description: null,
+  seo_news_description_en: null,
+  seo_artists_title: null,
+  seo_artists_title_en: null,
+  seo_artists_description: null,
+  seo_artists_description_en: null,
+  seo_academy_title: null,
+  seo_academy_title_en: null,
+  seo_academy_description: null,
+  seo_academy_description_en: null,
+  // Label overrides
+  events_filter_all_label: null,
+  events_filter_all_label_en: null,
+  artists_filter_all_label: null,
+  artists_filter_all_label_en: null,
+  booking_cta_label: null,
+  booking_cta_label_en: null,
   home_featured_artists_count: 6,
   home_featured_articles_count: 4,
   home_upcoming_events_count: 3,

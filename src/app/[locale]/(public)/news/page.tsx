@@ -1,9 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
 import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export const revalidate = 1800; // 30 minutes ISR as specified in APPLICATION_ARCHITECTURE.md
 
@@ -13,31 +14,38 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_news_title?.trim() || t("newsTitle");
+  const description = settings.seo_news_description?.trim() || t("newsDescription");
   const path = locale === "ar" ? "/news" : "/en/news";
   return {
-    title: t("newsTitle"),
-    description: t("newsDescription"),
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
-      title: t("newsTitle"),
-      description: t("newsDescription"),
+      title,
+      description,
       url: path,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: t("newsTitle"),
-      description: t("newsDescription"),
+      title,
+      description,
     },
   };
 }
 
 export default async function NewsPage() {
-  const [articles, featuredArticles] = await Promise.all([
+  const [articles, featuredArticles, settings] = await Promise.all([
     getPublishedArticles(),
     getFeaturedArticles(3),
+    getSiteSettings(),
   ]);
 
   const primaryArticle = featuredArticles[0] || articles[0];
@@ -74,8 +82,13 @@ export default async function NewsPage() {
           grid the 342 the frame draws; there is no tablet frame to step it up at
           sm:, so it holds until the 1440 one takes over. */}
       <div className="mx-auto w-full max-w-[1440px] px-6 pb-[60.5px] pt-[47px] lg:px-0 lg:pb-[151.5px] lg:pt-[181px]">
-        <div className="w-full lg:ms-[103px] lg:w-[1208px]">
-          <NewsGrid articles={gridArticles} />
+        <div className="w-full lg:ms-[103px] lg:w-[1208px] lg:max-w-[calc(100%-103px)]">
+          <NewsGrid
+            articles={gridArticles}
+            title={settings.news_title || undefined}
+            kicker={settings.news_kicker || undefined}
+            subtitle={settings.news_subtitle || undefined}
+          />
         </div>
       </div>
     </div>

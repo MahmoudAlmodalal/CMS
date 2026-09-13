@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { BUCKET_FOLDERS, type StorageBucket } from "@/lib/storage";
 import type { StorageFile } from "@/lib/types/admin-media";
 import { MediaBucketTabs } from "./MediaBucketTabs";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { MediaFileGrid } from "./MediaFileGrid";
 import { MediaUploadZone } from "./MediaUploadZone";
 import { listFolderMedia } from "./listFolderMedia";
@@ -62,18 +63,15 @@ export function MediaLibrary() {
         <label htmlFor="media-folder-select" className="text-sm font-medium text-gray-700">
           المجلد:
         </label>
-        <select
+        <Dropdown<string>
           id="media-folder-select"
+          ariaLabel="المجلد"
           value={folder}
-          onChange={(e) => setFolder(e.target.value)}
-          className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-700 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
-        >
-          {BUCKET_FOLDERS[bucket].map((f) => (
-            <option key={f} value={f}>
-              {f}
-            </option>
-          ))}
-        </select>
+          onChange={(next) => setFolder(next)}
+          options={BUCKET_FOLDERS[bucket].map((f) => ({ value: f, label: f }))}
+          size="sm"
+          className="w-auto min-w-40"
+        />
       </div>
 
       {loading && (

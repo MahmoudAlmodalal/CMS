@@ -10,12 +10,14 @@ import type { Testimonial } from "@/lib/dal/testimonials";
 
 interface TestimonialsSliderProps {
   testimonials: Testimonial[];
+  /** Admin override for the section heading (`*...*` highlights). Falls back to built-in copy. */
+  heading?: string;
 }
 
 /**
  * Verified against Figma Section 87:14313 & Component 22 (176:6169):
  * - Dimensions: 1447x597 desktop, surface #F9F7F0
- * - Heading (87:14314): Cairo Bold 64px, `أندلسيا` carrying a second #C54716 fill
+ * - Heading (87:14314): Qahwa Arabic Regular 64px/48, `أندلسيا` carrying a second #C54716 fill
  * - Quote (176:2351): Cairo Medium 20px/30.4, centered, #000, 540px
  * - Author lockup (176:2354): name Cairo Bold 13.12px with the 5x14px star row
  *   beneath it, and a 36x36 round avatar alongside (176:1822), 9px gap
@@ -30,7 +32,7 @@ interface TestimonialsSliderProps {
  * text is 12 down). The band closes 104 under the card, and the next one opens 30
  * after that, which the page carries.
  */
-export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
+export function TestimonialsSlider({ testimonials, heading }: TestimonialsSliderProps) {
   const t = useTranslations("testimonials");
   const home = useTranslations("home");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -77,9 +79,9 @@ export function TestimonialsSlider({ testimonials }: TestimonialsSliderProps) {
     >
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:space-y-10">
-          {/* Section Header (Figma 87:14314 — Cairo Bold 64px, 2-fill) */}
-          <h2 className="font-sans text-[32px] font-bold leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
-            <Highlight text={home("testimonialsHeading")} />
+          {/* Section Header (Figma 87:14314 — Qahwa Arabic Regular 64px/48, 2-fill) */}
+          <h2 className="font-display text-[32px] font-normal leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
+            <Highlight text={heading || home("testimonialsHeading")} />
           </h2>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}

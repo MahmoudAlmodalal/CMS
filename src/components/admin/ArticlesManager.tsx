@@ -16,6 +16,7 @@ import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
 import type { AdminArticle } from "@/lib/dal/admin-articles";
@@ -249,17 +250,19 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
               className="sm:w-56"
             />
             <label className="sr-only" htmlFor="article-status-filter">تصفية حالة النشر</label>
-            <select
+            <Dropdown<StatusFilter>
               id="article-status-filter"
+              ariaLabel="تصفية حالة النشر"
               value={filter}
-              onChange={(event) => setFilter(event.target.value as StatusFilter)}
-              className="h-[48px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-            >
-              <option value="all">كل الحالات</option>
-              <option value="published">المنشور فقط</option>
-              <option value="scheduled">المجدول فقط</option>
-              <option value="draft">المسودات فقط</option>
-            </select>
+              onChange={(next) => setFilter(next)}
+              options={[
+                { value: "all", label: "كل الحالات" },
+                { value: "published", label: "المنشور فقط" },
+                { value: "scheduled", label: "المجدول فقط" },
+                { value: "draft", label: "المسودات فقط" },
+              ]}
+              className="sm:w-56"
+            />
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -352,17 +355,13 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
               <Input id="article-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
             <Field id="article-category" label="التصنيف">
-              <select
+              <Dropdown<ArticleCategory>
                 id="article-category"
                 value={values.category}
-                onChange={(event) => setField("category", event.target.value as ArticleCategory)}
-                className="h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
+                onChange={(category) => setField("category", category)}
+                options={ARTICLE_CATEGORIES.map((category) => ({ value: category, label: CATEGORY_LABELS[category] }))}
                 required
-              >
-                {ARTICLE_CATEGORIES.map((category) => (
-                  <option key={category} value={category}>{CATEGORY_LABELS[category]}</option>
-                ))}
-              </select>
+              />
             </Field>
             <Field id="article-author" label="اسم الكاتب أو هيئة التحرير">
               <Input id="article-author" value={values.author_name} onChange={(event) => setField("author_name", event.target.value)} required />

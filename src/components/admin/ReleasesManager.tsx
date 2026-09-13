@@ -99,6 +99,11 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
     event.preventDefault();
     if (pending) return;
 
+    if (!values.cover_image_url.trim()) {
+      setNotice({ type: "error", text: "يرجى رفع صورة الغلاف أو إدخال رابطها" });
+      return;
+    }
+
     const input: ReleaseInput = { ...values };
     startTransition(async () => {
       try {
@@ -306,7 +311,7 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
               <Field id="release-year" label="سنة الإصدار">
                 <Input id="release-year" type="number" min="1900" max="2100" dir="ltr" value={values.release_year} onChange={(event) => setField("release_year", Number(event.target.value))} required />
               </Field>
-              <Field id="release-cover" label="رابط صورة الغلاف">
+              <Field id="release-cover" label="صورة الغلاف" help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
                 <MediaPickerField
                   id="release-cover"
                   value={values.cover_image_url}
@@ -314,6 +319,7 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
                   bucket="releases"
                   folder="covers"
                   required
+                  disabled={pending}
                 />
               </Field>
               <Field id="release-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">

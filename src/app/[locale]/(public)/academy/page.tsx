@@ -18,13 +18,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_academy_title?.trim() || t("academyTitle");
+  const description = settings.seo_academy_description?.trim() || t("academyDescription");
   return {
-    title: t("academyTitle"),
-    description: t("academyDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("academyTitle"),
-      description: t("academyDescription"),
+      title,
+      description,
       type: "website",
       locale: locale === "ar" ? "ar_AR" : "en_US",
     },
@@ -64,11 +70,16 @@ export default async function AcademyPage({
       {/* Hero band 91:16331/91:16343 — 611 tall, the pill 185 down and the
           headline 62px under it in Qahwa Arabic 72/90. */}
       <PageHero
-        eyebrow={t("kicker")}
-        title={t.rich("title", {
-          em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-        })}
+        eyebrow={settings.academy_kicker?.trim() ? settings.academy_kicker : t("kicker")}
+        title={
+          settings.academy_title?.trim()
+            ? settings.academy_title
+            : t.rich("title", {
+                em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+              })
+        }
         subtitle={settings.academy_subtitle}
+        image={settings.academy_hero_image_url || undefined}
         height={611}
         // 139:13053 is 390x500 hung at y=-10, so this band is 0..490 — the one
         // mobile frame whose band is not 678.
@@ -79,20 +90,30 @@ export default async function AcademyPage({
       />
 
       {/* Tracks 91:16347/91:16437, opening 102px under the band. */}
-      <AcademyTracks courses={courses} />
+      <AcademyTracks courses={courses} heading={settings.academy_tracks_heading || undefined} />
 
       {/* Value-props band 91:16348, 81.4px under the tracks grid. On the 390 frame
           139:13444 opens 31.16 under the cards, and that gap is carried by the
           tracks section itself, so nothing is added here. */}
       <div className="lg:pt-[81px]">
-        <AcademyValueProps />
+        <AcademyValueProps
+          heading={settings.academy_values_heading || undefined}
+          items={[
+            { title: settings.academy_value1_title || undefined, body: settings.academy_value1_body || undefined },
+            { title: settings.academy_value2_title || undefined, body: settings.academy_value2_body || undefined },
+            { title: settings.academy_value3_title || undefined, body: settings.academy_value3_body || undefined },
+          ]}
+        />
       </div>
 
       {/* Newsletter 91:16420, 48.7px under the band and 63px clear of the footer.
           The 390 frame opens it 15.09 under the value-props band and runs it flush
           into the footer at 3009. */}
       <div className="pt-[15.09px] lg:pb-[63px] lg:pt-[49px]">
-        <AcademyNewsletter />
+        <AcademyNewsletter
+          heading={settings.academy_newsletter_heading || undefined}
+          tagline={settings.academy_newsletter_tagline || undefined}
+        />
       </div>
     </div>
   );

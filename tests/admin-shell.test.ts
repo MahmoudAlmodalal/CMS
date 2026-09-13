@@ -54,7 +54,7 @@ test("Task 41 — 2. Layer 2 Security Guard in Admin Layout", () => {
 });
 
 test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
-  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 12, "CANONICAL_ADMIN_ROUTES must have 12 entries");
+  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 13, "CANONICAL_ADMIN_ROUTES must have 13 entries");
 
   // Verify all sections exist
   const sectionTitles = ADMIN_NAV_SECTIONS.map((s) => s.title);
@@ -66,7 +66,7 @@ test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
 
   // Verify total navigation items in sections match canonical routes
   const totalItems = ADMIN_NAV_SECTIONS.reduce((acc, s) => acc + s.items.length, 0);
-  assert.strictEqual(totalItems, 12, "Sections must collectively contain all 12 canonical routes");
+  assert.strictEqual(totalItems, 13, "Sections must collectively contain all 13 canonical routes");
 });
 
 test("Task 41 — 4. Dynamic Breadcrumbs Resolution Logic", () => {

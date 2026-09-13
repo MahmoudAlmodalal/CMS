@@ -1,20 +1,36 @@
 "use client";
 
 import React, { useRef, useState, useCallback } from "react";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
-import { MediaUploadZone } from "./MediaUploadZone";
+import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
+import { listMediaAction } from "@/actions/admin-media";
 import { listFolderMedia } from "./listFolderMedia";
-import type { StorageBucket, StorageFile } from "@/lib/types/admin-media";
+import {
+  STORAGE_BUCKETS,
+  BUCKET_ALLOWED_MIMES,
+  resolveMediaUrl,
+  type StorageBucket,
+} from "@/lib/storage";
+import { BUCKET_LABELS } from "@/components/admin/media/MediaBucketTabs";
+import type { StorageFile } from "@/lib/types/admin-media";
 
 export interface MediaPickerFieldProps {
   id: string;
+  label?: string;
   value: string;
   onChange: (url: string) => void;
-  bucket: StorageBucket;
+  bucket?: StorageBucket;
   folder?: string;
   required?: boolean;
+  disabled?: boolean;
 }
+
+/** Storage buckets whose allowed MIME list contains image formats. */
+const IMAGE_BUCKETS: StorageBucket[] = STORAGE_BUCKETS.filter((b) =>
+  BUCKET_ALLOWED_MIMES[b]?.some((mime) => mime.startsWith("image/")),
+);
+
+/** Default general/site image bucket. */
+const DEFAULT_IMAGE_BUCKET: StorageBucket = "site";
 
 function isImageFile(file: StorageFile): boolean {
   if (file.mimeType) return file.mimeType.startsWith("image/");
@@ -22,197 +38,266 @@ function isImageFile(file: StorageFile): boolean {
   return ["jpg", "jpeg", "png", "webp", "avif", "svg"].includes(ext ?? "");
 }
 
+function getFileUrl(file: StorageFile, currentBucket: StorageBucket): string {
+  if (file.publicUrl) return file.publicUrl;
+  return resolveMediaUrl(file.bucket ?? currentBucket, file.path) ?? file.path;
+}
+
+/**
+ * Image picker field: composes ImageUploadField with an accessible media library
+ * browser to pick existing images from Supabase storage buckets.
+ */
 export function MediaPickerField({
   id,
+  label,
   value,
   onChange,
-  bucket,
+  bucket = DEFAULT_IMAGE_BUCKET,
   folder,
   required,
+  disabled = false,
 }: MediaPickerFieldProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedBucket, setSelectedBucket] = useState<StorageBucket>(
+    bucket && IMAGE_BUCKETS.includes(bucket) ? bucket : DEFAULT_IMAGE_BUCKET,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [files, setFiles] = useState<StorageFile[]>([]);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
-  const loadMedia = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await listFolderMedia(bucket, folder);
-      if (res.error) {
-        setError(res.error);
-        setFiles([]);
-      } else {
-        setFiles(res.files);
+  const fetchFiles = useCallback(
+    async (bucketToLoad: StorageBucket) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = folder
+          ? await listFolderMedia(bucketToLoad, folder)
+          : await listMediaAction(bucketToLoad, undefined);
+
+        if ("error" in res && res.error) {
+          setError(res.error);
+          setFiles([]);
+        } else if ("files" in res && res.files) {
+          setFiles(res.files);
+        } else {
+          setFiles([]);
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "فشل تحميل الصور من التخزين");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "فشل تحميل الملفات");
-    } finally {
-      setLoading(false);
-    }
-  }, [bucket, folder]);
+    },
+    [folder],
+  );
 
   const openDialog = () => {
+    if (disabled) return;
+    setIsOpen(true);
     dialogRef.current?.showModal();
-    loadMedia();
+    if (!hasLoaded) {
+      setHasLoaded(true);
+      void fetchFiles(selectedBucket);
+    }
   };
 
   const closeDialog = () => {
     dialogRef.current?.close();
+    setIsOpen(false);
   };
 
-  const imageFiles = files.filter(
-    (file) => file.publicUrl !== null && isImageFile(file),
-  );
+  const handleBucketChange = (newBucket: StorageBucket) => {
+    setSelectedBucket(newBucket);
+    void fetchFiles(newBucket);
+  };
+
+  const imageFiles = files.filter(isImageFile);
 
   return (
-    <div className="space-y-2 text-start">
-      <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-        <div className="flex-1 w-full">
-          <Input
-            id={id}
-            type="url"
-            dir="ltr"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            required={required}
-          />
-        </div>
-        <div className="flex gap-2 shrink-0">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={openDialog}
-            className="whitespace-nowrap cursor-pointer"
-          >
-            اختيار من المكتبة
-          </Button>
-          {value ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => onChange("")}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
-            >
-              مسح
-            </Button>
-          ) : null}
-        </div>
-      </div>
-
-      {value ? (
-        <div className="flex items-center gap-3 pt-1">
-          <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={value}
-              alt="معاينة الصورة"
-              className="w-full h-full object-cover"
-              loading="lazy"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-              }}
-            />
-          </div>
-        </div>
+    <div className="space-y-3" dir="rtl">
+      {label ? (
+        <label htmlFor={`${id}-url`} className="block text-xs font-bold text-gradscale-400">
+          {label}
+        </label>
       ) : null}
+
+      <ImageUploadField
+        id={id}
+        bucket={bucket}
+        folder={folder}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        entityId="site-settings"
+        label={label}
+      />
+
+      <div>
+        <button
+          type="button"
+          onClick={openDialog}
+          disabled={disabled}
+          aria-expanded={isOpen}
+          aria-controls={`${id}-media-dialog`}
+          className="inline-flex h-[40px] items-center justify-center gap-2 rounded-button border border-brand-espresso-subtle bg-white px-4 text-xs font-bold text-brand-espresso transition-colors hover:border-brand-primary hover:text-brand-primary disabled:opacity-50 cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+            <circle cx="9" cy="9" r="2" />
+            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+          </svg>
+          <span>اختر من مكتبة الوسائط</span>
+        </button>
+      </div>
 
       <dialog
         ref={dialogRef}
+        id={`${id}-media-dialog`}
         dir="rtl"
         onClick={(e) => {
           if (e.target === dialogRef.current) {
             closeDialog();
           }
         }}
-        className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl border border-gray-200 backdrop:bg-black/50 backdrop:backdrop-blur-xs max-h-[85vh] overflow-y-auto m-auto"
+        className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl border border-brand-espresso-subtle backdrop:bg-black/50 backdrop:backdrop-blur-xs max-h-[85vh] overflow-y-auto m-auto"
       >
-        <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
-          <h3 className="text-base font-bold text-gray-900">
-            اختيار صورة من المكتبة
-          </h3>
+        <div className="flex items-center justify-between gap-3 border-b border-brand-espresso-subtle/50 pb-3 mb-4">
+          {IMAGE_BUCKETS.length > 1 ? (
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor={`${id}-bucket-select`}
+                className="text-xs font-bold text-gradscale-400"
+              >
+                حاوية التخزين:
+              </label>
+              <select
+                id={`${id}-bucket-select`}
+                value={selectedBucket}
+                onChange={(e) => handleBucketChange(e.target.value as StorageBucket)}
+                disabled={loading || disabled}
+                className="rounded-lg border border-brand-espresso-subtle bg-white px-2.5 py-1 text-xs font-medium text-brand-espresso focus:border-brand-primary focus:outline-none cursor-pointer"
+              >
+                {IMAGE_BUCKETS.map((b) => (
+                  <option key={b} value={b}>
+                    {BUCKET_LABELS[b] ?? b}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
+
           <button
             type="button"
             onClick={closeDialog}
-            className="text-gray-400 hover:text-gray-600 p-1 rounded-lg text-lg leading-none cursor-pointer"
-            aria-label="إغلاق"
+            className="ms-auto text-xs font-bold text-gradscale-400 hover:text-brand-espresso cursor-pointer"
+            aria-label="إغلاق لوحة اختيار الوسائط"
           >
-            ✕
+            إغلاق
           </button>
         </div>
 
-        {loading && (
-          <div className="py-12 text-center text-sm text-gray-500">
-            جارٍ تحميل الصور…
+        {loading ? (
+          <div
+            className="flex items-center justify-center py-8 text-xs text-gradscale-400"
+            aria-busy="true"
+          >
+            <svg
+              className="me-2 h-4 w-4 animate-spin text-brand-primary"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            <span>جارٍ تحميل الصور...</span>
           </div>
-        )}
-
-        {error && (
+        ) : error ? (
           <div
             role="alert"
-            className="my-3 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700"
+            className="flex items-center justify-between rounded-lg border border-alert-error/20 bg-alert-error/10 p-3 text-xs font-medium text-alert-error"
           >
-            {error}
+            <span>{error}</span>
+            <button
+              type="button"
+              onClick={() => void fetchFiles(selectedBucket)}
+              className="ms-2 font-bold underline hover:opacity-80 cursor-pointer"
+            >
+              إعادة المحاولة
+            </button>
           </div>
-        )}
-
-        {!loading && !error && imageFiles.length === 0 && (
-          <div className="py-12 text-center text-sm text-gray-400">
-            لا توجد صور في هذا المجلد
-          </div>
-        )}
-
-        {!loading && !error && imageFiles.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-h-64 overflow-y-auto p-1">
-            {imageFiles.map((file) => (
-              <button
-                key={file.path}
-                type="button"
-                onClick={() => {
-                  if (file.publicUrl) {
-                    onChange(file.publicUrl);
+        ) : imageFiles.length === 0 ? (
+          <p className="py-8 text-center text-xs text-gradscale-400">
+            لا توجد صور متوفرة في هذه الحاوية
+          </p>
+        ) : (
+          <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto p-1 sm:grid-cols-4 md:grid-cols-6">
+            {imageFiles.map((file) => {
+              const fileUrl = getFileUrl(file, selectedBucket);
+              const isSelected = Boolean(fileUrl && fileUrl === value);
+              return (
+                <button
+                  key={file.path}
+                  type="button"
+                  aria-label={file.name}
+                  aria-pressed={isSelected}
+                  onClick={() => {
+                    if (file.publicUrl) {
+                      onChange(file.publicUrl);
+                    } else if (fileUrl) {
+                      onChange(fileUrl);
+                    }
                     closeDialog();
-                  }
-                }}
-                className="group relative aspect-square rounded-lg border border-gray-200 overflow-hidden hover:border-amber-500 hover:ring-2 hover:ring-amber-500/20 transition cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                title={file.name}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={file.publicUrl!}
-                  alt={file.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-                  loading="lazy"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="text-[11px] text-white truncate text-center">
-                    {file.name}
-                  </p>
-                </div>
-              </button>
-            ))}
+                  }}
+                  className={`group relative aspect-square overflow-hidden rounded-lg border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
+                    isSelected
+                      ? "border-brand-primary ring-2 ring-brand-primary ring-offset-1"
+                      : "border-brand-espresso-subtle hover:border-brand-primary/60 bg-white"
+                  }`}
+                >
+                  {fileUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element -- preview of media library file */
+                    <img
+                      src={fileUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                    />
+                  ) : null}
+                  {isSelected ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-brand-primary/25">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white shadow">
+                        ✓
+                      </span>
+                    </div>
+                  ) : null}
+                </button>
+              );
+            })}
           </div>
         )}
-
-        <div className="mt-6 pt-4 border-t border-gray-200">
-          <h4 className="text-xs font-semibold text-gray-700 mb-2">
-            رفع صورة جديدة
-          </h4>
-          <MediaUploadZone
-            bucket={bucket}
-            folder={folder}
-            onUploaded={(_path, publicUrl) => {
-              loadMedia();
-              if (publicUrl) {
-                onChange(publicUrl);
-                closeDialog();
-              }
-            }}
-          />
-        </div>
       </dialog>
     </div>
   );

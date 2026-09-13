@@ -12,6 +12,7 @@ export interface EventsCatalogViewProps {
   initialEvents: EventItem[];
   featuredEvent: EventItem | null;
   initialCategory?: CategoryFilterId;
+  allLabel?: string | null;
 }
 
 /**
@@ -31,6 +32,7 @@ export function EventsCatalogView({
   initialEvents,
   featuredEvent,
   initialCategory = "all",
+  allLabel,
 }: EventsCatalogViewProps) {
   const t = useTranslations("events");
   const router = useRouter();
@@ -70,6 +72,7 @@ export function EventsCatalogView({
         activeCategory={selectedCategory}
         onSelectCategory={handleCategoryChange}
         className="lg:ms-[55px]"
+        allLabel={allLabel}
       />
 
       {/* 2. The list and the featured panel, side by side.

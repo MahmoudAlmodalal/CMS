@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".cursor/**",
+    ".opencode/**",
+    ".agents/**",
+    ".claude/**",
+    ".augment/**",
+    ".continue/**",
   ]),
   {
     // CMS editors intentionally hydrate editable local state from server props.

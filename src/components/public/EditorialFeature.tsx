@@ -1,12 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { localeDirection, type AppLocale } from "@/i18n/routing";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
 
 interface EditorialFeatureProps {
   articles: Article[];
+  /** Admin override for the section heading. Falls back to built-in copy. */
+  heading?: string;
 }
 
 /**
@@ -46,8 +49,9 @@ const CARD_SLOTS = [
   { left: 112, top: 259 },
 ] as const;
 
-export function EditorialFeature({ articles }: EditorialFeatureProps) {
+export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   const t = useTranslations("home");
+  const direction = localeDirection[useLocale() as AppLocale] ?? "rtl";
 
   if (!articles || articles.length === 0) {
     return null;
@@ -57,15 +61,18 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
     <section className="relative w-full overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
       {/* Heading 87:14401 */}
       <div className="px-5 lg:absolute lg:left-[132px] lg:right-[172px] lg:top-[93px] lg:px-0">
-        <h2 className="text-center font-display text-[32px] leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
-          {t("editorialHeading")}
+        <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
+          {heading || t("editorialHeading")}
         </h2>
       </div>
 
       {/* Cards 115:2436…115:2439 */}
       <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-0 lg:block lg:px-0">
         {articles.slice(0, 4).map((article, i) => {
-          const slot = CARD_SLOTS[i];
+          // CARD_SLOTS are the AR (RTL) physical slots: articles[0] sits at the
+          // rightmost slot (x≈1015). The EN frame (136:1569) reads left to
+          // right, so mirror the assignment there: articles[0] goes leftmost.
+          const slot = CARD_SLOTS[direction === "rtl" ? i : 3 - i];
           return (
             <article
               key={article.id}

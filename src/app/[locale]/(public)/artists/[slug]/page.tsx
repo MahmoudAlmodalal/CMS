@@ -83,7 +83,7 @@ export default async function ArtistDetailPage({
       {/* Dotted mark 134:4421 — hangs off the artboard, 62px of it visible. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-[708px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat lg:block"
+        className="pointer-events-none absolute left-0 top-[708px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
       />
 
       <ArtistHero artist={artist} />

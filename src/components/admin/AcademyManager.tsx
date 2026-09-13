@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AcademyCourseInput } from "@/lib/validations/cms";
 import type { AdminAcademyCourse } from "@/lib/dal/admin-academy";
@@ -227,16 +228,18 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
               className="sm:w-56"
             />
             <label className="sr-only" htmlFor="course-status-filter">تصفية حالة النشر</label>
-            <select
+            <Dropdown<StatusFilter>
               id="course-status-filter"
+              ariaLabel="تصفية حالة النشر"
               value={filter}
-              onChange={(event) => setFilter(event.target.value as StatusFilter)}
-              className="h-[48px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-            >
-              <option value="all">كل الحالات</option>
-              <option value="published">المنشور فقط</option>
-              <option value="draft">المسودات فقط</option>
-            </select>
+              onChange={(next) => setFilter(next)}
+              options={[
+                { value: "all", label: "كل الحالات" },
+                { value: "published", label: "المنشور فقط" },
+                { value: "draft", label: "المسودات فقط" },
+              ]}
+              className="sm:w-56"
+            />
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -339,17 +342,15 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
               />
             </Field>
             <Field id="course-instructor" label="المدرب" required={false} help="اختياري، من قائمة الفنانين المنشورين.">
-              <select
+              <Dropdown<string>
                 id="course-instructor"
                 value={values.instructor_id ?? ""}
-                onChange={(event) => setField("instructor_id", event.target.value || null)}
-                className="h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-              >
-                <option value="">بدون مدرب</option>
-                {instructors.map((artist) => (
-                  <option key={artist.id} value={artist.id}>{artist.name}</option>
-                ))}
-              </select>
+                onChange={(instructorId) => setField("instructor_id", instructorId || null)}
+                options={[
+                  { value: "", label: "بدون مدرب" },
+                  ...instructors.map((artist) => ({ value: artist.id, label: artist.name })),
+                ]}
+              />
             </Field>
             <Field id="course-instructor-name" label="اسم المدرب (نص حر)" required={false} help="يُستخدم عند عدم اختيار مدرب من القائمة.">
               <Input id="course-instructor-name" value={values.instructor_name ?? ""} onChange={(event) => setField("instructor_name", event.target.value)} />
