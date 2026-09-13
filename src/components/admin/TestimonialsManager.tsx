@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { TestimonialInput } from "@/lib/validations/cms";
 import type { AdminTestimonial } from "@/lib/dal/admin-testimonials";
 
@@ -319,7 +320,13 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
             </Field>
             <TranslationField id="testimonial-author-role-en" label="صفة صاحب الشهادة" value={values.author_role_en} onChange={(value) => setField("author_role_en", value)} />
             <Field id="testimonial-avatar" label="رابط صورة صاحب الشهادة" required={false}>
-              <Input id="testimonial-avatar" type="url" dir="ltr" value={values.avatar_image_url ?? ""} onChange={(event) => setField("avatar_image_url", event.target.value)} />
+              <MediaPickerField
+                id="testimonial-avatar"
+                value={values.avatar_image_url ?? ""}
+                onChange={(url) => setField("avatar_image_url", url)}
+                bucket="site"
+                folder="avatars"
+              />
             </Field>
             <Field id="testimonial-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
               <Input id="testimonial-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

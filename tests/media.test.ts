@@ -179,6 +179,38 @@ test("Media Picker — MediaPickerField client component & form integrations", (
   );
   assert.match(eventForm, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
   assert.match(eventForm, /bucket=["']events["'][^>]*folder=["']posters["']|folder=["']posters["'][^>]*bucket=["']events["']/);
+
+  // TracksManager integration (releases/covers)
+  const tracksManager = fs.readFileSync(
+    path.join(root, "src/components/admin/TracksManager.tsx"),
+    "utf-8"
+  );
+  assert.match(tracksManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(tracksManager, /bucket=["']releases["'][^>]*folder=["']covers["']|folder=["']covers["'][^>]*bucket=["']releases["']/);
+
+  // ReleasesManager integration (releases/covers)
+  const releasesManager = fs.readFileSync(
+    path.join(root, "src/components/admin/ReleasesManager.tsx"),
+    "utf-8"
+  );
+  assert.match(releasesManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(releasesManager, /bucket=["']releases["'][^>]*folder=["']covers["']|folder=["']covers["'][^>]*bucket=["']releases["']/);
+
+  // AcademyManager integration (academy/tracks)
+  const academyManager = fs.readFileSync(
+    path.join(root, "src/components/admin/AcademyManager.tsx"),
+    "utf-8"
+  );
+  assert.match(academyManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(academyManager, /bucket=["']academy["'][^>]*folder=["']tracks["']|folder=["']tracks["'][^>]*bucket=["']academy["']/);
+
+  // TestimonialsManager integration (site/avatars)
+  const testimonialsManager = fs.readFileSync(
+    path.join(root, "src/components/admin/TestimonialsManager.tsx"),
+    "utf-8"
+  );
+  assert.match(testimonialsManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(testimonialsManager, /bucket=["']site["'][^>]*folder=["']avatars["']|folder=["']avatars["'][^>]*bucket=["']site["']/);
 });
 
 test("Admin Media Library — page, MediaLibrary client component & listFolderMedia", () => {

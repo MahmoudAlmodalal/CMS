@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AcademyCourseInput } from "@/lib/validations/cms";
 import type { AdminAcademyCourse } from "@/lib/dal/admin-academy";
 import type { Artist } from "@/lib/types/artists";
@@ -355,7 +356,13 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
             </Field>
             <TranslationField id="course-instructor-name-en" label="اسم المدرب" value={values.instructor_name_en} onChange={(value) => setField("instructor_name_en", value)} />
             <Field id="course-image" label="رابط صورة المسار" required={false}>
-              <Input id="course-image" type="url" dir="ltr" value={values.image_url ?? ""} onChange={(event) => setField("image_url", event.target.value)} />
+              <MediaPickerField
+                id="course-image"
+                value={values.image_url ?? ""}
+                onChange={(url) => setField("image_url", url)}
+                bucket="academy"
+                folder="tracks"
+              />
             </Field>
             <Field id="course-description" label="وصف المسار">
               <Textarea id="course-description" rows={5} className="min-h-[140px]" value={values.description} onChange={(event) => setField("description", event.target.value)} required />
