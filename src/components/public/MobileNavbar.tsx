@@ -23,28 +23,28 @@ export function MobileNavbar() {
   return (
     <>
       <header
-        className="lg:hidden fixed top-0 start-0 end-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-brand-surface/70 px-4 sm:px-6 flex items-center justify-between"
+        className="lg:hidden fixed top-3 start-2 end-2 z-40 h-12 rounded-2xl bg-white/95 backdrop-blur-md border border-brand-surface/70 px-3 sm:px-5 shadow-subtle flex items-center justify-between"
         role="banner"
       >
         {/* Inline Start: Brand Identity */}
         <Link
           href="/"
-          className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xl p-1"
+          className="flex min-w-0 items-center gap-2 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xl p-1"
           aria-label={a11y("brandHome")}
         >
           <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white shadow-2xs">
             <MusicIcon size={18} />
           </div>
-          <span className="font-calligraphic text-xl font-bold text-brand-espresso leading-none">
+          <span className="font-calligraphic text-base sm:text-xl font-bold text-brand-espresso leading-none truncate max-w-[150px]">
             {site("brand")}
           </span>
         </Link>
 
         {/* Inline End: CTA + Hamburger Toggle */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
           <Link
             href="/booking"
-            className="inline-flex items-center justify-center h-[34px] px-3.5 rounded-xl bg-brand-primary text-white text-xs font-bold shadow-2xs hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="inline-flex items-center justify-center h-8 px-2.5 sm:px-3.5 rounded-xl bg-brand-primary text-white text-[11px] sm:text-xs font-bold shadow-2xs hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <span>{t("bookNow")}</span>
           </Link>

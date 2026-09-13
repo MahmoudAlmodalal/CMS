@@ -34,18 +34,18 @@ export function Footer() {
       {/* Outer container (Figma Node 87:14546 — padding 64px 24px 32px, max 1454px) */}
       <div className="w-full max-w-[1454px] mx-auto px-6 pt-16 pb-8 relative z-10 min-h-[385px] flex flex-col justify-center">
         <div className="w-full max-w-[1280px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 text-start">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 text-start">
             {/* Column 1: Brand & Mission (Figma Node 87:14548) */}
-            <div className="flex flex-col items-center text-center lg:max-w-[297px]">
+            <div className="flex flex-col items-start text-start lg:max-w-[297px]">
               <Image
                 src="/assets/branding/logo-footer.png"
                 alt={a11y("brandHome")}
                 width={211}
                 height={86}
-                className="h-[85px] w-auto object-contain"
+                className="h-[72px] sm:h-[85px] w-auto object-contain"
               />
 
-              <p className="text-[13px] leading-[1.5] text-primary-50 font-normal pt-4 max-w-[206px]">
+              <p className="text-[13px] leading-[1.5] text-primary-50 font-normal pt-4 max-w-[260px]">
                 {t("mission")}
               </p>
 
@@ -55,9 +55,9 @@ export function Footer() {
             </div>
 
             {/* Column 2: Explore Navigation (Figma Node 87:14554) */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-start text-start">
               <h4 className="text-[13px] font-bold text-brand-primary">{t("exploreHeading")}</h4>
-              <nav className="flex flex-col items-center pt-5 gap-[9px]" aria-label={a11y("exploreLinks")}>
+              <nav className="flex flex-col items-start pt-5 gap-[9px]" aria-label={a11y("exploreLinks")}>
                 {([
                   { href: "/artists", key: "exploreArtists" },
                   { href: "/events", key: "exploreEvents" },
@@ -76,9 +76,9 @@ export function Footer() {
             </div>
 
             {/* Column 3: Contact & Presence (Figma Node 87:14565) */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-start text-start">
               <h4 className="text-[13px] font-bold text-brand-primary">{t("contactHeading")}</h4>
-              <div className="flex flex-col items-center pt-5 gap-2 text-[13px] font-medium text-primary-50">
+              <div className="flex flex-col items-start pt-5 gap-2 text-[13px] font-medium text-primary-50">
                 <a
                   href={`mailto:${t("contactEmail")}`}
                   dir="ltr"
@@ -92,7 +92,7 @@ export function Footer() {
             </div>
 
             {/* Column 4: Booking Pitch & CTA (Figma Node 87:14574 — 235px) */}
-            <div className="flex flex-col lg:max-w-[235px]">
+            <div className="flex flex-col items-start lg:max-w-[235px]">
               <h4 className="text-base font-bold text-[#ECE6D0] max-w-[213px]">
                 {t("bookingHeading")}
               </h4>
@@ -101,7 +101,7 @@ export function Footer() {
               </p>
               <Link
                 href="/booking"
-                className="inline-flex items-center justify-center w-[150px] h-12 rounded-[12px] bg-brand-primary hover:bg-brand-primary-hover active:bg-brand-primary-pressed text-[#ECE6D0] text-base font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-espresso"
+                className="inline-flex items-center justify-center w-full sm:w-[150px] h-12 rounded-[12px] bg-brand-primary hover:bg-brand-primary-hover active:bg-brand-primary-pressed text-[#ECE6D0] text-base font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-espresso"
               >
                 {t("bookingCta")}
               </Link>

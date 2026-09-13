@@ -36,15 +36,15 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
         </h2>
 
         {/* Four equal cards (Figma Nodes 115:2436…115:2439 — 273x317, 28px gap) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-7 justify-items-stretch sm:justify-items-center">
           {articles.slice(0, 4).map((article) => (
             <article
               key={article.id}
-              className="group w-full max-w-[273px] lg:h-[317px] flex flex-col bg-white rounded-[14px] overflow-hidden transition-shadow duration-300 hover:shadow-card-hover text-start"
+              className="group w-full max-w-none sm:max-w-[273px] lg:h-[317px] flex flex-col bg-white rounded-[14px] overflow-hidden transition-shadow duration-300 hover:shadow-card-hover text-start"
             >
               <Link href={`/news/${article.slug}`} className="flex flex-col h-full">
                 {/* Cover Image (Figma EL-44c2fae9 — 170.69px tall) */}
-                <div className="relative h-[170.69px] w-full shrink-0 overflow-hidden bg-brand-surface">
+                <div className="relative aspect-[16/10] sm:aspect-auto sm:h-[170.69px] w-full shrink-0 overflow-hidden bg-brand-surface">
                   <Image
                     src={article.cover_image_url || "/assets/articles/default-article.png"}
                     alt={article.title}
@@ -55,7 +55,7 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
                 </div>
 
                 {/* Body (Figma EL-7d7fdedb — 24px padding) */}
-                <div className="p-6 flex flex-col">
+                <div className="p-4 sm:p-6 flex flex-col min-w-0">
                   {/* Meta row (Figma EL-bb582553 — space-between) */}
                   <div className="flex items-center justify-between gap-2">
                     <time
