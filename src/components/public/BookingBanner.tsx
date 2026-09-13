@@ -71,7 +71,7 @@ export function BookingBanner({
   variant = "home",
   headline,
   body,
-  ctaHref,
+  ctaHref = "/booking",
   ctaLabel,
 }: BookingBannerProps) {
   const t = useTranslations("home");

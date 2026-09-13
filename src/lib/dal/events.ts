@@ -23,137 +23,6 @@ const EVENT_COLUMNS =
   "id, title, slug, category, event_date, location, city, performer_name, artist_id, description, image_url, ticket_url, is_featured, status, is_published, display_order, created_at, updated_at, " +
   "title_en, location_en, city_en, performer_name_en, description_en";
 
-/**
- * The five events الفعاليات draws, in the order the frame lists them (91:16793).
- *
- * That order is not chronological — ١٥ مارس, ٠٥ أبريل, ٢٨ مارس, ٢٨ مارس, ٢٠ أبريل —
- * and the offline path below returns this array as it stands, so the list renders
- * exactly as designed. The Supabase path still orders by event_date, which is the
- * right behaviour once real records exist.
- *
- * `city` carries the place string the design prints after the middle dot, country
- * and all ("بيروت — لبنان"), because that is the whole of what a row shows;
- * `location` stays the venue, which the design never draws but the admin edits.
- *
- * Every date is stamped at midday UTC so the day component cannot slide across a
- * timezone boundary between build and render.
- */
-export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
-  {
-    id: "e1000000-0000-0000-0000-000000000001",
-    title: "ليلة الطرب الأندلسي",
-    slug: "laylat-al-tarab-al-andalusi",
-    category: "concert",
-    event_date: "2026-03-15T12:00:00.000Z",
-    location: "مسرح المدينة — شارع الحمرا",
-    city: "بيروت — لبنان",
-    performer_name: "أحمد العود",
-    description:
-      "أمسية موسيقية استثنائية تستعيد أروع الموشحات والقصائد الأندلسية بمرافقة التخت الموسيقي الكامل.",
-    image_url: "/assets/events/event-1.png",
-    ticket_url: null,
-    is_featured: false,
-    status: "upcoming",
-    is_published: true,
-    display_order: 1,
-    created_at: "2026-09-01T12:00:00.000Z",
-    updated_at: "2026-09-01T12:00:00.000Z",
-  },
-  {
-    id: "e1000000-0000-0000-0000-000000000002",
-    title: "أمسية العود والكلمة",
-    slug: "oud-wa-kalima-evening",
-    category: "evening",
-    event_date: "2026-04-05T12:00:00.000Z",
-    location: "دار الأوبرا المصرية — المسرح الصغير",
-    city: "القاهرة — مصر",
-    performer_name: "سارة الصوت",
-    description:
-      "حوار بين التقاسيم والقصيدة، حيث يرافق العود نصوصاً مختارة من الشعر العربي الحديث.",
-    image_url: "/assets/events/event-2.png",
-    ticket_url: null,
-    is_featured: false,
-    status: "upcoming",
-    is_published: true,
-    display_order: 2,
-    created_at: "2026-09-01T12:00:00.000Z",
-    updated_at: "2026-09-01T12:00:00.000Z",
-  },
-  {
-    id: "e1000000-0000-0000-0000-000000000003",
-    title: "مهرجان الربيع الموسيقي",
-    slug: "spring-music-festival",
-    category: "festival",
-    event_date: "2026-03-28T12:00:00.000Z",
-    location: "ساحة محمد الخامس",
-    city: "الدار البيضاء",
-    performer_name: "فرقة أندلسيا",
-    description:
-      "ثلاثة أيام من العروض المفتوحة تجمع فناني أندلسيا وضيوفهم على مسرح واحد في الهواء الطلق.",
-    image_url: "/assets/events/event-3.png",
-    ticket_url: null,
-    is_featured: false,
-    status: "upcoming",
-    is_published: true,
-    display_order: 3,
-    created_at: "2026-09-01T12:00:00.000Z",
-    updated_at: "2026-09-01T12:00:00.000Z",
-  },
-  {
-    id: "e1000000-0000-0000-0000-000000000004",
-    title: "ورشة الإيقاع الشرقي",
-    slug: "oriental-rhythm-workshop",
-    category: "workshop",
-    event_date: "2026-03-28T12:00:00.000Z",
-    location: "مركز الحسين الثقافي",
-    city: "عمان — الأردن",
-    performer_name: "يوسف الإيقاع",
-    description:
-      "ورشة مكثفة في الأوزان الشرقية من المقسوم إلى السماعي الثقيل، بأدوات الفرقة نفسها.",
-    image_url: "/assets/events/event-4.png",
-    ticket_url: null,
-    is_featured: false,
-    status: "upcoming",
-    is_published: true,
-    display_order: 4,
-    created_at: "2026-09-01T12:00:00.000Z",
-    updated_at: "2026-09-01T12:00:00.000Z",
-  },
-  {
-    id: "e1000000-0000-0000-0000-000000000005",
-    title: "حفل الذكرى الخامسة",
-    slug: "fifth-anniversary-concert",
-    category: "concert",
-    event_date: "2026-04-20T12:00:00.000Z",
-    location: "دبي أوبرا — القاعة الرئيسية",
-    city: "دبي — الإمارات",
-    performer_name: "فرقة أندلسيا",
-    description:
-      "حفل الختام الذي تعيد فيه الفرقة أبرز ما قدمته في خمس سنوات، مع ضيوف من كل دورة.",
-    image_url: "/assets/events/event-5.png",
-    ticket_url: null,
-    is_featured: false,
-    status: "upcoming",
-    is_published: true,
-    display_order: 5,
-    created_at: "2026-09-01T12:00:00.000Z",
-    updated_at: "2026-09-01T12:00:00.000Z",
-  },
-];
-
-/**
- * The three events الرئيسية draws in نلتقي في المكان. في اللحظة (87:14466).
- *
- * The band is a curated shortlist, not the next three dates: the frame draws
- * ليلة الطرب الأندلسي, then مهرجان الربيع الموسيقي, then أمسية العود والكلمة —
- * which is the catalogue's top three by display_order, presented chronologically.
- * Ordering by date alone would put ورشة الإيقاع الشرقي third instead, because it
- * shares 28 مارس with مهرجان and both fall before أمسية's 05 أبريل.
- *
- * So the rank picks the rows and the date orders them, and both the Supabase and
- * the offline path do it the same way — otherwise the band would reshuffle the
- * moment real records appeared.
- */
 function shortlist(rows: EventItem[], limit: number): EventItem[] {
   return [...rows]
     .sort((a, b) => a.display_order - b.display_order)
@@ -164,7 +33,7 @@ function shortlist(rows: EventItem[], limit: number): EventItem[] {
 async function getUpcomingEventsRaw(limit = 3): Promise<EventItem[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
+      return [];
     }
 
     const supabase = await createClient();
@@ -173,17 +42,18 @@ async function getUpcomingEventsRaw(limit = 3): Promise<EventItem[]> {
       .from("events")
       .select(EVENT_COLUMNS)
       .eq("is_published", true)
+      .eq("status", "upcoming")
       .gte("event_date", nowIso)
       .order("display_order", { ascending: true })
       .limit(limit);
 
     if (error || !data || data.length === 0) {
-      return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
+      return [];
     }
 
     return shortlist(data as unknown as EventItem[], limit);
   } catch {
-    return shortlist(CANONICAL_UPCOMING_EVENTS, limit);
+    return [];
   }
 }
 
@@ -194,7 +64,7 @@ async function getUpcomingEventsRaw(limit = 3): Promise<EventItem[]> {
 async function getPublishedEventsRaw(category?: string): Promise<EventItem[]> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return CANONICAL_UPCOMING_EVENTS;
+      return [];
     }
 
     const supabase = await createClient();
@@ -212,13 +82,13 @@ async function getPublishedEventsRaw(category?: string): Promise<EventItem[]> {
 
     if (error) {
       console.error("[DAL Error getPublishedEvents]:", error.message);
-      return CANONICAL_UPCOMING_EVENTS;
+      return [];
     }
 
-    return (data as unknown as EventItem[]) || CANONICAL_UPCOMING_EVENTS;
+    return (data as unknown as EventItem[]) || [];
   } catch (err: unknown) {
     console.warn("[DAL Warning getPublishedEvents]:", err instanceof Error ? err.message : String(err));
-    return CANONICAL_UPCOMING_EVENTS;
+    return [];
   }
 }
 

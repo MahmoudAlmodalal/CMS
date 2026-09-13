@@ -115,18 +115,16 @@ test("Milestone 2 — 2. Stage 1: Hero Section Geometry & Cairo Typography (Figm
     "Hero subtitle must enforce canonical max-width: 693px"
   );
 
-  // Primary CTA: 207x48 with hover expansion to 56px, routing to /booking
+  // CTAs default to /artists and /booking; admin links override them.
   assert.match(
     heroSrc,
-    /href="\/booking"/,
-    "Hero primary CTA must route directly to /booking"
+    /home_hero_secondary_href \|\| "\/booking"/,
+    "Hero secondary CTA must route to /booking by default"
   );
-
-  // Secondary CTA: routing to /artists
   assert.match(
     heroSrc,
-    /href="\/artists"/,
-    "Hero secondary CTA must route directly to /artists"
+    /home_hero_primary_href \|\| "\/artists"/,
+    "Hero primary CTA must route to /artists by default"
   );
 
   // Clean header: Semantic <section> landmark
@@ -184,8 +182,8 @@ test("Milestone 2 — 3. Stage 2: About Section Geometry & Warm Parchment Surfac
   // Action link to /artists
   assert.match(
     aboutSrc,
-    /href="\/artists"/,
-    "AboutSection action link must route to /artists"
+    /home_about_href \|\| "\/artists"/,
+    "AboutSection action link must route to /artists by default"
   );
   assert.match(aboutSrc, /<section[\s>]/, "AboutSection must use semantic <section> tag");
 });
@@ -220,8 +218,8 @@ test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ra
   // Action link to /artists
   assert.match(
     artistsSectionSrc,
-    /href="\/artists"/,
-    "FeaturedArtists action link must route to /artists"
+    /ctaHref \|\| "\/artists"/,
+    "FeaturedArtists action link must route to /artists by default"
   );
 
   // Tile geometry — a 16px-radius tile, 220x293 on the 1440 frame (87:14241) and
@@ -353,8 +351,8 @@ test("Milestone 2 — 7. Stage 6: Home Events Section Geometry & Deep-Link Booki
   // Action link to /events
   assert.match(
     eventsSrc,
-    /href="\/events"/,
-    "HomeEvents action link must route to /events"
+    /ctaHref \|\| "\/events"/,
+    "HomeEvents action link must route to /events by default"
   );
 
   // Deep-link booking: event card action must route to /booking?event_id=...
@@ -407,7 +405,7 @@ test("Milestone 2 — 8. Stage 7: Booking CTA Banner Geometry & Dark Espresso Ov
   // pre-selected, so the target is a prop whose default is the home frame's.
   assert.match(
     bookingSrc,
-    /ctaHref = "\/booking"/,
+    /ctaHref \|\| settings\?\.booking_cta_href \|\| "\/booking"/,
     "BookingBanner CTA button must route to /booking by default"
   );
 

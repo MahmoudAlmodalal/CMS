@@ -75,6 +75,17 @@ test("Task 40 — 3. No draft leakage: all public DALs enforce published-only", 
   }
 });
 
+test("Task 40 — 3a. Testimonials are controlled only by the CMS table", () => {
+  const testimonials = read(path.join(root, "src/lib/dal/testimonials.ts"));
+  assert.doesNotMatch(
+    testimonials,
+    /CANONICAL_TESTIMONIALS|أندلسيا ليست مجرد منصة/,
+    "Testimonials DAL must not restore deleted content from a hardcoded fallback"
+  );
+  assert.match(testimonials, /from\("testimonials"\)/);
+  assert.match(testimonials, /\.eq\("is_published", true\)/);
+});
+
 test("Task 40 — 4. Cache contract matches APPLICATION_ARCHITECTURE.md", () => {
   assert.match(read(pub("page.tsx")), /export const revalidate\s*=\s*3600;/);
   assert.match(read(pub("artists/page.tsx")), /export const revalidate\s*=\s*3600;/);

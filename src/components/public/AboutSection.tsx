@@ -94,9 +94,9 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
             </h2>
           </div>
 
-          {/* Main content row: In RTL with flex-row, first child (Image) is on the RIGHT, second child (Text) is on the LEFT */}
-          <div className="mt-8 flex flex-col items-center justify-between gap-8 lg:mt-[24px] lg:flex-row lg:items-center lg:gap-12">
-            {/* Blob portrait — on mobile appears below heading; on desktop placed on the right in RTL */}
+          {/* Main content row: Text on LEFT, Image on RIGHT matching Figma node 142:16776 */}
+          <div className="mt-8 flex flex-col items-center justify-between gap-8 lg:mt-[24px] lg:flex-row-reverse rtl:lg:flex-row lg:items-center lg:gap-12">
+            {/* Blob portrait — on mobile appears below heading; on desktop placed on the RIGHT */}
             <div className="flex w-full justify-center lg:w-auto lg:justify-end">
               <div className="w-[335px] max-w-full overflow-hidden lg:w-auto">
                 <Image
@@ -110,15 +110,15 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               </div>
             </div>
 
-            {/* Text column — on desktop placed on the LEFT in RTL */}
+            {/* Text column — on desktop placed on the LEFT */}
             <div className="flex w-[324px] flex-col items-start gap-[32px] max-w-full text-start lg:w-[495px]">
               {/* Statement */}
-              <h3 className="min-h-[66px] font-display text-[32px] font-normal leading-[66px] text-brand-espresso sm:whitespace-nowrap lg:text-[48px]">
+              <h3 className="min-h-[66px] font-display text-[32px] font-normal leading-[66px] text-primary-500 sm:whitespace-nowrap lg:text-[48px]">
                 {settings.about_headline}
               </h3>
 
               {/* Manifesto */}
-              <p className="min-h-[263px] font-medium leading-[37.5px] text-[16px] text-gradscale-900 lg:w-full lg:text-[25px]">
+              <p className="min-h-[263px] font-medium leading-[37.5px] text-[16px] text-[#1b1b1b] lg:w-full lg:text-[25px]">
                 {settings.about_body}
               </p>
 
