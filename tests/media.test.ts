@@ -233,6 +233,11 @@ test("Admin Media Library — page, MediaLibrary client component & listFolderMe
   assert.match(librarySrc, /BUCKET_FOLDERS/, "MediaLibrary must use BUCKET_FOLDERS");
   assert.match(librarySrc, /listFolderMedia/, "MediaLibrary must use listFolderMedia");
   assert.match(librarySrc, /role=["']tabpanel["']/, "MediaLibrary must use role='tabpanel'");
+  assert.match(
+    librarySrc,
+    /!loading\s*&&\s*!error[\s\S]*?<MediaFileGrid/,
+    "MediaLibrary must render MediaFileGrid only when !loading && !error"
+  );
 
   // listFolderMedia references MEDIA_LIBRARY_ENTITY_ID and listMediaAction
   const listPath = path.join(root, "src/components/admin/media/listFolderMedia.ts");
