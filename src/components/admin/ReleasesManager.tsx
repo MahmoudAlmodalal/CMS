@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AdminRelease, ArtistOption } from "@/lib/types/admin-tracks";
 import type { ReleaseInput } from "@/lib/validations";
 
@@ -306,7 +307,14 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
                 <Input id="release-year" type="number" min="1900" max="2100" dir="ltr" value={values.release_year} onChange={(event) => setField("release_year", Number(event.target.value))} required />
               </Field>
               <Field id="release-cover" label="رابط صورة الغلاف">
-                <Input id="release-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
+                <MediaPickerField
+                  id="release-cover"
+                  value={values.cover_image_url}
+                  onChange={(url) => setField("cover_image_url", url)}
+                  bucket="releases"
+                  folder="covers"
+                  required
+                />
               </Field>
               <Field id="release-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="release-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

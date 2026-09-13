@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
 import { Input } from "@/components/ui/Input";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { ARTIST_CATEGORIES, getCategoryLabel, type Artist } from "@/lib/types/artists";
@@ -444,7 +445,14 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                 <Input id="artist-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
               </Field>
               <Field id="artist-portrait" label="رابط الصورة الشخصية / مرجع الوسائط" help="استخدم رابطاً عاماً آمناً؛ مراجع الرفع تنتمي إلى مجلد artists canonical.">
-                <Input id="artist-portrait" type="url" dir="ltr" value={values.portrait_image_url} onChange={(event) => setField("portrait_image_url", event.target.value)} required />
+                <MediaPickerField
+                  id="artist-portrait"
+                  value={values.portrait_image_url}
+                  onChange={(url) => setField("portrait_image_url", url)}
+                  bucket="artists"
+                  folder="portraits"
+                  required
+                />
               </Field>
               <Field id="artist-specialties" label="التخصصات">
                 <Input id="artist-specialties" value={values.specialties} onChange={(event) => setField("specialties", event.target.value)} required />

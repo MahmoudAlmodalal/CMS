@@ -66,12 +66,17 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [settings, artists, testimonials, articles, events] = await Promise.all([
-    getSiteSettings(),
-    getFeaturedArtists(6),
-    getPublishedTestimonials(),
-    getFeaturedArticles(4),
-    getUpcomingEvents(3),
+  const settings = await getSiteSettings();
+
+  const [artists, testimonials, articles, events] = await Promise.all([
+    getFeaturedArtists(settings.home_featured_artists_count),
+    settings.show_testimonials ? getPublishedTestimonials() : Promise.resolve([]),
+    settings.show_editorial
+      ? getFeaturedArticles(settings.home_featured_articles_count)
+      : Promise.resolve([]),
+    settings.show_events
+      ? getUpcomingEvents(settings.home_upcoming_events_count)
+      : Promise.resolve([]),
   ]);
 
   return (
@@ -90,22 +95,28 @@ export default async function HomePage({
       </div>
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
-      <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
-        <TestimonialsSlider testimonials={testimonials} />
-      </div>
+      {settings.show_testimonials && (
+        <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
+          <TestimonialsSlider testimonials={testimonials} />
+        </div>
+      )}
 
       {/* Stage 5: Editorial Feature (Figma Frame 26, 709px, #1F0900, 4 cards) */}
-      <EditorialFeature articles={articles} />
+      {settings.show_editorial && <EditorialFeature articles={articles} />}
 
       {/* Stage 6: Upcoming Events Strip (Figma Frame 28, 678px, split banner) */}
-      <div className="lg:mt-[26px]">
-        <HomeEvents events={events} />
-      </div>
+      {settings.show_events && (
+        <div className="lg:mt-[26px]">
+          <HomeEvents events={events} />
+        </div>
+      )}
 
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
-      <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
-        <BookingBanner settings={settings} />
-      </div>
+      {settings.show_booking_banner && (
+        <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
+          <BookingBanner settings={settings} />
+        </div>
+      )}
     </>
   );
 }

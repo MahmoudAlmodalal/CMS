@@ -514,6 +514,23 @@ test("Milestone 2 — 10. Public Home Integration & ISR Data Contracts", () => {
     /locale: locale === "ar" \? "ar_AR" : "en_US"/,
     "HomePage OpenGraph locale must follow the active locale, with Arabic still ar_AR"
   );
+
+  // Landing-page section controls: dynamic counts and show_* flags
+  for (const field of [
+    "home_featured_artists_count",
+    "home_featured_articles_count",
+    "home_upcoming_events_count",
+    "show_testimonials",
+    "show_editorial",
+    "show_events",
+    "show_booking_banner",
+  ]) {
+    assert.match(
+      pageSrc,
+      new RegExp(`\\b${field}\\b`),
+      `HomePage must read settings.${field}`
+    );
+  }
 });
 
 /**

@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
 import type { AdminTrack, ArtistOption } from "@/lib/types/admin-tracks";
 import type { TrackInput } from "@/lib/validations";
@@ -317,7 +318,13 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
                 <Input id="track-duration" type="number" min="1" dir="ltr" value={values.duration_seconds} onChange={(event) => setField("duration_seconds", Number(event.target.value))} required />
               </Field>
               <Field id="track-cover" label="رابط صورة الغلاف" required={false}>
-                <Input id="track-cover" type="url" dir="ltr" value={values.cover_image_url ?? ""} onChange={(event) => setField("cover_image_url", event.target.value)} />
+                <MediaPickerField
+                  id="track-cover"
+                  value={values.cover_image_url ?? ""}
+                  onChange={(url) => setField("cover_image_url", url)}
+                  bucket="releases"
+                  folder="covers"
+                />
               </Field>
               <Field id="track-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="track-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

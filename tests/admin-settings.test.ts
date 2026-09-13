@@ -26,6 +26,8 @@ test("Task 43 — form covers approved fields and guarded save feedback", () => 
     "hero_headline", "hero_subheadline", "hero_image_url", "about_headline", "about_body", "about_image_url",
     "booking_banner_title", "booking_banner_body", "artists_subtitle", "events_subtitle", "academy_subtitle", "booking_subtitle",
     "contact_email", "contact_phone", "operational_regions", "footer_mission", "copyright_text", "social_links", "instagram", "tiktok",
+    "home_featured_artists_count", "home_featured_articles_count", "home_upcoming_events_count",
+    "show_testimonials", "show_editorial", "show_events", "show_booking_banner",
   ]) {
     assert.ok(form.includes(field), `settings form must include ${field}`);
   }
@@ -36,6 +38,70 @@ test("Task 43 — form covers approved fields and guarded save feedback", () => 
   assert.match(form, /role="status"/);
   assert.match(form, /role="alert"/);
   assert.doesNotMatch(form, /SUPABASE_SERVICE_ROLE_KEY/);
+});
+
+test("Task 43 / Home Sections — schema applies defaults and enforces count bounds", () => {
+  const baseValid = {
+    hero_headline: "عنوان",
+    hero_subheadline: "عنوان فرعي",
+    hero_image_url: "",
+    about_headline: "من نحن",
+    about_body: "نص تعريفي",
+    about_image_url: "",
+    booking_banner_title: "احجز الآن",
+    booking_banner_body: "تواصل معنا",
+    contact_email: "hello@example.com",
+    contact_phone: "+961 1 234 567",
+    operational_regions: "لبنان",
+    footer_mission: "رسالة",
+    copyright_text: "© أندلسيا",
+  };
+
+  const defaultResult = siteSettingsSchema.safeParse(baseValid);
+  assert.equal(defaultResult.success, true);
+  if (defaultResult.success) {
+    assert.equal(defaultResult.data.home_featured_artists_count, 6);
+    assert.equal(defaultResult.data.home_featured_articles_count, 4);
+    assert.equal(defaultResult.data.home_upcoming_events_count, 3);
+    assert.equal(defaultResult.data.show_testimonials, true);
+    assert.equal(defaultResult.data.show_editorial, true);
+    assert.equal(defaultResult.data.show_events, true);
+    assert.equal(defaultResult.data.show_booking_banner, true);
+  }
+
+  // Count 0 rejected for all three count fields
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_featured_artists_count: 0 }).success,
+    false,
+    "home_featured_artists_count 0 must be rejected"
+  );
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_featured_articles_count: 0 }).success,
+    false,
+    "home_featured_articles_count 0 must be rejected"
+  );
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_upcoming_events_count: 0 }).success,
+    false,
+    "home_upcoming_events_count 0 must be rejected"
+  );
+
+  // Count 13 rejected for all three count fields
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_featured_artists_count: 13 }).success,
+    false,
+    "home_featured_artists_count 13 must be rejected"
+  );
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_featured_articles_count: 13 }).success,
+    false,
+    "home_featured_articles_count 13 must be rejected"
+  );
+  assert.equal(
+    siteSettingsSchema.safeParse({ ...baseValid, home_upcoming_events_count: 13 }).success,
+    false,
+    "home_upcoming_events_count 13 must be rejected"
+  );
 });
 
 test("Task 43 — schema preserves the seeded empty image fallback and singleton id", () => {
@@ -68,3 +134,74 @@ test("Task 43 — action validates the singleton update and refreshes public cac
   assert.match(action, /\.eq\("id" as never, "default" as never\)/);
   assert.match(action, /revalidatePath\("\/", "layout"\)/);
 });
+
+test("CMS mutations trigger on-demand public site revalidation", () => {
+  const cmsSrc = read("src/actions/cms.ts");
+
+  // Private helper definition
+  assert.match(cmsSrc, /function revalidateSite\(\)/);
+  assert.doesNotMatch(cmsSrc, /export (?:async )?function revalidateSite/);
+  assert.match(cmsSrc, /revalidatePath\("\/", "layout"\)/);
+
+  const revalidatingActions = [
+    // Create operations
+    "createArtistAction",
+    "createTrackAction",
+    "createReleaseAction",
+    "createEventAction",
+    "createAcademyCourseAction",
+    "createArticleAction",
+    "createTestimonialAction",
+    // Edit operations
+    "updateSiteSettingsAction",
+    "updateArtistAction",
+    "updateTrackAction",
+    "updateReleaseAction",
+    "updateEventAction",
+    "updateAcademyCourseAction",
+    "updateArticleAction",
+    "updateTestimonialAction",
+    // Delete operations
+    "deleteArtistAction",
+    "deleteTrackAction",
+    "deleteReleaseAction",
+    "deleteEventAction",
+    "deleteAcademyCourseAction",
+    "deleteArticleAction",
+    "deleteTestimonialAction",
+    // Publish operations
+    "setPublishStatusAction",
+  ];
+
+  for (const actionName of revalidatingActions) {
+    const fnRegex = new RegExp(`export async function ${actionName}\\b[\\s\\S]*?(?=(?:export (?:async )?function|export const|export type|export interface|$))`);
+    const match = cmsSrc.match(fnRegex);
+    assert.ok(match, `Action ${actionName} must exist in cms.ts`);
+    assert.ok(
+      match[0].includes("revalidateSite()"),
+      `Action ${actionName} must invoke revalidateSite() on success`
+    );
+  }
+
+  // Ensure actions without public surface do NOT invoke revalidateSite
+  const nonRevalidatingActions = [
+    "createPrivilegedBookingAction",
+    "createPrivilegedSubscriberAction",
+    "updateBookingRequestAction",
+    "updateSubscriberAction",
+    "deleteBookingRequestAction",
+    "deleteSubscriberAction",
+  ];
+
+  for (const actionName of nonRevalidatingActions) {
+    const fnRegex = new RegExp(`export async function ${actionName}\\b[\\s\\S]*?(?=(?:export (?:async )?function|export const|export type|export interface|$))`);
+    const match = cmsSrc.match(fnRegex);
+    if (match) {
+      assert.ok(
+        !match[0].includes("revalidateSite()"),
+        `Action ${actionName} must not invoke revalidateSite()`
+      );
+    }
+  }
+});
+
