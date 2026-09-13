@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
 import { Input } from "@/components/ui/Input";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Textarea } from "@/components/ui/Textarea";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 import type { SiteSettingsInput } from "@/lib/validations/cms";
@@ -313,10 +314,24 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
               <Textarea id="about_body_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.about_body_en} onChange={(event) => setField("about_body_en", event.target.value)} />
             </Field>
             <Field id="hero_image_url" label="رابط صورة الهيرو" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
-              <Input id="hero_image_url" type="url" dir="ltr" value={values.hero_image_url} onChange={(event) => setField("hero_image_url", event.target.value)} />
+              <MediaPickerField
+                id="hero_image_url"
+                value={values.hero_image_url}
+                onChange={(url) => setField("hero_image_url", url)}
+                bucket="site"
+                folder="hero"
+                required={false}
+              />
             </Field>
             <Field id="about_image_url" label="رابط صورة قسم من نحن" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
-              <Input id="about_image_url" type="url" dir="ltr" value={values.about_image_url} onChange={(event) => setField("about_image_url", event.target.value)} />
+              <MediaPickerField
+                id="about_image_url"
+                value={values.about_image_url}
+                onChange={(url) => setField("about_image_url", url)}
+                bucket="site"
+                folder="about"
+                required={false}
+              />
             </Field>
           </CardContent>
         </Card>

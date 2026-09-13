@@ -128,3 +128,56 @@ test("Task 39 — 5. Scope guard: only Figma-confirmed media", () => {
   assert.match(types, /audio_file_url: string/);
   assert.match(types, /duration_seconds: number/);
 });
+
+test("Media Picker — MediaPickerField client component & form integrations", () => {
+  const pickerPath = path.join(root, "src/components/admin/media/MediaPickerField.tsx");
+  assert.ok(fs.existsSync(pickerPath), "MediaPickerField.tsx must exist");
+
+  const picker = fs.readFileSync(pickerPath, "utf-8");
+  assert.match(picker, /"use client"/, "MediaPickerField must be a Client Component");
+  assert.match(picker, /listMediaAction/, "MediaPickerField must use listMediaAction");
+  assert.match(picker, /<dialog/, "MediaPickerField must render a native <dialog> element");
+  assert.match(picker, /onChange\([^)]*publicUrl[^)]*\)/, "MediaPickerField must call onChange with publicUrl");
+  assert.match(picker, /MEDIA_LIBRARY_ENTITY_ID/, "MediaPickerField must reference MEDIA_LIBRARY_ENTITY_ID");
+
+  // MediaUploadZone export & usage
+  const uploadZonePath = path.join(root, "src/components/admin/media/MediaUploadZone.tsx");
+  assert.ok(fs.existsSync(uploadZonePath), "MediaUploadZone.tsx must exist");
+  const uploadZone = fs.readFileSync(uploadZonePath, "utf-8");
+  assert.match(uploadZone, /export const MEDIA_LIBRARY_ENTITY_ID = ["']media-library["']/, "MediaUploadZone must export MEDIA_LIBRARY_ENTITY_ID");
+  assert.doesNotMatch(uploadZone, /uploadMediaAction\(\{[\s\S]*entityId:\s*["']media-library["']/, "uploadMediaAction call must not hardcode 'media-library' literal");
+  assert.match(uploadZone, /uploadMediaAction\(\{[\s\S]*entityId:\s*MEDIA_LIBRARY_ENTITY_ID/, "uploadMediaAction call must use MEDIA_LIBRARY_ENTITY_ID");
+
+  // SiteSettingsForm integrations (site/hero, site/about)
+  const siteSettings = fs.readFileSync(
+    path.join(root, "src/components/admin/SiteSettingsForm.tsx"),
+    "utf-8"
+  );
+  assert.match(siteSettings, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(siteSettings, /bucket=["']site["'][^>]*folder=["']hero["']|folder=["']hero["'][^>]*bucket=["']site["']/);
+  assert.match(siteSettings, /bucket=["']site["'][^>]*folder=["']about["']|folder=["']about["'][^>]*bucket=["']site["']/);
+
+  // ArtistsManager integration (artists/portraits)
+  const artistsManager = fs.readFileSync(
+    path.join(root, "src/components/admin/ArtistsManager.tsx"),
+    "utf-8"
+  );
+  assert.match(artistsManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(artistsManager, /bucket=["']artists["'][^>]*folder=["']portraits["']|folder=["']portraits["'][^>]*bucket=["']artists["']/);
+
+  // ArticlesManager integration (articles/covers)
+  const articlesManager = fs.readFileSync(
+    path.join(root, "src/components/admin/ArticlesManager.tsx"),
+    "utf-8"
+  );
+  assert.match(articlesManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(articlesManager, /bucket=["']articles["'][^>]*folder=["']covers["']|folder=["']covers["'][^>]*bucket=["']articles["']/);
+
+  // EventForm integration (events/posters)
+  const eventForm = fs.readFileSync(
+    path.join(root, "src/components/admin/events/EventForm.tsx"),
+    "utf-8"
+  );
+  assert.match(eventForm, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(eventForm, /bucket=["']events["'][^>]*folder=["']posters["']|folder=["']posters["'][^>]*bucket=["']events["']/);
+});

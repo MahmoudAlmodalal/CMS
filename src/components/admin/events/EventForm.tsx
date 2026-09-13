@@ -5,6 +5,7 @@
 
 import type { Artist } from "@/lib/dal/artists";
 import { Input } from "@/components/ui/Input";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, TranslationField } from "@/components/admin/ManagerKit";
 import { EVENT_CATEGORY_LABELS, EVENT_STATUS_LABELS, EVENT_CATEGORIES, EVENT_STATUSES } from "@/lib/types/admin-events";
@@ -98,7 +99,14 @@ export function EventForm({
         </select>
       </Field>
       <Field id="event-image" label="رابط صورة الفعالية">
-        <Input id="event-image" type="url" dir="ltr" value={values.image_url} onChange={(event) => setField("image_url", event.target.value)} required />
+        <MediaPickerField
+          id="event-image"
+          value={values.image_url}
+          onChange={(url) => setField("image_url", url)}
+          bucket="events"
+          folder="posters"
+          required
+        />
       </Field>
       <Field id="event-ticket" label="رابط التذاكر" required={false}>
         <Input id="event-ticket" type="url" dir="ltr" value={values.ticket_url ?? ""} onChange={(event) => setField("ticket_url", event.target.value || null)} />
