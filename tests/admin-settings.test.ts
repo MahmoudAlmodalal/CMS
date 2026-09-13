@@ -68,3 +68,74 @@ test("Task 43 — action validates the singleton update and refreshes public cac
   assert.match(action, /\.eq\("id" as never, "default" as never\)/);
   assert.match(action, /revalidatePath\("\/", "layout"\)/);
 });
+
+test("CMS mutations trigger on-demand public site revalidation", () => {
+  const cmsSrc = read("src/actions/cms.ts");
+
+  // Private helper definition
+  assert.match(cmsSrc, /function revalidateSite\(\)/);
+  assert.doesNotMatch(cmsSrc, /export (?:async )?function revalidateSite/);
+  assert.match(cmsSrc, /revalidatePath\("\/", "layout"\)/);
+
+  const revalidatingActions = [
+    // Create operations
+    "createArtistAction",
+    "createTrackAction",
+    "createReleaseAction",
+    "createEventAction",
+    "createAcademyCourseAction",
+    "createArticleAction",
+    "createTestimonialAction",
+    // Edit operations
+    "updateSiteSettingsAction",
+    "updateArtistAction",
+    "updateTrackAction",
+    "updateReleaseAction",
+    "updateEventAction",
+    "updateAcademyCourseAction",
+    "updateArticleAction",
+    "updateTestimonialAction",
+    // Delete operations
+    "deleteArtistAction",
+    "deleteTrackAction",
+    "deleteReleaseAction",
+    "deleteEventAction",
+    "deleteAcademyCourseAction",
+    "deleteArticleAction",
+    "deleteTestimonialAction",
+    // Publish operations
+    "setPublishStatusAction",
+  ];
+
+  for (const actionName of revalidatingActions) {
+    const fnRegex = new RegExp(`export async function ${actionName}\\b[\\s\\S]*?(?=(?:export (?:async )?function|export const|export type|export interface|$))`);
+    const match = cmsSrc.match(fnRegex);
+    assert.ok(match, `Action ${actionName} must exist in cms.ts`);
+    assert.ok(
+      match[0].includes("revalidateSite()"),
+      `Action ${actionName} must invoke revalidateSite() on success`
+    );
+  }
+
+  // Ensure actions without public surface do NOT invoke revalidateSite
+  const nonRevalidatingActions = [
+    "createPrivilegedBookingAction",
+    "createPrivilegedSubscriberAction",
+    "updateBookingRequestAction",
+    "updateSubscriberAction",
+    "deleteBookingRequestAction",
+    "deleteSubscriberAction",
+  ];
+
+  for (const actionName of nonRevalidatingActions) {
+    const fnRegex = new RegExp(`export async function ${actionName}\\b[\\s\\S]*?(?=(?:export (?:async )?function|export const|export type|export interface|$))`);
+    const match = cmsSrc.match(fnRegex);
+    if (match) {
+      assert.ok(
+        !match[0].includes("revalidateSite()"),
+        `Action ${actionName} must not invoke revalidateSite()`
+      );
+    }
+  }
+});
+
