@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { arMessages, enMessages } from "./helpers/i18n.ts";
+import { arMessages } from "./helpers/i18n.ts";
 // NOTE: components use the `@/` alias (unresolvable under plain node --test),
 // so the widget contract is asserted via file-content checks per
 // tests/events-page.test.ts precedent. formatDuration lives in the
@@ -135,10 +135,9 @@ test("Media Picker — MediaPickerField client component & form integrations", (
 
   const picker = fs.readFileSync(pickerPath, "utf-8");
   assert.match(picker, /"use client"/, "MediaPickerField must be a Client Component");
-  assert.match(picker, /listMediaAction/, "MediaPickerField must use listMediaAction");
+  assert.match(picker, /listFolderMedia/, "MediaPickerField must use listFolderMedia");
   assert.match(picker, /<dialog/, "MediaPickerField must render a native <dialog> element");
   assert.match(picker, /onChange\([^)]*publicUrl[^)]*\)/, "MediaPickerField must call onChange with publicUrl");
-  assert.match(picker, /MEDIA_LIBRARY_ENTITY_ID/, "MediaPickerField must reference MEDIA_LIBRARY_ENTITY_ID");
 
   // MediaUploadZone export & usage
   const uploadZonePath = path.join(root, "src/components/admin/media/MediaUploadZone.tsx");
@@ -180,4 +179,33 @@ test("Media Picker — MediaPickerField client component & form integrations", (
   );
   assert.match(eventForm, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
   assert.match(eventForm, /bucket=["']events["'][^>]*folder=["']posters["']|folder=["']posters["'][^>]*bucket=["']events["']/);
+});
+
+test("Admin Media Library — page, MediaLibrary client component & listFolderMedia", () => {
+  // page.tsx renders MediaLibrary
+  const pagePath = path.join(root, "src/app/(admin)/admin/media/page.tsx");
+  assert.ok(fs.existsSync(pagePath), "page.tsx must exist");
+  const pageSrc = fs.readFileSync(pagePath, "utf-8");
+  assert.doesNotMatch(pageSrc, /"use client"/, "page.tsx must remain a Server Component");
+  assert.match(pageSrc, /<MediaLibrary\s*\/>/, "page.tsx must render MediaLibrary");
+  assert.match(pageSrc, /export const metadata/, "page.tsx must keep metadata export");
+
+  // MediaLibrary uses MediaBucketTabs, MediaFileGrid, MediaUploadZone, BUCKET_FOLDERS, listFolderMedia and role="tabpanel"
+  const libraryPath = path.join(root, "src/components/admin/media/MediaLibrary.tsx");
+  assert.ok(fs.existsSync(libraryPath), "MediaLibrary.tsx must exist");
+  const librarySrc = fs.readFileSync(libraryPath, "utf-8");
+  assert.match(librarySrc, /"use client"/, "MediaLibrary must be a Client Component");
+  assert.match(librarySrc, /MediaBucketTabs/, "MediaLibrary must use MediaBucketTabs");
+  assert.match(librarySrc, /MediaFileGrid/, "MediaLibrary must use MediaFileGrid");
+  assert.match(librarySrc, /MediaUploadZone/, "MediaLibrary must use MediaUploadZone");
+  assert.match(librarySrc, /BUCKET_FOLDERS/, "MediaLibrary must use BUCKET_FOLDERS");
+  assert.match(librarySrc, /listFolderMedia/, "MediaLibrary must use listFolderMedia");
+  assert.match(librarySrc, /role=["']tabpanel["']/, "MediaLibrary must use role='tabpanel'");
+
+  // listFolderMedia references MEDIA_LIBRARY_ENTITY_ID and listMediaAction
+  const listPath = path.join(root, "src/components/admin/media/listFolderMedia.ts");
+  assert.ok(fs.existsSync(listPath), "listFolderMedia.ts must exist");
+  const listSrc = fs.readFileSync(listPath, "utf-8");
+  assert.match(listSrc, /MEDIA_LIBRARY_ENTITY_ID/, "listFolderMedia must reference MEDIA_LIBRARY_ENTITY_ID");
+  assert.match(listSrc, /listMediaAction/, "listFolderMedia must reference listMediaAction");
 });

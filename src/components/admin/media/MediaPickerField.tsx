@@ -3,8 +3,8 @@
 import React, { useRef, useState, useCallback } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { MediaUploadZone, MEDIA_LIBRARY_ENTITY_ID } from "./MediaUploadZone";
-import { listMediaAction } from "@/actions/admin-media";
+import { MediaUploadZone } from "./MediaUploadZone";
+import { listFolderMedia } from "./listFolderMedia";
 import type { StorageBucket, StorageFile } from "@/lib/types/admin-media";
 
 export interface MediaPickerFieldProps {
@@ -39,43 +39,13 @@ export function MediaPickerField({
     setLoading(true);
     setError(null);
     try {
-      if (!folder) {
-        const res = await listMediaAction(bucket, undefined);
-        if (!res.success) {
-          setError(res.error ?? "فشل تحميل الملفات");
-        } else {
-          setFiles(res.files ?? []);
-        }
-        return;
-      }
-
-      const [resDirect, resLibrary] = await Promise.all([
-        listMediaAction(bucket, folder),
-        listMediaAction(bucket, `${folder}/${MEDIA_LIBRARY_ENTITY_ID}`),
-      ]);
-
-      if (!resDirect.success && !resLibrary.success) {
-        setError(resDirect.error ?? resLibrary.error ?? "فشل تحميل الملفات");
+      const res = await listFolderMedia(bucket, folder);
+      if (res.error) {
+        setError(res.error);
         setFiles([]);
-        return;
+      } else {
+        setFiles(res.files);
       }
-
-      const combinedFiles = [
-        ...(resDirect.success && resDirect.files ? resDirect.files : []),
-        ...(resLibrary.success && resLibrary.files ? resLibrary.files : []),
-      ];
-
-      const fileMap = new Map<string, StorageFile>();
-      for (const file of combinedFiles) {
-        fileMap.set(file.path, file);
-      }
-      const uniqueFiles = Array.from(fileMap.values());
-      uniqueFiles.sort((a, b) => {
-        const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
-        const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
-        return timeB - timeA;
-      });
-      setFiles(uniqueFiles);
     } catch (err) {
       setError(err instanceof Error ? err.message : "فشل تحميل الملفات");
     } finally {
