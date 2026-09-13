@@ -45,9 +45,26 @@ interface SiteSettingsFormValues {
   footer_mission_en: string;
   copyright_text: string;
   copyright_text_en: string;
+  home_featured_artists_count: number;
+  home_featured_articles_count: number;
+  home_upcoming_events_count: number;
+  show_testimonials: boolean;
+  show_editorial: boolean;
+  show_events: boolean;
+  show_booking_banner: boolean;
 }
 
-type TextFieldName = Exclude<keyof SiteSettingsFormValues, "social_links">;
+type TextFieldName = Exclude<
+  keyof SiteSettingsFormValues,
+  | "social_links"
+  | "home_featured_artists_count"
+  | "home_featured_articles_count"
+  | "home_upcoming_events_count"
+  | "show_testimonials"
+  | "show_editorial"
+  | "show_events"
+  | "show_booking_banner"
+>;
 
 function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
   return {
@@ -85,6 +102,13 @@ function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
     footer_mission_en: settings.footer_mission_en ?? "",
     copyright_text: settings.copyright_text,
     copyright_text_en: settings.copyright_text_en ?? "",
+    home_featured_artists_count: settings.home_featured_artists_count ?? 6,
+    home_featured_articles_count: settings.home_featured_articles_count ?? 4,
+    home_upcoming_events_count: settings.home_upcoming_events_count ?? 3,
+    show_testimonials: settings.show_testimonials ?? true,
+    show_editorial: settings.show_editorial ?? true,
+    show_events: settings.show_events ?? true,
+    show_booking_banner: settings.show_booking_banner ?? true,
   };
 }
 
@@ -174,6 +198,22 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
     setValues((current) => ({ ...current, [field]: value }));
   };
 
+  const setNumberField = (
+    field: "home_featured_artists_count" | "home_featured_articles_count" | "home_upcoming_events_count",
+    value: number
+  ) => {
+    setResult(null);
+    setValues((current) => ({ ...current, [field]: value }));
+  };
+
+  const setBooleanField = (
+    field: "show_testimonials" | "show_editorial" | "show_events" | "show_booking_banner",
+    value: boolean
+  ) => {
+    setResult(null);
+    setValues((current) => ({ ...current, [field]: value }));
+  };
+
   const setSocialLink = (field: keyof SiteSettingsFormValues["social_links"], value: string) => {
     setResult(null);
     setValues((current) => ({
@@ -219,6 +259,13 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
       footer_mission_en: values.footer_mission_en || null,
       copyright_text: values.copyright_text,
       copyright_text_en: values.copyright_text_en || null,
+      home_featured_artists_count: Number(values.home_featured_artists_count),
+      home_featured_articles_count: Number(values.home_featured_articles_count),
+      home_upcoming_events_count: Number(values.home_upcoming_events_count),
+      show_testimonials: Boolean(values.show_testimonials),
+      show_editorial: Boolean(values.show_editorial),
+      show_events: Boolean(values.show_events),
+      show_booking_banner: Boolean(values.show_booking_banner),
     };
 
     setResult(null);
@@ -271,6 +318,93 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="about_image_url" label="رابط صورة قسم من نحن" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
               <Input id="about_image_url" type="url" dir="ltr" value={values.about_image_url} onChange={(event) => setField("about_image_url", event.target.value)} />
             </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>أقسام الصفحة الرئيسية</CardTitle>
+            <CardDescription>التحكم في ظهور أقسام الصفحة الرئيسية وأعداد العناصر المعروضة في كل قسم.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-5 md:grid-cols-3">
+              <Field id="home_featured_artists_count" label="عدد الفنانين المميزين" help="من 1 إلى 12 (الافتراضي: 6)">
+                <Input
+                  id="home_featured_artists_count"
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={values.home_featured_artists_count}
+                  onChange={(event) => setNumberField("home_featured_artists_count", Number(event.target.value))}
+                />
+              </Field>
+              <Field id="home_featured_articles_count" label="عدد المقالات المميزة" help="من 1 إلى 12 (الافتراضي: 4)">
+                <Input
+                  id="home_featured_articles_count"
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={values.home_featured_articles_count}
+                  onChange={(event) => setNumberField("home_featured_articles_count", Number(event.target.value))}
+                />
+              </Field>
+              <Field id="home_upcoming_events_count" label="عدد الفعاليات القادمة" help="من 1 إلى 12 (الافتراضي: 3)">
+                <Input
+                  id="home_upcoming_events_count"
+                  type="number"
+                  min={1}
+                  max={12}
+                  value={values.home_upcoming_events_count}
+                  onChange={(event) => setNumberField("home_upcoming_events_count", Number(event.target.value))}
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 pt-2 border-t border-brand-espresso-subtle/40">
+              <label htmlFor="show_testimonials" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+                <input
+                  id="show_testimonials"
+                  type="checkbox"
+                  checked={values.show_testimonials}
+                  onChange={(event) => setBooleanField("show_testimonials", event.target.checked)}
+                  className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+                />
+                <span>عرض قسم آراء الجمهور (الشهادات)</span>
+              </label>
+
+              <label htmlFor="show_editorial" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+                <input
+                  id="show_editorial"
+                  type="checkbox"
+                  checked={values.show_editorial}
+                  onChange={(event) => setBooleanField("show_editorial", event.target.checked)}
+                  className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+                />
+                <span>عرض القسم التحريري (المقالات)</span>
+              </label>
+
+              <label htmlFor="show_events" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+                <input
+                  id="show_events"
+                  type="checkbox"
+                  checked={values.show_events}
+                  onChange={(event) => setBooleanField("show_events", event.target.checked)}
+                  className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+                />
+                <span>عرض قسم الفعاليات القادمة</span>
+              </label>
+
+              <label htmlFor="show_booking_banner" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+                <input
+                  id="show_booking_banner"
+                  type="checkbox"
+                  checked={values.show_booking_banner}
+                  onChange={(event) => setBooleanField("show_booking_banner", event.target.checked)}
+                  className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+                />
+                <span>عرض بنر الحجز</span>
+              </label>
+            </div>
           </CardContent>
         </Card>
 

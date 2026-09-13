@@ -46,6 +46,13 @@ export interface Database {
           footer_mission_en?: string | null;
           copyright_text: string;
           copyright_text_en?: string | null;
+          home_featured_artists_count: number;
+          home_featured_articles_count: number;
+          home_upcoming_events_count: number;
+          show_testimonials: boolean;
+          show_editorial: boolean;
+          show_events: boolean;
+          show_booking_banner: boolean;
           updated_at: string;
         };
         Insert: {
@@ -81,6 +88,13 @@ export interface Database {
           footer_mission_en?: string | null;
           copyright_text: string;
           copyright_text_en?: string | null;
+          home_featured_artists_count?: number;
+          home_featured_articles_count?: number;
+          home_upcoming_events_count?: number;
+          show_testimonials?: boolean;
+          show_editorial?: boolean;
+          show_events?: boolean;
+          show_booking_banner?: boolean;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["site_settings"]["Insert"]>;
