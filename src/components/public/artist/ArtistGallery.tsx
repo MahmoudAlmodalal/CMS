@@ -46,19 +46,19 @@ export function ArtistGallery({ artistName, quote }: ArtistGalleryProps) {
   return (
     <section
       aria-label={t("galleryRegion")}
-      className="mx-auto w-full max-w-[1280px] px-5 py-8 sm:px-8 lg:px-[40px] lg:py-[24px]"
+      className="mx-auto w-full max-w-[1280px] px-5 lg:px-[40px] lg:py-[24px]"
     >
-      <h2 className="pt-[16px] text-center font-display text-[32px] leading-tight tracking-[-0.5636px] text-black sm:text-[40px] lg:h-[59px] lg:text-[48px] lg:leading-[42.27px]">
+      <h2 className="h-[43px] text-center font-display text-[32px] leading-[43px] tracking-[-0.5636px] text-black lg:h-[59px] lg:text-[48px] lg:leading-[42.27px]">
         {t.rich("galleryTitle", {
           em: (chunks) => <span className="text-primary-500">{chunks}</span>,
         })}
       </h2>
 
-      <div className="pt-8 lg:pt-[48px]">
-        <div className="mx-auto grid max-w-full grid-cols-1 gap-[16px] sm:grid-cols-2 lg:w-[859.333px] lg:grid-cols-[265.677px_295.979px_265.677px] lg:grid-rows-[295.979px]">
+      <div className="pt-[55px] lg:pt-[48px]">
+        <div className="mx-auto grid w-[266px] max-w-full grid-cols-1 gap-[16px] lg:w-[859.333px] lg:grid-cols-[265.677px_295.979px_265.677px] lg:grid-rows-[295.979px]">
           {/* Right-hand plate — 134:4649 */}
-          <div className="overflow-hidden rounded-[12px] lg:h-[295.979px] lg:w-[265.677px]">
-            <div className="relative aspect-[266/267] w-full lg:h-[267px] lg:w-[266px]">
+          <div className="h-[202.333px] overflow-hidden rounded-[12px] lg:h-[295.979px] lg:w-[265.677px]">
+            <div className="relative h-full w-full lg:h-[267px] lg:w-[266px]">
               <Image
                 src={first.src}
                 alt={t("stageAlt")}
@@ -71,7 +71,7 @@ export function ArtistGallery({ artistName, quote }: ArtistGalleryProps) {
           </div>
 
           {/* Pull quote — 134:4651 */}
-          <figure className="flex flex-col items-center justify-center gap-[24px] rounded-[12px] bg-primary-500 px-[40px] py-[48px] sm:order-none lg:size-[295.979px]">
+          <figure className="flex h-[298.333px] flex-col items-center justify-center gap-[24px] rounded-[12px] bg-primary-500 px-[40px] py-[48px] lg:h-auto lg:size-[295.979px]">
             <p
               aria-hidden="true"
               className="text-[56px] leading-[56px] text-brand-surface/[0.79]"
@@ -87,8 +87,8 @@ export function ArtistGallery({ artistName, quote }: ArtistGalleryProps) {
           </figure>
 
           {/* Left-hand plate — 134:4658 */}
-          <div className="overflow-hidden rounded-[12px] lg:h-[295.979px] lg:w-[265.677px]">
-            <div className="relative aspect-square w-full lg:size-[265.677px]">
+          <div className="h-[202.333px] overflow-hidden rounded-[12px] lg:h-[295.979px] lg:w-[265.677px]">
+            <div className="relative h-full w-full lg:size-[265.677px]">
               <Image
                 src={second.src}
                 alt={t("stageAlt")}

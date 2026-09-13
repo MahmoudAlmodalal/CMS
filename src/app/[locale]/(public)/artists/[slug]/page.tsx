@@ -88,18 +88,22 @@ export default async function ArtistDetailPage({
 
       <ArtistHero artist={artist} />
 
-      <div className="lg:mt-[12px]">
+      {/* The 390 frame (141:16217) opens `Frame 44` at 733 — 55 under the hero's
+          678 band — and closes it at 1133. */}
+      <div className="mt-[55px] lg:mt-[12px]">
         <ArtistProfileCard artist={artist} />
       </div>
 
-      <div className="mt-10 lg:mt-[31.17px]">
+      {/* 84 from `Frame 44`'s close at 1133 to the band heading `141:16466` at 1217. */}
+      <div className="mt-[84px] lg:mt-[31.17px]">
         <ArtistGallery
           artistName={artist.name}
           quote={artist.spotlight_quote?.trim() || artist.quote}
         />
       </div>
 
-      <div className="mt-10 lg:mt-[80.02px]">
+      {/* 66 from the quote column's close at 2050 to `Section` 141:16468 at 2116. */}
+      <div className="mt-[66px] lg:mt-[80.02px]">
         <ArtistDiscography releases={releases} />
       </div>
 
