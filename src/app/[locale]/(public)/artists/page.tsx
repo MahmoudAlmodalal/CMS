@@ -93,7 +93,7 @@ export default async function ArtistsPage({
           bar opens 32 under it at 710, the carousel opens at 809 and closes at 1709,
           and the footer is bottom-anchored at 2007 — so 298 of air closes the
           section, which is the widest gap anywhere on the frame. */}
-      <section className="relative w-full overflow-hidden pb-[298px] pt-[32px] lg:pb-[172px] lg:pt-[127px]">
+      <section className="relative w-full py-12 md:py-16 lg:pb-40 lg:pt-32">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
