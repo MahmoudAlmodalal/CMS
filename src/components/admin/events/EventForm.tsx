@@ -8,11 +8,9 @@ import { Input } from "@/components/ui/Input";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, TranslationField } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { EVENT_CATEGORY_LABELS, EVENT_STATUS_LABELS, EVENT_CATEGORIES, EVENT_STATUSES } from "@/lib/types/admin-events";
 import type { EventFormValues } from "./EventsTable";
-
-const selectClass =
-  "h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15";
 
 export function EventForm({
   values,
@@ -35,30 +33,22 @@ export function EventForm({
         <Input id="event-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
       </Field>
       <Field id="event-category" label="الفئة">
-        <select
+        <Dropdown<EventFormValues["category"]>
           id="event-category"
           value={values.category}
-          onChange={(event) => setField("category", event.target.value as EventFormValues["category"])}
-          className={selectClass}
+          onChange={(category) => setField("category", category)}
+          options={EVENT_CATEGORIES.map((category) => ({ value: category, label: EVENT_CATEGORY_LABELS[category] }))}
           required
-        >
-          {EVENT_CATEGORIES.map((category) => (
-            <option key={category} value={category}>{EVENT_CATEGORY_LABELS[category]}</option>
-          ))}
-        </select>
+        />
       </Field>
       <Field id="event-status" label="حالة الفعالية">
-        <select
+        <Dropdown<EventFormValues["status"]>
           id="event-status"
           value={values.status}
-          onChange={(event) => setField("status", event.target.value as EventFormValues["status"])}
-          className={selectClass}
+          onChange={(status) => setField("status", status)}
+          options={EVENT_STATUSES.map((status) => ({ value: status, label: EVENT_STATUS_LABELS[status] }))}
           required
-        >
-          {EVENT_STATUSES.map((status) => (
-            <option key={status} value={status}>{EVENT_STATUS_LABELS[status]}</option>
-          ))}
-        </select>
+        />
       </Field>
       <Field id="event-date" label="تاريخ ووقت الفعالية">
         <Input
@@ -86,17 +76,15 @@ export function EventForm({
       </Field>
       <TranslationField id="event-performer-en" label="اسم المؤدي أو الفرقة" value={values.performer_name_en} onChange={(value) => setField("performer_name_en", value)} />
       <Field id="event-artist" label="ربط بملف فنان" required={false} help="اختياري — يربط الفعالية بملف فنان موجود.">
-        <select
+        <Dropdown<string>
           id="event-artist"
           value={values.artist_id ?? ""}
-          onChange={(event) => setField("artist_id", event.target.value || null)}
-          className={selectClass}
-        >
-          <option value="">بدون ربط</option>
-          {artists.map((artist) => (
-            <option key={artist.id} value={artist.id}>{artist.name}</option>
-          ))}
-        </select>
+          onChange={(artistId) => setField("artist_id", artistId || null)}
+          options={[
+            { value: "", label: "بدون ربط" },
+            ...artists.map((artist) => ({ value: artist.id, label: artist.name })),
+          ]}
+        />
       </Field>
       <Field id="event-image" label="رابط صورة الفعالية">
         <MediaPickerField

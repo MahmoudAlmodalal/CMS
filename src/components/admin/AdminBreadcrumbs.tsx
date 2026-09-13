@@ -11,21 +11,21 @@ export function AdminBreadcrumbs({ className = "" }: { className?: string }) {
   const crumbs = getAdminBreadcrumbs(pathname);
 
   return (
-    <nav aria-label="مسار التنقل" className={`flex items-center text-sm ${className}`}>
-      <ol className="flex items-center gap-1.5 flex-wrap">
+    <nav aria-label="مسار التنقل" className={`flex min-w-0 items-center text-sm ${className}`}>
+      <ol className="flex min-w-0 items-center gap-1.5 flex-wrap">
         {crumbs.map((crumb, idx) => {
           const isLast = idx === crumbs.length - 1;
           return (
-            <li key={idx} className="flex items-center gap-1.5">
+            <li key={idx} className="flex min-w-0 items-center gap-1.5">
               {crumb.href && !isLast ? (
                 <Link
                   href={crumb.href}
-                  className="text-brand-espresso/60 hover:text-brand-primary transition-colors text-xs font-medium"
+                  className="truncate text-brand-espresso/60 hover:text-brand-primary transition-colors text-xs font-medium"
                 >
                   {crumb.label}
                 </Link>
               ) : (
-                <span className={`text-xs ${isLast ? "font-bold text-brand-espresso" : "text-brand-espresso/60"}`}>
+                <span className={`truncate text-xs ${isLast ? "font-bold text-brand-espresso" : "text-brand-espresso/60"}`}>
                   {crumb.label}
                 </span>
               )}

@@ -2,7 +2,8 @@
 
 import React, { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
-import { submitBookingAction, INITIAL_BOOKING_ACTION_STATE } from "@/actions/booking";
+import { submitBookingAction } from "@/actions/booking";
+import { INITIAL_BOOKING_ACTION_STATE } from "@/lib/validations/booking";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/Icons";
 import type { BookingArtistOption } from "@/lib/dal/booking";

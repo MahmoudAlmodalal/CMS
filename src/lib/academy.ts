@@ -34,11 +34,16 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c1-oud-school",
     title: "مدرسة العود",
+    title_en: "Oud School",
     slug: "oud-school",
     track_category: "مدرسة التراث",
+    track_category_en: "Heritage School",
     description:
       "تعلّم على يد خبراء مدرّبين على الأسلوب الموسيقي الكلاسيكي الأصيل. تعرّف على فنون العزف والألحان الأندلسية.",
+    description_en:
+      "Learn from experts trained in authentic classical music style. Discover the arts of playing and Andalusian melodies.",
     instructor_name: "طارق العود",
+    instructor_name_en: "Tariq Al-Oud",
     image_url: "/assets/academy-oud.png",
     display_order: 1,
     is_published: true,
@@ -46,11 +51,16 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c2-performance-art",
     title: "فن الأداء",
+    title_en: "Performance Art",
     slug: "performance-art",
     track_category: "فن الأداء",
+    track_category_en: "Performance Art",
     description:
       "طوّر أداءك المسرحي، تعلّم وقوف الجمهور ووجود المسرح أمام جماهير حقيقية في بيئة آمنة.",
+    description_en:
+      "Enhance your theatrical performance, learn audience presence and stage presence in front of real audiences in a safe environment.",
     instructor_name: "هيئة التدريب",
+    instructor_name_en: "Training Faculty",
     image_url: "/assets/academy-performance.png",
     display_order: 2,
     is_published: true,
@@ -58,11 +68,16 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c3-vocal-tarab",
     title: "الصوت والطرب",
+    title_en: "Voice and Melody",
     slug: "vocal-tarab",
     track_category: "صوت ومجموع",
+    track_category_en: "Voice and Ensemble",
     description:
       "تعرّف على معلمين من الكفاءة العالية وتعلّم فنون الغناء والطرب المعاصر والكلاسيكي.",
+    description_en:
+      "Meet highly qualified instructors and learn the arts of contemporary and classical singing.",
     instructor_name: "سارة الصوت",
+    instructor_name_en: "Sarah Al-Sawt",
     image_url: "/assets/academy-vocal.png",
     display_order: 3,
     is_published: true,

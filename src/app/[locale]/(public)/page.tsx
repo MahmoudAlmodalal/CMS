@@ -24,16 +24,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_home_title?.trim() || t("homeTitle");
+  const description = settings.seo_home_description?.trim() || t("homeDescription");
+  const ogTitle = settings.seo_home_title?.trim() || t("homeOgTitle");
+  const ogDescription = settings.seo_home_description?.trim() || t("homeOgDescription");
   return {
-  title: t("homeTitle"),
-  description: t("homeDescription"),
-  openGraph: {
-    title: t("homeOgTitle"),
-    description: t("homeOgDescription"),
-    locale: locale === "ar" ? "ar_AR" : "en_US",
-    type: "website",
-  },
+    title,
+    description,
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+      type: "website",
+    },
   };
 }
 
@@ -82,39 +90,53 @@ export default async function HomePage({
   return (
     <>
       {/* Stage 1: Hero Banner (Figma Component 20, 740px) */}
-      <HeroSection settings={settings} />
+      <HeroSection
+        settings={settings}
+        primaryCtaLabel={settings.home_hero_primary_cta || undefined}
+        secondaryCtaLabel={settings.home_hero_secondary_cta || undefined}
+      />
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
       <div className="lg:-mt-[22px]">
-        <AboutSection settings={settings} />
+        <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
       </div>
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
       <div className="lg:mt-[22px]">
-        <FeaturedArtists artists={artists} />
+        <FeaturedArtists
+          artists={artists}
+          heading={settings.home_artists_heading || undefined}
+          ctaLabel={settings.home_artists_cta || undefined}
+        />
       </div>
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
       {settings.show_testimonials && (
         <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
-          <TestimonialsSlider testimonials={testimonials} />
+          <TestimonialsSlider testimonials={testimonials} heading={settings.home_testimonials_heading || undefined} />
         </div>
       )}
 
       {/* Stage 5: Editorial Feature (Figma Frame 26, 709px, #1F0900, 4 cards) */}
-      {settings.show_editorial && <EditorialFeature articles={articles} />}
+      {settings.show_editorial && (
+        <EditorialFeature articles={articles} heading={settings.home_editorial_heading || undefined} />
+      )}
 
       {/* Stage 6: Upcoming Events Strip (Figma Frame 28, 678px, split banner) */}
       {settings.show_events && (
         <div className="lg:mt-[26px]">
-          <HomeEvents events={events} />
+          <HomeEvents
+            events={events}
+            heading={settings.home_events_heading || undefined}
+            ctaLabel={settings.home_events_cta || undefined}
+          />
         </div>
       )}
 
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
       {settings.show_booking_banner && (
         <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
-          <BookingBanner settings={settings} />
+          <BookingBanner settings={settings} ctaLabel={settings.booking_cta_label} />
         </div>
       )}
     </>

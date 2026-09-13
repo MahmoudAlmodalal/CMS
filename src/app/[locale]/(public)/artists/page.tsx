@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPublishedArtists } from "@/lib/dal/artists";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import { ArtistsDirectoryClient, PageHero } from "@/components/public";
@@ -27,15 +27,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_artists_title?.trim() || t("artistsTitle");
+  const description = settings.seo_artists_description?.trim() || t("artistsDescription");
   const path = locale === "ar" ? "/artists" : "/en/artists";
   return {
-    title: t("artistsTitle"),
-    description: t("artistsDescription"),
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
-      title: t("artistsTitle"),
-      description: t("artistsDescription"),
+      title,
+      description,
       url: path,
       type: "website",
       locale: locale === "ar" ? "ar_AR" : "en_US",
@@ -43,7 +49,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArtistsPage() {
+export default async function ArtistsPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  if (params) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+  }
+
   const [artists, settings, t] = await Promise.all([
     getPublishedArtists(),
     getSiteSettings(),
@@ -55,10 +70,15 @@ export default async function ArtistsPage() {
       {/* Hero band 91:18055/91:18057 — 611 tall, the block 247 down, the headline
           at 64/91.5 with its first word in primary-500. No pill on this frame. */}
       <PageHero
-        title={t.rich("title", {
-          em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-        })}
+        title={
+          settings.artists_title?.trim()
+            ? settings.artists_title
+            : t.rich("title", {
+                em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+              })
+        }
         subtitle={settings.artists_subtitle}
+        image={settings.artists_hero_image_url || undefined}
         height={611}
         mobileHeight={678}
         contentTop={247}
@@ -76,16 +96,19 @@ export default async function ArtistsPage() {
       <section className="relative w-full overflow-hidden pb-[298px] pt-[32px] lg:pb-[172px] lg:pt-[127px]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat lg:block"
+          className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-[1085px] hidden h-[112px] w-[63px] bg-[url('/assets/branding/dots-artists-end.png')] bg-contain bg-no-repeat lg:block"
+          className="pointer-events-none absolute bottom-[120px] right-0 hidden h-[112px] w-[63px] bg-[url('/assets/branding/dots-artists-end.png')] bg-contain bg-no-repeat xl:block"
         />
 
-        <div className="relative mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-0">
+        <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12 xl:px-8">
           <Suspense fallback={<div className="min-h-[888px]" />}>
-            <ArtistsDirectoryClient initialArtists={artists} />
+            <ArtistsDirectoryClient
+              initialArtists={artists}
+              allLabel={settings.artists_filter_all_label}
+            />
           </Suspense>
         </div>
       </section>

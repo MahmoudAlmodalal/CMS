@@ -17,21 +17,27 @@ import {
 const root = path.resolve(".");
 const read = (rel: string) => fs.readFileSync(path.join(root, rel), "utf-8");
 
-const MIGRATION = "supabase/migrations/20260912000000_add_english_content_columns.sql";
+const MIGRATIONS = [
+  "supabase/migrations/20260912000000_add_english_content_columns.sql",
+  "supabase/migrations/20260914000000_add_page_content_controls.sql",
+  "supabase/migrations/20260915000000_add_seo_and_label_controls.sql",
+];
 
 /**
- * Every `_en` column the migration adds, grouped by table, parsed from the SQL
+ * Every `_en` column the migrations add, grouped by table, parsed from the SQL
  * itself so the test tracks the real schema rather than a hand-kept copy.
  */
 function migrationColumnsByTable(): Map<string, string[]> {
-  const sql = read(MIGRATION);
   const byTable = new Map<string, string[]>();
   // Each block is `ALTER TABLE <name> ... ;` with one ADD COLUMN per line.
-  for (const block of sql.split(/ALTER TABLE\s+/).slice(1)) {
-    const table = block.split(/\s/)[0];
-    const statement = block.slice(0, block.indexOf(";"));
-    const columns = [...statement.matchAll(/ADD COLUMN IF NOT EXISTS\s+(\w+_en)\s/g)].map((m) => m[1]);
-    byTable.set(table, columns);
+  for (const file of MIGRATIONS) {
+    const sql = read(file);
+    for (const block of sql.split(/ALTER TABLE\s+/).slice(1)) {
+      const table = block.split(/\s/)[0];
+      const statement = block.slice(0, block.indexOf(";"));
+      const columns = [...statement.matchAll(/ADD COLUMN IF NOT EXISTS\s+(\w+_en)\s/g)].map((m) => m[1]);
+      byTable.set(table, [...(byTable.get(table) ?? []), ...columns]);
+    }
   }
   return byTable;
 }

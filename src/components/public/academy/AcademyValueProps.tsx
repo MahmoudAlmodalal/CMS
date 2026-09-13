@@ -35,7 +35,15 @@ export const CANONICAL_VALUE_PROPS: ValuePropItem[] = [
  *
  * The design draws no kicker, no standfirst, no cards and no numerals here.
  */
-export function AcademyValueProps() {
+export function AcademyValueProps({
+  heading,
+  items,
+}: {
+  /** Admin override for the band heading. Falls back to built-in copy. */
+  heading?: string;
+  /** Admin overrides for the three pillars ({title, body} each). Falls back to built-in copy per pillar. */
+  items?: { title?: string; body?: string }[];
+} = {}) {
   const t = useTranslations("academy");
 
   return (
@@ -54,25 +62,25 @@ export function AcademyValueProps() {
           id="academy-values-heading"
           className="text-center font-display text-[32px] leading-[1.2] text-brand-tint sm:text-[40px] lg:whitespace-nowrap lg:leading-[48px]"
         >
-          {t("valuesHeading")}
+          {heading || t("valuesHeading")}
         </h2>
 
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3 lg:mt-14 lg:w-[888px] lg:grid-cols-[270.44px_270.45px_270.44px]">
-          {CANONICAL_VALUE_PROPS.map((prop) => (
+          {CANONICAL_VALUE_PROPS.map((prop, index) => (
             <div key={prop.id} className="flex flex-col items-center text-center">
               <span aria-hidden="true" className="text-[28px] leading-[42px] text-brand-primary">
                 ♪
               </span>
 
               <h3 className="pt-4 text-[16.8px] font-bold leading-[25.2px] text-brand-surface">
-                {t(prop.titleKey)}
+                {items?.[index]?.title || t(prop.titleKey)}
               </h3>
 
               <p
                 className="pt-3 text-[14.08px] leading-[26.048px] text-[rgba(236,230,208,0.7)]"
                 style={{ maxWidth: `${prop.bodyWidth}px` }}
               >
-                {t(prop.descriptionKey)}
+                {items?.[index]?.body || t(prop.descriptionKey)}
               </p>
             </div>
           ))}

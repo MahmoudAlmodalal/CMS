@@ -8,6 +8,7 @@ import {
   getFeaturedEvent,
   getEventsSubtitle,
 } from "@/lib/dal/events";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 import type { CategoryFilterId } from "@/lib/types/events";
 
 /**
@@ -30,13 +31,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_events_title?.trim() || t("eventsTitle");
+  const description = settings.seo_events_description?.trim() || t("eventsDescription");
   return {
-    title: t("eventsTitle"),
-    description: t("eventsDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("eventsTitle"),
-      description: t("eventsDescription"),
+      title,
+      description,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
     },
@@ -55,10 +62,11 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   const query = searchParams ? await searchParams : {};
   const requestedCategory = (query.category as CategoryFilterId) || "all";
 
-  const [events, featuredEvent, subtitle, t] = await Promise.all([
+  const [events, featuredEvent, subtitle, settings, t] = await Promise.all([
     getPublishedEvents(),
     getFeaturedEvent(),
     getEventsSubtitle(),
+    getSiteSettings(),
     getTranslations("events"),
   ]);
 
@@ -68,10 +76,15 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
           Arabic 64/91.5 with the first word in primary-500, the standfirst 24px
           under it. This frame draws no pill. */}
       <PageHero
-        title={t.rich("title", {
-          em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-        })}
+        title={
+          settings.events_title?.trim()
+            ? settings.events_title
+            : t.rich("title", {
+                em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+              })
+        }
         subtitle={subtitle}
+        image={settings.events_hero_image_url || undefined}
         height={611}
         mobileHeight={678}
         contentTop={247}
@@ -88,11 +101,11 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
         {/* Dotted marks 91:16533 and 91:16638, both hanging off the artboard. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[94px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-events-start.png')] bg-cover bg-no-repeat lg:block"
+          className="pointer-events-none absolute left-0 top-[94px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-events-start.png')] bg-cover bg-no-repeat xl:block"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-[1071px] hidden h-[112px] w-[64px] bg-[url('/assets/branding/dots-events-end.png')] bg-cover bg-no-repeat lg:block"
+          className="pointer-events-none absolute bottom-[120px] right-0 hidden h-[112px] w-[64px] bg-[url('/assets/branding/dots-events-end.png')] bg-cover bg-no-repeat xl:block"
         />
 
         <Suspense fallback={<div className="min-h-[828px]" />}>
@@ -100,6 +113,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
             initialEvents={events}
             featuredEvent={featuredEvent}
             initialCategory={requestedCategory}
+            allLabel={settings.events_filter_all_label}
           />
         </Suspense>
       </section>

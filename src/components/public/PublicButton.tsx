@@ -85,11 +85,12 @@ export const PublicButton = forwardRef<
     ),
   };
 
-  // Height definitions: default 48px expanding to 56px (+8px) on hover
+  // Height definitions: Figma master button is a fixed 207x48 — md keeps that
+  // exact width instead of growing with its label.
   const sizeStyles: Record<PublicButtonSize, string> = {
     md: cn(
       "h-12 px-6 text-base gap-2.5",
-      fullWidth ? "w-full" : "min-w-[207px] w-auto",
+      fullWidth ? "w-full" : "w-[207px]",
       expandOnHover && "hover:h-14 group-hover:h-14"
     ),
     sm: cn(

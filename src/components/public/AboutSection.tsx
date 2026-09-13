@@ -7,6 +7,8 @@ import type { SiteSettings } from "@/lib/dal/site-settings";
 
 interface AboutSectionProps {
   settings: SiteSettings;
+  /** Admin override for the CTA label. Falls back to built-in copy. */
+  ctaLabel?: string;
 }
 
 /**
@@ -60,7 +62,7 @@ const BAND_OPACITY = "lg:opacity-50";
 
 const ORNAMENT = { src: "/assets/branding/ornament.svg", width: 123, height: 112 };
 
-export function AboutSection({ settings }: AboutSectionProps) {
+export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
   const t = useTranslations("home");
 
   return (
@@ -96,7 +98,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
         {/* Text column I112:850;112:619 — 495 wide, three blocks 32px apart. */}
         <div className="ms-[28px] mt-[30px] flex w-[324px] flex-col items-start gap-[32px] text-start lg:absolute lg:left-[923px] lg:top-[265px] lg:ms-0 lg:mt-0 lg:w-[495px]">
           {/* Statement I112:850;112:623 */}
-          <h3 className="h-[66px] whitespace-nowrap font-display text-[32px] leading-[66px] text-brand-espresso lg:text-[48px]">
+          <h3 className="h-[66px] whitespace-nowrap font-display text-[32px] font-normal leading-[66px] text-brand-espresso lg:text-[48px]">
             {settings.about_headline}
           </h3>
 
@@ -110,7 +112,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
             href="/artists"
             className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] bg-primary-500 font-system text-[16px] font-bold leading-[22.4px] text-primary-50 transition-colors hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
           >
-            {t("aboutCta")}
+            {ctaLabel || t("aboutCta")}
           </Link>
         </div>
 

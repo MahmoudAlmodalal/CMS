@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Notice, Field } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import type { BookingRequestRow } from "@/lib/dal/bookings";
 import type { AdminBookingUpdate } from "@/lib/validations";
 
@@ -124,17 +125,15 @@ export function BookingsTable({ initialBookings }: BookingsTableProps) {
                       <div className="flex min-w-[160px] items-center gap-2">
                         <Badge size="sm">{STATUS_LABELS[booking.status] ?? booking.status}</Badge>
                         <label className="sr-only" htmlFor={`booking-status-${booking.id}`}>حالة طلب الحجز</label>
-                        <select
+                        <Dropdown<BookingStatus>
                           id={`booking-status-${booking.id}`}
+                          ariaLabel="حالة طلب الحجز"
                           value={booking.status}
                           disabled={pending}
-                          onChange={(event) => changeStatus(booking, event.target.value as BookingStatus)}
-                          className="h-[40px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-                        >
-                          {STATUSES.map((status) => (
-                            <option key={status} value={status}>{STATUS_LABELS[status as string]}</option>
-                          ))}
-                        </select>
+                          onChange={(status) => changeStatus(booking, status)}
+                          options={STATUSES.map((status) => ({ value: status, label: STATUS_LABELS[status as string] }))}
+                          size="sm"
+                        />
                       </div>
                     </TableCell>
                     <TableCell>

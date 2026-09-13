@@ -51,9 +51,12 @@ test("Task 45 — tracks manager covers canonical fields, guarded actions, and a
   assert.match(manager, /window\.confirm/);
   assert.match(manager, /<Notice notice=\{notice\} \/>/);
   assert.match(manager, /dir="rtl"/);
-  assert.match(manager, /AUDIO_MAX_BYTES/);
-  assert.match(manager, /BUCKET_ALLOWED_MIMES/);
-  assert.match(manager, /from "@\/lib\/storage"/);
+  assert.match(manager, /AudioUploadField/);
+
+  const audioField = read("src/components/admin/media/AudioUploadField.tsx");
+  assert.match(audioField, /AUDIO_MAX_BYTES/);
+  assert.match(audioField, /BUCKET_ALLOWED_MIMES/);
+  assert.match(audioField, /from "@\/lib\/storage"/);
 });
 
 test("Task 45 — releases manager covers canonical fields and guarded actions", () => {

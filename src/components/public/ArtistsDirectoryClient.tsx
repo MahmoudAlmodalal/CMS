@@ -9,6 +9,7 @@ import { ArtistsGrid } from "./ArtistsGrid";
 export interface ArtistsDirectoryClientProps {
   initialArtists: Artist[];
   className?: string;
+  allLabel?: string | null;
 }
 
 /**
@@ -25,6 +26,7 @@ export interface ArtistsDirectoryClientProps {
 export function ArtistsDirectoryClient({
   initialArtists,
   className = "",
+  allLabel,
 }: ArtistsDirectoryClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -78,6 +80,7 @@ export function ArtistsDirectoryClient({
       <ArtistFilterTabs
         activeCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
+        allLabel={allLabel}
       />
 
       {/* 2. Responsive Artists Grid */}

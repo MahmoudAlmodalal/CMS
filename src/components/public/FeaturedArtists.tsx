@@ -7,6 +7,10 @@ import type { Artist } from "@/lib/types/artists";
 
 interface FeaturedArtistsProps {
   artists: Artist[];
+  /** Admin override for the section heading. Falls back to built-in copy. */
+  heading?: string;
+  /** Admin override for the CTA label. Falls back to built-in copy. */
+  ctaLabel?: string;
 }
 
 /**
@@ -47,7 +51,7 @@ interface FeaturedArtistsProps {
  * past the fourth are dropped rather than wrapped to a third row: the frame draws
  * four, and a fifth row of one would be an invention.
  */
-export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
+export function FeaturedArtists({ artists, heading, ctaLabel }: FeaturedArtistsProps) {
   const t = useTranslations("home");
   const direction = localeDirection[useLocale() as AppLocale] ?? "rtl";
 
@@ -59,8 +63,8 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
     <section className="relative w-full overflow-hidden bg-black pb-[44px] pt-[52px] lg:h-[615px] lg:py-0">
       {/* Heading 87:14298 */}
       <div className="lg:absolute lg:left-[152px] lg:right-[152px] lg:top-[52px]">
-        <h2 className="text-center font-display text-[32px] leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
-          {t("artistsHeading")}
+        <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
+          {heading || t("artistsHeading")}
         </h2>
       </div>
 
@@ -86,7 +90,7 @@ export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
           href="/artists"
           className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] border border-[#F9EDE8] font-system text-[16px] font-bold leading-[22.4px] text-[#F9EDE8] transition-colors hover:bg-[#F9EDE8]/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
-          {t("artistsCta")}
+          {ctaLabel || t("artistsCta")}
         </Link>
       </div>
     </section>

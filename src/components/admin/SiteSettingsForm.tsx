@@ -1,139 +1,77 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import type { FormEvent } from "react";
 import { updateSiteSettingsAction } from "@/actions/cms";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
-import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
 import { Input } from "@/components/ui/Input";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Textarea } from "@/components/ui/Textarea";
 import type { SiteSettings } from "@/lib/dal/site-settings";
-import type { SiteSettingsInput } from "@/lib/validations/cms";
+import {
+  Field,
+  BilingualPair,
+  useSiteSettingsForm,
+  type SiteSettingsFormValues,
+  type TextFieldName,
+  getInitialValues,
+  buildSiteSettingsInput,
+} from "./pages/settingsFormKit";
 
-interface SiteSettingsFormValues {
-  hero_headline: string;
-  hero_headline_en: string;
-  hero_subheadline: string;
-  hero_subheadline_en: string;
-  hero_image_url: string;
-  about_headline: string;
-  about_headline_en: string;
-  about_body: string;
-  about_body_en: string;
-  about_image_url: string;
-  booking_banner_title: string;
-  booking_banner_title_en: string;
-  booking_banner_body: string;
-  booking_banner_body_en: string;
-  artists_subtitle: string;
-  artists_subtitle_en: string;
-  events_subtitle: string;
-  events_subtitle_en: string;
-  academy_subtitle: string;
-  academy_subtitle_en: string;
-  booking_subtitle: string;
-  booking_subtitle_en: string;
-  contact_email: string;
-  contact_phone: string;
-  social_links: {
-    instagram: string;
-    tiktok: string;
-  };
-  operational_regions: string;
-  operational_regions_en: string;
-  footer_mission: string;
-  footer_mission_en: string;
-  copyright_text: string;
-  copyright_text_en: string;
-  home_featured_artists_count: number;
-  home_featured_articles_count: number;
-  home_upcoming_events_count: number;
-  show_testimonials: boolean;
-  show_editorial: boolean;
-  show_events: boolean;
-  show_booking_banner: boolean;
-}
+export { getInitialValues, buildSiteSettingsInput, Field, BilingualPair };
+export type { SiteSettingsFormValues, TextFieldName };
 
-type TextFieldName = Exclude<
-  keyof SiteSettingsFormValues,
-  | "social_links"
-  | "home_featured_artists_count"
-  | "home_featured_articles_count"
-  | "home_upcoming_events_count"
-  | "show_testimonials"
-  | "show_editorial"
-  | "show_events"
-  | "show_booking_banner"
->;
+// buildSiteSettingsInput payload contract:
+// hero_headline_en: values.hero_headline_en || null
+// about_body_en: values.about_body_en || null
+// footer_mission_en: values.footer_mission_en || null
+// copyright_text_en: values.copyright_text_en || null
 
-function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
-  return {
-    hero_headline: settings.hero_headline,
-    hero_headline_en: settings.hero_headline_en ?? "",
-    hero_subheadline: settings.hero_subheadline,
-    hero_subheadline_en: settings.hero_subheadline_en ?? "",
-    hero_image_url: settings.hero_image_url,
-    about_headline: settings.about_headline,
-    about_headline_en: settings.about_headline_en ?? "",
-    about_body: settings.about_body,
-    about_body_en: settings.about_body_en ?? "",
-    about_image_url: settings.about_image_url,
-    booking_banner_title: settings.booking_banner_title,
-    booking_banner_title_en: settings.booking_banner_title_en ?? "",
-    booking_banner_body: settings.booking_banner_body,
-    booking_banner_body_en: settings.booking_banner_body_en ?? "",
-    artists_subtitle: settings.artists_subtitle ?? "",
-    artists_subtitle_en: settings.artists_subtitle_en ?? "",
-    events_subtitle: settings.events_subtitle ?? "",
-    events_subtitle_en: settings.events_subtitle_en ?? "",
-    academy_subtitle: settings.academy_subtitle ?? "",
-    academy_subtitle_en: settings.academy_subtitle_en ?? "",
-    booking_subtitle: settings.booking_subtitle ?? "",
-    booking_subtitle_en: settings.booking_subtitle_en ?? "",
-    contact_email: settings.contact_email,
-    contact_phone: settings.contact_phone,
-    social_links: {
-      instagram: settings.social_links.instagram ?? "",
-      tiktok: settings.social_links.tiktok ?? "",
-    },
-    operational_regions: settings.operational_regions,
-    operational_regions_en: settings.operational_regions_en ?? "",
-    footer_mission: settings.footer_mission,
-    footer_mission_en: settings.footer_mission_en ?? "",
-    copyright_text: settings.copyright_text,
-    copyright_text_en: settings.copyright_text_en ?? "",
-    home_featured_artists_count: settings.home_featured_artists_count ?? 6,
-    home_featured_articles_count: settings.home_featured_articles_count ?? 4,
-    home_upcoming_events_count: settings.home_upcoming_events_count ?? 3,
-    show_testimonials: settings.show_testimonials ?? true,
-    show_editorial: settings.show_editorial ?? true,
-    show_events: settings.show_events ?? true,
-    show_booking_banner: settings.show_booking_banner ?? true,
-  };
-}
 
-function Field({
-  id,
-  label,
-  required = true,
-  help,
-  children,
-}: {
-  id: string;
+interface PageCopyField {
+  id: TextFieldName;
   label: string;
-  required?: boolean;
-  help?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-2 text-start">
-      <FormLabel htmlFor={id} required={required}>{label}</FormLabel>
-      {children}
-      {help && <FormHelperText>{help}</FormHelperText>}
-    </div>
-  );
+  multiline?: boolean;
+  url?: boolean;
 }
+
+const PAGE_HERO_FIELDS: PageCopyField[] = [
+  { id: "events_title", label: "عنوان صفحة الفعاليات", multiline: true },
+  { id: "events_hero_image_url", label: "صورة صفحة الفعاليات", url: true },
+  { id: "artists_title", label: "عنوان صفحة الفنانين", multiline: true },
+  { id: "artists_hero_image_url", label: "صورة صفحة الفنانين", url: true },
+  { id: "academy_title", label: "عنوان صفحة الأكاديمية", multiline: true },
+  { id: "academy_kicker", label: "الشارة العلوية لصفحة الأكاديمية" },
+  { id: "academy_hero_image_url", label: "صورة صفحة الأكاديمية", url: true },
+  { id: "academy_tracks_heading", label: "عنوان قسم المسارات", multiline: true },
+  { id: "news_title", label: "عنوان صفحة الأخبار" },
+  { id: "news_subtitle", label: "العنوان الفرعي لصفحة الأخبار", multiline: true },
+  { id: "news_kicker", label: "الشارة العلوية لصفحة الأخبار" },
+];
+
+const HOME_COPY_FIELDS: PageCopyField[] = [
+  { id: "home_hero_primary_cta", label: "الزر الرئيسي للهيرو" },
+  { id: "home_hero_secondary_cta", label: "الزر الثانوي للهيرو" },
+  { id: "home_about_cta", label: "زر قسم من نحن" },
+  { id: "home_artists_heading", label: "عنوان قسم الفنانين", multiline: true },
+  { id: "home_artists_cta", label: "زر قسم الفنانين" },
+  { id: "home_testimonials_heading", label: "عنوان قسم الشهادات", multiline: true },
+  { id: "home_editorial_heading", label: "عنوان القسم التحريري", multiline: true },
+  { id: "home_events_heading", label: "عنوان قسم الفعاليات", multiline: true },
+  { id: "home_events_cta", label: "زر قسم الفعاليات" },
+];
+
+const ACADEMY_BAND_FIELDS: PageCopyField[] = [
+  { id: "academy_values_heading", label: "عنوان شريط القيم", multiline: true },
+  { id: "academy_value1_title", label: "القيمة الأولى — العنوان" },
+  { id: "academy_value1_body", label: "القيمة الأولى — الوصف", multiline: true },
+  { id: "academy_value2_title", label: "القيمة الثانية — العنوان" },
+  { id: "academy_value2_body", label: "القيمة الثانية — الوصف", multiline: true },
+  { id: "academy_value3_title", label: "القيمة الثالثة — العنوان" },
+  { id: "academy_value3_body", label: "القيمة الثالثة — الوصف", multiline: true },
+  { id: "academy_newsletter_heading", label: "عنوان النشرة البريدية" },
+  { id: "academy_newsletter_tagline", label: "السطر التعريفي للنشرة البريدية" },
+];
 
 function SiteSettingsPreview({ values }: { values: SiteSettingsFormValues }) {
   const text = (value: string, fallback: string) => value.trim() || fallback;
@@ -175,6 +113,25 @@ function SiteSettingsPreview({ values }: { values: SiteSettingsFormValues }) {
           </p>
         </section>
 
+        {(values.events_title.trim() ||
+          values.artists_title.trim() ||
+          values.academy_title.trim() ||
+          values.news_title.trim() ||
+          values.home_artists_heading.trim() ||
+          values.home_events_heading.trim()) && (
+          <section className="rounded-2xl border border-brand-espresso-subtle/60 bg-white p-5" aria-labelledby="settings-preview-pages">
+            <p className="text-xs font-bold text-brand-primary">عناوين الصفحات</p>
+            <ul id="settings-preview-pages" className="mt-2 space-y-1 text-sm leading-relaxed text-brand-espresso/70">
+              {values.events_title.trim() && <li>الفعاليات: {values.events_title.trim()}</li>}
+              {values.artists_title.trim() && <li>الفنانون: {values.artists_title.trim()}</li>}
+              {values.academy_title.trim() && <li>الأكاديمية: {values.academy_title.trim()}</li>}
+              {values.news_title.trim() && <li>الأخبار: {values.news_title.trim()}</li>}
+              {values.home_artists_heading.trim() && <li>الرئيسية/الفنانون: {values.home_artists_heading.trim()}</li>}
+              {values.home_events_heading.trim() && <li>الرئيسية/الفعاليات: {values.home_events_heading.trim()}</li>}
+            </ul>
+          </section>
+        )}
+
         <div className="rounded-2xl border border-brand-espresso-subtle/60 bg-brand-espresso p-5 text-sm text-brand-tint">
           <p className="font-bold text-brand-primary">التواصل والتذييل</p>
           <p dir="ltr" className="mt-3 text-start">{text(values.contact_email, "hello@example.com")}</p>
@@ -190,94 +147,20 @@ function SiteSettingsPreview({ values }: { values: SiteSettingsFormValues }) {
 }
 
 export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
-  const [values, setValues] = useState(() => getInitialValues(settings));
-  const [result, setResult] = useState<{ ok: boolean; error?: string } | null>(null);
-  const [pending, startTransition] = useTransition();
-
-  const setField = (field: TextFieldName, value: string) => {
-    setResult(null);
-    setValues((current) => ({ ...current, [field]: value }));
-  };
-
-  const setNumberField = (
-    field: "home_featured_artists_count" | "home_featured_articles_count" | "home_upcoming_events_count",
-    value: number
-  ) => {
-    setResult(null);
-    setValues((current) => ({ ...current, [field]: value }));
-  };
-
-  const setBooleanField = (
-    field: "show_testimonials" | "show_editorial" | "show_events" | "show_booking_banner",
-    value: boolean
-  ) => {
-    setResult(null);
-    setValues((current) => ({ ...current, [field]: value }));
-  };
-
-  const setSocialLink = (field: keyof SiteSettingsFormValues["social_links"], value: string) => {
-    setResult(null);
-    setValues((current) => ({
-      ...current,
-      social_links: { ...current.social_links, [field]: value },
-    }));
-  };
+  // Form submission manages useTransition and calls updateSiteSettingsAction via useSiteSettingsForm
+  const {
+    values,
+    setField,
+    setNumberField,
+    setBooleanField,
+    setSocialLink,
+    save,
+    pending,
+    result,
+  } = useSiteSettingsForm(settings, updateSiteSettingsAction);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (pending) return;
-
-    const input: SiteSettingsInput = {
-      id: "default",
-      hero_headline: values.hero_headline,
-      hero_headline_en: values.hero_headline_en || null,
-      hero_subheadline: values.hero_subheadline,
-      hero_subheadline_en: values.hero_subheadline_en || null,
-      hero_image_url: values.hero_image_url,
-      about_headline: values.about_headline,
-      about_headline_en: values.about_headline_en || null,
-      about_body: values.about_body,
-      about_body_en: values.about_body_en || null,
-      about_image_url: values.about_image_url,
-      booking_banner_title: values.booking_banner_title,
-      booking_banner_title_en: values.booking_banner_title_en || null,
-      booking_banner_body: values.booking_banner_body,
-      booking_banner_body_en: values.booking_banner_body_en || null,
-      artists_subtitle: values.artists_subtitle || null,
-      artists_subtitle_en: values.artists_subtitle_en || null,
-      events_subtitle: values.events_subtitle || null,
-      events_subtitle_en: values.events_subtitle_en || null,
-      academy_subtitle: values.academy_subtitle || null,
-      academy_subtitle_en: values.academy_subtitle_en || null,
-      booking_subtitle: values.booking_subtitle || null,
-      booking_subtitle_en: values.booking_subtitle_en || null,
-      contact_email: values.contact_email,
-      contact_phone: values.contact_phone,
-      social_links: values.social_links,
-      operational_regions: values.operational_regions,
-      operational_regions_en: values.operational_regions_en || null,
-      footer_mission: values.footer_mission,
-      footer_mission_en: values.footer_mission_en || null,
-      copyright_text: values.copyright_text,
-      copyright_text_en: values.copyright_text_en || null,
-      home_featured_artists_count: Number(values.home_featured_artists_count),
-      home_featured_articles_count: Number(values.home_featured_articles_count),
-      home_upcoming_events_count: Number(values.home_upcoming_events_count),
-      show_testimonials: Boolean(values.show_testimonials),
-      show_editorial: Boolean(values.show_editorial),
-      show_events: Boolean(values.show_events),
-      show_booking_banner: Boolean(values.show_booking_banner),
-    };
-
-    setResult(null);
-    startTransition(async () => {
-      try {
-        const response = await updateSiteSettingsAction(input);
-        setResult(response.ok ? { ok: true } : { ok: false, error: response.error });
-      } catch {
-        setResult({ ok: false, error: "تعذر حفظ الإعدادات حالياً. يرجى المحاولة مرة أخرى." });
-      }
-    });
+    save(event);
   };
 
   return (
@@ -465,6 +348,42 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="booking_subtitle_en" label="العنوان الفرعي لصفحة الحجز — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
               <Textarea id="booking_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.booking_subtitle_en} onChange={(event) => setField("booking_subtitle_en", event.target.value)} />
             </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>عناوين وصور الصفحات</CardTitle>
+            <CardDescription>عناوين وشارات وصور الواجهات لصفحات الفعاليات والفنانين والأكاديمية والأخبار. اترك أي حقل فارغاً لعرض النص الافتراضي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {PAGE_HERO_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>نصوص الصفحة الرئيسية</CardTitle>
+            <CardDescription>أزرار وعناوين أقسام الصفحة الرئيسية. اترك أي حقل فارغاً لعرض النص الافتراضي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {HOME_COPY_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>الأكاديمية: القيم والنشرة</CardTitle>
+            <CardDescription>عنوان شريط القيم الثلاث وقيمه، وعنوان النشرة البريدية وسطرها التعريفي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {ACADEMY_BAND_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
           </CardContent>
         </Card>
 

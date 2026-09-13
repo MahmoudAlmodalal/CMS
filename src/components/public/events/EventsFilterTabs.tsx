@@ -9,6 +9,7 @@ export interface EventsFilterTabsProps {
   activeCategory: CategoryFilterId;
   onSelectCategory: (category: CategoryFilterId) => void;
   className?: string;
+  allLabel?: string | null;
 }
 
 /**
@@ -33,6 +34,7 @@ export function EventsFilterTabs({
   activeCategory,
   onSelectCategory,
   className,
+  allLabel,
 }: EventsFilterTabsProps) {
   const t = useTranslations("events");
 
@@ -51,6 +53,7 @@ export function EventsFilterTabs({
     >
       {CATEGORY_TABS.map((tab) => {
         const isActive = activeCategory === tab.id;
+        const label = tab.id === "all" && allLabel?.trim() ? allLabel.trim() : tab.label;
         return (
           <button
             key={tab.id}
@@ -67,7 +70,7 @@ export function EventsFilterTabs({
                 : "w-[62px] text-gradscale-900"
             )}
           >
-            <span className="block py-1">{tab.label}</span>
+            <span className="block py-1">{label}</span>
           </button>
         );
       })}

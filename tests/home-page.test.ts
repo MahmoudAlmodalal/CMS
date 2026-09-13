@@ -83,17 +83,19 @@ test("Milestone 2 — 2. Stage 1: Hero Section Geometry & Cairo Typography (Figm
     "HeroSection must enforce canonical Figma height: 740px"
   );
 
-  // Headline: Cairo Bold 64px
+  // Headline: Qahwa Arabic Regular 64px/93px (live Figma node 148:3671 AR /
+  // 142:17022 EN — every headline span carries the Qahwa fill; Cairo Bold was
+  // a stale reading, see docs/figma-match-report.md §2).
   assert.match(
     heroSrc,
     /text-\[64px\]|text-\[40px\][\s\S]*lg:text-\[64px\]/,
     "Hero headline must declare 64px desktop font size"
   );
-  // Figma Node 148:3671 uses Cairo Bold, not the Qahwa display face.
+  // Figma nodes 148:3671 / 142:17022 use Qahwa Arabic Regular, not Cairo.
   assert.match(
     heroSrc,
-    /font-sans[\s\S]*font-bold/,
-    "Hero headline must use the Cairo sans face with bold weight"
+    /<h1[^>]*font-display/,
+    "Hero headline must use the Qahwa display face (font-display)"
   );
   assert.match(
     heroSrc,

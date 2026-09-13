@@ -37,6 +37,7 @@ interface BookingBannerProps {
   headline?: string;
   body?: string;
   ctaHref?: string;
+  ctaLabel?: string | null;
 }
 
 const VARIANTS = {
@@ -71,12 +72,14 @@ export function BookingBanner({
   headline,
   body,
   ctaHref = "/booking",
+  ctaLabel,
 }: BookingBannerProps) {
   const t = useTranslations("home");
   const ev = useTranslations("event");
   const v = VARIANTS[variant];
   const title = headline || settings?.booking_banner_title || t("bookingHeadingFallback");
   const copy = body || settings?.booking_banner_body || t("bookingBodyFallback");
+  const cta = ctaLabel?.trim() || settings?.booking_cta_label?.trim() || t("bookingCta");
 
   return (
     <section
@@ -110,7 +113,7 @@ export function BookingBanner({
           style={{ top: `${v.headingTop}px` }}
         >
           <h2
-            className={`max-w-[636px] font-display lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
+            className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
             style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
           >
             {title}
@@ -139,7 +142,7 @@ export function BookingBanner({
             className={`inline-flex items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
             style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
           >
-            {t("bookingCta")}
+            {cta}
           </Link>
         </div>
       </div>
