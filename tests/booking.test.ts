@@ -180,10 +180,12 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
     path.join(root, "src/components/public/BookingHeader.tsx"),
     "utf-8"
   );
-  assert.match(headerContent, /t\("title"\)/, "BookingHeader must render the booking.title message");
+  // Node 91:17126 sets the middle phrase in primary-500 against 80% white, so the
+  // catalog carries an <em> around it and the component renders the message rich.
+  assert.match(headerContent, /t\.rich\("title"/, "BookingHeader must render the booking.title message");
   assert.match(
     arMessages["booking.title"],
-    /مناسبتك تستحق موسيقى حقيقية/,
+    /مناسبتك تستحق <em>موسيقى<\/em> حقيقية/,
     "Arabic booking headline matches Figma Node 91:17126"
   );
   assert.ok(enMessages["booking.title"], "The booking headline must exist in English too");
@@ -205,9 +207,10 @@ test("Task 38 — 5. Figma Alignment: Header, Form Groups & Sidebar Verification
     "BookingForm must contain Fieldset Legend 2 (Figma Node 91:17207)"
   );
   assert.match(formContent, /t\("consent"\)/, "BookingForm must render the legal terms notice (Figma Node 91:17246)");
-  assert.match(
+  // Node 91:17246 is one nowrap line, not the paragraph the first build shipped.
+  assert.equal(
     arMessages["booking.consent"],
-    /^بإرسالك هذا الطلب، فإنك توافق على سياسة الخصوصية/,
+    "بإرسال هذا النموذج أوافق على شروط الاستخدام وسياسة الخصوصية.",
     "Arabic legal terms copy is confirmed by Figma"
   );
   assert.ok(enMessages["booking.consent"], "The legal terms notice must exist in English too");
@@ -257,7 +260,9 @@ test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
     /DEFAULT_BOOKING_SUBTITLE\s*=\s*"[^"]{10,}"/,
     "DAL must export a non-trivial DEFAULT_BOOKING_SUBTITLE fallback"
   );
-  assert.match(dalContent, /احجز فرقة أندلسيا/);
+  // The standfirst the design draws on the band is node 91:17125, not the longer
+  // marketing line the first build shipped.
+  assert.match(dalContent, /برامج تعليمية موسيقية مع فنانين حقيقيين/);
   for (const slug of ["sara-alsawt", "tariq-aloud", "layla-al-qanun", "karim-percussion"]) {
     assert.match(
       dalContent,
@@ -276,4 +281,126 @@ test("Task 38 — 6. Deep Link Parameters & DAL Fallback Integrity", () => {
   assert.match(pageContent, /artist/);
   assert.match(pageContent, /course/);
   assert.match(pageContent, /BookingContextBanner/);
+});
+
+test("Figma 91:17109 — booking page and footer geometry match the frame", () => {
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/booking/page.tsx"), "utf-8");
+  const hero = fs.readFileSync(path.join(root, "src/components/public/PageHero.tsx"), "utf-8");
+  const headerContent = fs.readFileSync(path.join(root, "src/components/public/BookingHeader.tsx"), "utf-8");
+  const sidebar = fs.readFileSync(path.join(root, "src/components/public/BookingSidebar.tsx"), "utf-8");
+  const form = fs.readFileSync(path.join(root, "src/components/public/BookingForm.tsx"), "utf-8");
+  const footer = fs.readFileSync(path.join(root, "src/components/public/Footer.tsx"), "utf-8");
+
+  // The hero band takes its height and its copy offset from the frame, and is not
+  // vertically centred — 91:17123 sits 247px down a 611px band.
+  assert.match(hero, /--hero-height/, "PageHero must take its band height from the frame");
+  assert.match(hero, /--hero-content-top/, "PageHero must take its copy offset from the frame");
+  assert.match(headerContent, /height=\{611\}/, "Booking hero band is 611px tall");
+  assert.match(headerContent, /contentTop=\{247\}/, "Booking hero copy sits 247px down the band");
+
+  // Content row 91:17792: sidebar 412, form 672, 58px apart, pair centred at 1142.
+  assert.match(page, /lg:w-\[1142px\]/, "Content row must be the 1142 the two columns make");
+  assert.match(page, /lg:gap-\[58px\]/, "Sidebar and form sit 58px apart");
+  assert.match(page, /lg:pt-\[65px\]/, "Content row opens 65px under the hero band");
+  assert.match(sidebar, /lg:w-\[412px\]/, "Sidebar is 412 wide");
+  assert.match(form, /lg:w-\[672px\]/, "Form is 672 wide");
+  // The form is rendered first so RTL places it on the right, where the design draws it.
+  assert.ok(
+    page.indexOf("<BookingForm") < page.indexOf("<BookingSidebar"),
+    "Form must precede the sidebar so Arabic puts it on the right"
+  );
+
+  // The form sits straight on the page surface; the design draws no card around it.
+  // Scoped to the <form> element's own class list — the success panel below it is a
+  // state the design never draws, so it keeps its card.
+  const formRoot = form.slice(form.indexOf("<form"), form.indexOf("<form") + 400);
+  assert.match(
+    formRoot,
+    /className="flex w-full flex-col text-start pb-\[52\.8px\] lg:w-\[672px\]/,
+    "Form root is a plain column, not a card"
+  );
+  assert.doesNotMatch(formRoot, /bg-white|shadow|rounded-2xl/, "The form carries no card");
+  assert.match(form, /h-12 w-full rounded-\[16px\] border-\[1\.333px\]/, "Controls are 48px on a 16px radius");
+
+  // Footer 94:18509 places its four columns at absolute offsets in a 736x190 block.
+  assert.match(footer, /lg:w-\[736px\]/, "Footer content block is 736 wide");
+  assert.match(footer, /lg:left-\[594px\]/, "Brand column sits at 594");
+  assert.match(footer, /lg:left-\[290px\]/, "Explore column sits at 290");
+  assert.match(footer, /lg:left-\[90px\]/, "Contact column sits at 90");
+  assert.match(footer, /lg:left-\[-193px\]/, "Booking column overhangs the block at -193");
+  // The mark is drawn once in the corner, not tiled over the whole surface.
+  assert.match(footer, /footer-mark\.png/, "Footer must use the corner mark cropped from the reference");
+  assert.doesNotMatch(footer, /bg-repeat/, "The arabesque is not a repeating field in the design");
+  // Strapline left, copyright right — the reverse of source order in Arabic.
+  // Unconditional, not sm:-gated: the mobile instance 136:7847 draws the same
+  // single 342x42.667 row, so there is no breakpoint at which it stacks.
+  assert.match(footer, /flex flex-row-reverse/, "Bottom bar order is reversed against the reading direction");
+  assert.doesNotMatch(footer, /sm:flex-row-reverse/, "The reversed row is not breakpoint-gated in the design");
+
+  // Mobile instance 140:14746 is 390x882, bottom-anchored (2007 + 882 = 2889),
+  // and is a distinct rhythm rather than a reflow of the desktop footer. Its
+  // blocks are a column of four fixed boxes, each inset from the inline start.
+  assert.match(footer, /pb-\[26\.333px\] pt-\[21px\] lg:pb-8 lg:pt-16/, "Mobile footer opens on 21 and closes on 26.333");
+  assert.match(footer, /w-\[345px\]/, "Brand block is 345 wide on mobile");
+  assert.match(footer, /mb-\[46\.5px\]/, "46.5 separates the brand block from the explore column");
+  assert.match(footer, /h-\[190px\] w-\[156px\]/, "Explore column is a fixed 156x190 box");
+  assert.match(footer, /h-\[137px\] w-\[156px\]/, "Contact column is a fixed 156x137 box, flush under explore");
+  assert.match(footer, /mb-\[29px\]/, "29 separates the contact column from the booking pitch");
+  assert.match(footer, /h-\[190px\] w-\[321px\]/, "Booking pitch is a fixed 321x190 box");
+  assert.match(footer, /mt-5 flex flex-row-reverse/, "Bottom bar opens 20 under the booking pitch on mobile");
+  assert.match(footer, /lg:mt-14/, "Desktop keeps the 56px bottom-bar margin");
+  // The blocks sit 1, 12 and 25 from the inline start — inside the footer's own
+  // 24px padding, so the column has to break out of it.
+  assert.match(footer, /-mx-6 flex flex-col items-start/, "Mobile column spans the full 390");
+  assert.match(footer, /ms-px/, "Brand block sits 1 from the inline start");
+  assert.match(footer, /ms-3 flex h-\[190px\]/, "Explore column sits 12 from the inline start");
+  assert.match(footer, /ms-\[25px\]/, "Booking pitch sits 25 from the inline start");
+});
+
+/**
+ * الحجز on the 390 frame — 141:15629.
+ *
+ * The frame is the 1440 layout crushed into 390: several of its boxes are narrower
+ * than their own children and `Frame 43` clips 23.6px of content. What it does
+ * specify is pinned here; the 10px that remain are traced in
+ * docs/figma/DECISIONS.md §14 and are a question for the designer.
+ */
+test("الحجز — the 390 frame's form and sidebar", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(
+    fs.readFileSync(path.join(root, "src/app/[locale]/(public)/booking/page.tsx"), "utf-8")
+  );
+  const header = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingHeader.tsx"), "utf-8")
+  );
+  const formSrc = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingForm.tsx"), "utf-8")
+  );
+  const sidebar = strip(
+    fs.readFileSync(path.join(root, "src/components/public/BookingSidebar.tsx"), "utf-8")
+  );
+
+  // 141:15632 is 390x688 hung at y=-10.
+  assert.match(header, /mobileHeight=\{678\}/, "The booking hero band is 678 on the 390 frame");
+
+  // The form uses the full available width on phones and returns to the 672px
+  // Figma column on desktop; this prevents clipping at 320px and 360px.
+  assert.match(page, /gap-\[7px\] px-5 pb-\[390\.2px\] pt-\[84px\]/, "84 opens the column stack, 7 separates it, 390.2 closes it");
+  assert.match(page, /min-w-0 w-full max-w-full lg:ms-0 lg:w-\[672px\]/, "The form column fits every phone and restores the desktop width");
+  assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
+  assert.match(sidebar, /ms-8 flex w-\[288px\]/, "The sidebar is 288 wide at x=50");
+  assert.match(sidebar, /lg:ms-0 lg:w-\[412px\]/, "…and 412 on the 1440 frame");
+
+  // Paired fields stack below 640px for touch usability, then return to the
+  // two-column Figma rhythm from the small-tablet breakpoint onward.
+  const pairedRows = formSrc.match(/grid min-w-0 grid-cols-1 gap-4/g) ?? [];
+  assert.equal(pairedRows.length, 4, "All narrow-phone field groups use one column");
+  assert.match(formSrc, /sm:grid-cols-2 md:grid-cols-\[318px_246px\]/, "Personal rows restore two columns from sm");
+  assert.match(formSrc, /sm:grid-cols-2 md:grid-cols-\[320px_246px\]/, "Occasion row restores two columns from sm");
+
+  // 141:15565 is a trailing empty 363x52.79 Container — it closes the form at both
+  // widths, so it is not an lg:-only figure.
+  assert.match(formSrc, /flex w-full flex-col text-start pb-\[52\.8px\]/, "The trailing 52.79 closes the form at both widths");
+  assert.doesNotMatch(formSrc, /lg:pb-\[52\.8px\]/, "…and is no longer lg:-only");
 });

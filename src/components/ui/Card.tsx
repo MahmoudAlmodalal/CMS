@@ -49,7 +49,7 @@ export function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("p-6 pb-2 flex flex-col gap-1.5 text-start", className)} {...props}>
+    <div className={cn("p-4 sm:p-6 pb-2 flex flex-col gap-1.5 text-start min-w-0", className)} {...props}>
       {children}
     </div>
   );
@@ -97,7 +97,7 @@ export function CardContent({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("p-6 pt-2 text-start text-sm text-gradscale-900/80 leading-relaxed", className)} {...props}>
+    <div className={cn("p-4 sm:p-6 pt-2 text-start text-sm text-gradscale-900/80 leading-relaxed min-w-0 break-words", className)} {...props}>
       {children}
     </div>
   );
@@ -111,7 +111,7 @@ export function CardFooter({
   return (
     <div
       className={cn(
-        "p-6 pt-3 flex items-center justify-between gap-4 border-t border-brand-espresso-subtle mt-2",
+        "p-6 pt-3 flex flex-wrap items-center justify-start sm:justify-between gap-3 sm:gap-4 border-t border-brand-espresso-subtle mt-2",
         className
       )}
       {...props}

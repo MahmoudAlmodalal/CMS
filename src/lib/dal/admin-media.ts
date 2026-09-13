@@ -17,6 +17,7 @@ import type { StorageBucket, StorageFile } from "@/lib/types/admin-media";
 export async function listBucketFiles(
   bucket: StorageBucket,
   folder?: string,
+  depth = 0,
 ): Promise<StorageFile[]> {
   const supabase = await createClient();
   const prefix = folder ? `${folder}/` : "";
@@ -35,23 +36,28 @@ export async function listBucketFiles(
 
   const base = storageBaseUrl();
 
-  return data
-    .filter((item) => item.name !== ".emptyFolderPlaceholder")
-    .map((item) => {
-      const filePath = folder ? `${folder}/${item.name}` : item.name;
-      const publicUrl = base ? `${base}/${bucket}/${filePath}` : null;
-      const mimeType =
-        (item.metadata as Record<string, unknown> | null)?.mimetype as string | undefined;
-      return {
-        name: item.name,
-        size: (item.metadata as Record<string, unknown> | null)?.size as number ?? 0,
-        created_at: item.created_at ?? new Date().toISOString(),
-        bucket,
-        path: filePath,
-        publicUrl,
-        mimeType,
-      };
+  const files: StorageFile[] = [];
+  for (const item of data) {
+    if (item.name === ".emptyFolderPlaceholder") continue;
+    const filePath = folder ? `${folder}/${item.name}` : item.name;
+    // Storage lists one level; folders come back without an id. Uploads live at
+    // <folder>/<entity>/<file>, so descend (bounded) to reach the actual files.
+    if (!item.id) {
+      if (depth < 3) files.push(...(await listBucketFiles(bucket, filePath, depth + 1)));
+      continue;
+    }
+    const metadata = item.metadata as Record<string, unknown> | null;
+    files.push({
+      name: item.name,
+      size: (metadata?.size as number) ?? 0,
+      created_at: item.created_at ?? new Date().toISOString(),
+      bucket,
+      path: filePath,
+      publicUrl: base ? `${base}/${bucket}/${filePath}` : null,
+      mimeType: metadata?.mimetype as string | undefined,
     });
+  }
+  return files;
 }
 
 /**

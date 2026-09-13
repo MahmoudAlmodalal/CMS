@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AdminRelease, ArtistOption } from "@/lib/types/admin-tracks";
 import type { ReleaseInput } from "@/lib/validations";
 
@@ -32,6 +33,7 @@ function emptyRelease(defaultArtistId: string): ReleaseFormValues {
   return {
     artist_id: defaultArtistId,
     title: "",
+    title_en: null,
     release_type: "studio",
     track_count: 1,
     release_year: new Date().getFullYear(),
@@ -45,6 +47,7 @@ function releaseToForm(release: AdminRelease): ReleaseFormValues {
   return {
     artist_id: release.artist_id,
     title: release.title,
+    title_en: release.title_en ?? null,
     release_type: release.release_type as ReleaseFormValues["release_type"],
     track_count: release.track_count,
     release_year: release.release_year,
@@ -95,6 +98,11 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
+
+    if (!values.cover_image_url.trim()) {
+      setNotice({ type: "error", text: "يرجى رفع صورة الغلاف أو إدخال رابطها" });
+      return;
+    }
 
     const input: ReleaseInput = { ...values };
     startTransition(async () => {
@@ -283,6 +291,7 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
               <Field id="release-title" label="عنوان الإصدار">
                 <Input id="release-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
               </Field>
+              <TranslationField id="release-title-en" label="عنوان الإصدار" value={values.title_en} onChange={(value) => setField("title_en", value)} />
               <Field id="release-type" label="نوع الإصدار">
                 <select
                   id="release-type"
@@ -302,8 +311,16 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
               <Field id="release-year" label="سنة الإصدار">
                 <Input id="release-year" type="number" min="1900" max="2100" dir="ltr" value={values.release_year} onChange={(event) => setField("release_year", Number(event.target.value))} required />
               </Field>
-              <Field id="release-cover" label="رابط صورة الغلاف">
-                <Input id="release-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
+              <Field id="release-cover" label="صورة الغلاف" help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
+                <MediaPickerField
+                  id="release-cover"
+                  value={values.cover_image_url}
+                  onChange={(url) => setField("cover_image_url", url)}
+                  bucket="releases"
+                  folder="covers"
+                  required
+                  disabled={pending}
+                />
               </Field>
               <Field id="release-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="release-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

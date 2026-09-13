@@ -19,6 +19,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import type { Artist } from "@/lib/dal/artists";
 import type { AdminEvent } from "@/lib/types/admin-events";
 import { EVENT_CATEGORY_LABELS } from "@/lib/types/admin-events";
@@ -35,14 +36,19 @@ interface EventsTableProps {
 function emptyEvent(): EventFormValues {
   return {
     title: "",
+    title_en: null,
     slug: "",
     category: "concert",
     event_date: "",
     location: "",
+    location_en: null,
     city: "",
+    city_en: null,
     performer_name: "",
+    performer_name_en: null,
     artist_id: null,
     description: null,
+    description_en: null,
     image_url: "",
     ticket_url: null,
     is_featured: false,
@@ -63,14 +69,19 @@ function toLocalInput(iso: string): string {
 function eventToForm(event: AdminEvent): EventFormValues {
   return {
     title: event.title,
+    title_en: event.title_en ?? null,
     slug: event.slug,
     category: event.category,
     event_date: toLocalInput(event.event_date),
     location: event.location,
+    location_en: event.location_en ?? null,
     city: event.city,
+    city_en: event.city_en ?? null,
     performer_name: event.performer_name,
+    performer_name_en: event.performer_name_en ?? null,
     artist_id: event.artist_id,
     description: event.description,
+    description_en: event.description_en ?? null,
     image_url: event.image_url,
     ticket_url: event.ticket_url,
     is_featured: event.is_featured,
@@ -264,16 +275,18 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
               className="sm:w-56"
             />
             <label className="sr-only" htmlFor="event-status-filter">تصفية حالة النشر</label>
-            <select
+            <Dropdown<StatusFilter>
               id="event-status-filter"
+              ariaLabel="تصفية حالة النشر"
               value={filter}
-              onChange={(event) => setFilter(event.target.value as StatusFilter)}
-              className="h-[48px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-            >
-              <option value="all">كل الحالات</option>
-              <option value="published">المنشور فقط</option>
-              <option value="draft">المسودات فقط</option>
-            </select>
+              onChange={(next) => setFilter(next)}
+              options={[
+                { value: "all", label: "كل الحالات" },
+                { value: "published", label: "المنشور فقط" },
+                { value: "draft", label: "المسودات فقط" },
+              ]}
+              className="sm:w-56"
+            />
           </div>
         </CardHeader>
         <CardContent className="p-0">

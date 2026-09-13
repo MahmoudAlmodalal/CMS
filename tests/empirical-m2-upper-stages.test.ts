@@ -52,22 +52,23 @@ test("Challenger M2-1 — 1. Hero Section Geometry: 740px Desktop Height Enforce
   );
 });
 
-test("Challenger M2-1 — 2. Hero Section Typography: Cairo Bold 64px Headline & Cairo Medium 25px max-w 693px Subhead", () => {
+test("Challenger M2-1 — 2. Hero Section Typography: Qahwa Regular 64px Headline & Cairo Medium 25px max-w 693px Subhead", () => {
   const heroSrc = read(comp("HeroSection.tsx"));
 
-  // Headline H1: Cairo Bold 64px
-  // Must use font-sans (Cairo), font-bold, lg:text-[64px]
+  // Headline H1: Qahwa Arabic Regular 64px/93px (live Figma 148:3671 AR /
+  // 142:17022 EN; Qahwa ships Regular only). Must use font-display, font-normal, lg:text-[64px]
   assert.match(
     heroSrc,
-    /<h1[^>]*className="[^"]*font-sans[^"]*lg:text-\[64px\][^"]*font-bold[^"]*"/,
-    "Hero H1 must combine font-sans (Cairo), lg:text-[64px], and font-bold"
+    /<h1[^>]*className="[^"]*font-display[^"]*lg:text-\[64px\][^"]*font-normal[^"]*"/,
+    "Hero H1 must combine font-display (Qahwa), lg:text-[64px], and font-normal"
   );
 
-  // Adversarial check: H1 must NOT use font-calligraphic (Qahwa is for section H2s, not Hero H1)
+  // Adversarial check: H1 must NOT use font-calligraphic (implementation uses
+  // the font-display utility for the Qahwa face)
   assert.doesNotMatch(
     heroSrc,
     /<h1[^>]*font-calligraphic/,
-    "Hero H1 must NOT use font-calligraphic; canonical spec requires Cairo Bold 64px"
+    "Hero H1 must NOT use font-calligraphic; canonical spec requires the font-display Qahwa face"
   );
 
   // Spec check: No pill/tag badge above headline (Figma spec: 'No pill/tag above headline')

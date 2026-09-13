@@ -17,6 +17,15 @@ import {
 
 const root = path.resolve(".");
 
+/**
+ * Drop comments so a source assertion reads code rather than prose. `//` is only
+ * treated as a comment at the start of a line, which leaves `https://` and any
+ * other mid-line double slash intact.
+ */
+function stripComments(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+}
+
 test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
   const expectedFiles = [
     "src/app/[locale]/(public)/news/page.tsx",
@@ -275,4 +284,122 @@ test("Task 37 — 6. Articles DAL Data Access Methods & RLS Predicates", () => {
   assert.ok(
     slugs.some((s) => s.slug === "annual-andalusia-art-exhibition")
   );
+});
+
+test("Figma 91:17296 — News page geometry matches the frame", () => {
+  const hero = fs.readFileSync(path.join(root, "src/components/public/NewsHero.tsx"), "utf-8");
+  const grid = fs.readFileSync(path.join(root, "src/components/public/NewsGrid.tsx"), "utf-8");
+  const card = fs.readFileSync(path.join(root, "src/components/public/ArticleCard.tsx"), "utf-8");
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8");
+
+  // Band 91:17298 is full-bleed and exactly 668 tall; the navbar floats over it.
+  assert.match(hero, /lg:h-\[668px\]/, "Hero band must be 668px tall on desktop");
+  // Headline block 91:17299: left 677, right 103, bottom 15, height 178.
+  assert.match(hero, /lg:start-\[103px\]/, "Headline block must be inset 103px from the inline end");
+  assert.match(hero, /lg:w-\[660px\]/, "Headline block must be 660px wide");
+  assert.match(hero, /lg:h-\[178px\]/, "Headline block must be 178px tall");
+  assert.match(hero, /bottom-\[15px\]/, "Headline block must sit 15px off the band's bottom");
+  assert.match(hero, /lg:top-\[66px\]/, "Heading 91:17303 must sit at +66 in the block");
+  assert.match(hero, /lg:top-\[130px\]/, "Standfirst 91:17305 must sit at +130 in the block");
+  // Both lines are nowrap; only the standfirst clips where it runs past its box.
+  assert.match(hero, /lg:overflow-hidden lg:whitespace-nowrap/, "Standfirst must clip, not wrap");
+  // Floating card 91:17307 is physically left in both directions.
+  assert.match(hero, /lg:left-\[130px\] lg:top-\[229px\]/, "Floating card must sit at left 130 / top 229");
+
+  // Section 91:17798 is 1208 wide, 103 from the inline end — deliberately off-centre.
+  assert.match(page, /lg:ms-\[103px\] lg:w-\[1208px\]/, "Grid section must be 1208 wide at 103 from the inline end");
+  // The design shows no filter tabs on this section.
+  assert.doesNotMatch(grid, /<NewsFilterTabs/, "The news grid must not render a category filter — the design has none");
+  assert.doesNotMatch(grid, /import .*NewsFilterTabs/, "The news grid must not import the filter it no longer renders");
+  assert.doesNotMatch(grid, /"use client"/, "The news grid is presentational and renders on the server");
+
+  // Assert against code, not prose. A docblock explaining why justify-between was
+  // wrong otherwise satisfies a grep for justify-between, and the same trap makes
+  // every match here pass on a comment that merely quotes the value.
+  const cardCode = stripComments(card);
+
+  // Every row of the card reads from the inline start — flush right in Arabic.
+  assert.match(cardCode, /flex-col p-6 text-start/, "Card body must read from the inline start");
+  assert.match(cardCode, /absolute start-4 top-4/, "Date wash must sit at the inline-start corner of the cover");
+  assert.match(cardCode, /h-\[192px\]/, "Cover strip must be a flat 192px");
+
+  // Card 91:17378 is a flat 423.5px: 1px border + 192 cover + 229.5 body + 1px.
+  assert.match(cardCode, /lg:h-\[423\.5px\]/, "Card must be 423.5px tall on the desktop frame");
+  // Figma holds heading + excerpt at a constant 138.5px, pairing a 72px two-line
+  // heading with a 66.5px excerpt and a 42px one-line heading with a 96.5px one.
+  // So the excerpt absorbs the remainder and clips; it is not a spacer spread.
+  assert.match(cardCode, /min-h-0 flex-1 overflow-hidden/, "Excerpt must absorb the card's slack and clip");
+  assert.doesNotMatch(
+    cardCode,
+    /justify-between/,
+    "justify-between spreads slack across every gap, growing the row to 445px and " +
+      "knocking each card's rows out of alignment with its neighbours"
+  );
+
+  // Node 91:17798 ends at y=1416.5 and footer 94:18553 starts at 1568.
+  assert.match(page, /lg:pb-\[151\.5px\]/, "Grid section must leave 151.5px before the footer");
+  assert.match(page, /lg:pt-\[181px\]/, "Grid section must start 181px below the 668px hero band");
+});
+
+test("Figma 91:17296 — grid carries the three articles the featured band does not", () => {
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8");
+  // A fourth featured article must not fall through into the grid.
+  assert.match(page, /!a\.is_featured/, "Grid must exclude every featured article, not only the rendered ones");
+  assert.match(page, /\.slice\(0, 3\)/, "The design shows exactly three cards");
+
+  for (const title of [
+    "تطور الفن الرقمي في العالم العربي",
+    "رحلة مصور في أزقة المدينة القديمة",
+    "الإعلان عن جدول فعاليات الصيف الموسيقية",
+  ]) {
+    assert.ok(
+      CANONICAL_ARTICLES.some((article) => article.title === title && !article.is_featured),
+      `Canonical content must carry the grid article "${title}" as unfeatured`
+    );
+  }
+
+  const heroArticle = CANONICAL_ARTICLES.find((a) => a.slug === "annual-andalusia-art-exhibition");
+  assert.ok(heroArticle, "Canonical content must carry the hero article");
+  assert.equal(
+    heroArticle!.excerpt,
+    "يستضيف المركز هذا الأسبوع مجموعة من أبرز الفنانين المعاصرين لتقديم أعمالهم الجديدة في المعرض السنوي المرتقب.",
+    "Hero standfirst must be the copy in node 91:17306"
+  );
+});
+
+/**
+ * الأخبار on the 390 frame — 141:15199.
+ *
+ * Everything the frame specifies is pinned below and measures exact. Its total
+ * height is not gateable, for two reasons recorded in docs/figma/DECISIONS.md:
+ * `Featured News` (141:15396) is an empty 390x668 reservation, so the mobile hero's
+ * internal composition is undesigned; and the frame's own footer sits at 2163 with a
+ * height of 882, which overruns its 3037 canvas by 8.
+ */
+test("الأخبار — the 390 frame's grid band", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8"));
+  const grid = strip(fs.readFileSync(path.join(root, "src/components/public/NewsGrid.tsx"), "utf-8"));
+  const card = strip(fs.readFileSync(path.join(root, "src/components/public/ArticleCard.tsx"), "utf-8"));
+
+  // `Frame 34` opens at 715, 47 under the reserved hero box, and the cards close at
+  // 2102.5 against a footer at 2163.
+  assert.match(page, /px-6 pb-\[60\.5px\] pt-\[47px\]/, "47 opens the band and 60.5 closes it, on the 24 that makes the grid 342");
+  assert.match(page, /lg:px-0 lg:pb-\[151\.5px\] lg:pt-\[181px\]/, "The 1440 frame's own figures are untouched");
+  assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
+
+  // `Heading 2` is 48 tall with its 40 line 8 down, at both widths.
+  assert.match(grid, /leading-\[40px\]/, "The heading line box is 40");
+  assert.match(grid, /items-start pt-2/, "…set 8 down, which makes the block 48");
+
+  // The 72 inside `Section - Grid Layout` is a 1440 figure; on the 390 frame that
+  // box's bottom would fall 11.5 past the footer.
+  assert.match(grid, /lg:grid-cols-3 lg:pb-\[72px\]/, "The 72 of trailing space is lg-only");
+  assert.doesNotMatch(grid, /gap-6 pb-\[72px\]/, "…and must not apply on the 390 frame");
+
+  // 141:15080 is 342x422.5: a 1px border, a 192 image and a 228.5 body.
+  assert.match(card, /h-\[422\.5px\]/, "The card is 422.5 on the 390 frame");
+  assert.match(card, /lg:h-\[423\.5px\]/, "…and 423.5 on the 1440 one");
+  assert.match(card, /h-\[192px\]/, "The image is 192 at both widths");
 });

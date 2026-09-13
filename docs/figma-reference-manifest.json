@@ -1,15 +1,426 @@
 {
   "fileKey": "xcKbTxQQhUVOFJerTrkrw2",
-  "fileName": "موقع ويب لفرقة موسيقية",
   "version": "2397151536839537751",
   "referenceFrames": [
-    {"name":"home-desktop","nodeId":"89:15216","route":"/","viewport":[1440,900],"canvas":[1440,5165],"referenceImage":"docs/figma-reference/home-desktop.png"},
-    {"name":"home-mobile","nodeId":"136:5854","route":"/","viewport":[390,844],"canvas":[390,6528],"referenceImage":"docs/figma-reference/home-mobile.png"},
-    {"name":"academy-desktop","nodeId":"91:16119","route":"/academy","viewport":[1440,900],"canvas":[1440,2503],"referenceImage":"docs/figma-reference/academy-desktop.png"},
-    {"name":"artists-desktop","nodeId":"91:17844","route":"/artists","viewport":[1440,900],"canvas":[1440,2290],"referenceImage":"docs/figma-reference/artists-desktop.png"},
-    {"name":"events-desktop","nodeId":"91:16532","route":"/events","viewport":[1440,900],"canvas":[1440,2290],"referenceImage":"docs/figma-reference/events-desktop.png"},
-    {"name":"news-desktop","nodeId":"91:17296","route":"/news","viewport":[1440,900],"canvas":[1440,1953],"referenceImage":"docs/figma-reference/news-desktop.png"},
-    {"name":"booking-desktop","nodeId":"91:17109","route":"/booking","viewport":[1440,900],"canvas":[1440,1953],"referenceImage":"docs/figma-reference/booking-desktop.png"},
-    {"name":"artist-detail-desktop","nodeId":"134:4420","route":"/artists/sara-alsawt","viewport":[1440,900],"canvas":[1440,2968],"referenceImage":"docs/figma-reference/artist-detail-desktop.png"}
+    {
+      "name": "home-desktop",
+      "nodeId": "89:15216",
+      "route": "/",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        5165
+      ],
+      "referenceImage": "docs/figma-reference/home-desktop.png"
+    },
+    {
+      "name": "academy-desktop",
+      "nodeId": "91:16119",
+      "route": "/academy",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2503
+      ],
+      "referenceImage": "docs/figma-reference/academy-desktop.png"
+    },
+    {
+      "name": "events-desktop",
+      "nodeId": "91:16532",
+      "route": "/events",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2290
+      ],
+      "referenceImage": "docs/figma-reference/events-desktop.png"
+    },
+    {
+      "name": "booking-desktop",
+      "nodeId": "91:17109",
+      "route": "/booking",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        1953
+      ],
+      "referenceImage": "docs/figma-reference/booking-desktop.png"
+    },
+    {
+      "name": "news-desktop",
+      "nodeId": "91:17296",
+      "route": "/news",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        1953
+      ],
+      "referenceImage": "docs/figma-reference/news-desktop.png"
+    },
+    {
+      "name": "artists-desktop",
+      "nodeId": "91:17844",
+      "route": "/artists",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2290
+      ],
+      "referenceImage": "docs/figma-reference/artists-desktop.png"
+    },
+    {
+      "name": "artist-detail-desktop",
+      "nodeId": "134:4420",
+      "route": "/artists/sara-alsawt",
+      "locale": "ar",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2968
+      ],
+      "referenceImage": "docs/figma-reference/artist-detail-desktop.png"
+    },
+    {
+      "name": "home-mobile",
+      "nodeId": "136:5854",
+      "route": "/",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        6528
+      ],
+      "referenceImage": "docs/figma-reference/home-mobile.png"
+    },
+    {
+      "name": "academy-mobile",
+      "nodeId": "139:12420",
+      "route": "/academy",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3891
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "events-mobile",
+      "nodeId": "139:13485",
+      "route": "/events",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        2889
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "booking-mobile",
+      "nodeId": "141:15629",
+      "route": "/booking",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3434
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "news-mobile",
+      "nodeId": "141:15199",
+      "route": "/news",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3037
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artists-mobile",
+      "nodeId": "140:14652",
+      "route": "/artists",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        2889
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artist-detail-mobile",
+      "nodeId": "141:16217",
+      "route": "/artists/sara-alsawt",
+      "locale": "ar",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3658
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "home-desktop-en",
+      "nodeId": "136:1569",
+      "route": "/en",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        5165
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "academy-desktop-en",
+      "nodeId": "136:2255",
+      "route": "/en/academy",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2503
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "events-desktop-en",
+      "nodeId": "136:2560",
+      "route": "/en/events",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2290
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "booking-desktop-en",
+      "nodeId": "136:2915",
+      "route": "/en/booking",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        1953
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "news-desktop-en",
+      "nodeId": "136:3049",
+      "route": "/en/news",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        1953
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artists-desktop-en",
+      "nodeId": "136:3138",
+      "route": "/en/artists",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2290
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artist-detail-desktop-en",
+      "nodeId": "136:3455",
+      "route": "/en/artists/sara-alsawt",
+      "locale": "en",
+      "viewport": [
+        1440,
+        900
+      ],
+      "canvas": [
+        1440,
+        2968
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "home-mobile-en",
+      "nodeId": "144:19555",
+      "route": "/en",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        6528
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "academy-mobile-en",
+      "nodeId": "144:19711",
+      "route": "/en/academy",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3891
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "events-mobile-en",
+      "nodeId": "144:19902",
+      "route": "/en/events",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        2889
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "booking-mobile-en",
+      "nodeId": "144:20146",
+      "route": "/en/booking",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3434
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "news-mobile-en",
+      "nodeId": "144:20463",
+      "route": "/en/news",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3037
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artists-mobile-en",
+      "nodeId": "144:19997",
+      "route": "/en/artists",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        2889
+      ],
+      "referenceImage": null
+    },
+    {
+      "name": "artist-detail-mobile-en",
+      "nodeId": "144:20323",
+      "route": "/en/artists/sara-alsawt",
+      "locale": "en",
+      "viewport": [
+        390,
+        844
+      ],
+      "canvas": [
+        390,
+        3658
+      ],
+      "referenceImage": null
+    }
   ]
 }

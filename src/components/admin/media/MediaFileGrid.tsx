@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import type { StorageFile } from "@/lib/types/admin-media";
-import { deleteMediaAction } from "@/actions/admin-media";
+// Reference-guarded delete: refuses files still used by site content.
+import { deleteMediaAction } from "@/actions/storage";
 
 interface MediaFileGridProps {
   files: StorageFile[];
@@ -89,8 +90,8 @@ function FileCard({ file, onDeleted }: FileCardProps) {
     setDeleting(true);
     setError(null);
     try {
-      const result = await deleteMediaAction(file.bucket, file.path);
-      if (!result.success) {
+      const result = await deleteMediaAction({ bucket: file.bucket, path: file.path });
+      if (!result.ok) {
         setError(result.error ?? "فشل حذف الملف");
       } else {
         onDeleted?.(file.path);

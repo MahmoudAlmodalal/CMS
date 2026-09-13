@@ -2,7 +2,7 @@
 
 import "server-only";
 import { revalidatePath } from "next/cache";
-import { requireAdminSession, type AuthContext, ADMIN_AUTH_ERROR } from "@/lib/auth-guard";
+import { requireAdminSession, type AuthContext } from "@/lib/auth-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   artistSchema,
@@ -41,6 +41,14 @@ function insertedId(data: unknown, fallback = "mock-record-id"): string {
   return typeof row?.id === "string" ? row.id : fallback;
 }
 
+function revalidateSite(): void {
+  try {
+    revalidatePath("/", "layout");
+  } catch {
+    // Ignore cache invalidation errors outside request scope (tests or static execution).
+  }
+}
+
 export type PublishableTable =
   | "artists"
   | "tracks"
@@ -50,7 +58,7 @@ export type PublishableTable =
   | "articles"
   | "testimonials";
 
-export const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
+const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
   "artists",
   "tracks",
   "releases",
@@ -83,6 +91,7 @@ export async function createArtistAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -105,6 +114,7 @@ export async function createTrackAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -127,6 +137,7 @@ export async function createReleaseAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -149,6 +160,7 @@ export async function createEventAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -171,6 +183,7 @@ export async function createAcademyCourseAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -193,6 +206,7 @@ export async function createArticleAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -215,6 +229,7 @@ export async function createTestimonialAction(
     .single();
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
 
@@ -261,8 +276,8 @@ export async function createPrivilegedBookingAction(
       .single();
     if (error) return { ok: false, error: error.message };
     return { ok: true, data: { id: insertedId(data) } };
-  } catch {
-    return { ok: true, data: { id: "mock-booking-id" } };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء طلب الحجز" };
   }
 }
 
@@ -296,8 +311,8 @@ export async function createPrivilegedSubscriberAction(
       .single();
     if (error) return { ok: false, error: error.message };
     return { ok: true, data: { id: insertedId(data) } };
-  } catch {
-    return { ok: true, data: { id: "mock-subscriber-id" } };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء المشترك" };
   }
 }
 
@@ -306,16 +321,18 @@ export async function createPrivilegedSubscriberAction(
 // ============================================================================
 
 export async function updateSiteSettingsAction(
-  input: SiteSettingsInput,
+  input: Partial<SiteSettingsInput>,
   ctx?: AuthContext
 ): Promise<ActionResult<void>> {
   const { supabase } = await requireAdminSession(ctx);
-  const parsed = siteSettingsSchema.safeParse(input);
+  // Partial: /admin/settings and /admin/pages send only the fields they changed,
+  // so saving one screen never overwrites edits made on the other.
+  const parsed = siteSettingsSchema.partial().safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
   }
 
-  if (!supabase) return { ok: true };
+  if (!supabase || Object.keys(parsed.data).length === 0) return { ok: true };
 
   const { error } = await supabase
     .from("site_settings")
@@ -324,11 +341,7 @@ export async function updateSiteSettingsAction(
 
   if (error) return { ok: false, error: error.message };
 
-  try {
-    revalidatePath("/", "layout");
-  } catch {
-    // Ignore cache invalidation errors during tests or static execution.
-  }
+  revalidateSite();
 
   return { ok: true };
 }
@@ -357,6 +370,7 @@ export async function updateArtistAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -384,6 +398,7 @@ export async function updateTrackAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -411,6 +426,7 @@ export async function updateReleaseAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -438,6 +454,7 @@ export async function updateEventAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -465,6 +482,7 @@ export async function updateAcademyCourseAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -492,6 +510,7 @@ export async function updateArticleAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -519,6 +538,7 @@ export async function updateTestimonialAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -580,6 +600,7 @@ export async function deleteArtistAction(id: string, ctx?: AuthContext): Promise
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("artists").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -589,6 +610,7 @@ export async function deleteTrackAction(id: string, ctx?: AuthContext): Promise<
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("tracks").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -598,6 +620,7 @@ export async function deleteReleaseAction(id: string, ctx?: AuthContext): Promis
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("releases").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -607,6 +630,7 @@ export async function deleteEventAction(id: string, ctx?: AuthContext): Promise<
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("events").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -616,6 +640,7 @@ export async function deleteAcademyCourseAction(id: string, ctx?: AuthContext): 
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("academy_courses").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -625,6 +650,7 @@ export async function deleteArticleAction(id: string, ctx?: AuthContext): Promis
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("articles").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -634,6 +660,7 @@ export async function deleteTestimonialAction(id: string, ctx?: AuthContext): Pr
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("testimonials").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 
@@ -688,6 +715,7 @@ export async function setPublishStatusAction(
     .eq("id" as never, id as never);
 
   if (error) return { ok: false, error: error.message };
+  revalidateSite();
   return { ok: true };
 }
 

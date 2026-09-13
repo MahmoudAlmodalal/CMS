@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   createArticleAction,
@@ -12,9 +13,11 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice } from "@/components/admin/ManagerKit";
+import { Field, ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
 import type { AdminArticle } from "@/lib/dal/admin-articles";
@@ -37,12 +40,16 @@ interface ArticlesManagerProps {
 function emptyArticle(): ArticleFormValues {
   return {
     title: "",
+    title_en: null,
     slug: "",
     category: "culture",
     excerpt: "",
+    excerpt_en: null,
     content: "",
+    content_en: null,
     cover_image_url: "",
     author_name: "",
+    author_name_en: null,
     featured_artist_id: null,
     published_at: new Date().toISOString(),
     is_featured: false,
@@ -53,12 +60,16 @@ function emptyArticle(): ArticleFormValues {
 function articleToForm(article: AdminArticle): ArticleFormValues {
   return {
     title: article.title,
+    title_en: article.title_en ?? null,
     slug: article.slug,
     category: article.category,
     excerpt: article.excerpt,
+    excerpt_en: article.excerpt_en ?? null,
     content: article.content,
+    content_en: article.content_en ?? null,
     cover_image_url: article.cover_image_url,
     author_name: article.author_name,
+    author_name_en: article.author_name_en ?? null,
     featured_artist_id: article.featured_artist_id,
     published_at: article.published_at,
     is_featured: article.is_featured,
@@ -143,6 +154,27 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
           setArticles((current) => current.map((article) => (
             article.id === editingId ? { ...article, ...input } : article
           )));
+        } else if (result.data?.id) {
+          const newArticle: AdminArticle = {
+            id: result.data.id,
+            title: input.title,
+            title_en: input.title_en ?? null,
+            slug: input.slug,
+            category: input.category,
+            excerpt: input.excerpt,
+            excerpt_en: input.excerpt_en ?? null,
+            content: input.content,
+            content_en: input.content_en ?? null,
+            cover_image_url: input.cover_image_url,
+            author_name: input.author_name,
+            author_name_en: input.author_name_en ?? null,
+            featured_artist_id: input.featured_artist_id ?? null,
+            published_at: input.published_at || new Date().toISOString(),
+            is_featured: Boolean(input.is_featured),
+            is_published: Boolean(input.is_published),
+            created_at: new Date().toISOString(),
+          };
+          setArticles((current) => [newArticle, ...current]);
         }
         setNotice({ type: "success", text: editingId ? "تم تحديث المقال" : "تمت إضافة المقال" });
         setFormOpen(false);
@@ -170,6 +202,25 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
         router.refresh();
       } catch {
         setNotice({ type: "error", text: "تعذر تغيير حالة النشر حالياً." });
+      }
+    });
+  };
+
+  const toggleFeatured = (article: AdminArticle) => {
+    if (pending) return;
+    startTransition(async () => {
+      try {
+        const nextFeatured = !article.is_featured;
+        const result = await updateArticleAction(article.id, { is_featured: nextFeatured });
+        if (!result.ok) {
+          setNotice({ type: "error", text: result.error ?? "تعذر تغيير حالة التمييز" });
+          return;
+        }
+        setArticles((current) => current.map((item) => item.id === article.id ? { ...item, is_featured: nextFeatured } : item));
+        setNotice({ type: "success", text: nextFeatured ? "تم تمييز المقال (سيظهر في البطل)" : "تم إلغاء تمييز المقال" });
+        router.refresh();
+      } catch {
+        setNotice({ type: "error", text: "تعذر تغيير حالة التمييز حالياً." });
       }
     });
   };
@@ -202,9 +253,20 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             أدِر المقالات، جدولة النشر، وحالات الظهور من مساحة واحدة.
           </p>
         </div>
-        <Button type="button" onClick={openCreate} disabled={pending}>
-          + إضافة مقال
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/en/news"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-button border border-brand-espresso-subtle/60 px-3 py-2 text-xs font-bold text-brand-espresso hover:bg-brand-surface/60 transition-colors"
+          >
+            <span>عرض صفحة الأخبار</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Button type="button" onClick={openCreate} disabled={pending}>
+            + إضافة مقال
+          </Button>
+        </div>
       </div>
 
       <Notice notice={notice} />
@@ -240,17 +302,19 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
               className="sm:w-56"
             />
             <label className="sr-only" htmlFor="article-status-filter">تصفية حالة النشر</label>
-            <select
+            <Dropdown<StatusFilter>
               id="article-status-filter"
+              ariaLabel="تصفية حالة النشر"
               value={filter}
-              onChange={(event) => setFilter(event.target.value as StatusFilter)}
-              className="h-[48px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-            >
-              <option value="all">كل الحالات</option>
-              <option value="published">المنشور فقط</option>
-              <option value="scheduled">المجدول فقط</option>
-              <option value="draft">المسودات فقط</option>
-            </select>
+              onChange={(next) => setFilter(next)}
+              options={[
+                { value: "all", label: "كل الحالات" },
+                { value: "published", label: "المنشور فقط" },
+                { value: "scheduled", label: "المجدول فقط" },
+                { value: "draft", label: "المسودات فقط" },
+              ]}
+              className="sm:w-56"
+            />
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -269,6 +333,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                   <TableHead>المقال</TableHead>
                   <TableHead>التصنيف / الكاتب</TableHead>
                   <TableHead>موعد النشر</TableHead>
+                  <TableHead>المميز (البطل)</TableHead>
                   <TableHead>النشر</TableHead>
                   <TableHead>الإجراءات</TableHead>
                 </TableRow>
@@ -298,6 +363,24 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                     <TableCell>
                       <button
                         type="button"
+                        onClick={() => toggleFeatured(article)}
+                        disabled={pending}
+                        aria-pressed={article.is_featured}
+                        className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                        title={article.is_featured ? "إلغاء التمييز من البطل" : "تمييز المقال في البطل"}
+                      >
+                        {article.is_featured ? (
+                          <Badge variant="outline" size="sm" className="bg-amber-50 text-amber-800 border-amber-300">
+                            مميز ★
+                          </Badge>
+                        ) : (
+                          <span className="text-xs text-gradscale-400 hover:text-brand-espresso">عادي</span>
+                        )}
+                      </button>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        type="button"
                         onClick={() => togglePublish(article)}
                         disabled={pending}
                         aria-pressed={article.is_published}
@@ -310,6 +393,16 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
                         <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(article)} disabled={pending}>تعديل</Button>
+                        {isArticleLive(article) && (
+                          <Link
+                            href={`/en/news/${article.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-button px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary transition-colors"
+                          >
+                            معاينة ↗
+                          </Link>
+                        )}
                         <button
                           type="button"
                           onClick={() => removeArticle(article)}
@@ -338,27 +431,32 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             <Field id="article-title" label="عنوان المقال">
               <Input id="article-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
             </Field>
+            <TranslationField id="article-title-en" label="عنوان المقال" value={values.title_en} onChange={(value) => setField("title_en", value)} />
             <Field id="article-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
               <Input id="article-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
             <Field id="article-category" label="التصنيف">
-              <select
+              <Dropdown<ArticleCategory>
                 id="article-category"
                 value={values.category}
-                onChange={(event) => setField("category", event.target.value as ArticleCategory)}
-                className="h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
+                onChange={(category) => setField("category", category)}
+                options={ARTICLE_CATEGORIES.map((category) => ({ value: category, label: CATEGORY_LABELS[category] }))}
                 required
-              >
-                {ARTICLE_CATEGORIES.map((category) => (
-                  <option key={category} value={category}>{CATEGORY_LABELS[category]}</option>
-                ))}
-              </select>
+              />
             </Field>
             <Field id="article-author" label="اسم الكاتب أو هيئة التحرير">
               <Input id="article-author" value={values.author_name} onChange={(event) => setField("author_name", event.target.value)} required />
             </Field>
+            <TranslationField id="article-author-en" label="اسم الكاتب" value={values.author_name_en} onChange={(value) => setField("author_name_en", value)} />
             <Field id="article-cover" label="رابط صورة الغلاف">
-              <Input id="article-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
+              <MediaPickerField
+                id="article-cover"
+                value={values.cover_image_url}
+                onChange={(url) => setField("cover_image_url", url)}
+                bucket="articles"
+                folder="covers"
+                required
+              />
             </Field>
             <Field id="article-published-at" label="موعد النشر" help="يمكن اختيار موعد مستقبلي لجدولة المقال.">
               <Input
@@ -373,9 +471,11 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             <Field id="article-excerpt" label="المقتطف الصحفي">
               <Textarea id="article-excerpt" rows={3} value={values.excerpt} onChange={(event) => setField("excerpt", event.target.value)} required />
             </Field>
+            <TranslationField id="article-excerpt-en" label="المقتطف الصحفي" multiline rows={3} value={values.excerpt_en} onChange={(value) => setField("excerpt_en", value)} />
             <Field id="article-content" label="محتوى المقال الكامل">
               <Textarea id="article-content" rows={8} value={values.content} onChange={(event) => setField("content", event.target.value)} required />
             </Field>
+            <TranslationField id="article-content-en" label="محتوى المقال الكامل" multiline rows={8} value={values.content_en} onChange={(value) => setField("content_en", value)} />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

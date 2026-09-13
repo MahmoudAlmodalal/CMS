@@ -6,18 +6,10 @@ import type { Database } from "@/lib/supabase/types";
 import {
   publicBookingSubmissionSchema,
   type PublicBookingSubmission,
+  type BookingActionState,
 } from "@/lib/validations/booking";
 
-export interface BookingActionState {
-  success: boolean;
-  message?: string;
-  error?: string;
-  fieldErrors?: Record<string, string[]>;
-}
-
-export const INITIAL_BOOKING_ACTION_STATE: BookingActionState = {
-  success: false,
-};
+export type { BookingActionState };
 
 /**
  * Sanitizes form data by converting empty strings or sentinel values to null

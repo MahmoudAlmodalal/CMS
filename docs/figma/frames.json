@@ -1,0 +1,345 @@
+{
+  "fileKey": "xcKbTxQQhUVOFJerTrkrw2",
+  "fileName": "موقع ويب لفرقة موسيقية",
+  "version": "2397151536839537751",
+  "_source": "Frames enumerated over the Figma MCP server on 2026-09-12 (get_metadata on page 0:1). api.figma.com is blocked by egress policy and there is no FIGMA_TOKEN, so figma:sync could not produce this file; the version string is the last one recorded by a REST sync and is NOT re-verified.",
+  "_ambiguous": "The six mobile frames whose figmaName is الفنانين are disambiguated in docs/figma/frame-overrides.json, with the child-structure evidence for each.",
+  "frames": [
+    {
+      "id": "89:15216",
+      "name": "home-desktop",
+      "figmaName": "الرئيسية",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        5165
+      ],
+      "route": "/"
+    },
+    {
+      "id": "91:16119",
+      "name": "academy-desktop",
+      "figmaName": "الأكاديمية",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2503
+      ],
+      "route": "/academy"
+    },
+    {
+      "id": "91:16532",
+      "name": "events-desktop",
+      "figmaName": "الفعاليات",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2290
+      ],
+      "route": "/events"
+    },
+    {
+      "id": "91:17109",
+      "name": "booking-desktop",
+      "figmaName": "الحجز",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        1953
+      ],
+      "route": "/booking"
+    },
+    {
+      "id": "91:17296",
+      "name": "news-desktop",
+      "figmaName": "الأخبار",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        1953
+      ],
+      "route": "/news"
+    },
+    {
+      "id": "91:17844",
+      "name": "artists-desktop",
+      "figmaName": "الفنانين",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2290
+      ],
+      "route": "/artists"
+    },
+    {
+      "id": "134:4420",
+      "name": "artist-detail-desktop",
+      "figmaName": "الفنان",
+      "locale": "ar",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2968
+      ],
+      "route": "/artists/sara-alsawt"
+    },
+    {
+      "id": "136:5854",
+      "name": "home-mobile",
+      "figmaName": "الرئيسية",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        6528
+      ],
+      "route": "/"
+    },
+    {
+      "id": "139:12420",
+      "name": "academy-mobile",
+      "figmaName": "الأكاديمية",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3891
+      ],
+      "route": "/academy"
+    },
+    {
+      "id": "139:13485",
+      "name": "events-mobile",
+      "figmaName": "الفعاليات",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        2889
+      ],
+      "route": "/events"
+    },
+    {
+      "id": "141:15629",
+      "name": "booking-mobile",
+      "figmaName": "الفنانين",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3434
+      ],
+      "route": "/booking"
+    },
+    {
+      "id": "141:15199",
+      "name": "news-mobile",
+      "figmaName": "الفنانين",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3037
+      ],
+      "route": "/news"
+    },
+    {
+      "id": "140:14652",
+      "name": "artists-mobile",
+      "figmaName": "الفنانين",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        2889
+      ],
+      "route": "/artists"
+    },
+    {
+      "id": "141:16217",
+      "name": "artist-detail-mobile",
+      "figmaName": "الفنان",
+      "locale": "ar",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3658
+      ],
+      "route": "/artists/sara-alsawt"
+    },
+    {
+      "id": "136:1569",
+      "name": "home-desktop-en",
+      "figmaName": "الرئيسية",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        5165
+      ],
+      "route": "/"
+    },
+    {
+      "id": "136:2255",
+      "name": "academy-desktop-en",
+      "figmaName": "الأكاديمية",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2503
+      ],
+      "route": "/academy"
+    },
+    {
+      "id": "136:2560",
+      "name": "events-desktop-en",
+      "figmaName": "الفعاليات",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2290
+      ],
+      "route": "/events"
+    },
+    {
+      "id": "136:2915",
+      "name": "booking-desktop-en",
+      "figmaName": "الحجز",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        1953
+      ],
+      "route": "/booking"
+    },
+    {
+      "id": "136:3049",
+      "name": "news-desktop-en",
+      "figmaName": "الأخبار",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        1953
+      ],
+      "route": "/news"
+    },
+    {
+      "id": "136:3138",
+      "name": "artists-desktop-en",
+      "figmaName": "الفنانين",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2290
+      ],
+      "route": "/artists"
+    },
+    {
+      "id": "136:3455",
+      "name": "artist-detail-desktop-en",
+      "figmaName": "الفنان",
+      "locale": "en",
+      "viewport": "desktop",
+      "canvas": [
+        1440,
+        2968
+      ],
+      "route": "/artists/sara-alsawt"
+    },
+    {
+      "id": "144:19555",
+      "name": "home-mobile-en",
+      "figmaName": "الرئيسية",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        6528
+      ],
+      "route": "/"
+    },
+    {
+      "id": "144:19711",
+      "name": "academy-mobile-en",
+      "figmaName": "الأكاديمية",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3891
+      ],
+      "route": "/academy"
+    },
+    {
+      "id": "144:19902",
+      "name": "events-mobile-en",
+      "figmaName": "الفعاليات",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        2889
+      ],
+      "route": "/events"
+    },
+    {
+      "id": "144:20146",
+      "name": "booking-mobile-en",
+      "figmaName": "الفنانين",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3434
+      ],
+      "route": "/booking"
+    },
+    {
+      "id": "144:20463",
+      "name": "news-mobile-en",
+      "figmaName": "الفنانين",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3037
+      ],
+      "route": "/news"
+    },
+    {
+      "id": "144:19997",
+      "name": "artists-mobile-en",
+      "figmaName": "الفنانين",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        2889
+      ],
+      "route": "/artists"
+    },
+    {
+      "id": "144:20323",
+      "name": "artist-detail-mobile-en",
+      "figmaName": "الفنان",
+      "locale": "en",
+      "viewport": "mobile",
+      "canvas": [
+        390,
+        3658
+      ],
+      "route": "/artists/sara-alsawt"
+    }
+  ]
+}

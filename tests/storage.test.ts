@@ -220,8 +220,11 @@ test("Task 29 — canonical admin claim check", () => {
 });
 
 test("Task 29 — media reference map guards replace/delete", () => {
-  assert.equal(MEDIA_REFERENCES.length, 9);
+  assert.equal(MEDIA_REFERENCES.length, 17);
+  assert.ok(findMediaReference("site_settings", "seo_og_image_url"));
+  assert.ok(findMediaReference("tracks", "cover_image_url"));
   assert.ok(findMediaReference("artists", "portrait_image_url"));
+  assert.ok(findMediaReference("site_settings", "events_hero_image_url"));
   assert.ok(findMediaReference("tracks", "audio_file_url"));
   assert.equal(findMediaReference("artists", "name"), null);
   assert.equal(findMediaReference("booking_requests", "message"), null);

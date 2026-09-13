@@ -7,6 +7,11 @@ export interface AcademyCourse {
   track_category: string;
   description: string;
   instructor_name?: string | null;
+  /** Optional English translations; null falls back to the Arabic field. */
+  title_en?: string | null;
+  track_category_en?: string | null;
+  description_en?: string | null;
+  instructor_name_en?: string | null;
   instructor_id?: string | null;
   image_url?: string | null;
   display_order: number;
@@ -16,20 +21,29 @@ export interface AcademyCourse {
 }
 
 /**
- * The 3 canonical educational curriculum tracks confirmed by Figma and Content Inventory:
- * 1. "مدرسة العود" (oud-school) - مدرسة التراث
- * 2. "فن الأداء" (performance-art) - فن الأداء
- * 3. "الصوت والطرب" (vocal-tarab) - الصوت والطرب
+ * The three curriculum tracks, with their labels and bodies taken verbatim from
+ * Figma nodes 91:16439, 91:16452 and 91:16465 in frame 91:16119:
+ * 1. "مدرسة العود" (oud-school) — مدرسة التراث
+ * 2. "فن الأداء" (performance-art) — فن الأداء
+ * 3. "الصوت والطرب" (vocal-tarab) — صوت ومجموع
+ *
+ * instructor_name and image_url stay on the record for the admin side; the design
+ * draws neither on the public card.
  */
 export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c1-oud-school",
     title: "مدرسة العود",
+    title_en: "Oud School",
     slug: "oud-school",
     track_category: "مدرسة التراث",
+    track_category_en: "Heritage School",
     description:
-      "برنامج تدريبي مكثف على أصول العزف والانتقال بين المقامات الموسيقية والارتجال المتقن والتكنيك الأندلسي الأصيل.",
+      "تعلّم على يد خبراء مدرّبين على الأسلوب الموسيقي الكلاسيكي الأصيل. تعرّف على فنون العزف والألحان الأندلسية.",
+    description_en:
+      "Learn from experts trained in authentic classical music style. Discover the arts of playing and Andalusian melodies.",
     instructor_name: "طارق العود",
+    instructor_name_en: "Tariq Al-Oud",
     image_url: "/assets/academy-oud.png",
     display_order: 1,
     is_published: true,
@@ -37,11 +51,16 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c2-performance-art",
     title: "فن الأداء",
+    title_en: "Performance Art",
     slug: "performance-art",
     track_category: "فن الأداء",
+    track_category_en: "Performance Art",
     description:
-      "تطوير الحضور المسرحي والتفاعل الحي مع الجمهور وبناء الثقة الإبداعية والتناغم الجماعي فوق خشبة المسرح.",
+      "طوّر أداءك المسرحي، تعلّم وقوف الجمهور ووجود المسرح أمام جماهير حقيقية في بيئة آمنة.",
+    description_en:
+      "Enhance your theatrical performance, learn audience presence and stage presence in front of real audiences in a safe environment.",
     instructor_name: "هيئة التدريب",
+    instructor_name_en: "Training Faculty",
     image_url: "/assets/academy-performance.png",
     display_order: 2,
     is_published: true,
@@ -49,11 +68,16 @@ export const CANONICAL_ACADEMY_COURSES: AcademyCourse[] = [
   {
     id: "c3-vocal-tarab",
     title: "الصوت والطرب",
+    title_en: "Voice and Melody",
     slug: "vocal-tarab",
-    track_category: "الصوت والطرب",
+    track_category: "صوت ومجموع",
+    track_category_en: "Voice and Ensemble",
     description:
-      "تقنيات التنفس السليم، تدريب الأحبال الصوتية، وأداء الموشحات والمقامات التراثية الأصيلة بإحساس فني عميق.",
+      "تعرّف على معلمين من الكفاءة العالية وتعلّم فنون الغناء والطرب المعاصر والكلاسيكي.",
+    description_en:
+      "Meet highly qualified instructors and learn the arts of contemporary and classical singing.",
     instructor_name: "سارة الصوت",
+    instructor_name_en: "Sarah Al-Sawt",
     image_url: "/assets/academy-vocal.png",
     display_order: 3,
     is_published: true,

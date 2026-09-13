@@ -13,7 +13,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { Dropdown } from "@/components/ui/Dropdown";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { TestimonialInput } from "@/lib/validations/cms";
 import type { AdminTestimonial } from "@/lib/dal/admin-testimonials";
 
@@ -27,8 +29,11 @@ interface TestimonialsManagerProps {
 function emptyTestimonial(): TestimonialFormValues {
   return {
     quote: "",
+    quote_en: null,
     author_name: "",
+    author_name_en: null,
     author_role: "",
+    author_role_en: null,
     avatar_image_url: "",
     display_order: 0,
     is_published: false,
@@ -38,8 +43,11 @@ function emptyTestimonial(): TestimonialFormValues {
 function testimonialToForm(testimonial: AdminTestimonial): TestimonialFormValues {
   return {
     quote: testimonial.quote,
+    quote_en: testimonial.quote_en ?? null,
     author_name: testimonial.author_name,
+    author_name_en: testimonial.author_name_en ?? null,
     author_role: testimonial.author_role,
+    author_role_en: testimonial.author_role_en ?? null,
     avatar_image_url: testimonial.avatar_image_url ?? "",
     display_order: testimonial.display_order,
     is_published: testimonial.is_published,
@@ -209,16 +217,18 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
               className="sm:w-56"
             />
             <label className="sr-only" htmlFor="testimonial-status-filter">تصفية حالة النشر</label>
-            <select
+            <Dropdown<StatusFilter>
               id="testimonial-status-filter"
+              ariaLabel="تصفية حالة النشر"
               value={filter}
-              onChange={(event) => setFilter(event.target.value as StatusFilter)}
-              className="h-[48px] rounded-input border border-brand-espresso-subtle bg-white px-3 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-            >
-              <option value="all">كل الحالات</option>
-              <option value="published">المنشور فقط</option>
-              <option value="draft">المسودات فقط</option>
-            </select>
+              onChange={(next) => setFilter(next)}
+              options={[
+                { value: "all", label: "كل الحالات" },
+                { value: "published", label: "المنشور فقط" },
+                { value: "draft", label: "المسودات فقط" },
+              ]}
+              className="sm:w-56"
+            />
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -307,11 +317,19 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
             <Field id="testimonial-author-name" label="اسم صاحب الشهادة">
               <Input id="testimonial-author-name" value={values.author_name} onChange={(event) => setField("author_name", event.target.value)} required />
             </Field>
+            <TranslationField id="testimonial-author-name-en" label="اسم صاحب الشهادة" value={values.author_name_en} onChange={(value) => setField("author_name_en", value)} />
             <Field id="testimonial-author-role" label="صفة أو مهنة صاحب الشهادة">
               <Input id="testimonial-author-role" value={values.author_role} onChange={(event) => setField("author_role", event.target.value)} required />
             </Field>
+            <TranslationField id="testimonial-author-role-en" label="صفة صاحب الشهادة" value={values.author_role_en} onChange={(value) => setField("author_role_en", value)} />
             <Field id="testimonial-avatar" label="رابط صورة صاحب الشهادة" required={false}>
-              <Input id="testimonial-avatar" type="url" dir="ltr" value={values.avatar_image_url ?? ""} onChange={(event) => setField("avatar_image_url", event.target.value)} />
+              <MediaPickerField
+                id="testimonial-avatar"
+                value={values.avatar_image_url ?? ""}
+                onChange={(url) => setField("avatar_image_url", url)}
+                bucket="site"
+                folder="avatars"
+              />
             </Field>
             <Field id="testimonial-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
               <Input id="testimonial-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
@@ -319,6 +337,7 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
             <Field id="testimonial-quote" label="نص الشهادة">
               <Textarea id="testimonial-quote" rows={4} className="min-h-[112px] md:col-span-2" value={values.quote} onChange={(event) => setField("quote", event.target.value)} required />
             </Field>
+            <TranslationField id="testimonial-quote-en" label="نص الشهادة" multiline rows={4} className="min-h-[112px]" value={values.quote_en} onChange={(value) => setField("quote_en", value)} />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

@@ -12,7 +12,9 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
+import { AudioUploadField } from "@/components/admin/media/AudioUploadField";
 import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
 import type { AdminTrack, ArtistOption } from "@/lib/types/admin-tracks";
 import type { TrackInput } from "@/lib/validations";
@@ -24,13 +26,11 @@ interface TracksManagerProps {
   artists: ArtistOption[];
 }
 
-const AUDIO_MAX_MB = AUDIO_MAX_BYTES / (1024 * 1024);
-const AUDIO_MIME_LIST = BUCKET_ALLOWED_MIMES.audio.join(", ");
-
 function emptyTrack(defaultArtistId: string): TrackFormValues {
   return {
     artist_id: defaultArtistId,
     title: "",
+    title_en: null,
     audio_file_url: "",
     duration_seconds: 0,
     cover_image_url: "",
@@ -43,6 +43,7 @@ function trackToForm(track: AdminTrack): TrackFormValues {
   return {
     artist_id: track.artist_id,
     title: track.title,
+    title_en: track.title_en ?? null,
     audio_file_url: track.audio_file_url,
     duration_seconds: track.duration_seconds,
     cover_image_url: track.cover_image_url ?? "",
@@ -57,7 +58,6 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
   const [values, setValues] = useState<TrackFormValues>(() => emptyTrack(artists[0]?.id ?? ""));
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
-  const [audioWarning, setAudioWarning] = useState<string | null>(null);
   const [notice, setNotice] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -68,7 +68,6 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
   const openCreate = () => {
     setEditingId(null);
     setValues(emptyTrack(artists[0]?.id ?? ""));
-    setAudioWarning(null);
     setNotice(null);
     setFormOpen(true);
   };
@@ -76,7 +75,6 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
   const openEdit = (track: AdminTrack) => {
     setEditingId(track.id);
     setValues(trackToForm(track));
-    setAudioWarning(null);
     setNotice(null);
     setFormOpen(true);
   };
@@ -92,22 +90,14 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
     setNotice(null);
   };
 
-  const handleAudioFile = (file: File | undefined) => {
-    if (!file) return;
-    if (file.size > AUDIO_MAX_BYTES) {
-      setAudioWarning(`حجم الملف (${(file.size / (1024 * 1024)).toFixed(1)} م.ب) يتجاوز الحد المسموح ${AUDIO_MAX_MB} م.ب.`);
-      return;
-    }
-    if (!BUCKET_ALLOWED_MIMES.audio.includes(file.type)) {
-      setAudioWarning(`نوع الملف "${file.type || "غير معروف"}" غير مدعوم. الأنواع المسموحة: ${AUDIO_MIME_LIST}.`);
-      return;
-    }
-    setAudioWarning(null);
-  };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
+
+    if (!values.audio_file_url.trim()) {
+      setNotice({ type: "error", text: "يرجى رفع الملف الصوتي أو إدخال رابطه" });
+      return;
+    }
 
     const input: TrackInput = { ...values };
     startTransition(async () => {
@@ -291,30 +281,33 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
               <Field id="track-title" label="عنوان المقطع">
                 <Input id="track-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
               </Field>
+              <TranslationField id="track-title-en" label="عنوان المقطع" value={values.title_en} onChange={(value) => setField("title_en", value)} />
               <Field
                 id="track-audio-url"
-                label="رابط الملف الصوتي"
-                help={`حد أقصى ${AUDIO_MAX_MB} م.ب. الأنواع المسموحة: ${AUDIO_MIME_LIST}.`}
+                label="الملف الصوتي"
+                help="ارفع ملفاً صوتياً (MP3/OGG/WAV حتى 30MB) أو الصق رابطاً مباشراً. يُحفظ في مجلد audio/tracks."
               >
-                <Input id="track-audio-url" type="url" dir="ltr" value={values.audio_file_url} onChange={(event) => setField("audio_file_url", event.target.value)} required />
-              </Field>
-              <Field id="track-audio-file" label="فحص ملف صوتي محلي (اختياري)" required={false} help="فحص أولي فقط في المتصفح؛ التحقق النهائي يتم على الخادم.">
-                <input
-                  id="track-audio-file"
-                  type="file"
-                  accept="audio/*"
-                  onChange={(event) => handleAudioFile(event.target.files?.[0])}
-                  className="block w-full text-sm text-gradscale-900 file:me-3 file:rounded-button file:border-0 file:bg-brand-primary/10 file:px-3 file:py-2 file:text-sm file:font-bold file:text-brand-primary"
+                <AudioUploadField
+                  id="track-audio"
+                  folder="tracks"
+                  value={values.audio_file_url}
+                  onChange={(url) => setField("audio_file_url", url)}
+                  entityId={editingId ?? (values.title.trim() || "new-track")}
+                  disabled={pending}
                 />
               </Field>
-              {audioWarning && (
-                <p role="alert" className="md:col-span-2 text-sm font-medium text-alert-error">{audioWarning}</p>
-              )}
               <Field id="track-duration" label="المدة بالثواني">
                 <Input id="track-duration" type="number" min="1" dir="ltr" value={values.duration_seconds} onChange={(event) => setField("duration_seconds", Number(event.target.value))} required />
               </Field>
-              <Field id="track-cover" label="رابط صورة الغلاف" required={false}>
-                <Input id="track-cover" type="url" dir="ltr" value={values.cover_image_url ?? ""} onChange={(event) => setField("cover_image_url", event.target.value)} />
+              <Field id="track-cover" label="صورة الغلاف" required={false} help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
+                <MediaPickerField
+                  id="track-cover"
+                  value={values.cover_image_url ?? ""}
+                  onChange={(url) => setField("cover_image_url", url)}
+                  bucket="releases"
+                  folder="covers"
+                  disabled={pending}
+                />
               </Field>
               <Field id="track-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="track-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

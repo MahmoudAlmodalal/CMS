@@ -1,26 +1,48 @@
 import React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Container } from "@/components/ui/LayoutPrimitives";
+import { localeDirection, type AppLocale } from "@/i18n/routing";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
 
 interface EditorialFeatureProps {
   articles: Article[];
+  /** Admin override for the section heading. Falls back to built-in copy. */
+  heading?: string;
 }
 
 /**
- * Verified against Figma Frame 26 (Node 87:14400, 1440x709):
- * - Surface: solid #1F0900 (near-black), heading #F9EDE8
- * - Heading (87:14402): Qahwa Arabic Bold 64px, CENTERED
- * - Cards (115:2436…115:2439): FOUR equal 273.1x317.16 white tiles, radius 14,
- *   laid out at x=108/409/710/1011 — not an asymmetric 1-large-plus-2-small split
- * - Card anatomy: 170.69px image → 24px padded body → row(date / category) →
- *   title (pt 12) → kicker (pt 6.4). No overlay pill, no scrim, no read-more row.
- * - Category micro-type: Cairo Bold 12.28px, 0.0907em tracking, uppercase, #C54716
+ * نكتب كي لا تضيع التفاصيل — Figma Frame 26 (node 87:14400), 1440x709 at y=2815
+ * on solid #1F0900. The frame starts 4px in from the artboard, so its heading and
+ * cards are placed against it rather than stacked, and the band reproduces the
+ * artboard coordinates at lg:
+ *
+ *   heading 87:14401   x 132..1268, y 93, Qahwa Arabic 64/48 on #F9EDE8, centred
+ *   card    115:2436   x 1015.33,   y 253
+ *   card    115:2438   x  714.23,   y 255
+ *   card    115:2437   x  413.11,   y 255
+ *   card    115:2439   x  112,      y 259
+ *
+ * Both the heading and the run of cards are centred on x=700 rather than on the
+ * artboard's own 720, and the four cards each sit at a slightly different y — the
+ * reference render carries that jitter exactly (tops at 3074, 3070, 3070, 3068),
+ * so it is reproduced rather than levelled.
+ *
+ * The card (Component 16) is its own design and not the /news grid card: 273.11
+ * wide, a fixed 317.156 tall clipping its own overflow, rounded 14 inside a 16px
+ * outer, with a flat 170.688 cover and a 24-padded body under it. The body puts the
+ * category and the date on one justified row — category at the inline start, in
+ * Cairo Bold 12.28/13.92 tracked 1.1136 uppercase on #C54716, the date opposite in
+ * Cairo Regular 10/15 on #666 — then the title in Cairo Bold 16/24 on #2B1D14 over
+ * a 196px measure, then the standfirst in Cairo Medium 13/19.5 on #7F7F7F. It runs
+ * 2.4px past the card, which the card clips. There is no overlay pill, no scrim and
+ * no read-more row.
+ *
+ * The frame repeats one placeholder article across its first two cards, which is a
+ * stand-in rather than copy to reproduce, so the band draws four real ones.
  */
-export function EditorialFeature({ articles }: EditorialFeatureProps) {
+export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   const t = useTranslations("home");
 
   if (!articles || articles.length === 0) {
@@ -28,62 +50,72 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
   }
 
   return (
-    <section className="min-h-[709px] lg:h-[709px] bg-[#1F0900] flex flex-col justify-center py-16 lg:py-0 overflow-hidden">
-      <Container>
-        {/* Section Header (Figma Node 87:14402 — Qahwa Bold 64px, centered) */}
-        <h2 className="font-calligraphic text-3xl sm:text-4xl lg:text-[64px] font-bold text-[#F9EDE8] leading-[0.75] text-center pb-10">
-          {t("editorialHeading")}
+    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
+      {/* Heading 87:14401 */}
+      <div className="w-full px-5 text-center lg:px-0">
+        <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
+          {heading || t("editorialHeading")}
         </h2>
+      </div>
 
-        {/* Four equal cards (Figma Nodes 115:2436…115:2439 — 273x317, 28px gap) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-7 justify-items-stretch sm:justify-items-center">
-          {articles.slice(0, 4).map((article) => (
+      {/* Cards 115:2436…115:2439 */}
+      <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-[64px] lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-[28px] lg:px-4">
+        {articles.slice(0, 4).map((article) => {
+          return (
             <article
               key={article.id}
-              className="group w-full max-w-none sm:max-w-[273px] lg:h-[317px] flex flex-col bg-white rounded-[14px] overflow-hidden transition-shadow duration-300 hover:shadow-card-hover text-start"
+              className="group w-full max-w-[273.115px] shrink-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-[273.115px]"
             >
-              <Link href={`/news/${article.slug}`} className="flex flex-col h-full">
-                {/* Cover Image (Figma EL-44c2fae9 — 170.69px tall) */}
-                <div className="relative aspect-[16/10] sm:aspect-auto sm:h-[170.69px] w-full shrink-0 overflow-hidden bg-brand-surface">
+              <Link
+                href={`/news/${article.slug}`}
+                className="flex h-[317.156px] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+              >
+                {/* Cover I115:2439;87:14439 */}
+                <div className="relative h-[170.688px] w-full shrink-0 overflow-hidden bg-brand-surface">
                   <Image
                     src={article.cover_image_url || "/assets/articles/default-article.png"}
-                    alt={article.title}
+                    alt=""
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 273px"
+                    sizes="273px"
+                    quality={90}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
 
-                {/* Body (Figma EL-7d7fdedb — 24px padding) */}
-                <div className="p-4 sm:p-6 flex flex-col min-w-0">
-                  {/* Meta row (Figma EL-bb582553 — space-between) */}
-                  <div className="flex items-center justify-between gap-2">
+                {/* Body I115:2439;87:14440 */}
+                <div className="flex w-full flex-col items-start p-[24px]">
+                  {/* Meta row I115:2439;87:14441 — category leads, date opposite. */}
+                  <div className="flex w-full items-center justify-between gap-2">
+                    <span className="whitespace-nowrap text-[12.28px] font-bold uppercase leading-[13.92px] tracking-[1.1136px] text-primary-500">
+                      {getArticleCardCategoryLabel(article.category)}
+                    </span>
                     <time
                       dateTime={article.published_at}
-                      className="font-sans text-[10px] font-normal leading-[1.5] text-gradscale-400"
+                      className="whitespace-nowrap text-[10px] leading-[15px] text-gradscale-400"
                     >
                       {formatArabicDate(article.published_at)}
                     </time>
-                    <span className="font-sans text-[12.28px] font-bold leading-[1.13] tracking-[0.0907em] uppercase text-brand-primary">
-                      {getArticleCardCategoryLabel(article.category)}
-                    </span>
                   </div>
 
-                  {/* Title (Figma EL-8e175aae — pt 12, Cairo Bold 16px) */}
-                  <h3 className="pt-3 font-sans text-base font-bold leading-[1.5] text-brand-espresso group-hover:text-brand-primary transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
+                  {/* Title I115:2439;87:14446 */}
+                  <div className="w-full max-w-[225.115px] pt-[12px]">
+                    <h3 className="w-[196px] max-w-full text-[16px] font-bold leading-[24px] text-brand-espresso transition-colors group-hover:text-brand-primary">
+                      {article.title}
+                    </h3>
+                  </div>
 
-                  {/* Kicker (Figma EL-ddc5918d — pt 6.4, Cairo Medium 13px) */}
-                  <p className="pt-1.5 font-sans text-[13px] font-medium leading-[1.5] text-gradscale-300 line-clamp-1">
-                    {article.excerpt}
-                  </p>
+                  {/* Standfirst I115:2439;87:14448 */}
+                  <div className="h-[26.4px] w-full max-w-[225.115px] overflow-hidden pt-[6.4px]">
+                    <p className="truncate text-[13px] font-medium leading-[19.5px] text-gradscale-300">
+                      {article.excerpt}
+                    </p>
+                  </div>
                 </div>
               </Link>
             </article>
-          ))}
-        </div>
-      </Container>
+          );
+        })}
+      </div>
     </section>
   );
 }
