@@ -24,16 +24,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_home_title?.trim() || t("homeTitle");
+  const description = settings.seo_home_description?.trim() || t("homeDescription");
+  const ogTitle = settings.seo_home_title?.trim() || t("homeOgTitle");
+  const ogDescription = settings.seo_home_description?.trim() || t("homeOgDescription");
   return {
-  title: t("homeTitle"),
-  description: t("homeDescription"),
-  openGraph: {
-    title: t("homeOgTitle"),
-    description: t("homeOgDescription"),
-    locale: locale === "ar" ? "ar_AR" : "en_US",
-    type: "website",
-  },
+    title,
+    description,
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      locale: locale === "ar" ? "ar_AR" : "en_US",
+      type: "website",
+    },
   };
 }
 
@@ -128,7 +136,7 @@ export default async function HomePage({
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
       {settings.show_booking_banner && (
         <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
-          <BookingBanner settings={settings} />
+          <BookingBanner settings={settings} ctaLabel={settings.booking_cta_label} />
         </div>
       )}
     </>

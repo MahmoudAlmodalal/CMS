@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
 import type { AdminRelease, ArtistOption } from "@/lib/types/admin-tracks";
 import type { ReleaseInput } from "@/lib/validations";
 
@@ -97,6 +98,11 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pending) return;
+
+    if (!values.cover_image_url.trim()) {
+      setNotice({ type: "error", text: "يرجى رفع صورة الغلاف أو إدخال رابطها" });
+      return;
+    }
 
     const input: ReleaseInput = { ...values };
     startTransition(async () => {
@@ -305,8 +311,16 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
               <Field id="release-year" label="سنة الإصدار">
                 <Input id="release-year" type="number" min="1900" max="2100" dir="ltr" value={values.release_year} onChange={(event) => setField("release_year", Number(event.target.value))} required />
               </Field>
-              <Field id="release-cover" label="رابط صورة الغلاف">
-                <Input id="release-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
+              <Field id="release-cover" label="صورة الغلاف" help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
+                <ImageUploadField
+                  id="release-cover"
+                  bucket="releases"
+                  folder="covers"
+                  value={values.cover_image_url}
+                  onChange={(url) => setField("cover_image_url", url)}
+                  entityId={editingId ?? (values.title.trim() || "new-release")}
+                  disabled={pending}
+                />
               </Field>
               <Field id="release-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
                 <Input id="release-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />

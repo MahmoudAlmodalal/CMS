@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPublishedArtists } from "@/lib/dal/artists";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import { ArtistsDirectoryClient, PageHero } from "@/components/public";
@@ -27,15 +27,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_artists_title?.trim() || t("artistsTitle");
+  const description = settings.seo_artists_description?.trim() || t("artistsDescription");
   const path = locale === "ar" ? "/artists" : "/en/artists";
   return {
-    title: t("artistsTitle"),
-    description: t("artistsDescription"),
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
-      title: t("artistsTitle"),
-      description: t("artistsDescription"),
+      title,
+      description,
       url: path,
       type: "website",
       locale: locale === "ar" ? "ar_AR" : "en_US",
@@ -43,7 +49,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArtistsPage() {
+export default async function ArtistsPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  if (params) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+  }
+
   const [artists, settings, t] = await Promise.all([
     getPublishedArtists(),
     getSiteSettings(),
@@ -90,7 +105,10 @@ export default async function ArtistsPage() {
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12 xl:px-8">
           <Suspense fallback={<div className="min-h-[888px]" />}>
-            <ArtistsDirectoryClient initialArtists={artists} />
+            <ArtistsDirectoryClient
+              initialArtists={artists}
+              allLabel={settings.artists_filter_all_label}
+            />
           </Suspense>
         </div>
       </section>

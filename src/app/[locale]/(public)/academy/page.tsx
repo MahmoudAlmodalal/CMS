@@ -18,13 +18,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_academy_title?.trim() || t("academyTitle");
+  const description = settings.seo_academy_description?.trim() || t("academyDescription");
   return {
-    title: t("academyTitle"),
-    description: t("academyDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("academyTitle"),
-      description: t("academyDescription"),
+      title,
+      description,
       type: "website",
       locale: locale === "ar" ? "ar_AR" : "en_US",
     },

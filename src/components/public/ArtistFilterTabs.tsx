@@ -17,6 +17,7 @@ export interface ArtistFilterTabsProps {
   activeCategory: string;
   onSelectCategory: (category: string) => void;
   className?: string;
+  allLabel?: string | null;
 }
 
 /**
@@ -41,6 +42,7 @@ export function ArtistFilterTabs({
   activeCategory,
   onSelectCategory,
   className = "",
+  allLabel,
 }: ArtistFilterTabsProps) {
   const t = useTranslations("artists");
 
@@ -53,6 +55,7 @@ export function ArtistFilterTabs({
       >
         {DISPLAY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
+          const label = cat.id === "all" && allLabel?.trim() ? allLabel.trim() : cat.label;
 
           return (
             <button
@@ -69,7 +72,7 @@ export function ArtistFilterTabs({
                   : "border-b-2 border-transparent pb-[2px] text-gradscale-900 hover:border-brand-primary hover:text-brand-primary"
               }`}
             >
-              {cat.label}
+              {label}
             </button>
           );
         })}

@@ -31,13 +31,19 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_events_title?.trim() || t("eventsTitle");
+  const description = settings.seo_events_description?.trim() || t("eventsDescription");
   return {
-    title: t("eventsTitle"),
-    description: t("eventsDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("eventsTitle"),
-      description: t("eventsDescription"),
+      title,
+      description,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
     },
@@ -107,6 +113,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
             initialEvents={events}
             featuredEvent={featuredEvent}
             initialCategory={requestedCategory}
+            allLabel={settings.events_filter_all_label}
           />
         </Suspense>
       </section>
