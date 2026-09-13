@@ -64,12 +64,15 @@ test("الفنان 134:4420 — 3. Profile row geometry (134:4671-134:4681)", ()
   assert.match(src, /lg:py-\[48px\]/, "48px of air either side");
   assert.match(src, /max-w-\[1200px\][\s\S]*?lg:px-\[32px\]/, "1200px container padded 32px");
   assert.match(src, /lg:gap-\[40px\]/, "40px between portrait and text");
-  assert.match(src, /lg:size-\[160px\]/, "Portrait is 160px");
+  // The 390 frame draws the same 160px portrait (141:16084), so the size is
+  // unprefixed rather than an lg: step.
+  assert.match(src, /relative size-\[160px\] shrink-0/, "Portrait is 160px at both widths");
+  assert.doesNotMatch(src, /size-\[128px\]/, "No invented 128px mobile portrait");
   assert.match(src, /border-\[3\.333px\] border-primary-500\/20/, "3.333px primary-500 at 20%");
   assert.match(src, /lg:flex-\[936\.016_0_0\]/, "Text column takes the remaining 936.016px");
   assert.match(src, /lg:text-\[31px\][\s\S]*?lg:leading-\[46\.5px\]/, "Name is 31/46.5");
   assert.match(src, /tracking-\[0\.35px\] text-primary-500/, "Specialties are primary-500 tracked 0.35");
-  assert.match(src, /lg:leading-\[32px\]/, "Biography is 16/32");
+  assert.match(src, /leading-\[32px\] text-brand-espresso\/70/, "Biography is on a 32px line");
   assert.match(src, /text-brand-espresso\/70/, "Biography is 70% espresso");
 
   // The portrait is drawn on the physical left — the inline end in Arabic
@@ -275,4 +278,32 @@ test("الفنان — the band height is per-frame, not a shared default", () =
   assert.match(hero, /h-\[678px\] w-full/, "The band is 678 on the 390 frame");
   assert.match(hero, /lg:h-\[611px\]/, "…and 611 on the 1440 one");
   assert.doesNotMatch(hero, /sm:h-\[500px\]/, "The invented tablet band height is gone");
+});
+
+test("الفنان — the 390 frame's bands (141:16217)", () => {
+  const page = read("src/app/[locale]/(public)/artists/[slug]/page.tsx");
+  const card = read("src/components/public/artist/ArtistProfileCard.tsx");
+  const gallery = read("src/components/public/artist/ArtistGallery.tsx");
+
+  // Band tops on the 390 frame: hero closes at 678, `Frame 44` opens at 733,
+  // the gallery heading 141:16466 at 1217, `Section` 141:16468 at 2116.
+  assert.match(page, /mt-\[55px\] lg:mt-\[12px\]/, "55 from the hero to the profile row");
+  assert.match(page, /mt-\[84px\] lg:mt-\[31\.17px\]/, "84 from the profile row to the gallery heading");
+  assert.match(page, /mt-\[66px\] lg:mt-\[80\.02px\]/, "66 from the gallery to the discography");
+  assert.doesNotMatch(page, /mt-10 lg:mt-/, "No carried-over mt-10 rhythm");
+
+  // Frame 44 is 400 tall: portrait 160, 32 of air, then a 208 text block whose
+  // biography box is reserved at 144 so the copy length cannot move the band.
+  assert.match(card, /flex-col-reverse items-center gap-8 px-\[14px\]/, "Portrait on top, 32 apart, in the frame's 362");
+  assert.match(card, /min-h-\[144px\] pt-\[16px\]/, "Biography box is reserved at 144");
+  assert.doesNotMatch(card, /py-10/, "The 390 frame gives this band no padding of its own");
+
+  // 141:16057 stacks the column 266 wide: 202.333 plate, 298.333 quote, 202.333
+  // plate, 16 apart — 735.33, under a 43 heading and 55 of air.
+  assert.match(gallery, /h-\[43px\] text-center font-display text-\[32px\] leading-\[43px\]/, "Heading box is 43");
+  assert.match(gallery, /pt-\[55px\] lg:pt-\[48px\]/, "55 from the heading to the column");
+  assert.match(gallery, /grid w-\[266px\] max-w-full grid-cols-1/, "Column is 266 wide and single-file");
+  assert.match(gallery, /h-\[202\.333px\] overflow-hidden rounded-\[12px\]/, "Plates are 202.333 tall");
+  assert.match(gallery, /h-\[298\.333px\] flex-col/, "Quote card is 298.333 tall");
+  assert.doesNotMatch(gallery, /sm:grid-cols-2/, "Figma draws no tablet artboard for this grid");
 });
