@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { localizeContent, localizeContentList } from "./localize";
 import { requireAdminSession } from "@/lib/auth-guard";
+import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import type { Database } from "@/lib/supabase/types";
 import {
   type Artist,
@@ -44,10 +44,10 @@ export async function getAdminArtists(): Promise<Artist[]> {
  * Fetches featured published artists for the homepage.
  * Strictly checks is_published = true AND is_featured = true.
  */
-async function getFeaturedArtistsRaw(limit = 4): Promise<Artist[]> {
+export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
   try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
+    if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+      return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
     }
 
     const supabase = await createClient();
@@ -60,13 +60,13 @@ async function getFeaturedArtistsRaw(limit = 4): Promise<Artist[]> {
       .order("created_at", { ascending: false })
       .limit(limit);
 
-    if (error || !data || data.length === 0) {
-      return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
+    if (error) {
+      return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : [];
     }
 
     return data as unknown as Artist[];
   } catch {
-    return CANONICAL_FEATURED_ARTISTS.filter((a) => a.is_featured).slice(0, limit);
+    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : [];
   }
 }
 
@@ -74,11 +74,11 @@ async function getFeaturedArtistsRaw(limit = 4): Promise<Artist[]> {
  * Fetches all published artists from Supabase ordered by display_order ASC, name ASC.
  * Draft artists (is_published = false) are never returned.
  */
-async function getPublishedArtistsRaw(options?: {
+export async function getPublishedArtists(options?: {
   category?: string;
 }): Promise<Artist[]> {
   try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
       return CANONICAL_FEATURED_ARTISTS;
     }
 
@@ -86,8 +86,7 @@ async function getPublishedArtistsRaw(options?: {
     let query = supabase
       .from("artists")
       .select(
-        "id, name, slug, category, genre_tag, city, quote, spotlight_quote, short_bio, full_bio, specialties, portrait_image_url, is_featured, is_published, display_order, created_at, updated_at, "
-        + "name_en, genre_tag_en, city_en, quote_en, spotlight_quote_en, short_bio_en, full_bio_en, specialties_en"
+        "id, name, slug, category, genre_tag, city, quote, spotlight_quote, short_bio, full_bio, specialties, portrait_image_url, is_featured, is_published, display_order, created_at, updated_at"
       )
       .eq("is_published", true)
       .order("display_order", { ascending: true })
@@ -105,13 +104,13 @@ async function getPublishedArtistsRaw(options?: {
 
     if (error) {
       console.error("DAL Error [getPublishedArtists]:", error.message);
-      return CANONICAL_FEATURED_ARTISTS;
+      return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : [];
     }
 
-    return (data as unknown as Artist[]) || CANONICAL_FEATURED_ARTISTS;
+    return (data as unknown as Artist[]) || [];
   } catch (err) {
     console.warn("DAL Warning [getPublishedArtists]: Failed to fetch artists", err);
-    return CANONICAL_FEATURED_ARTISTS;
+    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : [];
   }
 }
 
@@ -119,9 +118,9 @@ async function getPublishedArtistsRaw(options?: {
  * Fetches a single published artist by slug.
  * Returns null if not found or if is_published is false.
  */
-async function getArtistBySlugRaw(slug: string): Promise<Artist | null> {
+export async function getArtistBySlug(slug: string): Promise<Artist | null> {
   try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
       return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
     }
 
@@ -134,27 +133,11 @@ async function getArtistBySlugRaw(slug: string): Promise<Artist | null> {
       .single();
 
     if (error || !data) {
-      return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
+      return null;
     }
 
     return data as unknown as Artist;
   } catch {
-    return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
+    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null : null;
   }
-}
-
-/*
- * Public readers resolve content into the request's locale. Arabic rows are
- * returned untouched; English falls back to Arabic per field when a
- * translation has not been written yet.
- */
-export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
-  return localizeContentList("artists", await getFeaturedArtistsRaw(limit));
-}
-export async function getPublishedArtists(options?: { category?: string }): Promise<Artist[]> {
-  return localizeContentList("artists", await getPublishedArtistsRaw(options));
-}
-export async function getArtistBySlug(slug: string): Promise<Artist | null> {
-  const row = await getArtistBySlugRaw(slug);
-  return row ? localizeContent("artists", row) : null;
 }
