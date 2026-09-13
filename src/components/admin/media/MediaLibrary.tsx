@@ -96,12 +96,14 @@ export function MediaLibrary() {
         id={`bucket-panel-${bucket}`}
         aria-labelledby={`bucket-tab-${bucket}`}
       >
-        <MediaFileGrid
-          files={files}
-          onDeleted={(deletedPath) => {
-            setFiles((prev) => prev.filter((f) => f.path !== deletedPath));
-          }}
-        />
+        {!loading && !error && (
+          <MediaFileGrid
+            files={files}
+            onDeleted={(deletedPath) => {
+              setFiles((prev) => prev.filter((f) => f.path !== deletedPath));
+            }}
+          />
+        )}
       </div>
 
       <MediaUploadZone bucket={bucket} folder={folder} onUploaded={reload} />
