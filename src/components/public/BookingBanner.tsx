@@ -110,7 +110,7 @@ export function BookingBanner({
           style={{ top: `${v.headingTop}px` }}
         >
           <h2
-            className={`max-w-[636px] font-display lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
+            className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
             style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
           >
             {title}

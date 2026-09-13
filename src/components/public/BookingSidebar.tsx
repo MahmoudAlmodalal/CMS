@@ -65,8 +65,8 @@ export function BookingSidebar({
   ];
 
   return (
-    <aside className="ms-8 flex w-[288px] flex-col gap-5 text-start lg:ms-0 lg:w-[412px]">
-      <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-8">
+    <aside className="ms-8 flex w-[288px] min-w-0 max-w-[calc(100vw-3.25rem)] flex-col gap-5 text-start lg:ms-0 lg:w-[412px] lg:max-w-full">
+      <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-5 sm:p-8">
         <div
           aria-hidden="true"
           data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
@@ -78,7 +78,7 @@ export function BookingSidebar({
         </h2>
 
         {channels.map((channel) => (
-          <div key={channel.label} className={`w-[256px] ${channel.spacing}`}>
+          <div key={channel.label} className={`w-[256px] max-w-full ${channel.spacing}`}>
             <p className="text-[10px] font-bold leading-[15px] text-brand-tint">
               {channel.label}
             </p>
@@ -93,7 +93,7 @@ export function BookingSidebar({
         ))}
       </div>
 
-      <div className="rounded-[12px] bg-brand-primary p-8">
+      <div className="rounded-[12px] bg-brand-primary p-5 sm:p-8">
         <h2 className="text-[16px] font-bold leading-[24px] text-brand-tint">
           {t("stepsHeading")}
         </h2>
@@ -102,7 +102,7 @@ export function BookingSidebar({
           {STEPS.map((key, index) => (
             <li
               key={key}
-              className={`flex w-[256px] items-start gap-3 ${
+              className={`flex w-[256px] max-w-full items-start gap-3 ${
                 index === 0 ? "pt-5" : index === STEPS.length - 1 ? "py-[13.6px]" : "pt-[13.6px]"
               }`}
             >

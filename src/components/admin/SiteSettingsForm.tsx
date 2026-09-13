@@ -33,6 +33,61 @@ interface SiteSettingsFormValues {
   academy_subtitle_en: string;
   booking_subtitle: string;
   booking_subtitle_en: string;
+  events_title: string;
+  events_title_en: string;
+  events_hero_image_url: string;
+  artists_title: string;
+  artists_title_en: string;
+  artists_hero_image_url: string;
+  academy_title: string;
+  academy_title_en: string;
+  academy_kicker: string;
+  academy_kicker_en: string;
+  academy_hero_image_url: string;
+  academy_tracks_heading: string;
+  academy_tracks_heading_en: string;
+  news_title: string;
+  news_title_en: string;
+  news_subtitle: string;
+  news_subtitle_en: string;
+  news_kicker: string;
+  news_kicker_en: string;
+  home_hero_primary_cta: string;
+  home_hero_primary_cta_en: string;
+  home_hero_secondary_cta: string;
+  home_hero_secondary_cta_en: string;
+  home_about_cta: string;
+  home_about_cta_en: string;
+  home_artists_heading: string;
+  home_artists_heading_en: string;
+  home_artists_cta: string;
+  home_artists_cta_en: string;
+  home_testimonials_heading: string;
+  home_testimonials_heading_en: string;
+  home_editorial_heading: string;
+  home_editorial_heading_en: string;
+  home_events_heading: string;
+  home_events_heading_en: string;
+  home_events_cta: string;
+  home_events_cta_en: string;
+  academy_values_heading: string;
+  academy_values_heading_en: string;
+  academy_value1_title: string;
+  academy_value1_title_en: string;
+  academy_value1_body: string;
+  academy_value1_body_en: string;
+  academy_value2_title: string;
+  academy_value2_title_en: string;
+  academy_value2_body: string;
+  academy_value2_body_en: string;
+  academy_value3_title: string;
+  academy_value3_title_en: string;
+  academy_value3_body: string;
+  academy_value3_body_en: string;
+  academy_newsletter_heading: string;
+  academy_newsletter_heading_en: string;
+  academy_newsletter_tagline: string;
+  academy_newsletter_tagline_en: string;
   contact_email: string;
   contact_phone: string;
   social_links: {
@@ -90,6 +145,61 @@ function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
     academy_subtitle_en: settings.academy_subtitle_en ?? "",
     booking_subtitle: settings.booking_subtitle ?? "",
     booking_subtitle_en: settings.booking_subtitle_en ?? "",
+    events_title: settings.events_title ?? "",
+    events_title_en: settings.events_title_en ?? "",
+    events_hero_image_url: settings.events_hero_image_url ?? "",
+    artists_title: settings.artists_title ?? "",
+    artists_title_en: settings.artists_title_en ?? "",
+    artists_hero_image_url: settings.artists_hero_image_url ?? "",
+    academy_title: settings.academy_title ?? "",
+    academy_title_en: settings.academy_title_en ?? "",
+    academy_kicker: settings.academy_kicker ?? "",
+    academy_kicker_en: settings.academy_kicker_en ?? "",
+    academy_hero_image_url: settings.academy_hero_image_url ?? "",
+    academy_tracks_heading: settings.academy_tracks_heading ?? "",
+    academy_tracks_heading_en: settings.academy_tracks_heading_en ?? "",
+    news_title: settings.news_title ?? "",
+    news_title_en: settings.news_title_en ?? "",
+    news_subtitle: settings.news_subtitle ?? "",
+    news_subtitle_en: settings.news_subtitle_en ?? "",
+    news_kicker: settings.news_kicker ?? "",
+    news_kicker_en: settings.news_kicker_en ?? "",
+    home_hero_primary_cta: settings.home_hero_primary_cta ?? "",
+    home_hero_primary_cta_en: settings.home_hero_primary_cta_en ?? "",
+    home_hero_secondary_cta: settings.home_hero_secondary_cta ?? "",
+    home_hero_secondary_cta_en: settings.home_hero_secondary_cta_en ?? "",
+    home_about_cta: settings.home_about_cta ?? "",
+    home_about_cta_en: settings.home_about_cta_en ?? "",
+    home_artists_heading: settings.home_artists_heading ?? "",
+    home_artists_heading_en: settings.home_artists_heading_en ?? "",
+    home_artists_cta: settings.home_artists_cta ?? "",
+    home_artists_cta_en: settings.home_artists_cta_en ?? "",
+    home_testimonials_heading: settings.home_testimonials_heading ?? "",
+    home_testimonials_heading_en: settings.home_testimonials_heading_en ?? "",
+    home_editorial_heading: settings.home_editorial_heading ?? "",
+    home_editorial_heading_en: settings.home_editorial_heading_en ?? "",
+    home_events_heading: settings.home_events_heading ?? "",
+    home_events_heading_en: settings.home_events_heading_en ?? "",
+    home_events_cta: settings.home_events_cta ?? "",
+    home_events_cta_en: settings.home_events_cta_en ?? "",
+    academy_values_heading: settings.academy_values_heading ?? "",
+    academy_values_heading_en: settings.academy_values_heading_en ?? "",
+    academy_value1_title: settings.academy_value1_title ?? "",
+    academy_value1_title_en: settings.academy_value1_title_en ?? "",
+    academy_value1_body: settings.academy_value1_body ?? "",
+    academy_value1_body_en: settings.academy_value1_body_en ?? "",
+    academy_value2_title: settings.academy_value2_title ?? "",
+    academy_value2_title_en: settings.academy_value2_title_en ?? "",
+    academy_value2_body: settings.academy_value2_body ?? "",
+    academy_value2_body_en: settings.academy_value2_body_en ?? "",
+    academy_value3_title: settings.academy_value3_title ?? "",
+    academy_value3_title_en: settings.academy_value3_title_en ?? "",
+    academy_value3_body: settings.academy_value3_body ?? "",
+    academy_value3_body_en: settings.academy_value3_body_en ?? "",
+    academy_newsletter_heading: settings.academy_newsletter_heading ?? "",
+    academy_newsletter_heading_en: settings.academy_newsletter_heading_en ?? "",
+    academy_newsletter_tagline: settings.academy_newsletter_tagline ?? "",
+    academy_newsletter_tagline_en: settings.academy_newsletter_tagline_en ?? "",
     contact_email: settings.contact_email,
     contact_phone: settings.contact_phone,
     social_links: {
@@ -134,6 +244,94 @@ function Field({
   );
 }
 
+function BilingualPair({
+  id,
+  label,
+  multiline = false,
+  url = false,
+  values,
+  onChange,
+}: {
+  id: TextFieldName;
+  label: string;
+  multiline?: boolean;
+  url?: boolean;
+  values: SiteSettingsFormValues;
+  onChange: (field: TextFieldName, value: string) => void;
+}) {
+  if (url) {
+    return (
+      <Field id={id} label={label} required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
+        <Input id={id} type="url" dir="ltr" value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+      </Field>
+    );
+  }
+  const enId = `${id}_en` as TextFieldName;
+  return (
+    <>
+      <Field id={id} label={label} required={false} help="اتركه فارغاً لعرض النص الافتراضي.">
+        {multiline ? (
+          <Textarea id={id} rows={3} className="min-h-[96px]" value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+        ) : (
+          <Input id={id} value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+        )}
+      </Field>
+      <Field id={enId} label={`${label} — English`} required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
+        {multiline ? (
+          <Textarea id={enId} dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values[enId]} onChange={(event) => onChange(enId, event.target.value)} />
+        ) : (
+          <Input id={enId} dir="ltr" lang="en" value={values[enId]} onChange={(event) => onChange(enId, event.target.value)} />
+        )}
+      </Field>
+    </>
+  );
+}
+
+interface PageCopyField {
+  id: TextFieldName;
+  label: string;
+  multiline?: boolean;
+  url?: boolean;
+}
+
+const PAGE_HERO_FIELDS: PageCopyField[] = [
+  { id: "events_title", label: "عنوان صفحة الفعاليات", multiline: true },
+  { id: "events_hero_image_url", label: "صورة صفحة الفعاليات", url: true },
+  { id: "artists_title", label: "عنوان صفحة الفنانين", multiline: true },
+  { id: "artists_hero_image_url", label: "صورة صفحة الفنانين", url: true },
+  { id: "academy_title", label: "عنوان صفحة الأكاديمية", multiline: true },
+  { id: "academy_kicker", label: "الشارة العلوية لصفحة الأكاديمية" },
+  { id: "academy_hero_image_url", label: "صورة صفحة الأكاديمية", url: true },
+  { id: "academy_tracks_heading", label: "عنوان قسم المسارات", multiline: true },
+  { id: "news_title", label: "عنوان صفحة الأخبار" },
+  { id: "news_subtitle", label: "العنوان الفرعي لصفحة الأخبار", multiline: true },
+  { id: "news_kicker", label: "الشارة العلوية لصفحة الأخبار" },
+];
+
+const HOME_COPY_FIELDS: PageCopyField[] = [
+  { id: "home_hero_primary_cta", label: "الزر الرئيسي للهيرو" },
+  { id: "home_hero_secondary_cta", label: "الزر الثانوي للهيرو" },
+  { id: "home_about_cta", label: "زر قسم من نحن" },
+  { id: "home_artists_heading", label: "عنوان قسم الفنانين", multiline: true },
+  { id: "home_artists_cta", label: "زر قسم الفنانين" },
+  { id: "home_testimonials_heading", label: "عنوان قسم الشهادات", multiline: true },
+  { id: "home_editorial_heading", label: "عنوان القسم التحريري", multiline: true },
+  { id: "home_events_heading", label: "عنوان قسم الفعاليات", multiline: true },
+  { id: "home_events_cta", label: "زر قسم الفعاليات" },
+];
+
+const ACADEMY_BAND_FIELDS: PageCopyField[] = [
+  { id: "academy_values_heading", label: "عنوان شريط القيم", multiline: true },
+  { id: "academy_value1_title", label: "القيمة الأولى — العنوان" },
+  { id: "academy_value1_body", label: "القيمة الأولى — الوصف", multiline: true },
+  { id: "academy_value2_title", label: "القيمة الثانية — العنوان" },
+  { id: "academy_value2_body", label: "القيمة الثانية — الوصف", multiline: true },
+  { id: "academy_value3_title", label: "القيمة الثالثة — العنوان" },
+  { id: "academy_value3_body", label: "القيمة الثالثة — الوصف", multiline: true },
+  { id: "academy_newsletter_heading", label: "عنوان النشرة البريدية" },
+  { id: "academy_newsletter_tagline", label: "السطر التعريفي للنشرة البريدية" },
+];
+
 function SiteSettingsPreview({ values }: { values: SiteSettingsFormValues }) {
   const text = (value: string, fallback: string) => value.trim() || fallback;
 
@@ -173,6 +371,25 @@ function SiteSettingsPreview({ values }: { values: SiteSettingsFormValues }) {
             {text(values.booking_banner_body, "نص بنر الحجز سيظهر هنا")}
           </p>
         </section>
+
+        {(values.events_title.trim() ||
+          values.artists_title.trim() ||
+          values.academy_title.trim() ||
+          values.news_title.trim() ||
+          values.home_artists_heading.trim() ||
+          values.home_events_heading.trim()) && (
+          <section className="rounded-2xl border border-brand-espresso-subtle/60 bg-white p-5" aria-labelledby="settings-preview-pages">
+            <p className="text-xs font-bold text-brand-primary">عناوين الصفحات</p>
+            <ul id="settings-preview-pages" className="mt-2 space-y-1 text-sm leading-relaxed text-brand-espresso/70">
+              {values.events_title.trim() && <li>الفعاليات: {values.events_title.trim()}</li>}
+              {values.artists_title.trim() && <li>الفنانون: {values.artists_title.trim()}</li>}
+              {values.academy_title.trim() && <li>الأكاديمية: {values.academy_title.trim()}</li>}
+              {values.news_title.trim() && <li>الأخبار: {values.news_title.trim()}</li>}
+              {values.home_artists_heading.trim() && <li>الرئيسية/الفنانون: {values.home_artists_heading.trim()}</li>}
+              {values.home_events_heading.trim() && <li>الرئيسية/الفعاليات: {values.home_events_heading.trim()}</li>}
+            </ul>
+          </section>
+        )}
 
         <div className="rounded-2xl border border-brand-espresso-subtle/60 bg-brand-espresso p-5 text-sm text-brand-tint">
           <p className="font-bold text-brand-primary">التواصل والتذييل</p>
@@ -250,6 +467,61 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
       academy_subtitle_en: values.academy_subtitle_en || null,
       booking_subtitle: values.booking_subtitle || null,
       booking_subtitle_en: values.booking_subtitle_en || null,
+      events_title: values.events_title || null,
+      events_title_en: values.events_title_en || null,
+      events_hero_image_url: values.events_hero_image_url || null,
+      artists_title: values.artists_title || null,
+      artists_title_en: values.artists_title_en || null,
+      artists_hero_image_url: values.artists_hero_image_url || null,
+      academy_title: values.academy_title || null,
+      academy_title_en: values.academy_title_en || null,
+      academy_kicker: values.academy_kicker || null,
+      academy_kicker_en: values.academy_kicker_en || null,
+      academy_hero_image_url: values.academy_hero_image_url || null,
+      academy_tracks_heading: values.academy_tracks_heading || null,
+      academy_tracks_heading_en: values.academy_tracks_heading_en || null,
+      news_title: values.news_title || null,
+      news_title_en: values.news_title_en || null,
+      news_subtitle: values.news_subtitle || null,
+      news_subtitle_en: values.news_subtitle_en || null,
+      news_kicker: values.news_kicker || null,
+      news_kicker_en: values.news_kicker_en || null,
+      home_hero_primary_cta: values.home_hero_primary_cta || null,
+      home_hero_primary_cta_en: values.home_hero_primary_cta_en || null,
+      home_hero_secondary_cta: values.home_hero_secondary_cta || null,
+      home_hero_secondary_cta_en: values.home_hero_secondary_cta_en || null,
+      home_about_cta: values.home_about_cta || null,
+      home_about_cta_en: values.home_about_cta_en || null,
+      home_artists_heading: values.home_artists_heading || null,
+      home_artists_heading_en: values.home_artists_heading_en || null,
+      home_artists_cta: values.home_artists_cta || null,
+      home_artists_cta_en: values.home_artists_cta_en || null,
+      home_testimonials_heading: values.home_testimonials_heading || null,
+      home_testimonials_heading_en: values.home_testimonials_heading_en || null,
+      home_editorial_heading: values.home_editorial_heading || null,
+      home_editorial_heading_en: values.home_editorial_heading_en || null,
+      home_events_heading: values.home_events_heading || null,
+      home_events_heading_en: values.home_events_heading_en || null,
+      home_events_cta: values.home_events_cta || null,
+      home_events_cta_en: values.home_events_cta_en || null,
+      academy_values_heading: values.academy_values_heading || null,
+      academy_values_heading_en: values.academy_values_heading_en || null,
+      academy_value1_title: values.academy_value1_title || null,
+      academy_value1_title_en: values.academy_value1_title_en || null,
+      academy_value1_body: values.academy_value1_body || null,
+      academy_value1_body_en: values.academy_value1_body_en || null,
+      academy_value2_title: values.academy_value2_title || null,
+      academy_value2_title_en: values.academy_value2_title_en || null,
+      academy_value2_body: values.academy_value2_body || null,
+      academy_value2_body_en: values.academy_value2_body_en || null,
+      academy_value3_title: values.academy_value3_title || null,
+      academy_value3_title_en: values.academy_value3_title_en || null,
+      academy_value3_body: values.academy_value3_body || null,
+      academy_value3_body_en: values.academy_value3_body_en || null,
+      academy_newsletter_heading: values.academy_newsletter_heading || null,
+      academy_newsletter_heading_en: values.academy_newsletter_heading_en || null,
+      academy_newsletter_tagline: values.academy_newsletter_tagline || null,
+      academy_newsletter_tagline_en: values.academy_newsletter_tagline_en || null,
       contact_email: values.contact_email,
       contact_phone: values.contact_phone,
       social_links: values.social_links,
@@ -450,6 +722,42 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="booking_subtitle_en" label="العنوان الفرعي لصفحة الحجز — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
               <Textarea id="booking_subtitle_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.booking_subtitle_en} onChange={(event) => setField("booking_subtitle_en", event.target.value)} />
             </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>عناوين وصور الصفحات</CardTitle>
+            <CardDescription>عناوين وشارات وصور الواجهات لصفحات الفعاليات والفنانين والأكاديمية والأخبار. اترك أي حقل فارغاً لعرض النص الافتراضي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {PAGE_HERO_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>نصوص الصفحة الرئيسية</CardTitle>
+            <CardDescription>أزرار وعناوين أقسام الصفحة الرئيسية. اترك أي حقل فارغاً لعرض النص الافتراضي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {HOME_COPY_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>الأكاديمية: القيم والنشرة</CardTitle>
+            <CardDescription>عنوان شريط القيم الثلاث وقيمه، وعنوان النشرة البريدية وسطرها التعريفي.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-5 md:grid-cols-2">
+            {ACADEMY_BAND_FIELDS.map((field) => (
+              <BilingualPair key={field.id} id={field.id} label={field.label} multiline={field.multiline} url={field.url} values={values} onChange={setField} />
+            ))}
           </CardContent>
         </Card>
 

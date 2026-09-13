@@ -21,7 +21,15 @@ import { subscribeNewsletter } from "@/actions/newsletter";
  * really does. And the design draws no standfirst, no privacy line and no feedback
  * state, so those are rendered only once the reader submits.
  */
-export function AcademyNewsletter() {
+export function AcademyNewsletter({
+  heading,
+  tagline,
+}: {
+  /** Admin override for the band heading. Falls back to built-in copy. */
+  heading?: string;
+  /** Admin override for the band tagline. Falls back to built-in copy. */
+  tagline?: string;
+} = {}) {
   const t = useTranslations("academy");
   const [email, setEmail] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -62,11 +70,11 @@ export function AcademyNewsletter() {
           id="academy-newsletter-heading"
           className="text-center font-display text-[32px] leading-[36px] text-brand-espresso lg:whitespace-nowrap"
         >
-          {t("newsletterHeading")}
+          {heading || t("newsletterHeading")}
         </h2>
 
         <p className="pt-2 text-center text-[16.8px] leading-[26px] text-brand-primary">
-          {t("newsletterTagline")}
+          {tagline || t("newsletterTagline")}
         </p>
 
         <form onSubmit={handleSubmit} className="w-full pt-10">

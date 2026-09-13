@@ -98,9 +98,12 @@ test("Task 31 — 3. Mobile Top Bar (Figma Component 17/Navigation 139:12348 —
   assert.match(content, /bg-white/, "Mobile pill must carry the measured #FFFFFF fill");
   assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
 
-  // The wordmark is a 104x32 raster, so the band name is the image's accessible name.
+  // The wordmark raster on disk is 292x178 (1.64:1), not the 104x32 box the node
+  // measures (3.25:1) — forcing that box letterboxed the logo to ~52px with 26px
+  // of dead space each side. It renders at its natural aspect at 32 tall instead,
+  // so the accessible name still carries the band name.
   assert.match(content, /site\("brand"\)/, "Mobile top bar must name the band on the logo");
-  assert.match(content, /h-8 w-26/, "Mobile logo must occupy the 104x32 box of Node 139:12341");
+  assert.match(content, /h-8 w-auto object-contain/, "Mobile logo renders at its file aspect instead of the mismatched 104x32 box");
 
   assertLocalised(content, "a11y.openMenu", "فتح قائمة التنقل", "Mobile top bar trigger");
   assert.match(content, /size-6/, "Drawer toggle must occupy the 24x24 box of Node 139:12338");
@@ -220,3 +223,29 @@ test("Task 31 — 7. All 8 Confirmed Public Routes Exist (NO /events/[slug])", (
     "Architecture strictly prohibits /events/[slug] route (all event actions route to /booking)"
   );
 });
+
+test("Figma 142:17048 — English Desktop Floating Navbar & Language Switcher", () => {
+  const content = fs.readFileSync(path.join(root, "src/components/public/Navbar.tsx"), "utf-8");
+  const switcher = fs.readFileSync(path.join(root, "src/components/public/LocaleSwitcher.tsx"), "utf-8");
+  const barrel = fs.readFileSync(path.join(root, "src/components/public/index.ts"), "utf-8");
+
+  // English Navbar Node 142:17048 / Frame 38
+  assert.match(content, /142:17048/, "Navbar must associate with Figma English node 142:17048");
+  assert.match(content, /ENGLISH_NAV_ITEMS/, "Navbar must declare ENGLISH_NAV_ITEMS for English locale");
+  assert.match(barrel, /ENGLISH_NAV_ITEMS/, "Public components barrel must export ENGLISH_NAV_ITEMS");
+
+  // Verify English sequence: Home -> Events -> Academy -> Artists -> News
+  const enOrder = ["home", "events", "academy", "artists", "news"];
+  const navItemsMatch = content.match(/export const ENGLISH_NAV_ITEMS[^{]*=\s*\[([\s\S]*?)\]\s*as const/);
+  assert.ok(navItemsMatch, "ENGLISH_NAV_ITEMS array must be exported as const");
+  const extractedKeys = [...navItemsMatch[1].matchAll(/key:\s*"(\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(extractedKeys, enOrder, "ENGLISH_NAV_ITEMS must follow Figma node 142:17048 sequence");
+
+  // Language switcher in English renders ic:baseline-language globe icon
+  assert.match(switcher, /ic:baseline-language/, "LocaleSwitcher must render ic:baseline-language in English mode");
+  assert.ok(
+    fs.existsSync(path.join(root, "public/assets/icons/ic-baseline-language.svg")),
+    "ic-baseline-language.svg asset must exist in public/assets/icons"
+  );
+});
+

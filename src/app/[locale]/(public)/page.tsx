@@ -82,32 +82,46 @@ export default async function HomePage({
   return (
     <>
       {/* Stage 1: Hero Banner (Figma Component 20, 740px) */}
-      <HeroSection settings={settings} />
+      <HeroSection
+        settings={settings}
+        primaryCtaLabel={settings.home_hero_primary_cta || undefined}
+        secondaryCtaLabel={settings.home_hero_secondary_cta || undefined}
+      />
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
       <div className="lg:-mt-[22px]">
-        <AboutSection settings={settings} />
+        <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
       </div>
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
       <div className="lg:mt-[22px]">
-        <FeaturedArtists artists={artists} />
+        <FeaturedArtists
+          artists={artists}
+          heading={settings.home_artists_heading || undefined}
+          ctaLabel={settings.home_artists_cta || undefined}
+        />
       </div>
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
       {settings.show_testimonials && (
         <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
-          <TestimonialsSlider testimonials={testimonials} />
+          <TestimonialsSlider testimonials={testimonials} heading={settings.home_testimonials_heading || undefined} />
         </div>
       )}
 
       {/* Stage 5: Editorial Feature (Figma Frame 26, 709px, #1F0900, 4 cards) */}
-      {settings.show_editorial && <EditorialFeature articles={articles} />}
+      {settings.show_editorial && (
+        <EditorialFeature articles={articles} heading={settings.home_editorial_heading || undefined} />
+      )}
 
       {/* Stage 6: Upcoming Events Strip (Figma Frame 28, 678px, split banner) */}
       {settings.show_events && (
         <div className="lg:mt-[26px]">
-          <HomeEvents events={events} />
+          <HomeEvents
+            events={events}
+            heading={settings.home_events_heading || undefined}
+            ctaLabel={settings.home_events_cta || undefined}
+          />
         </div>
       )}
 
