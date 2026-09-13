@@ -581,7 +581,7 @@ test("الرئيسية — the 390 frame's seven bands", () => {
   // نلتقي 4582..5308: unsplit, ordered with display:contents, rows turned around.
   assert.match(events, /pb-\[54px\] pt-\[48px\]/, "The events band opens 48 and closes 54");
   assert.match(events, /contents lg:absolute lg:start-\[-4px\]/, "The panel flattens below lg so the photograph can sit between heading and rows");
-  assert.match(events, /order-2 mx-auto h-\[224px\] w-\[369\.735px\]/, "The photograph is 369.735x224 in flow");
+  assert.match(events, /order-2 mx-auto h-\[224px\] w-\[calc\(100vw-2rem\)\] max-w-\[369\.735px\]/, "The photograph caps at 369.735px and fits narrow phones");
   assert.match(events, /h-\[80px\] flex-row-reverse/, "Rows are a flat 80 with the date badge on the physical left");
   assert.match(events, /inline-flex h-\[20px\] items-center text-\[14px\]/, "The CTA is a 20-tall text link, not the 48px button");
 

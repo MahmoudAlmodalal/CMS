@@ -174,7 +174,7 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
         </div>
 
         {/* Photograph 87:14467 — 509 wide hung 4px off the inline end, 505 drawn. */}
-        <div className="relative order-2 mx-auto h-[224px] w-[369.735px] overflow-hidden rounded-[16px] bg-brand-espresso lg:absolute lg:end-0 lg:top-0 lg:mx-0 lg:h-[678px] lg:w-[505px] lg:rounded-s-[16px] lg:rounded-e-none">
+        <div className="relative order-2 mx-auto h-[224px] w-[calc(100vw-2rem)] max-w-[369.735px] overflow-hidden rounded-[16px] bg-brand-espresso lg:absolute lg:end-0 lg:top-0 lg:mx-0 lg:h-[678px] lg:w-[505px] lg:rounded-s-[16px] lg:rounded-e-none">
           <Image
             src={imageUrl || BAND_PHOTOGRAPH}
             alt=""
