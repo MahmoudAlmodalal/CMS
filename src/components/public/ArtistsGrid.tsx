@@ -63,7 +63,7 @@ export function ArtistsGrid({
           // cards that are already scrolled out. Scrollbar gutters are suppressed
           // because the 442 is the design's height and a classic bar would eat 15 of
           // it out of the card rather than out of the row.
-          className="flex h-[442px] w-[355px] shrink-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
+          className="flex h-[442px] w-full max-w-[355px] shrink-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
         >
           {row.map((artist, index) => (
             <ArtistCard

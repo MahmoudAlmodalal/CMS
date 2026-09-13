@@ -384,22 +384,20 @@ test("الحجز — the 390 frame's form and sidebar", () => {
   // 141:15632 is 390x688 hung at y=-10.
   assert.match(header, /mobileHeight=\{678\}/, "The booking hero band is 678 on the 390 frame");
 
-  // Form 141:15488 at (13,762) 363 wide; sidebar 141:15442 at (50,1598) 288 wide.
+  // The form uses the full available width on phones and returns to the 672px
+  // Figma column on desktop; this prevents clipping at 320px and 360px.
   assert.match(page, /gap-\[7px\] px-5 pb-\[390\.2px\] pt-\[84px\]/, "84 opens the column stack, 7 separates it, 390.2 closes it");
-  assert.match(page, /ms-\[-6px\] w-\[363px\] min-w-0/, "The form column is 363 wide at x=13");
+  assert.match(page, /min-w-0 w-full max-w-full lg:ms-0 lg:w-\[672px\]/, "The form column fits every phone and restores the desktop width");
   assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
   assert.match(sidebar, /ms-8 flex w-\[288px\]/, "The sidebar is 288 wide at x=50");
   assert.match(sidebar, /lg:ms-0 lg:w-\[412px\]/, "…and 412 on the 1440 frame");
 
-  // The decisive read: the 390 frame puts TWO fields per row, not one. Frame 42 is
-  // الاسم الكامل (175) + رقم الهاتف (175); Frame 43 is الميزانية (164) + البريد (197).
-  const pairedRows = formSrc.match(/grid grid-cols-2 gap-4 pt-\d/g) ?? [];
-  assert.equal(pairedRows.length, 3, "All three paired rows carry two fields at 390 too");
-  assert.doesNotMatch(
-    formSrc,
-    /grid grid-cols-1 gap-4 pt-6/,
-    "No paired row may fall back to a single column"
-  );
+  // Paired fields stack below 640px for touch usability, then return to the
+  // two-column Figma rhythm from the small-tablet breakpoint onward.
+  const pairedRows = formSrc.match(/grid min-w-0 grid-cols-1 gap-4/g) ?? [];
+  assert.equal(pairedRows.length, 4, "All narrow-phone field groups use one column");
+  assert.match(formSrc, /sm:grid-cols-2 md:grid-cols-\[318px_246px\]/, "Personal rows restore two columns from sm");
+  assert.match(formSrc, /sm:grid-cols-2 md:grid-cols-\[320px_246px\]/, "Occasion row restores two columns from sm");
 
   // 141:15565 is a trailing empty 363x52.79 Container — it closes the form at both
   // widths, so it is not an lg:-only figure.

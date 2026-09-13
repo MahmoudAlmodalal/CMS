@@ -27,7 +27,8 @@ test("الفنانين — the 390 frame draws two RTL carousels, not the deskto
   const grid = stripComments(comp("ArtistsGrid.tsx"));
 
   // Frame 40 (141:15048) is 387x900: two rows of 355x442, sixteen apart.
-  assert.match(grid, /h-\[442px\] w-\[355px\]/, "Each carousel row is 355x442");
+  // The row is capped at 355px but shrinks to the viewport on very small phones.
+  assert.match(grid, /h-\[442px\] w-full max-w-\[355px\]/, "Each carousel row caps at 355px and fits narrow phones");
   assert.match(grid, /flex flex-col items-start gap-4/, "The two rows sit 16px apart");
 
   // Cards at x = -869, -563, -257, 49 — a 306 step, so 296 wide with 10 between,
@@ -51,7 +52,7 @@ test("الفنانين — the 390 frame draws two RTL carousels, not the deskto
   // a wrap putting a variable number of cards in each row would not hold it.
   assert.match(grid, /Math\.ceil\(artists\.length \/ 2\)/, "The rows are built by halving the list");
   assert.doesNotMatch(grid, /flex-wrap/, "The carousel must not wrap");
-  assert.doesNotMatch(grid, /grid-cols-1|sm:grid-cols-2/, "The mobile stack the frame does not draw is gone");
+  assert.doesNotMatch(grid, /grid-cols-1|sm:grid-cols-2/, "The mobile carousel does not become a wrapped grid");
 });
 
 test("الفنانين — the card is one fixed 296x422 at every width", () => {
