@@ -21,6 +21,7 @@ const MIGRATIONS = [
   "supabase/migrations/20260912000000_add_english_content_columns.sql",
   "supabase/migrations/20260914000000_add_page_content_controls.sql",
   "supabase/migrations/20260915000000_add_seo_and_label_controls.sql",
+  "supabase/migrations/20260917000100_page_controls.sql",
 ];
 
 /**

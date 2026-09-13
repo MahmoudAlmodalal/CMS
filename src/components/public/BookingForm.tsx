@@ -260,7 +260,7 @@ export function BookingForm({
       {/* ================================================================== */}
       {/* Group 2: Event Details (Figma Node 91:17207)                       */}
       {/* ================================================================== */}
-      <fieldset className="m-0 flex flex-col border-0 pt-10 md:pt-[43px]">
+      <fieldset className="m-0 mt-8 md:mt-12 flex flex-col border-0 pt-6 md:pt-8">
         <legend className={LEGEND_CLASS}>
           <span>♪</span>
           <span>{t("groupOccasion")}</span>

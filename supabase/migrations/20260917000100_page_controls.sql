@@ -3,7 +3,7 @@
 -- Nullable text/url columns: null/blank = fall back to built-in copy/asset.
 -- Idempotent.
 
-ALTER TABLE public.site_settings
+ALTER TABLE site_settings
   ADD COLUMN IF NOT EXISTS show_hero boolean NOT NULL DEFAULT true,
   ADD COLUMN IF NOT EXISTS show_about boolean NOT NULL DEFAULT true,
   ADD COLUMN IF NOT EXISTS show_featured_artists boolean NOT NULL DEFAULT true,
