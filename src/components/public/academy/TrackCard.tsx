@@ -34,12 +34,12 @@ export function TrackCard({ course, index }: TrackCardProps) {
   const displayNum = locale === "ar" ? toArabicDigits(position) : String(position);
 
   return (
-    <article className="flex min-w-0 flex-col self-stretch rounded-[20px] border-[0.833px] border-secondary-400 bg-white p-8 text-start">
+    <article className="flex min-w-0 flex-col self-stretch overflow-hidden rounded-[20px] border-[0.833px] border-secondary-400 bg-white p-5 text-start sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <span className="text-[14px] font-bold uppercase leading-[20px] tracking-[1.4px] text-brand-primary">
           {course.track_category}
         </span>
-        <span aria-hidden="true" className="text-[60px] font-black leading-[60px] text-secondary-400">
+        <span aria-hidden="true" className="shrink-0 text-[64px] font-black leading-none text-secondary-400 md:text-[96px]">
           {displayNum}
         </span>
       </div>
@@ -55,7 +55,7 @@ export function TrackCard({ course, index }: TrackCardProps) {
       <Link
         href={`/booking?course=${encodeURIComponent(course.slug)}`}
         aria-label={t("enrollLabel", { title: course.title })}
-        className="mt-auto self-end text-[13px] font-bold leading-[19.5px] text-brand-primary transition-colors hover:text-brand-primary-hover"
+        className="mt-auto inline-flex min-h-11 items-center self-end px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-colors hover:text-brand-primary-hover"
       >
         {t("enroll")} <span aria-hidden="true">←</span>
       </Link>

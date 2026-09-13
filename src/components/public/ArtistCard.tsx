@@ -35,20 +35,20 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`group flex h-[422px] w-[296px] shrink-0 snap-start flex-col overflow-hidden rounded-[16px] bg-white text-start ${className}`}
+      className={`group flex min-w-0 w-full flex-col overflow-hidden rounded-[16px] bg-white text-start ${className}`}
     >
       <Link
         href={`/artists/${artist.slug}`}
         aria-label={a("viewProfile", { name: artist.name })}
         className="flex flex-1 flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
-        <div className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-surface/40">
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-brand-espresso">
           {portrait ? (
             <Image
               src={portrait}
               alt={a("portraitAlt", { name: artist.name })}
               fill
-              sizes="296px"
+              sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
               // `priority` is deprecated in Next 16; the docs point at
               // loading="eager" for an above-the-fold image that is not the LCP
               // element, which is what the first row of cards is.
@@ -68,16 +68,16 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
           )}
         </div>
 
-        <div className="h-[134px] shrink-0 p-5">
+        <div className="min-h-[108px] p-3 sm:p-5">
           <p className="text-[13px] font-medium leading-[19.5px] text-brand-primary">
             {artist.genre_tag}
           </p>
 
-          <h2 className="pt-[4.8px] text-[16px] font-bold leading-[24px] text-gradscale-900 transition-colors group-hover:text-brand-primary">
+          <h2 className="truncate pt-[4.8px] text-[16px] font-bold leading-[24px] text-gradscale-900 transition-colors group-hover:text-brand-primary">
             {artist.name}
           </h2>
 
-          <p className="pt-[2.4px] text-[12.8px] leading-[19.2px] text-gradscale-900">
+          <p className="truncate pt-[2.4px] text-[12.8px] leading-[19.2px] text-gradscale-900">
             {artist.city}
           </p>
         </div>

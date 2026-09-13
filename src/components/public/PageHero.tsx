@@ -97,7 +97,7 @@ export function PageHero({
         ) : null}
 
         <h1
-          className={`max-w-[924px] min-w-0 break-words font-display text-[clamp(1.75rem,5vw,4.5rem)] leading-tight ${titleTone} lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
+          className={`w-full max-w-full min-w-0 break-words px-4 font-display text-[clamp(28px,8vw,56px)] leading-tight ${titleTone} sm:px-6 lg:max-w-[924px] lg:px-0 lg:text-[length:var(--hero-title-size)] lg:leading-[var(--hero-title-leading)] ${
             eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
           }`}
         >
