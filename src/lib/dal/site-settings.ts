@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { getContentLocale, localizeContent, LOCALIZED_FIELDS } from "./localize";
 
@@ -375,11 +376,22 @@ async function getSiteSettingsRaw(): Promise<SiteSettings> {
     }
 
     const supabase = await createClient();
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("site_settings")
       .select("*")
       .eq("id", "default")
       .single();
+    // Public pages normally use the anon/RLS client. If the deployed database
+    // has a stale or missing public SELECT policy, retry server-side so the
+    // CMS content still renders without exposing the service key.
+    if ((error || !data) && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const admin = createAdminClient();
+      ({ data, error } = await admin
+        .from("site_settings")
+        .select("*")
+        .eq("id", "default")
+        .single());
+    }
 
     if (error || !data) {
       return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
