@@ -132,7 +132,41 @@ export interface SiteSettingsFormValues {
   artists_filter_all_label_en: string;
   booking_cta_label: string;
   booking_cta_label_en: string;
+  show_hero: boolean;
+  show_about: boolean;
+  show_featured_artists: boolean;
+  home_hero_primary_href: string;
+  home_hero_secondary_href: string;
+  home_about_href: string;
+  home_artists_href: string;
+  home_events_href: string;
+  booking_cta_href: string;
+  home_about_heading: string;
+  home_about_heading_en: string;
+  home_events_image_url: string;
+  booking_banner_image_url: string;
+  artist_hero_image_url: string;
+  booking_title: string;
+  booking_title_en: string;
+  seo_booking_title: string;
+  seo_booking_title_en: string;
+  seo_booking_description: string;
+  seo_booking_description_en: string;
+  seo_default_title: string;
+  seo_default_title_en: string;
+  seo_default_description: string;
+  seo_default_description_en: string;
+  seo_og_image_url: string;
 }
+
+export type BooleanFieldName =
+  | "show_testimonials"
+  | "show_editorial"
+  | "show_events"
+  | "show_booking_banner"
+  | "show_hero"
+  | "show_about"
+  | "show_featured_artists";
 
 export type TextFieldName = Exclude<
   keyof SiteSettingsFormValues,
@@ -140,10 +174,7 @@ export type TextFieldName = Exclude<
   | "home_featured_artists_count"
   | "home_featured_articles_count"
   | "home_upcoming_events_count"
-  | "show_testimonials"
-  | "show_editorial"
-  | "show_events"
-  | "show_booking_banner"
+  | BooleanFieldName
 >;
 
 export function getInitialValues(settings: SiteSettings): SiteSettingsFormValues {
@@ -271,6 +302,31 @@ export function getInitialValues(settings: SiteSettings): SiteSettingsFormValues
     artists_filter_all_label_en: settings.artists_filter_all_label_en ?? "",
     booking_cta_label: settings.booking_cta_label ?? "",
     booking_cta_label_en: settings.booking_cta_label_en ?? "",
+    show_hero: settings.show_hero ?? true,
+    show_about: settings.show_about ?? true,
+    show_featured_artists: settings.show_featured_artists ?? true,
+    home_hero_primary_href: settings.home_hero_primary_href ?? "",
+    home_hero_secondary_href: settings.home_hero_secondary_href ?? "",
+    home_about_href: settings.home_about_href ?? "",
+    home_artists_href: settings.home_artists_href ?? "",
+    home_events_href: settings.home_events_href ?? "",
+    booking_cta_href: settings.booking_cta_href ?? "",
+    home_about_heading: settings.home_about_heading ?? "",
+    home_about_heading_en: settings.home_about_heading_en ?? "",
+    home_events_image_url: settings.home_events_image_url ?? "",
+    booking_banner_image_url: settings.booking_banner_image_url ?? "",
+    artist_hero_image_url: settings.artist_hero_image_url ?? "",
+    booking_title: settings.booking_title ?? "",
+    booking_title_en: settings.booking_title_en ?? "",
+    seo_booking_title: settings.seo_booking_title ?? "",
+    seo_booking_title_en: settings.seo_booking_title_en ?? "",
+    seo_booking_description: settings.seo_booking_description ?? "",
+    seo_booking_description_en: settings.seo_booking_description_en ?? "",
+    seo_default_title: settings.seo_default_title ?? "",
+    seo_default_title_en: settings.seo_default_title_en ?? "",
+    seo_default_description: settings.seo_default_description ?? "",
+    seo_default_description_en: settings.seo_default_description_en ?? "",
+    seo_og_image_url: settings.seo_og_image_url ?? "",
   };
 }
 
@@ -397,6 +453,31 @@ export function buildSiteSettingsInput(values: SiteSettingsFormValues): SiteSett
     artists_filter_all_label_en: values.artists_filter_all_label_en.trim() || null,
     booking_cta_label: values.booking_cta_label.trim() || null,
     booking_cta_label_en: values.booking_cta_label_en.trim() || null,
+    show_hero: Boolean(values.show_hero),
+    show_about: Boolean(values.show_about),
+    show_featured_artists: Boolean(values.show_featured_artists),
+    home_hero_primary_href: values.home_hero_primary_href.trim() || null,
+    home_hero_secondary_href: values.home_hero_secondary_href.trim() || null,
+    home_about_href: values.home_about_href.trim() || null,
+    home_artists_href: values.home_artists_href.trim() || null,
+    home_events_href: values.home_events_href.trim() || null,
+    booking_cta_href: values.booking_cta_href.trim() || null,
+    home_about_heading: values.home_about_heading.trim() || null,
+    home_about_heading_en: values.home_about_heading_en.trim() || null,
+    home_events_image_url: values.home_events_image_url.trim() || null,
+    booking_banner_image_url: values.booking_banner_image_url.trim() || null,
+    artist_hero_image_url: values.artist_hero_image_url.trim() || null,
+    booking_title: values.booking_title.trim() || null,
+    booking_title_en: values.booking_title_en.trim() || null,
+    seo_booking_title: values.seo_booking_title.trim() || null,
+    seo_booking_title_en: values.seo_booking_title_en.trim() || null,
+    seo_booking_description: values.seo_booking_description.trim() || null,
+    seo_booking_description_en: values.seo_booking_description_en.trim() || null,
+    seo_default_title: values.seo_default_title.trim() || null,
+    seo_default_title_en: values.seo_default_title_en.trim() || null,
+    seo_default_description: values.seo_default_description.trim() || null,
+    seo_default_description_en: values.seo_default_description_en.trim() || null,
+    seo_og_image_url: values.seo_og_image_url.trim() || null,
   };
 }
 
@@ -431,6 +512,7 @@ export function BilingualPair({
   onChange,
   helpText = "اتركه فارغاً لاستخدام النص الافتراضي.",
   enHelpText = "اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.",
+  required = false,
 }: {
   id: TextFieldName;
   label: string;
@@ -440,6 +522,7 @@ export function BilingualPair({
   onChange: (field: TextFieldName, value: string) => void;
   helpText?: string;
   enHelpText?: string;
+  required?: boolean;
 }) {
   if (url) {
     return (
@@ -451,11 +534,11 @@ export function BilingualPair({
   const enId = `${id}_en` as TextFieldName;
   return (
     <>
-      <Field id={id} label={label} required={false} help={helpText}>
+      <Field id={id} label={label} required={required} help={helpText}>
         {multiline ? (
-          <Textarea id={id} rows={3} className="min-h-[96px]" value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+          <Textarea id={id} rows={3} className="min-h-[96px]" value={values[id]} required={required} onChange={(event) => onChange(id, event.target.value)} />
         ) : (
-          <Input id={id} value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+          <Input id={id} value={values[id]} required={required} onChange={(event) => onChange(id, event.target.value)} />
         )}
       </Field>
       <Field id={enId} label={`${label} — English`} required={false} help={enHelpText}>
@@ -469,11 +552,34 @@ export function BilingualPair({
   );
 }
 
+/** A CTA link: internal path (/booking) or full https URL; blank = built-in link. */
+export function LinkField({
+  id,
+  label,
+  placeholder,
+  values,
+  onChange,
+}: {
+  id: TextFieldName;
+  label: string;
+  placeholder: string;
+  values: SiteSettingsFormValues;
+  onChange: (field: TextFieldName, value: string) => void;
+}) {
+  return (
+    <Field id={id} label={label} required={false} help={`رابط داخلي مثل ${placeholder} أو رابط كامل يبدأ بـ https://. اتركه فارغاً للرابط الافتراضي.`}>
+      <Input id={id} dir="ltr" placeholder={placeholder} value={values[id]} onChange={(event) => onChange(id, event.target.value)} />
+    </Field>
+  );
+}
+
 export function useSiteSettingsForm(
   settings: SiteSettings,
-  action: (input: SiteSettingsInput) => Promise<{ ok: boolean; error?: string }> = updateSiteSettingsAction
+  action: (input: Partial<SiteSettingsInput>) => Promise<{ ok: boolean; error?: string }> = updateSiteSettingsAction
 ) {
   const [values, setValues] = useState<SiteSettingsFormValues>(() => getInitialValues(settings));
+  // Last saved payload; only fields that differ from it are sent on save.
+  const [baseline, setBaseline] = useState<SiteSettingsInput>(() => buildSiteSettingsInput(getInitialValues(settings)));
   const [result, setResult] = useState<{ ok: boolean; error?: string } | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -490,10 +596,7 @@ export function useSiteSettingsForm(
     setValues((current) => ({ ...current, [field]: value }));
   }, []);
 
-  const setBooleanField = useCallback((
-    field: "show_testimonials" | "show_editorial" | "show_events" | "show_booking_banner",
-    value: boolean
-  ) => {
+  const setBooleanField = useCallback((field: BooleanFieldName, value: boolean) => {
     setResult(null);
     setValues((current) => ({ ...current, [field]: value }));
   }, []);
@@ -512,18 +615,28 @@ export function useSiteSettingsForm(
     }
     if (pending) return;
 
-    const input = buildSiteSettingsInput(values);
+    const full = buildSiteSettingsInput(values);
+    const input = Object.fromEntries(
+      Object.entries(full).filter(
+        ([key, value]) => JSON.stringify(value) !== JSON.stringify(baseline[key as keyof SiteSettingsInput])
+      )
+    ) as Partial<SiteSettingsInput>;
 
     setResult(null);
+    if (Object.keys(input).length === 0) {
+      setResult({ ok: true });
+      return;
+    }
     startTransition(async () => {
       try {
         const response = await action(input);
+        if (response.ok) setBaseline(full);
         setResult(response.ok ? { ok: true } : { ok: false, error: response.error });
       } catch {
         setResult({ ok: false, error: "تعذر حفظ الإعدادات حالياً. يرجى المحاولة مرة أخرى." });
       }
     });
-  }, [action, pending, values]);
+  }, [action, baseline, pending, values]);
 
   return {
     values,

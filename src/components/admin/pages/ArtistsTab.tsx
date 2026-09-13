@@ -96,6 +96,15 @@ export function ArtistsTab({ values, setField, summary }: ArtistsTabProps) {
             />
             <p className="text-xs text-brand-espresso/60">اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
           </div>
+          <div className="space-y-2 text-start md:col-span-2">
+            <MediaPickerField
+              id="artist_hero_image_url"
+              label="صورة خلفية صفحة الفنان (/artists/…)"
+              value={values.artist_hero_image_url}
+              onChange={(url) => setField("artist_hero_image_url", url)}
+            />
+            <p className="text-xs text-brand-espresso/60">تظهر خلف اسم كل فنان. اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
+          </div>
         </CardContent>
       </Card>
 

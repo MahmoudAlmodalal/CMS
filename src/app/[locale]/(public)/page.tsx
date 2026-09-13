@@ -41,6 +41,7 @@ export async function generateMetadata({
       description: ogDescription,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
+      images: settings.seo_og_image_url ? [settings.seo_og_image_url] : undefined,
     },
   };
 }
@@ -77,7 +78,9 @@ export default async function HomePage({
   const settings = await getSiteSettings();
 
   const [artists, testimonials, articles, events] = await Promise.all([
-    getFeaturedArtists(settings.home_featured_artists_count),
+    settings.show_featured_artists
+      ? getFeaturedArtists(settings.home_featured_artists_count)
+      : Promise.resolve([]),
     settings.show_testimonials ? getPublishedTestimonials() : Promise.resolve([]),
     settings.show_editorial
       ? getFeaturedArticles(settings.home_featured_articles_count)
@@ -90,25 +93,32 @@ export default async function HomePage({
   return (
     <>
       {/* Stage 1: Hero Banner (Figma Component 20, 740px) */}
-      <HeroSection
-        settings={settings}
-        primaryCtaLabel={settings.home_hero_primary_cta || undefined}
-        secondaryCtaLabel={settings.home_hero_secondary_cta || undefined}
-      />
+      {settings.show_hero && (
+        <HeroSection
+          settings={settings}
+          primaryCtaLabel={settings.home_hero_primary_cta || undefined}
+          secondaryCtaLabel={settings.home_hero_secondary_cta || undefined}
+        />
+      )}
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
-      <div className="lg:-mt-[22px]">
-        <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
-      </div>
+      {settings.show_about && (
+        <div className="lg:-mt-[22px]">
+          <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
+        </div>
+      )}
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
-      <div className="lg:mt-[22px]">
-        <FeaturedArtists
-          artists={artists}
-          heading={settings.home_artists_heading || undefined}
-          ctaLabel={settings.home_artists_cta || undefined}
-        />
-      </div>
+      {settings.show_featured_artists && (
+        <div className="lg:mt-[22px]">
+          <FeaturedArtists
+            artists={artists}
+            heading={settings.home_artists_heading || undefined}
+            ctaLabel={settings.home_artists_cta || undefined}
+            ctaHref={settings.home_artists_href || undefined}
+          />
+        </div>
+      )}
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
       {settings.show_testimonials && (
@@ -129,6 +139,8 @@ export default async function HomePage({
             events={events}
             heading={settings.home_events_heading || undefined}
             ctaLabel={settings.home_events_cta || undefined}
+            ctaHref={settings.home_events_href || undefined}
+            imageUrl={settings.home_events_image_url || undefined}
           />
         </div>
       )}

@@ -2,6 +2,18 @@ import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import type { SiteSettings } from "@/lib/dal/site-settings";
+
+type FooterSettings = Pick<
+  SiteSettings,
+  "footer_mission" | "copyright_text" | "contact_email" | "operational_regions" | "social_links"
+>;
+
+/** Only absolute http(s) links from admin settings are rendered as hrefs. */
+function safeExternalUrl(url: string | undefined): string | null {
+  const trimmed = url?.trim();
+  return trimmed && /^https?:\/\//i.test(trimmed) ? trimmed : null;
+}
 
 /**
  * Global Public Footer
@@ -15,9 +27,18 @@ import { Link } from "@/i18n/navigation";
  * Figma carries NO partner/patron marquee and NO social icon buttons here — contact
  * is a single plain text line. Both were removed as unverified inventions.
  */
-export function Footer() {
+export function Footer({ settings }: { settings?: FooterSettings }) {
   const t = useTranslations("footer");
   const a11y = useTranslations("a11y");
+  // Admin settings win; blank values fall back to the built-in translations.
+  const mission = settings?.footer_mission?.trim() || t("mission");
+  const email = settings?.contact_email?.trim() || t("contactEmail");
+  const regions = settings?.operational_regions?.trim() || t("contactRegions");
+  const copyright = settings?.copyright_text?.trim() || t("copyright");
+  const socials = [
+    { label: "Instagram", href: safeExternalUrl(settings?.social_links?.instagram) },
+    { label: "TikTok", href: safeExternalUrl(settings?.social_links?.tiktok) },
+  ].filter((s): s is { label: string; href: string } => s.href !== null);
 
   return (
     <footer
@@ -39,7 +60,7 @@ export function Footer() {
           desktop one: 390x882 bottom-anchored, opening on 21px of padding and
           closing on 26.333. Its bottom bar is the only block that lands on the
           24px side padding (x=24 w=342), which is what confirms px-6 for both. */}
-      <div className="relative z-10 mx-auto w-full max-w-[1454px] px-6 pb-[26.333px] pt-[21px] lg:pb-8 lg:pt-16 lg:[transform:translateX(-7px)]">
+      <div className="relative z-10 mx-auto w-full max-w-[1454px] px-6 pb-[26.333px] pt-[21px] lg:pb-8 lg:pt-16">
         {/* max-w-desktop is --container-desktop (1280px), confirmed by this very
             node: the footer instance is 1454 wide and its inner Container is 1280. */}
         <div className="mx-auto w-full max-w-desktop">
@@ -66,7 +87,7 @@ export function Footer() {
               {/* 136:7854 is 230 wide on mobile against 206 on desktop; both hold
                   the mission to the two 19.5px lines the design draws. */}
               <p className="text-[13px] leading-[1.5] text-primary-50 font-normal pt-4 max-w-[230px] lg:max-w-[206px]">
-                {t("mission")}
+                {mission}
               </p>
 
               <p className="text-[13px] font-bold text-brand-primary pt-5">
@@ -102,14 +123,32 @@ export function Footer() {
               <h4 className="text-[13px] font-bold leading-[20px] text-brand-primary">{t("contactHeading")}</h4>
               <div className="flex flex-col items-center pt-5 gap-2 text-[13px] font-medium leading-[20px] text-primary-50">
                 <a
-                  href={`mailto:${t("contactEmail")}`}
+                  href={`mailto:${email}`}
                   dir="ltr"
                   className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
                 >
-                  <bdi>{t("contactEmail")}</bdi>
+                  <bdi>{email}</bdi>
                 </a>
-                <span>{t("contactSocial")}</span>
-                <span>{t("contactRegions")}</span>
+                {socials.length > 0 ? (
+                  <span dir="ltr">
+                    {socials.map((social, index) => (
+                      <React.Fragment key={social.label}>
+                        {index > 0 && " · "}
+                        <a
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
+                        >
+                          {social.label}
+                        </a>
+                      </React.Fragment>
+                    ))}
+                  </span>
+                ) : (
+                  <span>{t("contactSocial")}</span>
+                )}
+                <span>{regions}</span>
               </div>
             </div>
 
@@ -137,7 +176,7 @@ export function Footer() {
               {t("strapline")}
             </span>
             <span className="text-[12px] font-normal leading-[18px]">
-              {t("copyright")}
+              {copyright}
             </span>
           </div>
         </div>

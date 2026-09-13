@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   createArticleAction,
@@ -153,6 +154,27 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
           setArticles((current) => current.map((article) => (
             article.id === editingId ? { ...article, ...input } : article
           )));
+        } else if (result.data?.id) {
+          const newArticle: AdminArticle = {
+            id: result.data.id,
+            title: input.title,
+            title_en: input.title_en ?? null,
+            slug: input.slug,
+            category: input.category,
+            excerpt: input.excerpt,
+            excerpt_en: input.excerpt_en ?? null,
+            content: input.content,
+            content_en: input.content_en ?? null,
+            cover_image_url: input.cover_image_url,
+            author_name: input.author_name,
+            author_name_en: input.author_name_en ?? null,
+            featured_artist_id: input.featured_artist_id ?? null,
+            published_at: input.published_at || new Date().toISOString(),
+            is_featured: Boolean(input.is_featured),
+            is_published: Boolean(input.is_published),
+            created_at: new Date().toISOString(),
+          };
+          setArticles((current) => [newArticle, ...current]);
         }
         setNotice({ type: "success", text: editingId ? "تم تحديث المقال" : "تمت إضافة المقال" });
         setFormOpen(false);
@@ -180,6 +202,25 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
         router.refresh();
       } catch {
         setNotice({ type: "error", text: "تعذر تغيير حالة النشر حالياً." });
+      }
+    });
+  };
+
+  const toggleFeatured = (article: AdminArticle) => {
+    if (pending) return;
+    startTransition(async () => {
+      try {
+        const nextFeatured = !article.is_featured;
+        const result = await updateArticleAction(article.id, { is_featured: nextFeatured });
+        if (!result.ok) {
+          setNotice({ type: "error", text: result.error ?? "تعذر تغيير حالة التمييز" });
+          return;
+        }
+        setArticles((current) => current.map((item) => item.id === article.id ? { ...item, is_featured: nextFeatured } : item));
+        setNotice({ type: "success", text: nextFeatured ? "تم تمييز المقال (سيظهر في البطل)" : "تم إلغاء تمييز المقال" });
+        router.refresh();
+      } catch {
+        setNotice({ type: "error", text: "تعذر تغيير حالة التمييز حالياً." });
       }
     });
   };
@@ -212,9 +253,20 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             أدِر المقالات، جدولة النشر، وحالات الظهور من مساحة واحدة.
           </p>
         </div>
-        <Button type="button" onClick={openCreate} disabled={pending}>
-          + إضافة مقال
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/en/news"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-button border border-brand-espresso-subtle/60 px-3 py-2 text-xs font-bold text-brand-espresso hover:bg-brand-surface/60 transition-colors"
+          >
+            <span>عرض صفحة الأخبار</span>
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Button type="button" onClick={openCreate} disabled={pending}>
+            + إضافة مقال
+          </Button>
+        </div>
       </div>
 
       <Notice notice={notice} />
@@ -281,6 +333,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                   <TableHead>المقال</TableHead>
                   <TableHead>التصنيف / الكاتب</TableHead>
                   <TableHead>موعد النشر</TableHead>
+                  <TableHead>المميز (البطل)</TableHead>
                   <TableHead>النشر</TableHead>
                   <TableHead>الإجراءات</TableHead>
                 </TableRow>
@@ -310,6 +363,24 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                     <TableCell>
                       <button
                         type="button"
+                        onClick={() => toggleFeatured(article)}
+                        disabled={pending}
+                        aria-pressed={article.is_featured}
+                        className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                        title={article.is_featured ? "إلغاء التمييز من البطل" : "تمييز المقال في البطل"}
+                      >
+                        {article.is_featured ? (
+                          <Badge variant="outline" size="sm" className="bg-amber-50 text-amber-800 border-amber-300">
+                            مميز ★
+                          </Badge>
+                        ) : (
+                          <span className="text-xs text-gradscale-400 hover:text-brand-espresso">عادي</span>
+                        )}
+                      </button>
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        type="button"
                         onClick={() => togglePublish(article)}
                         disabled={pending}
                         aria-pressed={article.is_published}
@@ -322,6 +393,16 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
                         <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(article)} disabled={pending}>تعديل</Button>
+                        {isArticleLive(article) && (
+                          <Link
+                            href={`/en/news/${article.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-button px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary transition-colors"
+                          >
+                            معاينة ↗
+                          </Link>
+                        )}
                         <button
                           type="button"
                           onClick={() => removeArticle(article)}

@@ -11,6 +11,7 @@ import {
 } from "@/components/public";
 import { getArtistBySlug, getPublishedArtists } from "@/lib/dal/artists";
 import { getPublishedReleasesByArtist } from "@/lib/dal/releases";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 /**
  * الفنان — Figma frame 134:4420.
@@ -73,9 +74,10 @@ export default async function ArtistDetailPage({
     notFound();
   }
 
-  const [releases, t] = await Promise.all([
+  const [releases, t, settings] = await Promise.all([
     getPublishedReleasesByArtist(artist.id),
     getTranslations("artist"),
+    getSiteSettings(),
   ]);
 
   return (
@@ -86,7 +88,11 @@ export default async function ArtistDetailPage({
         className="pointer-events-none absolute left-0 top-[708px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
       />
 
-      <ArtistHero artist={artist} />
+      <ArtistHero
+        artist={artist}
+        imageUrl={settings.artist_hero_image_url || undefined}
+        contactHref={settings.contact_email ? `mailto:${settings.contact_email}` : undefined}
+      />
 
       {/* The 390 frame (141:16217) opens `Frame 44` at 733 — 55 under the hero's
           678 band — and closes it at 1133. */}
@@ -110,6 +116,7 @@ export default async function ArtistDetailPage({
       <div className="lg:-mt-[4.16px]">
         <BookingBanner
           variant="artist"
+          settings={settings}
           headline={t("bookingHeadline", { name: artist.name })}
           body={t("bookingBody")}
           ctaHref={`/booking?artist=${artist.slug}`}

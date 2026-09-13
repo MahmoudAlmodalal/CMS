@@ -20,7 +20,7 @@ export default async function AdminPagesPage({ searchParams }: AdminPagesPagePro
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const rawTab = resolvedSearchParams?.tab;
   const initialTab: TabKey | undefined =
-    rawTab && ["home", "events", "news", "artists", "academy"].includes(rawTab)
+    rawTab && ["home", "events", "news", "artists", "academy", "booking"].includes(rawTab)
       ? (rawTab as TabKey)
       : undefined;
 

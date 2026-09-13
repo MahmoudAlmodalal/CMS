@@ -38,7 +38,9 @@ export function BookingSidebar({
   const locale = useLocale();
   const rawPhoneDigits = contactPhone.replace(/\D/g, "");
   const whatsappHref = rawPhoneDigits ? `https://wa.me/${rawPhoneDigits}` : "#";
-  const instagramHandle = "@andalusia.art";
+  // Show the handle from the admin-set URL so the text never drifts from the link.
+  const instagramPath = instagramUrl.replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").split(/[/?#]/)[0];
+  const instagramHandle = instagramPath ? `@${instagramPath.replace(/^@/, "")}` : "@andalusia.art";
 
   const channels = [
     {

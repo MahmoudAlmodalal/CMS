@@ -10,8 +10,9 @@ import { EventsTab } from "./EventsTab";
 import { NewsTab } from "./NewsTab";
 import { ArtistsTab } from "./ArtistsTab";
 import { AcademyTab } from "./AcademyTab";
+import { BookingTab } from "./BookingTab";
 
-export type TabKey = "home" | "events" | "news" | "artists" | "academy";
+export type TabKey = "home" | "events" | "news" | "artists" | "academy" | "booking";
 
 export interface PagesSummaries {
   events: {
@@ -49,6 +50,7 @@ const TABS: TabDef[] = [
   { key: "news", label: "الأخبار", route: "/news" },
   { key: "artists", label: "الفنانون", route: "/artists" },
   { key: "academy", label: "الأكاديمية", route: "/academy" },
+  { key: "booking", label: "الحجز", route: "/booking" },
 ];
 
 function TabLivePreview({ tab, values }: { tab: TabKey; values: SiteSettingsFormValues }) {
@@ -88,6 +90,18 @@ function TabLivePreview({ tab, values }: { tab: TabKey; values: SiteSettingsForm
                 <p className="mt-3 text-xs font-semibold text-brand-primary">الزر: {values.home_about_cta.trim()}</p>
               )}
             </section>
+
+            {values.show_editorial && (
+              <section className="rounded-2xl bg-[#1F0900] p-5 text-[#F9EDE8]" aria-label="معاينة القسم التحريري">
+                <p className="text-xs font-bold text-brand-primary">القسم التحريري (المقالات)</p>
+                <h3 className="mt-2 text-base font-bold leading-relaxed">
+                  {text(values.home_editorial_heading, "نكتب كي لا تضيع التفاصيل")}
+                </h3>
+                <p className="mt-2 text-xs text-[#F9EDE8]/75">
+                  يعرض {values.home_featured_articles_count} مقالات مميزة في منتصف الصفحة
+                </p>
+              </section>
+            )}
 
             <section className="rounded-2xl bg-brand-primary p-5 text-white" aria-label="معاينة بنر الحجز">
               <p className="text-xs font-bold text-white/75">دعوة الحجز</p>
@@ -378,6 +392,8 @@ export function PagesEditor({ settings, summaries, initialTab = "home" }: PagesE
               summary={summaries.academy}
             />
           )}
+
+          {activeTab === "booking" && <BookingTab values={values} setField={setField} />}
         </div>
 
         {/* Per-tab live preview */}

@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useCallback } from "react";
 import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
+import { VideoUploadField } from "@/components/admin/media/VideoUploadField";
 import { listMediaAction } from "@/actions/admin-media";
 import { listFolderMedia } from "./listFolderMedia";
 import {
@@ -22,6 +23,7 @@ export interface MediaPickerFieldProps {
   folder?: string;
   required?: boolean;
   disabled?: boolean;
+  mediaType?: "image" | "video" | "all";
 }
 
 /** Storage buckets whose allowed MIME list contains image formats. */
@@ -38,14 +40,26 @@ function isImageFile(file: StorageFile): boolean {
   return ["jpg", "jpeg", "png", "webp", "avif", "svg"].includes(ext ?? "");
 }
 
+function isVideoFile(file: StorageFile): boolean {
+  if (file.mimeType) return file.mimeType.startsWith("video/");
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  return ["mp4", "webm", "ogg", "mov"].includes(ext ?? "");
+}
+
+function isMediaFile(file: StorageFile, mediaType: "image" | "video" | "all"): boolean {
+  if (mediaType === "video") return isVideoFile(file);
+  if (mediaType === "all") return isImageFile(file) || isVideoFile(file);
+  return isImageFile(file);
+}
+
 function getFileUrl(file: StorageFile, currentBucket: StorageBucket): string {
   if (file.publicUrl) return file.publicUrl;
   return resolveMediaUrl(file.bucket ?? currentBucket, file.path) ?? file.path;
 }
 
 /**
- * Image picker field: composes ImageUploadField with an accessible media library
- * browser to pick existing images from Supabase storage buckets.
+ * Media picker field: composes ImageUploadField / VideoUploadField with an accessible media library
+ * browser to pick existing media from Supabase storage buckets.
  */
 export function MediaPickerField({
   id,
@@ -56,6 +70,7 @@ export function MediaPickerField({
   folder,
   required,
   disabled = false,
+  mediaType = "image",
 }: MediaPickerFieldProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -85,7 +100,7 @@ export function MediaPickerField({
           setFiles([]);
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : "فشل تحميل الصور من التخزين");
+        setError(err instanceof Error ? err.message : "فشل تحميل الوسائط من التخزين");
       } finally {
         setLoading(false);
       }
@@ -113,7 +128,7 @@ export function MediaPickerField({
     void fetchFiles(newBucket);
   };
 
-  const imageFiles = files.filter(isImageFile);
+  const mediaFiles = files.filter((f) => isMediaFile(f, mediaType));
 
   return (
     <div className="space-y-3" dir="rtl">
@@ -123,16 +138,29 @@ export function MediaPickerField({
         </label>
       ) : null}
 
-      <ImageUploadField
-        id={id}
-        bucket={bucket}
-        folder={folder}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-        entityId="site-settings"
-        label={label}
-      />
+      {mediaType === "video" ? (
+        <VideoUploadField
+          id={id}
+          bucket={bucket}
+          folder={folder}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          entityId="site-settings"
+          label={label}
+        />
+      ) : (
+        <ImageUploadField
+          id={id}
+          bucket={bucket}
+          folder={folder}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          entityId="site-settings"
+          label={label}
+        />
+      )}
 
       <div>
         <button
@@ -232,7 +260,11 @@ export function MediaPickerField({
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            <span>جارٍ تحميل الصور...</span>
+            <span>
+              {mediaType === "video"
+                ? "جارٍ تحميل مقاطع الفيديو..."
+                : "جارٍ تحميل الصور..."}
+            </span>
           </div>
         ) : error ? (
           <div
@@ -248,13 +280,15 @@ export function MediaPickerField({
               إعادة المحاولة
             </button>
           </div>
-        ) : imageFiles.length === 0 ? (
+        ) : mediaFiles.length === 0 ? (
           <p className="py-8 text-center text-xs text-gradscale-400">
-            لا توجد صور متوفرة في هذه الحاوية
+            {mediaType === "video"
+              ? "لا توجد مقاطع فيديو متوفرة في هذه الحاوية"
+              : "لا توجد صور متوفرة في هذه الحاوية"}
           </p>
         ) : (
           <div className="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto p-1 sm:grid-cols-4 md:grid-cols-6">
-            {imageFiles.map((file) => {
+            {mediaFiles.map((file) => {
               const fileUrl = getFileUrl(file, selectedBucket);
               const isSelected = Boolean(fileUrl && fileUrl === value);
               return (
@@ -278,13 +312,21 @@ export function MediaPickerField({
                   }`}
                 >
                   {fileUrl ? (
-                    /* eslint-disable-next-line @next/next/no-img-element -- preview of media library file */
-                    <img
-                      src={fileUrl}
-                      alt=""
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    />
+                    isVideoFile(file) ? (
+                      <div className="flex h-full w-full items-center justify-center bg-black text-white">
+                        <svg className="h-6 w-6 text-brand-tint" fill="currentColor" viewBox="0 0 24 24">
+                          <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                      </div>
+                    ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element -- preview of media library file */
+                      <img
+                        src={fileUrl}
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                      />
+                    )
                   ) : null}
                   {isSelected ? (
                     <div className="absolute inset-0 flex items-center justify-center bg-brand-primary/25">

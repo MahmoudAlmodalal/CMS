@@ -50,9 +50,12 @@ type BookingSettingsRow = {
   social_links?: Record<string, string> | null;
 };
 
-/** Node 91:17125 in frame 91:17109 — the standfirst the design draws on the band. */
+/** 
+ * Node 91:17125 in frame 91:17109 — the standfirst the design draws on the band:
+ * "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني."
+ */
 export const DEFAULT_BOOKING_SUBTITLE =
-  "برامج تعليمية موسيقية مع فنانين حقيقيين في بيئات صغيرة ومكثفة — تجربة تغير مسارك الفني.";
+  "احجز حفلتك الخاصة أو شاركنا فعاليتك القادمة.";
 
 export const DEFAULT_BOOKING_SUBTITLE_EN =
   "Book Andalusia for your concert, your restaurant, your festival — and make a moment nobody forgets, with some of the finest musicians and singers around.";
@@ -149,7 +152,7 @@ export async function getBookingPageData(eventId?: string): Promise<BookingPageD
   const locale = await getContentLocale();
   let subtitle = localizedDefaultBookingSubtitle(locale);
   let contactEmail = "hello@andalusia.art";
-  let contactPhone = "+961 70 000 000";
+  let contactPhone = "+961 1 234 567";
   let instagramUrl = "https://instagram.com/andalusia.art";
 
   try {

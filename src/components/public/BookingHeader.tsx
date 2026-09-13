@@ -1,9 +1,12 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { Highlight } from "@/components/ui/Highlight";
 import { PageHero } from "./PageHero";
 
 interface BookingHeaderProps {
   subtitle: string;
+  /** Admin override for the headline; *asterisks* mark the highlighted run. */
+  title?: string;
 }
 
 /**
@@ -18,7 +21,7 @@ interface BookingHeaderProps {
  * mirroring a left-to-right stack for an Arabic artboard — which reverses the
  * source order: the headline renders above the standfirst, not below it.
  */
-export function BookingHeader({ subtitle }: BookingHeaderProps) {
+export function BookingHeader({ subtitle, title }: BookingHeaderProps) {
   const t = useTranslations("booking");
 
   return (
@@ -27,9 +30,15 @@ export function BookingHeader({ subtitle }: BookingHeaderProps) {
       mobileHeight={678}
       height={611}
       contentTop={247}
-      title={t.rich("title", {
-        em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-      })}
+      title={
+        title ? (
+          <Highlight text={title} highlightClassName="text-brand-primary" />
+        ) : (
+          t.rich("title", {
+            em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+          })
+        )
+      }
       subtitle={subtitle}
     />
   );

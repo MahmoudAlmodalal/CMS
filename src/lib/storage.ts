@@ -24,6 +24,8 @@ export type StorageBucket = (typeof STORAGE_BUCKETS)[number];
 export const IMAGE_MAX_BYTES = 5 * 1024 * 1024; // 5242880
 /** 30 MB audio bucket. */
 export const AUDIO_MAX_BYTES = 30 * 1024 * 1024; // 31457280
+/** 50 MB video bucket quota for site hero/backgrounds. */
+export const VIDEO_MAX_BYTES = 50 * 1024 * 1024; // 52428800
 
 export const BUCKET_BYTE_LIMITS: Record<StorageBucket, number> = {
   site: IMAGE_MAX_BYTES,
@@ -37,7 +39,17 @@ export const BUCKET_BYTE_LIMITS: Record<StorageBucket, number> = {
 
 /** Canonical MIME allowlists — mirrors migration 20260910001300. */
 export const BUCKET_ALLOWED_MIMES: Record<StorageBucket, readonly string[]> = {
-  site: ["image/jpeg", "image/png", "image/webp", "image/avif", "image/svg+xml"],
+  site: [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/avif",
+    "image/svg+xml",
+    "video/mp4",
+    "video/webm",
+    "video/ogg",
+    "video/quicktime",
+  ],
   artists: ["image/jpeg", "image/png", "image/webp", "image/avif"],
   releases: ["image/jpeg", "image/png", "image/webp", "image/avif"],
   events: ["image/jpeg", "image/png", "image/webp", "image/avif"],
@@ -58,6 +70,10 @@ export const MIME_CANONICAL_EXT: Record<string, string> = {
   "audio/wav": "wav",
   "audio/mp4": "mp4",
   "audio/aac": "aac",
+  "video/mp4": "mp4",
+  "video/webm": "webm",
+  "video/ogg": "ogv",
+  "video/quicktime": "mov",
 };
 
 /** Approved folders per bucket (§4); first entry is the default. */
@@ -239,7 +255,21 @@ export function sniffMime(bytes: Uint8Array): string | null {
   ) {
     return "audio/mpeg";
   }
-  if (bytes.length >= 12 && ascii(bytes, 4, 4) === "ftyp") return "audio/mp4";
+  if (bytes.length >= 12 && ascii(bytes, 4, 4) === "ftyp") {
+    const brand = ascii(bytes, 8, 4);
+    if (brand.startsWith("M4A")) return "audio/mp4";
+    if (brand.startsWith("qt")) return "video/quicktime";
+    return "video/mp4";
+  }
+  if (bytes.length >= 8 && ascii(bytes, 4, 4) === "moov") {
+    return "video/quicktime";
+  }
+  if (
+    bytes.length >= 4 &&
+    bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3
+  ) {
+    return "video/webm";
+  }
   if (bytes.length >= 2 && bytes[0] === 0xff && (bytes[1] & 0xf6) === 0xf0) {
     return "audio/aac";
   }
@@ -367,10 +397,15 @@ export function validateUploadFile(input: UploadFileInput): UploadValidation {
   }
   const ext = MIME_CANONICAL_EXT[mime] ?? null;
   const labelExt = input.label.split(".").pop()?.toLowerCase() ?? "";
-  if (ext && labelExt !== ext && !(mime === "image/jpeg" && (labelExt === "jpg" || labelExt === "jpeg"))) {
+  if (
+    ext &&
+    labelExt !== ext &&
+    !(mime === "image/jpeg" && (labelExt === "jpg" || labelExt === "jpeg")) &&
+    !(mime === "video/quicktime" && (labelExt === "mov" || labelExt === "qt"))
+  ) {
     errors.push(`Extension ".${labelExt || "?"}" does not match MIME "${mime}" (expected ".${ext}").`);
   }
-  const limit = BUCKET_BYTE_LIMITS[bucket];
+  const limit = input.mime.startsWith("video/") ? VIDEO_MAX_BYTES : BUCKET_BYTE_LIMITS[bucket];
   if (!Number.isInteger(input.size) || input.size <= 0) {
     errors.push("File is empty.");
   } else if (input.size > limit) {
@@ -382,9 +417,12 @@ export function validateUploadFile(input: UploadFileInput): UploadValidation {
   // spoof attempt is reported (defense in depth; cheap for ≤30 MB).
   if (input.bytes.length > 0) {
     const sniffed = sniffMime(input.bytes);
+    const isIsoVideoMatch =
+      (sniffed === "video/mp4" || sniffed === "video/quicktime") &&
+      (mime === "video/mp4" || mime === "video/quicktime");
     if (sniffed === null) {
       errors.push("File content is not a recognized media type.");
-    } else if (sniffed !== mime) {
+    } else if (sniffed !== mime && !isIsoVideoMatch) {
       errors.push(`Content sniffed as "${sniffed}" but declared as "${mime}".`);
     }
     if (mime === "image/svg+xml" && sniffed === "image/svg+xml" && !isSafeSvg(input.bytes)) {
@@ -434,6 +472,10 @@ export const MEDIA_REFERENCES: readonly MediaReference[] = [
   { table: "site_settings", column: "events_hero_image_url", bucket: "site" },
   { table: "site_settings", column: "artists_hero_image_url", bucket: "site" },
   { table: "site_settings", column: "academy_hero_image_url", bucket: "site" },
+  { table: "site_settings", column: "home_events_image_url", bucket: "site" },
+  { table: "site_settings", column: "booking_banner_image_url", bucket: "site" },
+  { table: "site_settings", column: "artist_hero_image_url", bucket: "site" },
+  { table: "site_settings", column: "seo_og_image_url", bucket: "site" },
   { table: "artists", column: "portrait_image_url", bucket: "artists" },
   { table: "releases", column: "cover_image_url", bucket: "releases" },
   { table: "events", column: "image_url", bucket: "events" },
@@ -441,6 +483,7 @@ export const MEDIA_REFERENCES: readonly MediaReference[] = [
   { table: "articles", column: "cover_image_url", bucket: "articles" },
   { table: "testimonials", column: "avatar_image_url", bucket: "site" },
   { table: "tracks", column: "audio_file_url", bucket: "audio" },
+  { table: "tracks", column: "cover_image_url", bucket: "releases" },
 ];
 
 export function findMediaReference(

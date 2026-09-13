@@ -276,8 +276,8 @@ export async function createPrivilegedBookingAction(
       .single();
     if (error) return { ok: false, error: error.message };
     return { ok: true, data: { id: insertedId(data) } };
-  } catch {
-    return { ok: true, data: { id: "mock-booking-id" } };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء طلب الحجز" };
   }
 }
 
@@ -311,8 +311,8 @@ export async function createPrivilegedSubscriberAction(
       .single();
     if (error) return { ok: false, error: error.message };
     return { ok: true, data: { id: insertedId(data) } };
-  } catch {
-    return { ok: true, data: { id: "mock-subscriber-id" } };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء المشترك" };
   }
 }
 
@@ -321,16 +321,18 @@ export async function createPrivilegedSubscriberAction(
 // ============================================================================
 
 export async function updateSiteSettingsAction(
-  input: SiteSettingsInput,
+  input: Partial<SiteSettingsInput>,
   ctx?: AuthContext
 ): Promise<ActionResult<void>> {
   const { supabase } = await requireAdminSession(ctx);
-  const parsed = siteSettingsSchema.safeParse(input);
+  // Partial: /admin/settings and /admin/pages send only the fields they changed,
+  // so saving one screen never overwrites edits made on the other.
+  const parsed = siteSettingsSchema.partial().safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
   }
 
-  if (!supabase) return { ok: true };
+  if (!supabase || Object.keys(parsed.data).length === 0) return { ok: true };
 
   const { error } = await supabase
     .from("site_settings")

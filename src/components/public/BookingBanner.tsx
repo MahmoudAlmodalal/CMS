@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
@@ -71,7 +71,7 @@ export function BookingBanner({
   variant = "home",
   headline,
   body,
-  ctaHref = "/booking",
+  ctaHref,
   ctaLabel,
 }: BookingBannerProps) {
   const t = useTranslations("home");
@@ -88,7 +88,10 @@ export function BookingBanner({
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[url('/assets/branding/concert-stage.png')] bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${JSON.stringify(settings?.booking_banner_image_url || "/assets/branding/concert-stage.png")})`,
+        }}
       />
       <div aria-hidden="true" className="absolute inset-0 bg-[rgba(43,29,20,0.88)]" />
       <div
@@ -138,7 +141,7 @@ export function BookingBanner({
           style={{ top: `${v.ctaTop}px` }}
         >
           <Link
-            href={ctaHref}
+            href={ctaHref || settings?.booking_cta_href || "/booking"}
             className={`inline-flex items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
             style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
           >

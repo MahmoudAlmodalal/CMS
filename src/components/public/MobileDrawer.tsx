@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import {
   CloseIcon,
@@ -10,12 +10,19 @@ import {
   ArrowEndIcon,
 } from "@/components/ui/Icons";
 import { cn } from "@/lib/utils";
-import { CONFIRMED_NAV_ITEMS } from "./Navbar";
+import { CONFIRMED_NAV_ITEMS, ENGLISH_NAV_ITEMS } from "./Navbar";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+
+/** Admin-controlled contact details (site settings); blank falls back to translations. */
+export interface DrawerContact {
+  email?: string | null;
+  regions?: string | null;
+}
 
 export interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  contact?: DrawerContact;
 }
 
 /**
@@ -26,8 +33,9 @@ export interface MobileDrawerProps {
  * - Closes automatically upon route transition
  * - Displays 5 confirmed route links + booking CTA + contact info
  */
-export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
+export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
   const pathname = usePathname();
+  const navItems = useLocale() === "en" ? ENGLISH_NAV_ITEMS : CONFIRMED_NAV_ITEMS;
   const t = useTranslations("drawer");
   const nav = useTranslations("nav");
   const site = useTranslations("site");
@@ -95,6 +103,8 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
 
   if (!isOpen) return null;
 
+  const email = contact?.email?.trim() || footer("contactEmail");
+
   const isLinkActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -148,7 +158,7 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
         {/* Navigation Items */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           <nav className="flex flex-col gap-2" aria-label={t("nav")}>
-            {CONFIRMED_NAV_ITEMS.map((item) => {
+            {navItems.map((item) => {
               const active = isLinkActive(item.href);
               return (
                 <Link
@@ -193,17 +203,17 @@ export function MobileDrawer({ isOpen, onClose }: MobileDrawerProps) {
             <div className="flex flex-col gap-1 text-start">
               <span className="text-xs font-bold text-brand-primary">{t("contactHeading")}</span>
               <a
-                href={`mailto:${footer("contactEmail")}`}
+                href={`mailto:${email}`}
                 dir="ltr"
                 className="text-brand-espresso/80 hover:text-brand-primary transition-colors text-start"
               >
-                <bdi>{footer("contactEmail")}</bdi>
+                <bdi>{email}</bdi>
               </a>
             </div>
 
             <div className="flex flex-col gap-1 text-start">
               <span className="text-xs font-bold text-brand-primary">{t("regionsHeading")}</span>
-              <span className="text-brand-espresso/80">{footer("contactRegions")}</span>
+              <span className="text-brand-espresso/80">{contact?.regions?.trim() || footer("contactRegions")}</span>
             </div>
           </div>
         </div>

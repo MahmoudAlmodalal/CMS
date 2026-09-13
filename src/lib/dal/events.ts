@@ -51,9 +51,8 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
     description:
       "أمسية موسيقية استثنائية تستعيد أروع الموشحات والقصائد الأندلسية بمرافقة التخت الموسيقي الكامل.",
     image_url: "/assets/events/event-1.png",
-    cover_image_url: "/assets/events/featured-cover.png",
     ticket_url: null,
-    is_featured: true,
+    is_featured: false,
     status: "upcoming",
     is_published: true,
     display_order: 1,
@@ -229,7 +228,7 @@ async function getPublishedEventsRaw(category?: string): Promise<EventItem[]> {
 async function getFeaturedEventRaw(): Promise<EventItem | null> {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return CANONICAL_UPCOMING_EVENTS[0] || null;
+      return null;
     }
 
     const supabase = await createClient();
@@ -244,13 +243,13 @@ async function getFeaturedEventRaw(): Promise<EventItem | null> {
 
     if (error) {
       console.error("[DAL Error getFeaturedEvent]:", error.message);
-      return CANONICAL_UPCOMING_EVENTS[0] || null;
+      return null;
     }
 
-    return (data as unknown as EventItem) || CANONICAL_UPCOMING_EVENTS[0] || null;
+    return (data as unknown as EventItem) || null;
   } catch (err: unknown) {
     console.warn("[DAL Warning getFeaturedEvent]:", err instanceof Error ? err.message : String(err));
-    return CANONICAL_UPCOMING_EVENTS[0] || null;
+    return null;
   }
 }
 

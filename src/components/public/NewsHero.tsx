@@ -66,7 +66,9 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
             id="featured-news-heading"
             className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] lg:absolute lg:left-8 lg:top-[66px] lg:w-[660px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[40px]"
           >
-            {primaryArticle.title}
+            <Link href={`/news/${primaryArticle.slug}`} className="hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary">
+              {primaryArticle.title}
+            </Link>
           </h1>
           <p className="mt-3 text-start text-sm leading-[24px] text-tint-hero sm:text-base lg:absolute lg:left-8 lg:top-[130px] lg:mt-0 lg:w-[660px] lg:overflow-hidden lg:whitespace-nowrap">
             {primaryArticle.excerpt}

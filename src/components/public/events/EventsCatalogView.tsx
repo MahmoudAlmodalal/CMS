@@ -127,7 +127,7 @@ export function EventsCatalogView({
           // slot. So the slot is reproduced and the existing banner fills it.
           <section
             aria-label={t("featuredRegion")}
-            className="ms-5 h-[586px] w-[349px] lg:ms-0 lg:h-auto lg:w-[503px]"
+            className="self-center ms-5 h-[586px] w-[349px] lg:ms-0 lg:h-auto lg:w-[503px]"
           >
             <FeaturedEventBanner event={featuredEvent} />
           </section>

@@ -72,27 +72,15 @@ async function getPublishedArticlesRaw(options?: {
 
     const { data, error } = await query;
 
-    if (error || !data || data.length === 0) {
-      let filtered = CANONICAL_ARTICLES.filter(
-        (a) => a.is_published && a.published_at <= nowIso
-      );
-      if (category && category !== "all") {
-        filtered = filtered.filter((a) => a.category === category);
-      }
-      filtered.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-      return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
+    if (error) {
+      console.error("DAL Error [getPublishedArticles]:", error.message);
+      return [];
     }
 
-    return data as unknown as Article[];
-  } catch {
-    let filtered = CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.published_at <= nowIso
-    );
-    if (category && category !== "all") {
-      filtered = filtered.filter((a) => a.category === category);
-    }
-    filtered.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-    return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
+    return (data as unknown as Article[]) || [];
+  } catch (err) {
+    console.error("DAL Exception [getPublishedArticles]:", err);
+    return [];
   }
 }
 
@@ -100,7 +88,7 @@ async function getPublishedArticlesRaw(options?: {
  * Fetch featured published articles.
  * Strictly checks is_published = true AND is_featured = true AND published_at <= now().
  */
-async function getFeaturedArticlesRaw(limit = 3): Promise<Article[]> {
+async function getFeaturedArticlesRaw(limit = 4): Promise<Article[]> {
   const nowIso = new Date().toISOString();
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -122,21 +110,32 @@ async function getFeaturedArticlesRaw(limit = 3): Promise<Article[]> {
       .order("published_at", { ascending: false })
       .limit(limit);
 
-    if (error || !data || data.length === 0) {
-      const featured = CANONICAL_ARTICLES.filter(
-        (a) => a.is_published && a.is_featured && a.published_at <= nowIso
-      );
-      featured.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-      return featured.slice(0, limit);
+    if (error) {
+      console.error("DAL Error [getFeaturedArticles]:", error.message);
+      return [];
     }
 
-    return data as unknown as Article[];
-  } catch {
-    const featured = CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.is_featured && a.published_at <= nowIso
-    );
-    featured.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-    return featured.slice(0, limit);
+    if (!data || data.length === 0) {
+      // If no articles are marked featured in database, check for any published articles
+      const { data: publishedData, error: pubError } = await supabase
+        .from("articles")
+        .select("*")
+        .eq("is_published", true)
+        .lte("published_at", nowIso)
+        .order("published_at", { ascending: false })
+        .limit(limit);
+
+      if (!pubError && publishedData && publishedData.length > 0) {
+        return publishedData as unknown as Article[];
+      }
+
+      return [];
+    }
+
+    return (data as unknown as Article[]) || [];
+  } catch (err) {
+    console.error("DAL Exception [getFeaturedArticles]:", err);
+    return [];
   }
 }
 
@@ -166,18 +165,13 @@ async function getArticleBySlugRaw(slug: string): Promise<Article | null> {
       .maybeSingle();
 
     if (error || !data) {
-      const found = CANONICAL_ARTICLES.find(
-        (a) => a.slug === slug && a.is_published && a.published_at <= nowIso
-      );
-      return found || null;
+      return null;
     }
 
     return data as unknown as Article;
-  } catch {
-    const found = CANONICAL_ARTICLES.find(
-      (a) => a.slug === slug && a.is_published && a.published_at <= nowIso
-    );
-    return found || null;
+  } catch (err) {
+    console.error("DAL Exception [getArticleBySlug]:", err);
+    return null;
   }
 }
 
@@ -225,17 +219,14 @@ export async function getAllPublishedArticleSlugs(): Promise<{ slug: string }[]>
       .eq("is_published", true)
       .lte("published_at", nowIso);
 
-    if (error || !data || data.length === 0) {
-      return CANONICAL_ARTICLES.filter(
-        (a) => a.is_published && a.published_at <= nowIso
-      ).map((a) => ({ slug: a.slug }));
+    if (error || !data) {
+      return [];
     }
 
     return (data as Array<{ slug: string }>).map((row) => ({ slug: row.slug }));
-  } catch {
-    return CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.published_at <= nowIso
-    ).map((a) => ({ slug: a.slug }));
+  } catch (err) {
+    console.error("DAL Exception [getAllPublishedArticleSlugs]:", err);
+    return [];
   }
 }
 

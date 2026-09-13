@@ -6,6 +6,7 @@ import {
   Footer,
   SkipToContent,
 } from "@/components/public";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export default async function PublicLayout({
   children,
@@ -17,6 +18,11 @@ export default async function PublicLayout({
   // Keeps the public shell statically renderable per locale.
   const { locale } = await params;
   setRequestLocale(locale);
+  const settings = await getSiteSettings();
+  const contact = {
+    email: settings.contact_email,
+    regions: settings.operational_regions,
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
@@ -27,7 +33,7 @@ export default async function PublicLayout({
       <Navbar />
 
       {/* 3. Mobile Top Bar + Drawer (Figma Component 17: 56px) */}
-      <MobileNavbar />
+      <MobileNavbar contact={contact} />
 
       {/* 4. Primary Page Viewport
           No top padding: in Figma every page opens on a full-bleed hero at y=0 with
@@ -43,7 +49,7 @@ export default async function PublicLayout({
       </main>
 
       {/* 5. Global Footer (Figma Node 94:18289) */}
-      <Footer />
+      <Footer settings={settings} />
     </div>
   );
 }

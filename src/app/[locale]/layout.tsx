@@ -6,6 +6,7 @@ import "../globals.css";
 import { DirectionProvider } from "@/lib/direction";
 import { fontVariables } from "@/lib/fonts";
 import { localeDirection, routing, type AppLocale } from "@/i18n/routing";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
 
@@ -19,11 +20,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "site" });
+  if (hasLocale(routing.locales, locale)) setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "site" }),
+  ]);
+  const ogImage = settings.seo_og_image_url;
   return {
     metadataBase: new URL(siteUrl),
-    title: t("title"),
-    description: t("description"),
+    title: settings.seo_default_title?.trim() || t("title"),
+    description: settings.seo_default_description?.trim() || t("description"),
+    openGraph: ogImage ? { images: [ogImage] } : undefined,
+    twitter: ogImage ? { card: "summary_large_image", images: [ogImage] } : undefined,
   };
 }
 
