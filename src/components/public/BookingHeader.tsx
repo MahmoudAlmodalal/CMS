@@ -1,35 +1,45 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { Highlight } from "@/components/ui/Highlight";
+import { PageHero } from "./PageHero";
 
 interface BookingHeaderProps {
   subtitle: string;
+  /** Admin override for the headline; *asterisks* mark the highlighted run. */
+  title?: string;
 }
 
 /**
- * Booking Header Component
- * Verified against Figma Screen "الحجز" (Node 91:17109 / Frame 11: 91:17123 & 91:17126)
- * - Headline: "مناسبتك تستحق موسيقى حقيقية. ♪"
- * - Subtitle: configurable via site_settings.booking_subtitle
- * - Font: Calligraphic / Aref Ruqaa headline with warm brand colors
+ * Hero band of الحجز — Figma nodes 91:17110 (photograph), 91:17111 (scrim) and
+ * 91:17123 (copy) in frame 91:17109.
+ *
+ * The band is 611px tall and the copy block sits 247px down, centred. The headline
+ * carries one phrase in primary-500 against 80% white, so booking.title is stored
+ * with an <em> around it and rendered rich rather than split in code.
+ *
+ * In the frame the copy block is wrapped in a double rotate-180 — Figma's way of
+ * mirroring a left-to-right stack for an Arabic artboard — which reverses the
+ * source order: the headline renders above the standfirst, not below it.
  */
-export function BookingHeader({ subtitle }: BookingHeaderProps) {
+export function BookingHeader({ subtitle, title }: BookingHeaderProps) {
   const t = useTranslations("booking");
 
   return (
-    <div className="relative w-full pt-10 pb-8 sm:pt-14 sm:pb-12 text-center">
-      {/* Decorative Musical Accent */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-bold mb-4">
-        <span>♪</span>
-        <span>{t("kicker")}</span>
-      </div>
-
-      <h1 className="font-calligraphic text-3xl sm:text-4xl md:text-5xl font-bold text-brand-espresso leading-tight tracking-tight mb-4">
-        {t("title")}
-      </h1>
-
-      <p className="max-w-2xl mx-auto text-base sm:text-lg text-brand-espresso/80 leading-relaxed font-normal">
-        {subtitle}
-      </p>
-    </div>
+    <PageHero
+      // 141:15632 is 390x688 hung at y=-10, so the band is 0..678 here.
+      mobileHeight={678}
+      height={611}
+      contentTop={247}
+      title={
+        title ? (
+          <Highlight text={title} highlightClassName="text-brand-primary" />
+        ) : (
+          t.rich("title", {
+            em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+          })
+        )
+      }
+      subtitle={subtitle}
+    />
   );
 }

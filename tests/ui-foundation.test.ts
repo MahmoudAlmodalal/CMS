@@ -24,16 +24,21 @@ test("UI Foundation — Color Tokens Verification against Figma values", () => {
 
   // Gradscale Palette
   assert.equal(FIGMA_TOKENS.colors.gradscale[400], "#666666");
-  assert.equal(FIGMA_TOKENS.colors.gradscale[900], "#130F26");
+  assert.equal(FIGMA_TOKENS.colors.gradscale[900], "#1B1B1B");
 });
 
 test("UI Foundation — Spacing Tokens Verification", () => {
-  assert.equal(FIGMA_TOKENS.spacing[1], "8px");
-  assert.equal(FIGMA_TOKENS.spacing[2], "16px");
-  assert.equal(FIGMA_TOKENS.spacing[3], "24px");
-  assert.equal(FIGMA_TOKENS.spacing[4], "32px");
-  assert.equal(FIGMA_TOKENS.spacing[8], "64px");
-  assert.equal(FIGMA_TOKENS.spacing[12], "96px");
+  // Keyed by value, matching Figma's own variable names in "gride and space"
+  // (27:12129): the variable is `grid 8`, not "step 1". The old 1..14 ordinal
+  // keys implied a continuous scale and interpolated a 48 that Figma does not
+  // define — the real scale jumps 40 -> 56.
+  assert.equal(FIGMA_TOKENS.spacing[8], "8px");
+  assert.equal(FIGMA_TOKENS.spacing[16], "16px");
+  assert.equal(FIGMA_TOKENS.spacing[24], "24px");
+  assert.equal(FIGMA_TOKENS.spacing[32], "32px");
+  assert.equal(FIGMA_TOKENS.spacing[64], "64px");
+  assert.equal(FIGMA_TOKENS.spacing[96], "96px");
+  assert.ok(!(48 in FIGMA_TOKENS.spacing), "48 is not one of Figma's grid steps");
 });
 
 test("UI Foundation — Radii Tokens Verification", () => {
@@ -87,7 +92,7 @@ test("UI Foundation — Globals.css contains all Figma Theme Variables", () => {
   assert.ok(css.includes("--color-brand-espresso: #2B1D14;"));
   assert.ok(css.includes("--color-brand-cream: #F9F7F0;"));
   assert.ok(css.includes("--color-brand-tint: #F9EDE8;"));
-  assert.ok(css.includes("--color-gradscale-900: #130F26;"));
+  assert.ok(css.includes("--color-gradscale-900: #1B1B1B;"));
   assert.ok(css.includes("--radius-button: 12px;"));
   assert.ok(css.includes("--radius-card: 24px;"));
   assert.ok(css.includes("--radius-input: 16px;"));

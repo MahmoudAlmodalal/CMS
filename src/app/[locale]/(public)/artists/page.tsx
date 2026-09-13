@@ -1,21 +1,25 @@
-import React from "react";
+import React, { Suspense } from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { Container } from "@/components/ui/LayoutPrimitives";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPublishedArtists } from "@/lib/dal/artists";
 import { getSiteSettings } from "@/lib/dal/site-settings";
-import {
-  ArtistsHeader,
-  ArtistsDirectoryClient,
-  PageHero,
-} from "@/components/public";
+import { ArtistsDirectoryClient, PageHero } from "@/components/public";
 
 /**
- * Task 33 — Artists Directory (/artists)
- * ISR revalidation every 1 hour (3600s) as specified in APPLICATION_ARCHITECTURE.md §4.1
+ * الفنانين — Figma frame 91:17844.
+ *
+ * 1440x2290 on #F9F7F0: the hero band 0-611 with the headline in Qahwa Arabic
+ * 64/91.5 and no pill, the filter bar 739-804, the grid 846-1734, the footer at
+ * 1905. The design draws no heading over the directory.
+ *
+ * The page used to declare both revalidate=3600 and force-dynamic, which cancel
+ * out — the second wins and the ISR window in APPLICATION_ARCHITECTURE.md never
+ * applied. The artist list is the same for everyone and only the ?category= filter
+ * varies, and that is read in the client, so the page keeps the documented ISR
+ * window and puts the directory behind a Suspense boundary for useSearchParams
+ * rather than turning the whole route dynamic.
  */
 export const revalidate = 3600;
-export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -23,15 +27,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_artists_title?.trim() || t("artistsTitle");
+  const description = settings.seo_artists_description?.trim() || t("artistsDescription");
   const path = locale === "ar" ? "/artists" : "/en/artists";
   return {
-    title: t("artistsTitle"),
-    description: t("artistsDescription"),
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
-      title: t("artistsTitle"),
-      description: t("artistsDescription"),
+      title,
+      description,
       url: path,
       type: "website",
       locale: locale === "ar" ? "ar_AR" : "en_US",
@@ -39,29 +49,69 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArtistsPage() {
+export default async function ArtistsPage({
+  params,
+}: {
+  params?: Promise<{ locale: string }>;
+} = {}) {
+  if (params) {
+    const { locale } = await params;
+    setRequestLocale(locale);
+  }
+
   const [artists, settings, t] = await Promise.all([
     getPublishedArtists(),
     getSiteSettings(),
-    getTranslations("page"),
+    getTranslations("artists"),
   ]);
 
   return (
-    <div>
+    <div className="w-full bg-brand-cream">
+      {/* Hero band 91:18055/91:18057 — 611 tall, the block 247 down, the headline
+          at 64/91.5 with its first word in primary-500. No pill on this frame. */}
       <PageHero
-        eyebrow={t("artistsEyebrow")}
-        title={t("artistsTitle")}
+        title={
+          settings.artists_title?.trim()
+            ? settings.artists_title
+            : t.rich("title", {
+                em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
+              })
+        }
         subtitle={settings.artists_subtitle}
+        image={settings.artists_hero_image_url || undefined}
+        height={611}
+        mobileHeight={678}
+        contentTop={247}
+        titleSize={64}
+        titleLeading={91.5}
       />
-      <Container>
-        <div className="space-y-10 py-10 lg:space-y-12 lg:py-16">
-          {/* Header section matching Figma Frame 10 (91:17844 / 91:18060) */}
-          <div className="sr-only"><ArtistsHeader subtitle={settings.artists_subtitle} socialLinks={settings.social_links} /></div>
 
-          {/* Interactive filter & grid; dynamic rendering avoids a static fallback replacing the cards. */}
-          <ArtistsDirectoryClient initialArtists={artists} />
+      {/* The filter bar opens 128px under the band, and the grid's last row leaves
+          171px before the footer at 1905. Both marks hang off their own edge of the
+          artboard, so they are drawn only where there is a margin to hang them in.
+          On the 390 frame the rhythm is its own: the band closes at 678, the filter
+          bar opens 32 under it at 710, the carousel opens at 809 and closes at 1709,
+          and the footer is bottom-anchored at 2007 — so 298 of air closes the
+          section, which is the widest gap anywhere on the frame. */}
+      <section className="relative w-full overflow-hidden pb-[298px] pt-[32px] lg:pb-[172px] lg:pt-[127px]">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-[97px] hidden h-[112px] w-[62px] bg-[url('/assets/branding/dots-artists-start.png')] bg-contain bg-no-repeat xl:block"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-[120px] right-0 hidden h-[112px] w-[63px] bg-[url('/assets/branding/dots-artists-end.png')] bg-contain bg-no-repeat xl:block"
+        />
+
+        <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12 xl:px-8">
+          <Suspense fallback={<div className="min-h-[888px]" />}>
+            <ArtistsDirectoryClient
+              initialArtists={artists}
+              allLabel={settings.artists_filter_all_label}
+            />
+          </Suspense>
         </div>
-      </Container>
+      </section>
     </div>
   );
 }

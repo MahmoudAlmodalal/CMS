@@ -148,6 +148,27 @@ export function optionalTrimmedString(max: number = 255) {
 }
 
 /**
+ * An optional English translation of an Arabic content field.
+ *
+ * Admin forms post an empty string for a field left untranslated. That empty
+ * string is normalized to null so the column stores "no translation yet" —
+ * pickLocalized then falls back to the Arabic text instead of rendering a blank.
+ */
+export function translationString(max: number = 255) {
+  return z
+    .union([z.string(), z.null()])
+    .optional()
+    .transform((val) => {
+      if (val === null || val === undefined) return null;
+      const trimmed = val.trim();
+      return trimmed === "" ? null : trimmed;
+    })
+    .refine((val) => val === null || val.length <= max, {
+      message: `يجب ألا يتجاوز طول الترجمة الإنجليزية ${max} حرفاً`,
+    });
+}
+
+/**
  * Safe HTTP/HTTPS URL validator with maximum length limit.
  * Strictly rejects dangerous pseudo-protocols like javascript:, data:, ftp:, file:.
  */
@@ -173,6 +194,43 @@ export function safeUrlSchema(max: number = 500) {
         message: "يجب أن يكون الرابط عنوان ويب صالح يبدأ بـ http:// أو https://",
       }
     );
+}
+
+function isHttpUrl(val: string): boolean {
+  try {
+    const parsed = new URL(val);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Image reference: an http(s) URL or a root-relative site asset path such as
+ * "/assets/figma/hero.png" (the seeded defaults). Protocol-relative ("//host"),
+ * backslash and traversal paths are rejected.
+ */
+export function imageUrlSchema(max: number = 500) {
+  return z
+    .string({ message: "رابط الصورة مطلوب" })
+    .transform((val) => val.trim())
+    .refine((val) => val.length <= max, {
+      message: `يجب ألا يتجاوز طول الرابط ${max} حرفاً`,
+    })
+    .refine(
+      (val) =>
+        isHttpUrl(val) ||
+        (val.startsWith("/") && !val.startsWith("//") && !val.includes("\\") && !val.includes("..")),
+      { message: "يجب أن يكون رابط الصورة عنواناً يبدأ بـ http(s):// أو مساراً يبدأ بـ /" }
+    );
+}
+
+/** Optional image: forms post "" for "no image", which is stored as null. */
+export function optionalImageUrlSchema(max: number = 500) {
+  return z.preprocess(
+    (val) => (typeof val === "string" && val.trim() === "" ? null : val),
+    imageUrlSchema(max).nullable().optional()
+  );
 }
 
 /**

@@ -4,8 +4,11 @@ import React, { useRef, useState, useCallback } from "react";
 import { uploadMediaAction } from "@/actions/storage";
 import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, type StorageBucket } from "@/lib/storage";
 
+export const MEDIA_LIBRARY_ENTITY_ID = "media-library";
+
 interface MediaUploadZoneProps {
   bucket: StorageBucket;
+  folder?: string;
   onUploaded?: (path: string, publicUrl: string, mime: string, sizeBytes: number) => void;
 }
 
@@ -31,7 +34,7 @@ const BUCKET_LABELS: Record<StorageBucket, string> = {
  * from @/lib/storage — never re-declared here).
  * Validates files client-side before submitting, then calls uploadMediaAction.
  */
-export function MediaUploadZone({ bucket, onUploaded }: MediaUploadZoneProps) {
+export function MediaUploadZone({ bucket, folder, onUploaded }: MediaUploadZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -78,7 +81,8 @@ export function MediaUploadZone({ bucket, onUploaded }: MediaUploadZoneProps) {
         // manager stores general library assets, not entity-scoped ones.
         const result = await uploadMediaAction({
           bucket,
-          entityId: "media-library",
+          folder,
+          entityId: MEDIA_LIBRARY_ENTITY_ID,
           label: file.name,
           file,
         });
@@ -96,7 +100,7 @@ export function MediaUploadZone({ bucket, onUploaded }: MediaUploadZoneProps) {
         setProgress(null);
       }
     },
-    [bucket, validateClientSide, onUploaded],
+    [bucket, folder, validateClientSide, onUploaded],
   );
 
   const handleFiles = useCallback(

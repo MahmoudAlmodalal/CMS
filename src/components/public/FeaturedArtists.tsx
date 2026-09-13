@@ -1,52 +1,103 @@
 import React from "react";
-import { useTranslations } from "next-intl";
-import { Container } from "@/components/ui/LayoutPrimitives";
+import { useLocale, useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { localeDirection, type AppLocale } from "@/i18n/routing";
 import { ArtistTile } from "./ArtistTile";
-import { PublicButton } from "./PublicButton";
 import type { Artist } from "@/lib/types/artists";
 
 interface FeaturedArtistsProps {
   artists: Artist[];
+  /** Admin override for the section heading. Falls back to built-in copy. */
+  heading?: string;
+  /** Admin override for the CTA label. Falls back to built-in copy. */
+  ctaLabel?: string;
+  /** Admin override for the CTA link. Falls back to /artists. */
+  ctaHref?: string;
 }
 
 /**
- * Verified against Figma Frame 14 (Node 87:14240, 1440x615):
- * - Surface: solid #000000 (NOT a light parchment)
- * - Heading (87:14299): Qahwa Arabic 64px, #F9EDE8, CENTERED above the rail
- * - Rail (87:14241): row of 6 tiles, 20px gap, 220px each — overflows the 1200px
- *   container in Figma, so it reads as a horizontally scrollable rail
- * - CTA (115:2179): OUTLINE 207x48 button centered below the rail
+ * أصوات تصنع التاريخ — Figma Frame 14 (node 87:14240), 1440x615 at y=1619 on solid
+ * #000000. Three blocks placed against the artboard:
+ *
+ *   heading 87:14298   x 152..1288, y 52,  Qahwa Arabic 64/48 on #F9EDE8, centred
+ *   rail    87:14241   x 120,       y 165, 1200 wide, clipping its own overflow
+ *   CTA     115:2179   x 616,       y 509, 207x48 outlined in #F9EDE8, r12
+ *
+ * The rail holds six 220px tiles on a 240px pitch, so it is 1420 wide inside a
+ * 1200px box: five sit at x 120, 360, 600, 840 and 1080, and the sixth is clipped
+ * away entirely at the container's edge. It reads as a scrollable rail, and is one
+ * here, so the sixth tile stays reachable.
+ *
+ * DEVIATION — the frame lays that rail out left to right, against the direction of
+ * the rest of the page: the first tile is the leftmost and the overflow is clipped
+ * off the right edge, where an RTL rail would start at the right and spill off the
+ * left. Figma auto-layout has no RTL mode and the designer used a rotate-180 pair
+ * to flip other bands of this frame but not this one, so it reads as an artefact
+ * rather than a decision. The frame is what is being matched, so the scroller is
+ * given its own ltr direction — an overflowing track in an RTL box hangs off the
+ * left, which is the wrong edge — and the page's direction is put back on the
+ * track so the tiles keep their own text alignment, with flex-row-reverse cancelling
+ * it for placement only. Dropping both lets the rail run with the page instead.
+ *
+ * The frame repeats two placeholder artists across the six tiles, which is a
+ * stand-in rather than copy to reproduce, so the rail draws the real roster.
+ *
+ * The CTA is the outlined variant of the shared button, but the design sets its
+ * label in SF Pro Bold 16/22.4 — a baked-in fallback in the file itself — so the
+ * system stack is what gets asked for, as on the الرئيسية booking CTA.
+ *
+ * The 390 frame (136:7457, 0..775 at y=1741) draws no rail at all: it is a 2x2 grid
+ * of four 160x239 tiles, 336 wide and centred, 16 apart across and 29 down. Its
+ * rhythm is 52 to the heading, 48 for it, 38 to the grid, 38 from the grid to the
+ * 207x48 CTA, and 44 to close — which is the 775 the frame declares. The two tiles
+ * past the fourth are dropped rather than wrapped to a third row: the frame draws
+ * four, and a fifth row of one would be an invention.
  */
-export function FeaturedArtists({ artists }: FeaturedArtistsProps) {
+export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: FeaturedArtistsProps) {
   const t = useTranslations("home");
+  const direction = localeDirection[useLocale() as AppLocale] ?? "rtl";
 
   if (!artists || artists.length === 0) {
     return null;
   }
 
   return (
-    <section className="py-12 lg:py-0 min-h-[615px] lg:h-[615px] bg-black flex flex-col justify-center overflow-hidden">
-      <Container>
-        {/* Section Heading (Figma Node 87:14299 — Qahwa 64px, centered) */}
-        <h2 className="font-calligraphic text-3xl sm:text-5xl lg:text-[64px] font-normal text-[#F9EDE8] leading-[1.25] text-center pb-10">
-          {t("artistsHeading")}
-        </h2>
-      </Container>
-
-      {/* Artist Rail (Figma Node 87:14241 — 220px tiles, 20px gap) */}
-      <div className="w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex gap-5 w-max mx-auto px-6 sm:px-8 lg:px-12">
-          {artists.slice(0, 6).map((artist, i) => (
-            <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
-          ))}
+    <section className="relative w-full overflow-hidden bg-black pb-[44px] pt-[52px] lg:h-[615px] lg:py-0">
+      {/* Centering wrapper: keeps the 1440px artboard centered on ultra-wide screens */}
+      <div className="relative mx-auto size-full max-w-[1440px] lg:h-[615px]">
+        {/* Heading 87:14298 */}
+        <div className="lg:absolute lg:left-[152px] lg:right-[152px] lg:top-[52px]">
+          <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
+            {heading || t("artistsHeading")}
+          </h2>
         </div>
-      </div>
 
-      {/* View-all CTA (Figma Node 115:2179 — outline 207x48, centered) */}
-      <div className="flex justify-center pt-10">
-        <PublicButton href="/artists" variant="secondary" size="md">
-          {t("artistsCta")}
-        </PublicButton>
+        {/* Rail 87:14241 */}
+        <div
+          // The ltr that makes the 1440 rail hang its overflow off the right edge is
+          // set from lg up only: the 390 frame has no rail to overflow.
+          className="mt-[38px] w-full [scrollbar-width:none] lg:absolute lg:left-[120px] lg:top-[165px] lg:mt-0 lg:w-[1200px] lg:overflow-x-auto lg:[direction:ltr] [&::-webkit-scrollbar]:hidden"
+        >
+          <div
+            dir={direction}
+            className="mx-auto grid w-[336px] grid-cols-2 gap-x-4 gap-y-[29px] lg:mx-0 lg:flex lg:w-max lg:flex-row-reverse lg:gap-[20px] [&>*:nth-child(n+5)]:hidden lg:[&>*:nth-child(n+5)]:block"
+          >
+            {/* Already limited by the admin "home_featured_artists_count" setting. */}
+            {artists.map((artist, i) => (
+              <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
+            ))}
+          </div>
+        </div>
+
+        {/* CTA 115:2179 */}
+        <div className="mt-[38px] flex justify-center lg:absolute lg:left-[616px] lg:top-[509px] lg:mt-0 lg:block">
+          <Link
+            href={ctaHref || "/artists"}
+            className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] border border-[#F9EDE8] font-system text-[16px] font-bold leading-[22.4px] text-[#F9EDE8] transition-colors hover:bg-[#F9EDE8]/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            {ctaLabel || t("artistsCta")}
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -1,15 +1,14 @@
 import React from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { Container } from "@/components/ui/LayoutPrimitives";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   BookingHeader,
   BookingSidebar,
   BookingForm,
   BookingContextBanner,
-  PageHero,
 } from "@/components/public";
 import { getBookingPageData } from "@/lib/dal/booking";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export async function generateMetadata({
   params,
@@ -17,15 +16,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_booking_title?.trim() || t("bookingTitle");
+  const description = settings.seo_booking_description?.trim() || t("bookingDescription");
   return {
-    title: t("bookingTitle"),
-    description: t("bookingDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("bookingTitle"),
-      description: t("bookingDescription"),
+      title,
+      description,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
+      images: settings.seo_og_image_url ? [settings.seo_og_image_url] : undefined,
     },
   };
 }
@@ -40,11 +46,14 @@ interface BookingPageProps {
 }
 
 /**
- * Task 38 — Booking Route `/booking`
- * Verified against Figma Screen "الحجز" (Node 91:17109):
- * - Frame 11 (Node 91:17123): Header with title & subtitle
- * - Frame 33 (Node 91:17792): 2-Column Responsive Layout (Form + Sidebar)
- * - Deep Link Parameter Binding:
+ * Booking route `/booking` — Figma frame 91:17109.
+ *
+ * The frame is a 611px hero band, then a single content row (91:17792) 676px
+ * down: the sidebar (412) and the form (672) 58px apart, the pair centred, and
+ * the footer at 1568. The row is laid out sidebar-first because that is the
+ * order the design draws it in — in Arabic that puts the form on the right.
+ *
+ * Deep Link Parameter Binding:
  *   - ?event_id=[id] -> Pre-fills event context & associated artist
  *   - ?artist=[slug|id] -> Pre-selects artist in dropdown
  *   - ?course=[slug] -> Pre-fills academy registration inquiry
@@ -57,14 +66,17 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   const courseParam = resolvedParams.course;
 
   // Retrieve published artists, event details, and configurable site settings
-  const {
-    subtitle,
-    contactEmail,
-    contactPhone,
-    instagramUrl,
-    artists,
-    eventContext,
-  } = await getBookingPageData(eventIdParam);
+  const [
+    {
+      subtitle,
+      contactEmail,
+      contactPhone,
+      instagramUrl,
+      artists,
+      eventContext,
+    },
+    settings,
+  ] = await Promise.all([getBookingPageData(eventIdParam), getSiteSettings()]);
 
   // Derive preselection state from query parameters
   let defaultArtistId: string | undefined = undefined;
@@ -109,46 +121,40 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   }
 
   return (
-    <div className="w-full bg-brand-cream min-h-screen">
-      <PageHero
-        eyebrow={t("bookingEyebrow")}
-        title={t("bookingTitle")}
-        subtitle={subtitle}
-      />
-      <Container>
-        {/* Header (Figma Frame 11 / Node 91:17123) */}
-        <div className="sr-only"><BookingHeader subtitle={subtitle} /></div>
+    <div className="w-full bg-brand-cream">
+      {/* Hero band 91:17110/91:17111/91:17123 — full-bleed, 611 tall, navbar over it. */}
+      <BookingHeader subtitle={subtitle} title={settings.booking_title?.trim() || undefined} />
 
-        {/* 2-Column Responsive Layout (Figma Frame 33 / Node 91:17792) */}
-        <div className="w-full mt-6 sm:mt-8 flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-          {/* Main Form Column (Figma Form Node 91:17171) */}
-          <main className="flex-1 w-full min-w-0">
-            {/* Deep-link Context Alert */}
-            <BookingContextBanner
-              eventContext={eventContext}
-              preferredArtistName={preferredArtistName}
-              courseSlug={courseParam}
-            />
-
-            {/* Public Interactive Booking Form */}
-            <BookingForm
-              artists={artists}
-              defaultArtistId={defaultArtistId}
-              defaultEventId={eventContext?.id}
-              defaultEventType={defaultEventType}
-              defaultMessage={defaultMessage}
-              defaultPreferredArtist={defaultPreferredArtist}
-            />
-          </main>
-
-          {/* Sidebar Column (Figma Sidebar Node 91:17250) */}
-          <BookingSidebar
-            contactEmail={contactEmail}
-            contactPhone={contactPhone}
-            instagramUrl={instagramUrl}
+      {/* Content row 91:17792: form 672 and sidebar 412, 58px apart, the pair
+          centred on the 1440 artboard, opening 65px under the hero band and
+          leaving 18px before the footer at y=1568 — the form's own content runs
+          past the 829px the frame gives its box, so the gap is measured off the
+          rendered reference rather than off that number. The form comes first so
+          that in Arabic it lands on the right, where the design draws it. */}
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-[7px] px-5 pb-[390.2px] pt-[84px] lg:w-[1142px] lg:max-w-full lg:flex-row lg:gap-[58px] lg:px-4 xl:px-0 lg:pb-[18px] lg:pt-[65px]">
+        <main className="min-w-0 w-full max-w-full lg:ms-0 lg:w-[672px]">
+          <BookingContextBanner
+            eventContext={eventContext}
+            preferredArtistName={preferredArtistName}
+            courseSlug={courseParam}
           />
-        </div>
-      </Container>
+
+          <BookingForm
+            artists={artists}
+            defaultArtistId={defaultArtistId}
+            defaultEventId={eventContext?.id}
+            defaultEventType={defaultEventType}
+            defaultMessage={defaultMessage}
+            defaultPreferredArtist={defaultPreferredArtist}
+          />
+        </main>
+
+        <BookingSidebar
+          contactEmail={contactEmail}
+          contactPhone={contactPhone}
+          instagramUrl={instagramUrl}
+        />
+      </div>
     </div>
   );
 }

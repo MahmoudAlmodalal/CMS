@@ -1,7 +1,14 @@
 {
-  "_note": "Three mobile frames per language are all named الفنانين in Figma, so the layer name cannot identify them. Desktop has 7 screens per language while mobile name-matching only yields 5, so the two unnamed ones are almost certainly news and booking. Open docs/figma-reference/unresolved-*.png after `npm run figma:sync` and replace each null with the screen slug: home | academy | events | booking | news | artists | artist-detail.",
-  "141:15629": null,
-  "141:15199": null,
-  "144:20146": null,
-  "144:20463": null
+  "_note": "Three mobile frames per language are all named الفنانين in Figma, so the layer name cannot identify them. Resolved from child structure via the Figma MCP server (get_metadata), not from the layer name. Each value is the screen slug: home | academy | events | booking | news | artists | artist-detail.",
+  "_evidence": {
+    "141:15629": "390x3434 — child 141:15488 'Form' containing Text Input / Email Input / Phone Input / Date Picker / Dropdown / Text Area, section headings '♪ معلوماتك الشخصية' and '♪ تفاصيل المناسبة', and sidebar 141:15442 'ماذا يحدث بعد ذلك؟'. Unambiguously the booking screen.",
+    "141:15199": "390x3037 — child 141:15396 'Featured News', heading 141:15078 'آخر الأخبار', and three 'Article Card 1/2/3' each with Article Image + category overlay + date + Heading 3 + excerpt + Link. Unambiguously the news screen.",
+    "144:20146": "English twin of 141:15629 — same section, same ordinal position, identical canvas height 3434. To be re-confirmed from child structure during the EN mobile extraction pass (E4).",
+    "144:20463": "English twin of 141:15199 — same section, same ordinal position, identical canvas height 3037. To be re-confirmed from child structure during the EN mobile extraction pass (E4).",
+    "_stray": "Both AR frames also carry an off-canvas 'Frame 20' of Artists cards at x=674 (outside the 390px frame width). That leftover content is why every one of these frames inherited the name الفنانين; it is not part of either screen."
+  },
+  "141:15629": "booking",
+  "141:15199": "news",
+  "144:20146": "booking",
+  "144:20463": "news"
 }

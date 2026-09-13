@@ -49,7 +49,12 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
   assert.match(content, /85px|h-\[85px\]/, "Navbar must enforce Figma confirmed height: 85px");
   assert.match(content, /rounded-\[32px\]/, "Navbar must enforce Figma confirmed corner radius: 32px");
   assert.match(content, /#F2EEE0/, "Navbar must use Figma secondary-300 fill #F2EEE0");
-  assert.match(content, /fixed top-6/, "Navbar must be floating at top on desktop");
+  // The bar floats, but its offset is per-frame, not global: measured off the 1:1
+  // reference renders it is 33px on home, 40px on events and artist profiles,
+  // 57px on academy and 50px elsewhere.
+  assert.match(content, /fixed start-0 end-0/, "Navbar must be floating at top on desktop");
+  assert.match(content, /NAVBAR_TOP/, "Navbar must resolve its top offset per route");
+  assert.match(content, /"\/": "top-\[33px\]"/, "Home navbar offset must be the measured 33px");
   assert.match(content, /hidden lg:flex/, "Navbar must be desktop-only (hidden on mobile)");
 
   // Brand identity
@@ -79,16 +84,38 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
   assert.match(content, /LocaleSwitcher/, "Navbar must include the locale switcher");
 });
 
-test("Task 31 — 3. Mobile Top Bar (Figma Component 17: 56px)", () => {
+test("Task 31 — 3. Mobile Top Bar (Figma Component 17/Navigation 139:12348 — 369.73x56)", () => {
   const content = fs.readFileSync(path.join(root, "src/components/public/MobileNavbar.tsx"), "utf-8");
 
   assert.match(content, /lg:hidden/, "Mobile top bar must be mobile-only (hidden on desktop)");
-  assert.match(content, /h-14|h-16/, "Mobile top bar must maintain 56px height specification");
-  assert.match(content, /site\("brand"\)/, "Mobile top bar must display band name");
-  assertLocalised(content, "nav.bookNow", "أحجز الآن", "Mobile top bar CTA");
-  assert.match(content, /href="\/booking"/, "Mobile top bar CTA must link to /booking");
+  assert.match(content, /h-14/, "Mobile top bar must maintain 56px height specification");
+
+  // Figma draws a floating pill, not a full-bleed bar: measured x=10..378, y=44..99
+  // on the 390px home-mobile canvas, r=20, fill #FFFFFF.
+  assert.match(content, /inset-x-2\.5/, "Mobile pill must be inset 10px inline per Figma");
+  assert.match(content, /top-\[44px\]/, "Mobile pill must sit 44px from the top per Figma");
+  assert.match(content, /rounded-\[20px\]/, "Mobile pill must carry the measured 20px radius");
+  assert.match(content, /bg-white/, "Mobile pill must carry the measured #FFFFFF fill");
+  assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
+
+  // The wordmark raster on disk is 292x178 (1.64:1), not the 104x32 box the node
+  // measures (3.25:1) — forcing that box letterboxed the logo to ~52px with 26px
+  // of dead space each side. It renders at its natural aspect at 32 tall instead,
+  // so the accessible name still carries the band name.
+  assert.match(content, /site\("brand"\)/, "Mobile top bar must name the band on the logo");
+  assert.match(content, /h-8 w-auto object-contain/, "Mobile logo renders at its file aspect instead of the mismatched 104x32 box");
+
   assertLocalised(content, "a11y.openMenu", "فتح قائمة التنقل", "Mobile top bar trigger");
+  assert.match(content, /size-6/, "Drawer toggle must occupy the 24x24 box of Node 139:12338");
   assert.match(content, /<MobileDrawer/, "Mobile top bar must integrate MobileDrawer");
+
+  // Component 17/Navigation has exactly two children — a hamburger and the logo.
+  // The booking CTA and the locale switcher live in the drawer instead, which the
+  // drawer test below covers. Asserting their absence keeps the invented bar from
+  // creeping back in.
+  assert.doesNotMatch(content, /href="\/booking"/, "Figma puts no booking CTA in the mobile bar");
+  assert.doesNotMatch(content, /nav\("bookNow"\)/, "Figma puts no booking CTA in the mobile bar");
+  assert.doesNotMatch(content, /LocaleSwitcher/, "Figma puts no locale switcher in the mobile bar");
 });
 
 test("Task 31 — 4. Mobile Drawer Navigation (Figma 139:12368)", () => {
@@ -196,3 +223,29 @@ test("Task 31 — 7. All 8 Confirmed Public Routes Exist (NO /events/[slug])", (
     "Architecture strictly prohibits /events/[slug] route (all event actions route to /booking)"
   );
 });
+
+test("Figma 142:17048 — English Desktop Floating Navbar & Language Switcher", () => {
+  const content = fs.readFileSync(path.join(root, "src/components/public/Navbar.tsx"), "utf-8");
+  const switcher = fs.readFileSync(path.join(root, "src/components/public/LocaleSwitcher.tsx"), "utf-8");
+  const barrel = fs.readFileSync(path.join(root, "src/components/public/index.ts"), "utf-8");
+
+  // English Navbar Node 142:17048 / Frame 38
+  assert.match(content, /142:17048/, "Navbar must associate with Figma English node 142:17048");
+  assert.match(content, /ENGLISH_NAV_ITEMS/, "Navbar must declare ENGLISH_NAV_ITEMS for English locale");
+  assert.match(barrel, /ENGLISH_NAV_ITEMS/, "Public components barrel must export ENGLISH_NAV_ITEMS");
+
+  // Verify English sequence: Home -> Events -> Academy -> Artists -> News
+  const enOrder = ["home", "events", "academy", "artists", "news"];
+  const navItemsMatch = content.match(/export const ENGLISH_NAV_ITEMS[^{]*=\s*\[([\s\S]*?)\]\s*as const/);
+  assert.ok(navItemsMatch, "ENGLISH_NAV_ITEMS array must be exported as const");
+  const extractedKeys = [...navItemsMatch[1].matchAll(/key:\s*"(\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(extractedKeys, enOrder, "ENGLISH_NAV_ITEMS must follow Figma node 142:17048 sequence");
+
+  // Language switcher in English renders ic:baseline-language globe icon
+  assert.match(switcher, /ic:baseline-language/, "LocaleSwitcher must render ic:baseline-language in English mode");
+  assert.ok(
+    fs.existsSync(path.join(root, "public/assets/icons/ic-baseline-language.svg")),
+    "ic-baseline-language.svg asset must exist in public/assets/icons"
+  );
+});
+

@@ -56,3 +56,18 @@ export const adminBookingUpdateSchema = z
   .strict();
 
 export type AdminBookingUpdate = z.infer<typeof adminBookingUpdateSchema>;
+
+// ============================================================================
+// Booking Action State Types & Initial Values
+// ============================================================================
+
+export interface BookingActionState {
+  success: boolean;
+  message?: string;
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+}
+
+export const INITIAL_BOOKING_ACTION_STATE: BookingActionState = {
+  success: false,
+};

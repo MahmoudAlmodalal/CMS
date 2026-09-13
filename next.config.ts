@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    // The default 75 visibly softens the portrait and cover photography the design
+    // leads with; 90 is the quality those images are served at.
+    qualities: [75, 90],
   },
 };
 
