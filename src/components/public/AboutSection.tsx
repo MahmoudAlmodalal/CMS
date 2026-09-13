@@ -58,7 +58,7 @@ interface AboutSectionProps {
  * the file's own RTL flip — so its DOM order there runs button, body, heading; the
  * visual order is the one reproduced here.
  */
-const BAND_OPACITY = "lg:opacity-50";
+const BAND_OPACITY = "";
 
 const ORNAMENT = { src: "/assets/branding/ornament.svg", width: 123, height: 112 };
 
@@ -67,8 +67,10 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
 
   return (
     <section className="relative w-full overflow-hidden bg-brand-cream pb-[56px] pt-[48px] lg:h-[879px] lg:py-0">
+      {/* Centering wrapper: keeps the 1440px artboard centered on ultra-wide screens */}
+      <div className="relative mx-auto size-full max-w-[1440px] lg:h-[879px]">
       <div className={`relative size-full ${BAND_OPACITY}`}>
-        {/* Dot mark I112:850;112:627 — hangs 24px off the artboard. */}
+        {/* Decorative corner ornament - start/left */}
         <Image
           {...ORNAMENT}
           alt=""
@@ -76,53 +78,61 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
           className="pointer-events-none absolute -left-[24px] top-[163px] hidden h-[111.557px] w-[122.702px] max-w-none lg:block"
         />
 
-        {/* من نحن — I112:850;112:625, centred over a 1251px box, 61/91.5 Cairo Bold. */}
-        <div className="lg:absolute lg:left-[92px] lg:right-[97px] lg:top-[214px]">
-          <h2 className="text-center text-[61px] font-bold leading-[91.5px] text-black">
-            <Highlight text={t("aboutHeading")} highlightClassName="text-primary-500" />
-          </h2>
-        </div>
-
-        {/* Blob portrait I112:850;112:624 — hangs 2px off the artboard. */}
-        <div className="ms-[28px] mt-[30px] w-[335px] lg:absolute lg:-left-[2px] lg:top-[240px] lg:ms-0 lg:mt-0 lg:w-auto">
-          <Image
-            src={settings.about_image_url || "/assets/figma/about-musician.png"}
-            alt={t("aboutImageAlt")}
-            width={551}
-            height={491}
-            quality={95}
-            className="h-[304px] w-[335px] object-cover lg:h-[491px] lg:w-[551px]"
-          />
-        </div>
-
-        {/* Text column I112:850;112:619 — 495 wide, three blocks 32px apart. */}
-        <div className="ms-[28px] mt-[30px] flex w-[324px] flex-col items-start gap-[32px] text-start lg:absolute lg:left-[923px] lg:top-[265px] lg:ms-0 lg:mt-0 lg:w-[495px]">
-          {/* Statement I112:850;112:623 */}
-          <h3 className="h-[66px] whitespace-nowrap font-display text-[32px] font-normal leading-[66px] text-brand-espresso lg:text-[48px]">
-            {settings.about_headline}
-          </h3>
-
-          {/* Manifesto I112:850;112:621 */}
-          <p className="h-[263px] font-medium leading-[37.5px] text-[16px] text-gradscale-900 lg:w-full lg:text-[25px]">
-            {settings.about_body}
-          </p>
-
-          {/* CTA I112:850;112:620 */}
-          <Link
-            href="/artists"
-            className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] bg-primary-500 font-system text-[16px] font-bold leading-[22.4px] text-primary-50 transition-colors hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-          >
-            {ctaLabel || t("aboutCta")}
-          </Link>
-        </div>
-
-        {/* Dot mark I112:850;112:732 — overflows the artboard by 39.7px. */}
+        {/* Decorative corner ornament - end/right */}
         <Image
           {...ORNAMENT}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-[1357px] top-[741px] hidden h-[111.556px] w-[122.702px] max-w-none lg:block"
+          className="pointer-events-none absolute right-[20px] top-[720px] hidden h-[111.556px] w-[122.702px] max-w-none lg:block"
         />
+
+        <div className="mx-auto flex h-full max-w-[1440px] flex-col px-4 sm:px-6 lg:px-12 lg:pt-[40px]">
+          {/* من نحن — Heading centered */}
+          <div className="w-full text-center">
+            <h2 className="text-center text-[61px] font-bold leading-[91.5px] text-black">
+              <Highlight text={settings.home_about_heading || t("aboutHeading")} highlightClassName="text-primary-500" />
+            </h2>
+          </div>
+
+          {/* Main content row: In RTL with flex-row, first child (Image) is on the RIGHT, second child (Text) is on the LEFT */}
+          <div className="mt-8 flex flex-col items-center justify-between gap-8 lg:mt-[24px] lg:flex-row lg:items-center lg:gap-12">
+            {/* Blob portrait — on mobile appears below heading; on desktop placed on the right in RTL */}
+            <div className="flex w-full justify-center lg:w-auto lg:justify-end">
+              <div className="w-[335px] max-w-full overflow-hidden lg:w-auto">
+                <Image
+                  src={settings.about_image_url || "/assets/figma/about-musician.png"}
+                  alt={t("aboutImageAlt")}
+                  width={551}
+                  height={491}
+                  quality={95}
+                  className="h-[304px] w-[335px] object-cover sm:h-auto sm:max-w-[450px] lg:h-[491px] lg:w-[551px]"
+                />
+              </div>
+            </div>
+
+            {/* Text column — on desktop placed on the LEFT in RTL */}
+            <div className="flex w-[324px] flex-col items-start gap-[32px] max-w-full text-start lg:w-[495px]">
+              {/* Statement */}
+              <h3 className="min-h-[66px] font-display text-[32px] font-normal leading-[66px] text-brand-espresso sm:whitespace-nowrap lg:text-[48px]">
+                {settings.about_headline}
+              </h3>
+
+              {/* Manifesto */}
+              <p className="min-h-[263px] font-medium leading-[37.5px] text-[16px] text-gradscale-900 lg:w-full lg:text-[25px]">
+                {settings.about_body}
+              </p>
+
+              {/* CTA */}
+              <Link
+                href={settings.home_about_href || "/artists"}
+                className="inline-flex h-[48px] w-[207px] items-center justify-center rounded-[12px] bg-primary-500 font-system text-[16px] font-bold leading-[22.4px] text-primary-50 transition-colors hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+              >
+                {ctaLabel || t("aboutCta")}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
   );

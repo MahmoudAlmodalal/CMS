@@ -15,13 +15,17 @@ import {
   eventStatusSchema,
   articleCategorySchema,
   translationString,
+  imageUrlSchema,
+  optionalImageUrlSchema,
 } from "./primitives.ts";
 
 // ============================================================================
 // 1. Site Settings Schema (Singleton id='default')
 // ============================================================================
 
-const siteImageUrlSchema = z.union([z.literal(""), safeUrlSchema(500)]);
+const siteImageUrlSchema = z.union([z.literal(""), imageUrlSchema(500)]);
+// Same rule as images: internal "/path" or http(s) only, so javascript: etc. can't reach an href.
+const siteLinkSchema = siteImageUrlSchema.optional().nullable();
 
 export const siteSettingsSchema = z
   .object({
@@ -157,6 +161,33 @@ export const siteSettingsSchema = z
     artists_filter_all_label_en: translationString(60).optional().nullable(),
     booking_cta_label: optionalTrimmedString(100).optional().nullable(),
     booking_cta_label_en: translationString(100).optional().nullable(),
+    // --- Page controls: section toggles, CTA links, section images ---
+    show_hero: z.boolean().default(true),
+    show_about: z.boolean().default(true),
+    show_featured_artists: z.boolean().default(true),
+    home_hero_primary_href: siteLinkSchema,
+    home_hero_secondary_href: siteLinkSchema,
+    home_about_href: siteLinkSchema,
+    home_artists_href: siteLinkSchema,
+    home_events_href: siteLinkSchema,
+    booking_cta_href: siteLinkSchema,
+    home_about_heading: optionalTrimmedString(255).optional().nullable(),
+    home_about_heading_en: translationString(255).optional().nullable(),
+    home_events_image_url: siteImageUrlSchema.optional().nullable(),
+    booking_banner_image_url: siteImageUrlSchema.optional().nullable(),
+    artist_hero_image_url: siteImageUrlSchema.optional().nullable(),
+    // --- Booking page + site-wide default SEO ---
+    booking_title: optionalTrimmedString(255).optional().nullable(),
+    booking_title_en: translationString(255).optional().nullable(),
+    seo_booking_title: optionalTrimmedString(120).optional().nullable(),
+    seo_booking_title_en: translationString(120).optional().nullable(),
+    seo_booking_description: optionalTrimmedString(320).optional().nullable(),
+    seo_booking_description_en: translationString(320).optional().nullable(),
+    seo_default_title: optionalTrimmedString(120).optional().nullable(),
+    seo_default_title_en: translationString(120).optional().nullable(),
+    seo_default_description: optionalTrimmedString(320).optional().nullable(),
+    seo_default_description_en: translationString(320).optional().nullable(),
+    seo_og_image_url: siteImageUrlSchema.optional().nullable(),
   })
   .strict();
 
@@ -187,7 +218,7 @@ export const artistSchema = z
     full_bio_en: translationString(20000),
     specialties: trimmedString(1, 255, "التخصصات"),
     specialties_en: translationString(255),
-    portrait_image_url: safeUrlSchema(500),
+    portrait_image_url: imageUrlSchema(500),
     is_featured: z.boolean().default(false),
     is_published: z.boolean().default(true),
     display_order: z.number().int().min(0).default(0),
@@ -208,7 +239,7 @@ export const trackSchema = z
     title_en: translationString(200),
     audio_file_url: safeUrlSchema(500),
     duration_seconds: positiveInt(7200),
-    cover_image_url: safeUrlSchema(500).optional().nullable(),
+    cover_image_url: optionalImageUrlSchema(500),
     display_order: z.number().int().min(0).default(0),
     is_published: z.boolean().default(true),
   })
@@ -233,7 +264,7 @@ export const releaseSchema = z
       .int({ message: "سنة الإصدار يجب أن تكون رقماً صحيحاً" })
       .min(1900, { message: "سنة الإصدار يجب أن تكون 1900 أو أحدث" })
       .max(2100, { message: "سنة الإصدار يجب ألا تتجاوز 2100" }),
-    cover_image_url: safeUrlSchema(500),
+    cover_image_url: imageUrlSchema(500),
     display_order: z.number().int().min(0).default(0),
     is_published: z.boolean().default(true),
   })
@@ -262,7 +293,7 @@ export const eventSchema = z
     artist_id: uuidSchema.optional().nullable(),
     description: optionalTrimmedString(5000).optional().nullable(),
     description_en: translationString(5000),
-    image_url: safeUrlSchema(500),
+    image_url: imageUrlSchema(500),
     ticket_url: safeUrlSchema(500).optional().nullable(),
     is_featured: z.boolean().default(false),
     status: eventStatusSchema.default("upcoming"),
@@ -290,7 +321,7 @@ export const academyCourseSchema = z
     instructor_name: optionalTrimmedString(150).optional().nullable(),
     instructor_name_en: translationString(150),
     instructor_id: uuidSchema.optional().nullable(),
-    image_url: safeUrlSchema(500).optional().nullable(),
+    image_url: optionalImageUrlSchema(500),
     display_order: z
       .number({ message: "الترتيب يجب أن يكون رقماً صحيحاً" })
       .int({ message: "الترتيب يجب أن يكون رقماً صحيحاً" })
@@ -318,7 +349,7 @@ export const articleSchema = z
     excerpt_en: translationString(350),
     content: trimmedString(1, 50000, "محتوى المقال الكامل"),
     content_en: translationString(50000),
-    cover_image_url: safeUrlSchema(500),
+    cover_image_url: imageUrlSchema(500),
     author_name: trimmedString(1, 150, "اسم الكاتب أو هيئة التحرير"),
     author_name_en: translationString(150),
     featured_artist_id: uuidSchema.optional().nullable(),
@@ -343,7 +374,7 @@ export const testimonialSchema = z
     author_name_en: translationString(150),
     author_role: trimmedString(1, 150, "صفة أو مهنة صاحب الشهادة"),
     author_role_en: translationString(150),
-    avatar_image_url: safeUrlSchema(500).optional().nullable(),
+    avatar_image_url: optionalImageUrlSchema(500),
     display_order: z.number().int().min(0).default(0),
     is_published: z.boolean().default(true),
   })

@@ -117,6 +117,7 @@ export default async function AdminDashboardPage() {
             { label: "إضافة فعالية", href: "/admin/events", emoji: "📅" },
             { label: "نشر مقال", href: "/admin/articles", emoji: "📰" },
             { label: "مراجعة الحجوزات", href: "/admin/bookings", emoji: "📋" },
+            { label: "محتوى الصفحات", href: "/admin/pages", emoji: "📝" },
             { label: "إدارة الإعدادات", href: "/admin/settings", emoji: "⚙️" },
             { label: "مدير الوسائط", href: "/admin/media", emoji: "🖼️" },
           ].map(({ label, href, emoji }) => (

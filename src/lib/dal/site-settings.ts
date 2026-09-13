@@ -1,5 +1,6 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { localizeContent } from "./localize";
+import { getContentLocale, localizeContent, LOCALIZED_FIELDS } from "./localize";
 
 export interface SiteSettings {
   id: string;
@@ -133,6 +134,32 @@ export interface SiteSettings {
   artists_filter_all_label_en?: string | null;
   booking_cta_label: string | null;
   booking_cta_label_en?: string | null;
+  // Page controls (null = built-in link/image/copy).
+  show_hero: boolean;
+  show_about: boolean;
+  show_featured_artists: boolean;
+  home_hero_primary_href: string | null;
+  home_hero_secondary_href: string | null;
+  home_about_href: string | null;
+  home_artists_href: string | null;
+  home_events_href: string | null;
+  booking_cta_href: string | null;
+  home_about_heading: string | null;
+  home_about_heading_en?: string | null;
+  home_events_image_url: string | null;
+  booking_banner_image_url: string | null;
+  artist_hero_image_url: string | null;
+  booking_title: string | null;
+  booking_title_en?: string | null;
+  seo_booking_title: string | null;
+  seo_booking_title_en?: string | null;
+  seo_booking_description: string | null;
+  seo_booking_description_en?: string | null;
+  seo_default_title: string | null;
+  seo_default_title_en?: string | null;
+  seo_default_description: string | null;
+  seo_default_description_en?: string | null;
+  seo_og_image_url: string | null;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -268,6 +295,32 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   artists_filter_all_label_en: null,
   booking_cta_label: null,
   booking_cta_label_en: null,
+  // Page controls
+  show_hero: true,
+  show_about: true,
+  show_featured_artists: true,
+  home_hero_primary_href: null,
+  home_hero_secondary_href: null,
+  home_about_href: null,
+  home_artists_href: null,
+  home_events_href: null,
+  booking_cta_href: null,
+  home_about_heading: null,
+  home_about_heading_en: null,
+  home_events_image_url: null,
+  booking_banner_image_url: null,
+  artist_hero_image_url: null,
+  booking_title: null,
+  booking_title_en: null,
+  seo_booking_title: null,
+  seo_booking_title_en: null,
+  seo_booking_description: null,
+  seo_booking_description_en: null,
+  seo_default_title: null,
+  seo_default_title_en: null,
+  seo_default_description: null,
+  seo_default_description_en: null,
+  seo_og_image_url: null,
   home_featured_artists_count: 6,
   home_featured_articles_count: 4,
   home_upcoming_events_count: 3,
@@ -282,8 +335,25 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
  * Falls back to DEFAULT_SITE_SETTINGS if not found or on connection error.
  */
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return localizeContent("site_settings", await getSiteSettingsRaw());
+  return localizeContent("site_settings", await getSiteSettingsForLocale());
 }
+
+/** One settings query per request (metadata + layout + page share it). */
+const getSiteSettingsForLocale = cache(async (): Promise<SiteSettings> => {
+  const settings = { ...(await getSiteSettingsRaw()) };
+  if ((await getContentLocale()) !== "ar") {
+    const row = settings as unknown as Record<string, unknown>;
+    for (const field of LOCALIZED_FIELDS.site_settings) {
+      const english = row[`${field}_en`];
+      // An override with no English text must fall back to the built-in English
+      // copy (the page's t() default), not leak the Arabic override onto /en.
+      if (DEFAULT_SITE_SETTINGS[field] === null && !(typeof english === "string" && english.trim())) {
+        row[field] = null;
+      }
+    }
+  }
+  return settings;
+});
 
 async function getSiteSettingsRaw(): Promise<SiteSettings> {
   try {
@@ -302,7 +372,14 @@ async function getSiteSettingsRaw(): Promise<SiteSettings> {
       return DEFAULT_SITE_SETTINGS;
     }
 
-    const row = data as unknown as Partial<SiteSettings>;
+    // Null/blank columns must not wipe a built-in default (e.g. a null `_en`
+    // replacing the English default, or '' blanking the hero image).
+    const defaults = DEFAULT_SITE_SETTINGS as unknown as Record<string, unknown>;
+    const row = Object.fromEntries(
+      Object.entries(data as Record<string, unknown>).filter(
+        ([key, value]) => (value !== null && value !== "") || defaults[key] == null
+      )
+    ) as Partial<SiteSettings>;
     const heroImageUrl = row.hero_image_url === "/assets/hero-stage.png"
       ? DEFAULT_SITE_SETTINGS.hero_image_url
       : row.hero_image_url;

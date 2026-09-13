@@ -43,7 +43,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
   }).format(new Date(event.event_date));
   const dateLocationString = `${formattedDate} · ${event.city}`;
 
-  const cover = event.cover_image_url?.trim() || event.image_url;
+  const cover = event.image_url;
   const bookingHref = `/booking?event_id=${event.id}`;
   const actionHref = event.ticket_url?.trim() || bookingHref;
   const isExternalTicket = Boolean(event.ticket_url?.trim());

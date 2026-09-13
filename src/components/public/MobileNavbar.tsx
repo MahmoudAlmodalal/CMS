@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { MenuIcon } from "@/components/ui/Icons";
-import { MobileDrawer } from "./MobileDrawer";
+import { MobileDrawer, type DrawerContact } from "./MobileDrawer";
 
 /**
  * Mobile Top Bar Navigation
@@ -27,7 +27,7 @@ import { MobileDrawer } from "./MobileDrawer";
  * screen (33/40/50/57), so the other six mobile frames may differ; they are
  * confirmed when their specs are extracted (plan phase E).
  */
-export function MobileNavbar() {
+export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const a11y = useTranslations("a11y");
   const site = useTranslations("site");
@@ -78,7 +78,7 @@ export function MobileNavbar() {
       </div>
 
       {/* Slide-out Mobile Drawer */}
-      <MobileDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <MobileDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} contact={contact} />
     </>
   );
 }

@@ -109,12 +109,14 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
         />
 
         <Suspense fallback={<div className="min-h-[828px]" />}>
-          <EventsCatalogView
-            initialEvents={events}
-            featuredEvent={featuredEvent}
-            initialCategory={requestedCategory}
-            allLabel={settings.events_filter_all_label}
-          />
+          <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
+            <EventsCatalogView
+              initialEvents={events}
+              featuredEvent={featuredEvent}
+              initialCategory={requestedCategory}
+              allLabel={settings.events_filter_all_label}
+            />
+          </div>
         </Suspense>
       </section>
     </div>

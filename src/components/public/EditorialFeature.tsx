@@ -42,42 +42,29 @@ interface EditorialFeatureProps {
  * The frame repeats one placeholder article across its first two cards, which is a
  * stand-in rather than copy to reproduce, so the band draws four real ones.
  */
-const CARD_SLOTS = [
-  { left: 1015.33, top: 253 },
-  { left: 714.23, top: 255 },
-  { left: 413.11, top: 255 },
-  { left: 112, top: 259 },
-] as const;
-
 export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   const t = useTranslations("home");
-  const direction = localeDirection[useLocale() as AppLocale] ?? "rtl";
 
   if (!articles || articles.length === 0) {
     return null;
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
+    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
       {/* Heading 87:14401 */}
-      <div className="px-5 lg:absolute lg:left-[132px] lg:right-[172px] lg:top-[93px] lg:px-0">
+      <div className="w-full px-5 text-center lg:px-0">
         <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
           {heading || t("editorialHeading")}
         </h2>
       </div>
 
       {/* Cards 115:2436…115:2439 */}
-      <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-0 lg:block lg:px-0">
-        {articles.slice(0, 4).map((article, i) => {
-          // CARD_SLOTS are the AR (RTL) physical slots: articles[0] sits at the
-          // rightmost slot (x≈1015). The EN frame (136:1569) reads left to
-          // right, so mirror the assignment there: articles[0] goes leftmost.
-          const slot = CARD_SLOTS[direction === "rtl" ? i : 3 - i];
+      <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-[64px] lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-[28px] lg:px-4">
+        {articles.slice(0, 4).map((article) => {
           return (
             <article
               key={article.id}
-              style={slot ? { left: `${slot.left}px`, top: `${slot.top}px` } : undefined}
-              className="group w-full max-w-[273.115px] rounded-[16px] bg-white text-start lg:absolute lg:w-[273.115px]"
+              className="group w-full max-w-[273.115px] shrink-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-[273.115px]"
             >
               <Link
                 href={`/news/${article.slug}`}

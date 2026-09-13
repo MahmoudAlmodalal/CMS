@@ -53,6 +53,8 @@ export interface Database {
           show_editorial: boolean;
           show_events: boolean;
           show_booking_banner: boolean;
+          home_editorial_heading?: string | null;
+          home_editorial_heading_en?: string | null;
           updated_at: string;
         };
         Insert: {
@@ -95,6 +97,8 @@ export interface Database {
           show_editorial?: boolean;
           show_events?: boolean;
           show_booking_banner?: boolean;
+          home_editorial_heading?: string | null;
+          home_editorial_heading_en?: string | null;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["site_settings"]["Insert"]>;

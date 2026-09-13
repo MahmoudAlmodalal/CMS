@@ -196,7 +196,7 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
             <Field id="about_body_en" label="نص قسم من نحن — English" required={false} help="اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.">
               <Textarea id="about_body_en" dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values.about_body_en} onChange={(event) => setField("about_body_en", event.target.value)} />
             </Field>
-            <Field id="hero_image_url" label="رابط صورة الهيرو" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">
+            <Field id="hero_image_url" label="فيديو الهيرو" required={false} help="رفع فيديو للهيرو (أو إدخال رابط مباشر). اتركه فارغاً لاستخدام الفيديو/الصورة الافتراضية.">
               <MediaPickerField
                 id="hero_image_url"
                 value={values.hero_image_url}
@@ -204,6 +204,7 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
                 bucket="site"
                 folder="hero"
                 required={false}
+                mediaType="video"
               />
             </Field>
             <Field id="about_image_url" label="رابط صورة قسم من نحن" required={false} help="اتركه فارغاً لاستخدام الصورة الافتراضية.">

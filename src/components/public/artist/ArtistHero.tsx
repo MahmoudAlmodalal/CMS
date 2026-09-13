@@ -1,10 +1,12 @@
 import React from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/artists";
 
 interface ArtistHeroProps {
   artist: Artist;
+  /** Admin override for the band photograph. Falls back to the built-in asset. */
+  imageUrl?: string;
   /** Address the outline CTA opens. The frame draws a button with no target. */
   contactHref?: string;
 }
@@ -33,7 +35,7 @@ interface ArtistHeroProps {
  * here; the scrim is the CSS approximation shared with PageHero. Both are
  * recorded in docs/figma/asset-map.json.
  */
-export function ArtistHero({ artist, contactHref = "mailto:hello@andalusia.art" }: ArtistHeroProps) {
+export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andalusia.art" }: ArtistHeroProps) {
   const t = useTranslations("artist");
   const quote = artist.quote?.trim();
 
@@ -44,7 +46,7 @@ export function ArtistHero({ artist, contactHref = "mailto:hello@andalusia.art" 
       // so the band holds its measured mobile height until the 1440 one takes over.
       className="relative isolate h-[678px] w-full overflow-hidden bg-brand-espresso text-white lg:h-[611px]"
       style={{
-        backgroundImage: "url(/assets/figma/hero-stage-landscape.png)",
+        backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

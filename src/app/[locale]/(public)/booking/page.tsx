@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   BookingHeader,
   BookingSidebar,
@@ -8,6 +8,7 @@ import {
   BookingContextBanner,
 } from "@/components/public";
 import { getBookingPageData } from "@/lib/dal/booking";
+import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export async function generateMetadata({
   params,
@@ -15,15 +16,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_booking_title?.trim() || t("bookingTitle");
+  const description = settings.seo_booking_description?.trim() || t("bookingDescription");
   return {
-    title: t("bookingTitle"),
-    description: t("bookingDescription"),
+    title,
+    description,
     openGraph: {
-      title: t("bookingTitle"),
-      description: t("bookingDescription"),
+      title,
+      description,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
+      images: settings.seo_og_image_url ? [settings.seo_og_image_url] : undefined,
     },
   };
 }
@@ -58,14 +66,17 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   const courseParam = resolvedParams.course;
 
   // Retrieve published artists, event details, and configurable site settings
-  const {
-    subtitle,
-    contactEmail,
-    contactPhone,
-    instagramUrl,
-    artists,
-    eventContext,
-  } = await getBookingPageData(eventIdParam);
+  const [
+    {
+      subtitle,
+      contactEmail,
+      contactPhone,
+      instagramUrl,
+      artists,
+      eventContext,
+    },
+    settings,
+  ] = await Promise.all([getBookingPageData(eventIdParam), getSiteSettings()]);
 
   // Derive preselection state from query parameters
   let defaultArtistId: string | undefined = undefined;
@@ -112,7 +123,7 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
   return (
     <div className="w-full bg-brand-cream">
       {/* Hero band 91:17110/91:17111/91:17123 — full-bleed, 611 tall, navbar over it. */}
-      <BookingHeader subtitle={subtitle} />
+      <BookingHeader subtitle={subtitle} title={settings.booking_title?.trim() || undefined} />
 
       {/* Content row 91:17792: form 672 and sidebar 412, 58px apart, the pair
           centred on the 1440 artboard, opening 65px under the hero band and

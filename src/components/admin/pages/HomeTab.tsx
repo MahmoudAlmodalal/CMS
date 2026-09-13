@@ -6,6 +6,8 @@ import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import {
   Field,
   BilingualPair,
+  LinkField,
+  type BooleanFieldName,
   type SiteSettingsFormValues,
   type TextFieldName,
 } from "./settingsFormKit";
@@ -17,10 +19,7 @@ export interface HomeTabProps {
     field: "home_featured_artists_count" | "home_featured_articles_count" | "home_upcoming_events_count",
     value: number
   ) => void;
-  setBooleanField: (
-    field: "show_testimonials" | "show_editorial" | "show_events" | "show_booking_banner",
-    value: boolean
-  ) => void;
+  setBooleanField: (field: BooleanFieldName, value: boolean) => void;
 }
 
 export function HomeTab({
@@ -40,6 +39,7 @@ export function HomeTab({
         <CardContent className="grid gap-5 md:grid-cols-2">
           <BilingualPair
             id="hero_headline"
+            required
             label="عنوان الهيرو الرئيسي"
             values={values}
             onChange={setField}
@@ -47,6 +47,7 @@ export function HomeTab({
           />
           <BilingualPair
             id="hero_subheadline"
+            required
             label="العنوان الفرعي للهيرو"
             multiline
             values={values}
@@ -56,11 +57,14 @@ export function HomeTab({
           <div className="space-y-2 text-start md:col-span-2">
             <MediaPickerField
               id="hero_image_url"
-              label="رابط صورة الهيرو"
+              label="فيديو الهيرو"
               value={values.hero_image_url}
               onChange={(url) => setField("hero_image_url", url)}
+              bucket="site"
+              folder="hero"
+              mediaType="video"
             />
-            <p className="text-xs text-brand-espresso/60">اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
+            <p className="text-xs text-brand-espresso/60">رفع فيديو للهيرو (أو إدخال رابط مباشر). اتركه فارغاً للافتراضي.</p>
           </div>
           <BilingualPair
             id="home_hero_primary_cta"
@@ -76,6 +80,8 @@ export function HomeTab({
             onChange={setField}
             helpText="اتركه فارغاً لاستخدام النص الافتراضي."
           />
+          <LinkField id="home_hero_primary_href" label="رابط الزر الرئيسي للهيرو" placeholder="/artists" values={values} onChange={setField} />
+          <LinkField id="home_hero_secondary_href" label="رابط الزر الثانوي للهيرو" placeholder="/booking" values={values} onChange={setField} />
         </CardContent>
       </Card>
 
@@ -88,6 +94,7 @@ export function HomeTab({
         <CardContent className="grid gap-5 md:grid-cols-2">
           <BilingualPair
             id="about_headline"
+            required
             label="عنوان قسم من نحن"
             values={values}
             onChange={setField}
@@ -100,9 +107,18 @@ export function HomeTab({
             onChange={setField}
             helpText="اتركه فارغاً لاستخدام النص الافتراضي."
           />
+          <BilingualPair
+            id="home_about_heading"
+            label="العنوان الكبير لقسم من نحن"
+            values={values}
+            onChange={setField}
+            helpText="اتركه فارغاً لاستخدام «من نحن». ضع *نجمتين* حول الكلمة لتلوينها."
+          />
+          <LinkField id="home_about_href" label="رابط زر قسم من نحن" placeholder="/artists" values={values} onChange={setField} />
           <div className="md:col-span-2">
             <BilingualPair
               id="about_body"
+              required
               label="نص قسم من نحن"
               multiline
               values={values}
@@ -175,6 +191,17 @@ export function HomeTab({
             onChange={setField}
             helpText="اتركه فارغاً لاستخدام النص الافتراضي."
           />
+          <LinkField id="home_artists_href" label="رابط زر قسم الفنانين" placeholder="/artists" values={values} onChange={setField} />
+          <LinkField id="home_events_href" label="رابط زر قسم الفعاليات" placeholder="/events" values={values} onChange={setField} />
+          <div className="space-y-2 text-start md:col-span-2">
+            <MediaPickerField
+              id="home_events_image_url"
+              label="صورة قسم الفعاليات"
+              value={values.home_events_image_url}
+              onChange={(url) => setField("home_events_image_url", url)}
+            />
+            <p className="text-xs text-brand-espresso/60">اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
+          </div>
         </CardContent>
       </Card>
 
@@ -262,6 +289,39 @@ export function HomeTab({
               />
               <span>عرض بنر الحجز</span>
             </label>
+
+            <label htmlFor="show_hero" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+              <input
+                id="show_hero"
+                type="checkbox"
+                checked={values.show_hero}
+                onChange={(event) => setBooleanField("show_hero", event.target.checked)}
+                className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+              />
+              <span>عرض قسم الهيرو</span>
+            </label>
+
+            <label htmlFor="show_about" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+              <input
+                id="show_about"
+                type="checkbox"
+                checked={values.show_about}
+                onChange={(event) => setBooleanField("show_about", event.target.checked)}
+                className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+              />
+              <span>عرض قسم من نحن</span>
+            </label>
+
+            <label htmlFor="show_featured_artists" className="inline-flex items-center gap-3 text-sm font-medium text-brand-espresso cursor-pointer">
+              <input
+                id="show_featured_artists"
+                type="checkbox"
+                checked={values.show_featured_artists}
+                onChange={(event) => setBooleanField("show_featured_artists", event.target.checked)}
+                className="h-4 w-4 rounded border-brand-espresso-subtle accent-brand-primary cursor-pointer"
+              />
+              <span>عرض قسم الفنانين المميزين</span>
+            </label>
           </div>
         </CardContent>
       </Card>
@@ -275,6 +335,7 @@ export function HomeTab({
         <CardContent className="grid gap-5 md:grid-cols-2">
           <BilingualPair
             id="booking_banner_title"
+            required
             label="عنوان بنر الحجز"
             values={values}
             onChange={setField}
@@ -287,9 +348,20 @@ export function HomeTab({
             onChange={setField}
             helpText="اتركه فارغاً لاستخدام النص الافتراضي."
           />
+          <LinkField id="booking_cta_href" label="رابط زر دعوة الحجز" placeholder="/booking" values={values} onChange={setField} />
+          <div className="space-y-2 text-start md:col-span-2">
+            <MediaPickerField
+              id="booking_banner_image_url"
+              label="صورة خلفية بنر الحجز"
+              value={values.booking_banner_image_url}
+              onChange={(url) => setField("booking_banner_image_url", url)}
+            />
+            <p className="text-xs text-brand-espresso/60">اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
+          </div>
           <div className="md:col-span-2">
             <BilingualPair
               id="booking_banner_body"
+              required
               label="نص بنر الحجز"
               multiline
               values={values}
@@ -323,6 +395,42 @@ export function HomeTab({
               onChange={setField}
               helpText="اتركه فارغاً لاستخدام النص الافتراضي."
             />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 7. Site-wide SEO defaults */}
+      <Card>
+        <CardHeader>
+          <CardTitle>القيم الافتراضية لمحركات البحث (كل الموقع)</CardTitle>
+          <CardDescription>تُستخدم لأي صفحة ليس لها عنوان أو وصف خاص، وصورة المشاركة تظهر عند مشاركة روابط الموقع.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-5 md:grid-cols-2">
+          <BilingualPair
+            id="seo_default_title"
+            label="العنوان الافتراضي للموقع"
+            values={values}
+            onChange={setField}
+            helpText="اتركه فارغاً لاستخدام النص الافتراضي."
+          />
+          <div className="md:col-span-2">
+            <BilingualPair
+              id="seo_default_description"
+              label="الوصف الافتراضي للموقع"
+              multiline
+              values={values}
+              onChange={setField}
+              helpText="اتركه فارغاً لاستخدام النص الافتراضي."
+            />
+          </div>
+          <div className="space-y-2 text-start md:col-span-2">
+            <MediaPickerField
+              id="seo_og_image_url"
+              label="صورة المشاركة (Open Graph)"
+              value={values.seo_og_image_url}
+              onChange={(url) => setField("seo_og_image_url", url)}
+            />
+            <p className="text-xs text-brand-espresso/60">يُفضّل 1200×630. اتركه فارغاً لعدم إرفاق صورة.</p>
           </div>
         </CardContent>
       </Card>

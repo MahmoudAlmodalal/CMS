@@ -83,6 +83,12 @@ export const LOCALIZED_FIELDS = {
     "events_filter_all_label",
     "artists_filter_all_label",
     "booking_cta_label",
+    "home_about_heading",
+    "booking_title",
+    "seo_booking_title",
+    "seo_booking_description",
+    "seo_default_title",
+    "seo_default_description",
   ],
 } as const;
 

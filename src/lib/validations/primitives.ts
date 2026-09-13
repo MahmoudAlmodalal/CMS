@@ -196,6 +196,43 @@ export function safeUrlSchema(max: number = 500) {
     );
 }
 
+function isHttpUrl(val: string): boolean {
+  try {
+    const parsed = new URL(val);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Image reference: an http(s) URL or a root-relative site asset path such as
+ * "/assets/figma/hero.png" (the seeded defaults). Protocol-relative ("//host"),
+ * backslash and traversal paths are rejected.
+ */
+export function imageUrlSchema(max: number = 500) {
+  return z
+    .string({ message: "رابط الصورة مطلوب" })
+    .transform((val) => val.trim())
+    .refine((val) => val.length <= max, {
+      message: `يجب ألا يتجاوز طول الرابط ${max} حرفاً`,
+    })
+    .refine(
+      (val) =>
+        isHttpUrl(val) ||
+        (val.startsWith("/") && !val.startsWith("//") && !val.includes("\\") && !val.includes("..")),
+      { message: "يجب أن يكون رابط الصورة عنواناً يبدأ بـ http(s):// أو مساراً يبدأ بـ /" }
+    );
+}
+
+/** Optional image: forms post "" for "no image", which is stored as null. */
+export function optionalImageUrlSchema(max: number = 500) {
+  return z.preprocess(
+    (val) => (typeof val === "string" && val.trim() === "" ? null : val),
+    imageUrlSchema(max).nullable().optional()
+  );
+}
+
 /**
  * Email schema adhering strictly to PostgreSQL check constraint:
  * ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$

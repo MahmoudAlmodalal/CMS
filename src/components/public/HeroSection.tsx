@@ -28,20 +28,43 @@ export interface HeroSectionProps {
  *   115:1079) and `احجز الآن` is the OUTLINE secondary (component 115:1091).
  *   Both 207x48, 12px radius.
  */
+function isVideoUrl(url: string | null | undefined): boolean {
+  if (!url) return false;
+  return (
+    /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url) ||
+    url.includes("/video/") ||
+    url.includes("video")
+  );
+}
+
 export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: HeroSectionProps) {
   const t = useTranslations("home");
+  const heroUrl = settings.hero_image_url;
+  const isVideo = isVideoUrl(heroUrl);
 
   return (
     <section className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint min-h-[740px] lg:h-[740px] flex items-center justify-center">
-      {/* Background Stage Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
+      {/* Background Stage Video/Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${settings.hero_image_url || "/assets/figma/hero-stage-landscape.png"})`,
-          }}
-          aria-hidden="true"
-        />
+        {isVideo ? (
+          <video
+            src={heroUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+            aria-hidden="true"
+          />
+        ) : (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${heroUrl || "/assets/figma/hero-stage-landscape.png"})`,
+            }}
+            aria-hidden="true"
+          />
+        )}
         {/* Two flat 20% black washes, as stacked in the Figma rectangle fill */}
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-0 bg-black/20" />
@@ -64,12 +87,12 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
           {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
           <div className="flex flex-wrap items-center justify-center gap-8 pt-4 w-full sm:w-auto">
             {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
-            <PublicButton href="/artists" variant="primary" size="md" expandOnHover={false}>
+            <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
               {primaryCtaLabel || t("heroPrimaryCta")}
             </PublicButton>
 
             {/* Outline secondary (Figma component 115:1091, fixed 207x48) */}
-            <PublicButton href="/booking" variant="secondary" size="md" expandOnHover={false}>
+            <PublicButton href={settings.home_hero_secondary_href || "/booking"} variant="secondary" size="md" expandOnHover={false}>
               {secondaryCtaLabel || t("heroSecondaryCta")}
             </PublicButton>
           </div>

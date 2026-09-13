@@ -138,7 +138,7 @@ test("Task 43 — schema preserves the seeded empty image fallback and singleton
 test("Task 43 — action validates the singleton update and refreshes public cache", () => {
   const action = read("src/actions/cms.ts");
 
-  assert.match(action, /siteSettingsSchema\.safeParse\(input\)/);
+  assert.match(action, /siteSettingsSchema\.partial\(\)\.safeParse\(input\)/);
   assert.match(action, /\.from\("site_settings"\)/);
   assert.match(action, /\.eq\("id" as never, "default" as never\)/);
   assert.match(action, /revalidatePath\("\/", "layout"\)/);

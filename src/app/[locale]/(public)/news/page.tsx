@@ -41,7 +41,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function NewsPage() {
+export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const [articles, featuredArticles, settings] = await Promise.all([
     getPublishedArticles(),
     getFeaturedArticles(3),
