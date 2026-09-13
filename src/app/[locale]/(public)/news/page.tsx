@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
 import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
@@ -14,23 +14,29 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  setRequestLocale(locale);
+  const [settings, t] = await Promise.all([
+    getSiteSettings(),
+    getTranslations({ locale, namespace: "meta" }),
+  ]);
+  const title = settings.seo_news_title?.trim() || t("newsTitle");
+  const description = settings.seo_news_description?.trim() || t("newsDescription");
   const path = locale === "ar" ? "/news" : "/en/news";
   return {
-    title: t("newsTitle"),
-    description: t("newsDescription"),
+    title,
+    description,
     alternates: { canonical: path },
     openGraph: {
-      title: t("newsTitle"),
-      description: t("newsDescription"),
+      title,
+      description,
       url: path,
       locale: locale === "ar" ? "ar_AR" : "en_US",
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: t("newsTitle"),
-      description: t("newsDescription"),
+      title,
+      description,
     },
   };
 }
