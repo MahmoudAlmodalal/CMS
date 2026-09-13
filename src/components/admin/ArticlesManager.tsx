@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
@@ -368,7 +369,14 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
             </Field>
             <TranslationField id="article-author-en" label="اسم الكاتب" value={values.author_name_en} onChange={(value) => setField("author_name_en", value)} />
             <Field id="article-cover" label="رابط صورة الغلاف">
-              <Input id="article-cover" type="url" dir="ltr" value={values.cover_image_url} onChange={(event) => setField("cover_image_url", event.target.value)} required />
+              <MediaPickerField
+                id="article-cover"
+                value={values.cover_image_url}
+                onChange={(url) => setField("cover_image_url", url)}
+                bucket="articles"
+                folder="covers"
+                required
+              />
             </Field>
             <Field id="article-published-at" label="موعد النشر" help="يمكن اختيار موعد مستقبلي لجدولة المقال.">
               <Input

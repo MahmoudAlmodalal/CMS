@@ -25,6 +25,13 @@ export interface SiteSettings {
   operational_regions: string;
   footer_mission: string;
   copyright_text: string;
+  home_featured_artists_count: number;
+  home_featured_articles_count: number;
+  home_upcoming_events_count: number;
+  show_testimonials: boolean;
+  show_editorial: boolean;
+  show_events: boolean;
+  show_booking_banner: boolean;
   // Optional English translations; null or absent falls back to the Arabic field.
   hero_headline_en?: string | null;
   hero_subheadline_en?: string | null;
@@ -89,6 +96,13 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   operational_regions_en: "Lebanon · Morocco · The Gulf",
   footer_mission_en: "A collective of artists who believe creativity is life and music is the spark.",
   copyright_text_en: "© Andalusia 2025 — All rights reserved",
+  home_featured_artists_count: 6,
+  home_featured_articles_count: 4,
+  home_upcoming_events_count: 3,
+  show_testimonials: true,
+  show_editorial: true,
+  show_events: true,
+  show_booking_banner: true,
 };
 
 /**
