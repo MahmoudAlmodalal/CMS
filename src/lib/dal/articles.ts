@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { localizeContent, localizeContentList } from "./localize";
+import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import {
   type Article,
   ARTICLE_CATEGORIES,
@@ -8,243 +8,85 @@ import {
   getArticleCategoryLabel,
   CARD_CATEGORY_LABELS,
   getArticleCardCategoryLabel,
-  NEWS_CARD_CATEGORY_LABELS,
-  getNewsCardCategoryLabel,
   CANONICAL_ARTICLES,
   CANONICAL_FEATURED_ARTICLES,
 } from "@/lib/articles";
 
-export {
-  type Article,
-  ARTICLE_CATEGORIES,
-  type ArticleCategoryId,
-  CATEGORY_LABELS,
-  getArticleCategoryLabel,
-  CARD_CATEGORY_LABELS,
-  getArticleCardCategoryLabel,
-  NEWS_CARD_CATEGORY_LABELS,
-  getNewsCardCategoryLabel,
-  CANONICAL_ARTICLES,
-  CANONICAL_FEATURED_ARTICLES,
+export { type Article, ARTICLE_CATEGORIES, type ArticleCategoryId, CATEGORY_LABELS, getArticleCategoryLabel, CARD_CATEGORY_LABELS, getArticleCardCategoryLabel, CANONICAL_ARTICLES, CANONICAL_FEATURED_ARTICLES };
+
+const demoArticles = (limit?: number) => {
+  const now = new Date().toISOString();
+  const rows = CANONICAL_ARTICLES.filter((a) => a.is_published && a.published_at <= now);
+  return typeof limit === "number" ? rows.slice(0, limit) : rows;
 };
 
-/**
- * Fetch all published articles.
- * Strictly enforces RLS public view rules:
- * is_published = true AND published_at <= now().
- * Optional category filtering ('all' or specific slug).
- */
-async function getPublishedArticlesRaw(options?: {
-  category?: string;
-  limit?: number;
-}): Promise<Article[]> {
+export async function getPublishedArticles(options?: { category?: string; limit?: number }): Promise<Article[]> {
   const category = options?.category;
   const limit = options?.limit;
   const nowIso = new Date().toISOString();
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    let filtered = CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.published_at <= nowIso
-    );
-    if (category && category !== "all") {
-      filtered = filtered.filter((a) => a.category === category);
-    }
-    filtered.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-    return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    const rows = demoArticles().filter((a) => !category || category === "all" || a.category === category);
+    return typeof limit === "number" ? rows.slice(0, limit) : rows;
   }
-
   try {
     const supabase = await createClient();
-    let query = supabase
-      .from("articles")
-      .select("*")
-      .eq("is_published", true)
-      .lte("published_at", nowIso)
-      .order("published_at", { ascending: false });
-
-    if (category && category !== "all") {
-      query = query.eq("category", category as Article["category"]);
-    }
-
-    if (typeof limit === "number") {
-      query = query.limit(limit);
-    }
-
+    let query = supabase.from("articles").select("*").eq("is_published", true).lte("published_at", nowIso).order("published_at", { ascending: false });
+    if (category && category !== "all") query = query.eq("category", category as Article["category"]);
+    if (typeof limit === "number") query = query.limit(limit);
     const { data, error } = await query;
-
     if (error) {
       console.error("DAL Error [getPublishedArticles]:", error.message);
-      return [];
+      return USE_DEMO_CONTENT ? demoArticles(limit) : [];
     }
-
     return (data as unknown as Article[]) || [];
-  } catch (err) {
-    console.error("DAL Exception [getPublishedArticles]:", err);
-    return [];
+  } catch {
+    return USE_DEMO_CONTENT ? demoArticles(limit) : [];
   }
 }
 
-/**
- * Fetch featured published articles.
- * Strictly checks is_published = true AND is_featured = true AND published_at <= now().
- */
-async function getFeaturedArticlesRaw(limit = 4): Promise<Article[]> {
+export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
   const nowIso = new Date().toISOString();
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    const featured = CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.is_featured && a.published_at <= nowIso
-    );
-    featured.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
-    return featured.slice(0, limit);
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    return CANONICAL_ARTICLES.filter((a) => a.is_published && a.is_featured && a.published_at <= nowIso).slice(0, limit);
   }
-
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("articles")
-      .select("*")
-      .eq("is_published", true)
-      .eq("is_featured", true)
-      .lte("published_at", nowIso)
-      .order("published_at", { ascending: false })
-      .limit(limit);
-
-    if (error) {
-      console.error("DAL Error [getFeaturedArticles]:", error.message);
-      return [];
-    }
-
-    if (!data || data.length === 0) {
-      // If no articles are marked featured in database, check for any published articles
-      const { data: publishedData, error: pubError } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("is_published", true)
-        .lte("published_at", nowIso)
-        .order("published_at", { ascending: false })
-        .limit(limit);
-
-      if (!pubError && publishedData && publishedData.length > 0) {
-        return publishedData as unknown as Article[];
-      }
-
-      return [];
-    }
-
+    const { data, error } = await supabase.from("articles").select("*").eq("is_published", true).eq("is_featured", true).lte("published_at", nowIso).order("published_at", { ascending: false }).limit(limit);
+    if (error) return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTICLES.slice(0, limit) : [];
     return (data as unknown as Article[]) || [];
-  } catch (err) {
-    console.error("DAL Exception [getFeaturedArticles]:", err);
-    return [];
+  } catch {
+    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTICLES.slice(0, limit) : [];
   }
 }
 
-/**
- * Fetch a single published article by its unique slug.
- * Returns null if the article does not exist, is draft (is_published = false),
- * or has a future publication timestamp (published_at > now()).
- */
-async function getArticleBySlugRaw(slug: string): Promise<Article | null> {
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const nowIso = new Date().toISOString();
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    const found = CANONICAL_ARTICLES.find(
-      (a) => a.slug === slug && a.is_published && a.published_at <= nowIso
-    );
-    return found || null;
-  }
-
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return CANONICAL_ARTICLES.find((a) => a.slug === slug && a.is_published && a.published_at <= nowIso) || null;
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("articles")
-      .select("*")
-      .eq("slug", slug)
-      .eq("is_published", true)
-      .lte("published_at", nowIso)
-      .maybeSingle();
-
-    if (error || !data) {
-      return null;
-    }
-
+    const { data, error } = await supabase.from("articles").select("*").eq("slug", slug).eq("is_published", true).lte("published_at", nowIso).maybeSingle();
+    if (error || !data) return null;
     return data as unknown as Article;
-  } catch (err) {
-    console.error("DAL Exception [getArticleBySlug]:", err);
-    return null;
+  } catch {
+    return USE_DEMO_CONTENT ? CANONICAL_ARTICLES.find((a) => a.slug === slug && a.is_published && a.published_at <= nowIso) || null : null;
   }
 }
 
-/**
- * Fetch related articles for a given article.
- * Prioritizes the same category, excludes the current article, returns up to limit.
- */
-async function getRelatedArticlesRaw(
-  currentSlug: string,
-  category?: string,
-  limit = 3
-): Promise<Article[]> {
-  const allArticles = await getPublishedArticles({ limit: 12 });
-  const otherArticles = allArticles.filter((a) => a.slug !== currentSlug);
-
-  if (category) {
-    const sameCategory = otherArticles.filter((a) => a.category === category);
-    if (sameCategory.length >= limit) {
-      return sameCategory.slice(0, limit);
-    }
-    const differentCategory = otherArticles.filter((a) => a.category !== category);
-    return [...sameCategory, ...differentCategory].slice(0, limit);
-  }
-
-  return otherArticles.slice(0, limit);
+export async function getRelatedArticles(currentSlug: string, category?: string, limit = 3): Promise<Article[]> {
+  const other = (await getPublishedArticles({ limit: 12 })).filter((a) => a.slug !== currentSlug);
+  if (!category) return other.slice(0, limit);
+  return [...other.filter((a) => a.category === category), ...other.filter((a) => a.category !== category)].slice(0, limit);
 }
 
-/**
- * Pre-render all published article slugs for Next.js ISR generateStaticParams.
- */
 export async function getAllPublishedArticleSlugs(): Promise<{ slug: string }[]> {
   const nowIso = new Date().toISOString();
-
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return CANONICAL_ARTICLES.filter(
-      (a) => a.is_published && a.published_at <= nowIso
-    ).map((a) => ({ slug: a.slug }));
-  }
-
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return demoArticles().map((a) => ({ slug: a.slug }));
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("articles")
-      .select("slug")
-      .eq("is_published", true)
-      .lte("published_at", nowIso);
-
-    if (error || !data) {
-      return [];
-    }
-
-    return (data as Array<{ slug: string }>).map((row) => ({ slug: row.slug }));
-  } catch (err) {
-    console.error("DAL Exception [getAllPublishedArticleSlugs]:", err);
-    return [];
+    const { data, error } = await supabase.from("articles").select("slug").eq("is_published", true).lte("published_at", nowIso);
+    if (error) return USE_DEMO_CONTENT ? demoArticles().map((a) => ({ slug: a.slug })) : [];
+    return (data as Array<{ slug: string }> || []).map((row) => ({ slug: row.slug }));
+  } catch {
+    return USE_DEMO_CONTENT ? demoArticles().map((a) => ({ slug: a.slug })) : [];
   }
-}
-
-/*
- * Public readers resolve content into the request's locale. Arabic rows are
- * returned untouched; English falls back to Arabic per field when a
- * translation has not been written yet.
- */
-export async function getPublishedArticles(options?: { category?: string; limit?: number }): Promise<Article[]> {
-  return localizeContentList("articles", await getPublishedArticlesRaw(options));
-}
-export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
-  return localizeContentList("articles", await getFeaturedArticlesRaw(limit));
-}
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  const row = await getArticleBySlugRaw(slug);
-  return row ? localizeContent("articles", row) : null;
-}
-export async function getRelatedArticles(currentSlug: string, category?: string, limit = 3): Promise<Article[]> {
-  return localizeContentList("articles", await getRelatedArticlesRaw(currentSlug, category, limit));
 }
