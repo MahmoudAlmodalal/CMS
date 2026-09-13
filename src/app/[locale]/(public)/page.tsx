@@ -78,14 +78,14 @@ export default async function HomePage({
   const settings = await getSiteSettings();
 
   const [artists, testimonials, articles, events] = await Promise.all([
-    settings.show_featured_artists
+    settings.show_featured_artists !== false
       ? getFeaturedArtists(settings.home_featured_artists_count)
       : Promise.resolve([]),
-    settings.show_testimonials ? getPublishedTestimonials() : Promise.resolve([]),
-    settings.show_editorial
+    settings.show_testimonials !== false ? getPublishedTestimonials() : Promise.resolve([]),
+    settings.show_editorial !== false
       ? getFeaturedArticles(settings.home_featured_articles_count)
       : Promise.resolve([]),
-    settings.show_events
+    settings.show_events !== false
       ? getUpcomingEvents(settings.home_upcoming_events_count)
       : Promise.resolve([]),
   ]);
@@ -93,7 +93,7 @@ export default async function HomePage({
   return (
     <>
       {/* Stage 1: Hero Banner (Figma Component 20, 740px) */}
-      {settings.show_hero && (
+      {settings.show_hero !== false && (
         <HeroSection
           settings={settings}
           primaryCtaLabel={settings.home_hero_primary_cta || undefined}
@@ -102,14 +102,14 @@ export default async function HomePage({
       )}
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
-      {settings.show_about && (
+      {settings.show_about !== false && (
         <div className="lg:-mt-[22px]">
           <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
         </div>
       )}
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
-      {settings.show_featured_artists && (
+      {settings.show_featured_artists !== false && (
         <div className="lg:mt-[22px]">
           <FeaturedArtists
             artists={artists}
@@ -121,19 +121,19 @@ export default async function HomePage({
       )}
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
-      {settings.show_testimonials && (
+      {settings.show_testimonials !== false && (
         <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
           <TestimonialsSlider testimonials={testimonials} heading={settings.home_testimonials_heading || undefined} />
         </div>
       )}
 
       {/* Stage 5: Editorial Feature (Figma Frame 26, 709px, #1F0900, 4 cards) */}
-      {settings.show_editorial && (
+      {settings.show_editorial !== false && (
         <EditorialFeature articles={articles} heading={settings.home_editorial_heading || undefined} />
       )}
 
       {/* Stage 6: Upcoming Events Strip (Figma Frame 28, 678px, split banner) */}
-      {settings.show_events && (
+      {settings.show_events !== false && (
         <div className="lg:mt-[26px]">
           <HomeEvents
             events={events}
@@ -146,7 +146,7 @@ export default async function HomePage({
       )}
 
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
-      {settings.show_booking_banner && (
+      {settings.show_booking_banner !== false && (
         <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
           <BookingBanner settings={settings} ctaLabel={settings.booking_cta_label} />
         </div>
