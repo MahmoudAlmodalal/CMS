@@ -54,16 +54,16 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#1F0900] py-16 lg:h-[709px] lg:py-0">
+    <section className="relative w-full overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
       {/* Heading 87:14401 */}
       <div className="px-5 lg:absolute lg:left-[132px] lg:right-[172px] lg:top-[93px] lg:px-0">
-        <h2 className="text-center font-display text-3xl leading-tight text-[#F9EDE8] sm:text-5xl lg:whitespace-nowrap lg:text-[64px] lg:leading-[48px]">
+        <h2 className="text-center font-display text-[32px] leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
           {t("editorialHeading")}
         </h2>
       </div>
 
       {/* Cards 115:2436…115:2439 */}
-      <div className="mt-10 grid grid-cols-1 justify-items-center gap-7 px-5 sm:grid-cols-2 lg:mt-0 lg:block lg:px-0">
+      <div className="mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] px-5 lg:mt-0 lg:block lg:px-0">
         {articles.slice(0, 4).map((article, i) => {
           const slot = CARD_SLOTS[i];
           return (
@@ -74,7 +74,7 @@ export function EditorialFeature({ articles }: EditorialFeatureProps) {
             >
               <Link
                 href={`/news/${article.slug}`}
-                className="flex w-full flex-col overflow-hidden rounded-[14px] bg-white lg:h-[317.156px]"
+                className="flex h-[317.156px] w-full flex-col overflow-hidden rounded-[14px] bg-white"
               >
                 {/* Cover I115:2439;87:14439 */}
                 <div className="relative h-[170.688px] w-full shrink-0 overflow-hidden bg-brand-surface">

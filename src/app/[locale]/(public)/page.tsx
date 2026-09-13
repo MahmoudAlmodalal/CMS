@@ -90,7 +90,7 @@ export default async function HomePage({
       </div>
 
       {/* Stage 4: Testimonials Carousel (Figma Section 87:14313, 597px, #F9F7F0) */}
-      <div className="lg:-mt-[16px]">
+      <div className="mb-[30px] lg:mb-0 lg:-mt-[16px]">
         <TestimonialsSlider testimonials={testimonials} />
       </div>
 
@@ -103,7 +103,7 @@ export default async function HomePage({
       </div>
 
       {/* Stage 7: Booking CTA Banner (Figma Section 87:14534, 498px, #2B1D14 overlay) */}
-      <div className="lg:mt-[54px]">
+      <div className="flex min-h-[427.992px] flex-col lg:mt-[54px] lg:block lg:min-h-0">
         <BookingBanner settings={settings} />
       </div>
     </>

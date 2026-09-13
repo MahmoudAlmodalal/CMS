@@ -41,8 +41,11 @@ export function EventsFilterTabs({
       role="tablist"
       aria-label={t("filterTabs")}
       className={cn(
-        "flex flex-wrap items-center justify-center gap-[14px] rounded-badge bg-secondary-50 px-5 py-2",
-        "lg:h-[53.12px] lg:w-[415px] lg:flex-nowrap",
+        // Component 8 on the 390 frame is 376x54 flush to the inline start, so it
+        // scrolls rather than wrapping — wrapping made it 104 against that 54.
+        "flex h-[54px] w-[376px] items-center justify-center gap-[14px] overflow-x-auto overscroll-x-contain rounded-badge bg-secondary-50 px-5 py-2 [scrollbar-width:none]",
+        "lg:h-[53.12px] lg:w-[415px] lg:overflow-visible",
+        "[&::-webkit-scrollbar]:hidden",
         className
       )}
     >

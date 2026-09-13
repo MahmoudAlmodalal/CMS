@@ -13,6 +13,7 @@ import { spawn } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 const [, , only, ...selectors] = process.argv;
+const baseUrl = process.env.VISUAL_BASE_URL ?? "http://localhost:3000";
 const base = process.env.PLAYWRIGHT_BROWSERS_PATH ?? "/opt/pw-browsers";
 const chromium = [
   process.env.CHROMIUM_BIN,
@@ -70,10 +71,24 @@ async function measure(frame, port) {
     const sessionId = attached.sessionId;
     await cdp(ws, "Emulation.setDeviceMetricsOverride", { width: frame.canvas[0], height, deviceScaleFactor: 1, mobile: false }, sessionId);
     await cdp(ws, "Page.enable", {}, sessionId);
-    await cdp(ws, "Page.navigate", { url: new URL(frame.route, "http://localhost:3000").toString() }, sessionId);
+    // Same base URL and locale header as capture-visual.mjs, or we measure one server
+    // and screenshot another — and read an Arabic frame's geometry off the English page.
+    await cdp(ws, "Network.enable", {}, sessionId);
+    await cdp(ws, "Network.setExtraHTTPHeaders", { headers: { "Accept-Language": frame.locale ?? "ar" } }, sessionId);
+    await cdp(ws, "Page.navigate", { url: new URL(frame.route, baseUrl).toString() }, sessionId);
     for (let i = 0; i < 60; i += 1) {
       const { result } = await cdp(ws, "Runtime.evaluate", { expression: "document.readyState", returnByValue: true }, sessionId);
       if (result?.result?.value === "complete") break;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    // Measure on the real faces, not the fallback. Every face is font-display: swap,
+    // so probing inside the swap window reports line boxes for Cairo-substituted
+    // text and reads back a scrollHeight the page never settles at. Same wait as
+    // capture-visual.mjs, or the two tools disagree about the same page.
+    for (let i = 0; i < 60; i += 1) {
+      const { result } = await cdp(ws, "Runtime.evaluate",
+        { expression: `document.fonts.status === "loaded"`, returnByValue: true }, sessionId);
+      if (result?.result?.value === true) break;
       await new Promise((r) => setTimeout(r, 250));
     }
     await new Promise((r) => setTimeout(r, 600));

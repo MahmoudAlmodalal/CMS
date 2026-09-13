@@ -55,17 +55,23 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
 
   if (releases.length === 0) return null;
 
+  // The 390 frame's `Section` (141:16468) runs on the same 96 of padding as the 1440
+  // one: 96 + 52 heading + 24 + 37.67 tabs + 40 + 325.49 albums + 96 is the 671.16 it
+  // declares. Its content sits 31 in from the inline start, not the 20 the page
+  // gutter would give — the tab row lands at 99.67..359 and the album row at 30..359.
   return (
-    <section className="w-full bg-gradscale-900 py-16 lg:py-[96px]">
-      <h2 className="pt-[12px] text-center font-display text-[32px] leading-tight text-brand-tint sm:text-[40px] lg:h-[52px] lg:text-[48px] lg:leading-[40px]">
+    <section className="w-full bg-gradscale-900 py-24 lg:py-[96px]">
+      <h2 className="pt-[12px] text-center font-display text-[32px] leading-[40px] text-brand-tint lg:h-[52px] lg:text-[48px]">
         {t("careerTitle")}
       </h2>
 
-      <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-[32px]">
+      <div className="mx-auto w-full max-w-[1200px] px-[31px] lg:px-[32px]">
         {/* Filter row — 134:4687 */}
         <ul
           aria-label={t("careerFilters")}
-          className="flex flex-wrap items-start gap-[8px] pt-8 lg:h-[37.667px] lg:flex-nowrap lg:pt-0"
+          // 259.33 wide on the 390 frame, which is exactly 74.67 + 79.67 + 89 and
+          // two 8px gaps — it fits without wrapping, so it must not wrap.
+          className="flex items-start gap-[8px] pt-6 lg:h-[37.667px] lg:pt-0"
         >
           {CAREER_FILTERS.map((filter) =>
             filter.active ? (
@@ -87,10 +93,17 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
           )}
         </ul>
 
-        {/* Grid — 134:4696 */}
-        <div className="grid grid-cols-1 gap-[20px] pt-8 sm:grid-cols-2 lg:grid-cols-4 lg:pt-[40px]">
+        {/* Grid — 134:4696. On the 390 frame the four releases are one horizontal
+            RTL row instead: 269 wide on a 289 step, so 20 between them, the first
+            flush to the row's inline start at 359 and the rest scrolled off to the
+            left. Same idiom as the artists carousel and both filter bars. */}
+        <div className="flex gap-[20px] overflow-x-auto overscroll-x-contain pt-10 [scrollbar-width:none] lg:grid lg:grid-cols-4 lg:overflow-visible lg:pt-[40px] [&::-webkit-scrollbar]:hidden">
           {releases.map((release) => (
-            <article key={release.id} data-testid={`release-${release.id}`} className="flex flex-col">
+            <article
+              key={release.id}
+              data-testid={`release-${release.id}`}
+              className="flex w-[269px] shrink-0 flex-col lg:w-auto"
+            >
               <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2a1d13] lg:h-[268.997px]">
                 <div className="relative aspect-square w-full lg:h-full">
                   <Image

@@ -51,6 +51,19 @@ const CATEGORY_KEY_MAP: Record<string, string> = {
  * only 505 of it is ever drawn and the asset is cut to what shows.
  *
  * Ticket links stay on /booking?event_id=... — the project forbids /events/[slug].
+ *
+ * The 390 frame (136:5074, 0..726 at y=4582) unsplits the band into a single
+ * column: 48 to a 326-wide heading box, then the photograph in flow as a 369.735 x
+ * 224 rounded plate, then a 326.489 column holding 32 of pad, three flat 80px rows
+ * 8 apart, 24 more, and a 24-tall text link — not the filled 48px button — at the
+ * inline start. 54 closes the band. Below lg the panel and its content column go to
+ * `display: contents` so the heading, the photograph and the rows can be ordered
+ * against each other as siblings of one section-level flex column; from lg up both
+ * are boxes again and the 1440 band is untouched.
+ *
+ * Its rows also turn around: the date badge is drawn on the physical left and the
+ * type pill on the right, which is flex-row-reverse in Arabic, and it drops the
+ * trailing arrow glyph the 1440 rows carry.
  */
 const BAND_PHOTOGRAPH = "/assets/events/home-band.png";
 export function HomeEvents({ events }: HomeEventsProps) {
@@ -66,9 +79,9 @@ export function HomeEvents({ events }: HomeEventsProps) {
   const month = new Intl.DateTimeFormat("ar-EG", { month: "long", timeZone: "UTC" });
 
   return (
-    <section className="relative w-full overflow-hidden bg-brand-cream py-10 lg:h-[678px] lg:py-0">
+    <section className="relative flex w-full flex-col overflow-hidden bg-brand-cream pb-[54px] pt-[48px] lg:block lg:h-[678px] lg:py-0">
       {/* Panel 87:14468 — 939 wide, hanging 4px off the inline start. */}
-      <div className="relative mx-auto w-full max-w-[939px] overflow-hidden px-5 sm:px-8 lg:absolute lg:start-[-4px] lg:top-0 lg:mx-0 lg:h-[678px] lg:w-[939px] lg:max-w-none lg:px-0">
+      <div className="contents lg:absolute lg:start-[-4px] lg:top-0 lg:block lg:h-[678px] lg:w-[939px] lg:overflow-hidden">
         {/* Ornaments 87:14469 / 87:14470, both in the panel's far corner. */}
         <div
           aria-hidden="true"
@@ -80,14 +93,14 @@ export function HomeEvents({ events }: HomeEventsProps) {
         />
 
         {/* Content column 87:14472 */}
-        <div className="relative w-full text-start lg:absolute lg:start-[31.67px] lg:top-[96px] lg:w-[875.333px]">
+        <div className="contents text-start lg:absolute lg:start-[31.67px] lg:top-[96px] lg:block lg:w-[875.333px]">
           {/* Heading 87:14480 */}
-          <h2 className="pt-[13.6px] font-display text-[32px] leading-tight text-brand-espresso sm:text-[40px] lg:h-[55.6px] lg:text-[48px] lg:leading-[40px]">
+          <h2 className="order-1 mx-auto h-[64px] w-[326px] pt-[8px] text-start font-display text-[32px] leading-[32px] text-brand-espresso lg:mx-0 lg:h-[55.6px] lg:w-auto lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
             {t("eventsHeading")}
           </h2>
 
           {/* Rows 87:14483 */}
-          <div className="flex flex-col gap-[8px] pt-8 lg:pt-[48px]">
+          <div className="order-3 mx-auto flex w-[326.489px] flex-col gap-[8px] pt-8 lg:mx-0 lg:w-auto lg:pt-[48px]">
             {events.slice(0, 3).map((event) => {
               const eventDate = new Date(event.event_date);
               const categoryKey = CATEGORY_KEY_MAP[event.category];
@@ -98,10 +111,10 @@ export function HomeEvents({ events }: HomeEventsProps) {
                   key={event.id}
                   href={`/booking?event_id=${event.id}`}
                   aria-label={ev("bookTicket", { title: event.title })}
-                  className="group relative flex items-center gap-4 rounded-[16px] bg-white p-4 transition-shadow duration-200 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:p-0"
+                  className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 transition-shadow duration-200 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
                 >
                   {/* Date badge 87:14485 */}
-                  <span className="flex h-[53.979px] w-[72px] shrink-0 flex-col rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] lg:absolute lg:end-[30px] lg:top-[28.4px]">
+                  <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
                     <span className="block w-full text-center text-[22.4px] font-black leading-[22.4px] text-primary-50">
                       {day.format(eventDate)}
                     </span>
@@ -121,14 +134,14 @@ export function HomeEvents({ events }: HomeEventsProps) {
                   </span>
 
                   {/* Type pill 87:14496 */}
-                  <span className="hidden shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 sm:inline-block lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
+                  <span className="inline-block shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
                     {categoryLabel}
                   </span>
 
                   {/* Trailing glyph 87:14498 */}
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px]"
+                    className="hidden shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px] lg:block"
                   >
                     ←
                   </span>
@@ -138,10 +151,10 @@ export function HomeEvents({ events }: HomeEventsProps) {
           </div>
 
           {/* CTA 87:14532 */}
-          <div className="flex justify-end pt-8 lg:pt-[24.45px]">
+          <div className="order-4 mx-auto flex h-[48px] w-[326.489px] justify-start pt-[24px] lg:mx-0 lg:h-auto lg:w-auto lg:justify-end lg:pt-[24.45px]">
             <Link
               href="/events"
-              className="inline-flex h-[48px] items-center rounded-[16px] bg-primary-500 px-[26.4px] text-[14.4px] font-bold leading-[21.6px] text-primary-50 transition-colors hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+              className="inline-flex h-[20px] items-center text-[14px] font-bold leading-[20px] text-primary-500 transition-colors hover:text-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 lg:h-[48px] lg:rounded-[16px] lg:bg-primary-500 lg:px-[26.4px] lg:text-[14.4px] lg:leading-[21.6px] lg:text-primary-50 lg:hover:bg-brand-primary-hover lg:active:bg-brand-primary-pressed"
             >
               {t("eventsCta")}
             </Link>
@@ -150,13 +163,13 @@ export function HomeEvents({ events }: HomeEventsProps) {
       </div>
 
       {/* Photograph 87:14467 — 509 wide hung 4px off the inline end, 505 drawn. */}
-      <div className="relative mt-8 h-64 w-full overflow-hidden rounded-s-[16px] bg-brand-espresso sm:h-80 lg:absolute lg:end-0 lg:top-0 lg:mt-0 lg:h-[678px] lg:w-[505px]">
+      <div className="relative order-2 mx-auto h-[224px] w-[369.735px] overflow-hidden rounded-[16px] bg-brand-espresso lg:absolute lg:end-0 lg:top-0 lg:mx-0 lg:h-[678px] lg:w-[505px] lg:rounded-s-[16px] lg:rounded-e-none">
         <Image
           src={BAND_PHOTOGRAPH}
           alt=""
           aria-hidden="true"
           fill
-          sizes="(max-width: 1023px) 100vw, 505px"
+          sizes="(max-width: 1023px) 370px, 505px"
           quality={90}
           className="object-cover"
         />

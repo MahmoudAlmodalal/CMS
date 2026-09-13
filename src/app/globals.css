@@ -101,6 +101,38 @@
   --radius-bar: 32px;
   --radius-full: 9999px;
 
+  /* Spacing — the `grid N` variables of Figma "gride and space" (27:12129),
+     persisted in docs/figma/mcp/ds-grid-and-space.vars.json.
+
+     Published under a NAMED namespace on purpose. Writing these as --spacing-1 …
+     --spacing-13 would override Tailwind v4's own dynamic spacing scale, so p-1,
+     gap-3 and p-4 would quietly stop meaning 4px/12px/16px and start meaning
+     8px/24px/32px — rescaling every existing utility in the project at once.
+     --spacing-grid-* adds p-grid-8 / gap-grid-24 and leaves p-4 alone.
+
+     Figma defines THIRTEEN steps. 48 is not among them: the earlier ordinal
+     1..14 map in tokens.ts interpolated it, and docs/figma/DECISIONS.md §4
+     wrongly called that map an exact match. */
+  --spacing-grid-8: 8px;
+  --spacing-grid-16: 16px;
+  --spacing-grid-24: 24px;
+  --spacing-grid-32: 32px;
+  --spacing-grid-40: 40px;
+  --spacing-grid-56: 56px;
+  --spacing-grid-64: 64px;
+  --spacing-grid-72: 72px;
+  --spacing-grid-84: 84px;
+  --spacing-grid-88: 88px;
+  --spacing-grid-96: 96px;
+  --spacing-grid-104: 104px;
+  --spacing-grid-112: 112px;
+
+  /* Containers. 1280 is confirmed twice over: the design-system grid, and the
+     footer's own inner Container node, which is 1280 wide inside the 1454-wide
+     footer instance 94:18553. */
+  --container-desktop: 1280px;
+  --container-mobile: 390px;
+
   /* Shadows */
   --shadow-subtle: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
   --shadow-card: 0px 4px 12px 0px rgba(0, 0, 0, 0.04);

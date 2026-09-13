@@ -72,14 +72,18 @@ export function EventsCatalogView({
         className="lg:ms-[55px]"
       />
 
-      {/* 2. The list and the featured panel, side by side */}
-      <div className="mt-6 flex flex-col gap-10 lg:ms-[78px] lg:w-[1262px] lg:flex-row lg:justify-between lg:gap-0">
+      {/* 2. The list and the featured panel, side by side.
+          The 390 frame stacks them and puts 38 between every section on the page —
+          band to filter bar, filter bar to list, list to featured panel. */}
+      <div className="mt-[38px] flex flex-col gap-[38px] lg:mt-6 lg:ms-[78px] lg:w-[1262px] lg:flex-row lg:justify-between lg:gap-0">
         {filteredEvents.length > 0 ? (
           <div
             id="events-catalog-grid"
             role="region"
             aria-label={t("listRegion")}
-            className="flex flex-col gap-4 lg:mt-[13px] lg:w-[713px]"
+            // Frame 39 on the 390 frame is 390.33 wide and 10px padded, holding its
+            // rows at x=10 with 10 between them.
+            className="flex flex-col gap-[10px] p-[10px] lg:mt-[13px] lg:w-[713px] lg:gap-4 lg:p-0"
           >
             {filteredEvents.map((event, index) => (
               <EventCard key={event.id} event={event} priority={index < 3} />
@@ -115,7 +119,13 @@ export function EventsCatalogView({
         )}
 
         {shouldShowFeatured && (
-          <section aria-label={t("featuredRegion")} className="lg:w-[503px]">
+          // 144:19982 reserves a 349x586 box at x=21 for this panel and draws nothing
+          // inside it — the 390 frame never laid the banner out, it only left the
+          // slot. So the slot is reproduced and the existing banner fills it.
+          <section
+            aria-label={t("featuredRegion")}
+            className="ms-5 h-[586px] w-[349px] lg:ms-0 lg:h-auto lg:w-[503px]"
+          >
             <FeaturedEventBanner event={featuredEvent} />
           </section>
         )}

@@ -46,6 +46,15 @@ interface AboutSectionProps {
  * — it is cut for this band's #F9F7F0 and should not be reused on another ground.
  * A photograph swapped in through site settings will render as a plain rectangle,
  * since the mask lives in the asset and not in CSS.
+ *
+ * The 390 frame (136:5854) stacks the same band in flow, 740..1741: 48 to من نحن
+ * at the same 61/91.5, 30 to a 335x304 portrait, 30 to the 324-wide column
+ * (136:7443), 56 to close — 1001 in all. That column keeps the 32px gap the 1440
+ * one has and re-sets only its type: the statement is Qahwa 32/66 and the manifesto
+ * Cairo Medium 16/37.5, which is the same seven lines and so the same 263 box.
+ * Figma draws the column with every child rotated 180 inside a rotated parent —
+ * the file's own RTL flip — so its DOM order there runs button, body, heading; the
+ * visual order is the one reproduced here.
  */
 const BAND_OPACITY = "lg:opacity-50";
 
@@ -55,7 +64,7 @@ export function AboutSection({ settings }: AboutSectionProps) {
   const t = useTranslations("home");
 
   return (
-    <section className="relative w-full overflow-hidden bg-brand-cream py-16 lg:h-[879px] lg:py-0">
+    <section className="relative w-full overflow-hidden bg-brand-cream pb-[56px] pt-[48px] lg:h-[879px] lg:py-0">
       <div className={`relative size-full ${BAND_OPACITY}`}>
         {/* Dot mark I112:850;112:627 — hangs 24px off the artboard. */}
         <Image
@@ -66,33 +75,33 @@ export function AboutSection({ settings }: AboutSectionProps) {
         />
 
         {/* من نحن — I112:850;112:625, centred over a 1251px box, 61/91.5 Cairo Bold. */}
-        <div className="px-5 lg:absolute lg:left-[92px] lg:right-[97px] lg:top-[214px] lg:px-0">
-          <h2 className="text-center text-[34px] font-bold leading-[51px] text-black sm:text-[48px] sm:leading-[72px] lg:text-[61px] lg:leading-[91.5px]">
+        <div className="lg:absolute lg:left-[92px] lg:right-[97px] lg:top-[214px]">
+          <h2 className="text-center text-[61px] font-bold leading-[91.5px] text-black">
             <Highlight text={t("aboutHeading")} highlightClassName="text-primary-500" />
           </h2>
         </div>
 
         {/* Blob portrait I112:850;112:624 — hangs 2px off the artboard. */}
-        <div className="mt-10 flex justify-center px-5 lg:absolute lg:-left-[2px] lg:top-[240px] lg:mt-0 lg:block lg:px-0">
+        <div className="ms-[28px] mt-[30px] w-[335px] lg:absolute lg:-left-[2px] lg:top-[240px] lg:ms-0 lg:mt-0 lg:w-auto">
           <Image
             src={settings.about_image_url || "/assets/figma/about-musician.png"}
             alt={t("aboutImageAlt")}
             width={551}
             height={491}
             quality={95}
-            className="h-auto w-full max-w-[551px] lg:h-[491px] lg:w-[551px] lg:max-w-none"
+            className="h-[304px] w-[335px] object-cover lg:h-[491px] lg:w-[551px]"
           />
         </div>
 
         {/* Text column I112:850;112:619 — 495 wide, three blocks 32px apart. */}
-        <div className="mt-10 flex flex-col items-start gap-[32px] px-5 text-start lg:absolute lg:left-[923px] lg:top-[265px] lg:mt-0 lg:w-[495px] lg:px-0">
+        <div className="ms-[28px] mt-[30px] flex w-[324px] flex-col items-start gap-[32px] text-start lg:absolute lg:left-[923px] lg:top-[265px] lg:ms-0 lg:mt-0 lg:w-[495px]">
           {/* Statement I112:850;112:623 */}
-          <h3 className="font-display text-[32px] leading-tight text-brand-espresso sm:text-[40px] lg:h-[66px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[66px]">
+          <h3 className="h-[66px] whitespace-nowrap font-display text-[32px] leading-[66px] text-brand-espresso lg:text-[48px]">
             {settings.about_headline}
           </h3>
 
           {/* Manifesto I112:850;112:621 */}
-          <p className="text-[18px] leading-[30px] text-gradscale-900 sm:text-[21px] lg:h-[263px] lg:w-full lg:text-[25px] lg:leading-[37.5px]">
+          <p className="h-[263px] font-medium leading-[37.5px] text-[16px] text-gradscale-900 lg:w-full lg:text-[25px]">
             {settings.about_body}
           </p>
 

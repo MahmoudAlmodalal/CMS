@@ -8,6 +8,13 @@ interface PageHeroProps {
   image?: string;
   /** Band height on desktop, straight off the frame. */
   height?: number;
+  /**
+   * Band height on the 390 frame, straight off it. The mobile frames each set their
+   * own — الفنانين draws 678 — so this has no shared value to fall back on. The 430
+   * default is the invented figure the component carried before any 390 frame was
+   * measured, and is what the frames that have not been built yet still render.
+   */
+  mobileHeight?: number;
   /** Distance from the band's top to the first row of the block, off the frame. */
   contentTop?: number;
   /** Headline size and line box on desktop; the frames do not agree on these. */
@@ -44,6 +51,7 @@ export function PageHero({
   eyebrow,
   image = "/assets/figma/hero-stage-landscape.png",
   height = 611,
+  mobileHeight = 430,
   contentTop = 247,
   titleSize = 48,
   titleLeading = 91.5,
@@ -51,10 +59,14 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <section
-      className="relative isolate h-[430px] w-full overflow-hidden bg-brand-espresso text-white sm:h-[500px] lg:h-[var(--hero-height)]"
+      // The 500 that used to sit at sm: was invented — Figma has no tablet frame —
+      // so the band holds its measured 390 height until the 1440 one takes over,
+      // rather than passing through a figure no frame declares.
+      className="relative isolate h-[var(--hero-mobile-height)] w-full overflow-hidden bg-brand-espresso text-white lg:h-[var(--hero-height)]"
       style={
         {
           "--hero-height": `${height}px`,
+          "--hero-mobile-height": `${mobileHeight}px`,
           "--hero-content-top": `${contentTop}px`,
           "--hero-title-size": `${titleSize}px`,
           "--hero-title-leading": `${titleLeading}px`,
@@ -69,7 +81,10 @@ export function PageHero({
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
 
-      <div className="absolute inset-x-0 bottom-10 flex flex-col items-center px-5 text-center sm:bottom-16 lg:bottom-auto lg:top-[var(--hero-content-top)]">
+      {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at
+          x=376 on a 390 artboard), so the mobile offset of this block is not
+          measurable from them and keeps the bottom anchor it already had. */}
+      <div className="absolute inset-x-0 bottom-10 flex flex-col items-center px-5 text-center lg:bottom-auto lg:top-[var(--hero-content-top)]">
         {eyebrow ? (
           <span className="inline-flex items-center gap-2 rounded-full border-[0.833px] border-white/20 bg-white/10 px-5 py-2 backdrop-blur-[8px]">
             <span aria-hidden="true" className="text-[16px] leading-[24px] text-brand-primary">

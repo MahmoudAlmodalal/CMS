@@ -57,7 +57,7 @@ export function Input({
         className={`w-full rounded-xl border bg-white py-2.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
           startIcon ? "ps-10" : "ps-4"
         } ${endIcon ? "pe-10" : "pe-4"} ${
-          error ? "border-red-500 ring-1 ring-red-500/20" : "border-brand-surface hover:border-brand-primary/50"
+          error ? "border-alert-error ring-1 ring-alert-error/20" : "border-brand-surface hover:border-brand-primary/50"
         } ${className}`}
         {...props}
       />
@@ -78,7 +78,7 @@ export function Textarea({ className = "", error, ...props }: TextareaProps) {
   return (
     <textarea
       className={`w-full rounded-xl border bg-white p-3.5 text-sm text-brand-espresso transition-colors placeholder:text-brand-espresso/40 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary min-h-[100px] text-start ${
-        error ? "border-red-500 ring-1 ring-red-500/20" : "border-brand-surface hover:border-brand-primary/50"
+        error ? "border-alert-error ring-1 ring-alert-error/20" : "border-brand-surface hover:border-brand-primary/50"
       } ${className}`}
       {...props}
     />
@@ -94,7 +94,7 @@ export function Select({ className = "", children, error, ...props }: SelectProp
     <div className="relative w-full">
       <select
         className={`w-full appearance-none rounded-xl border bg-white py-2.5 ps-4 pe-10 text-sm text-brand-espresso transition-colors focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary ${
-          error ? "border-red-500" : "border-brand-surface hover:border-brand-primary/50"
+          error ? "border-alert-error" : "border-brand-surface hover:border-brand-primary/50"
         } ${className}`}
         {...props}
       >
@@ -191,7 +191,7 @@ export function PhoneInput({
   ...props
 }: Omit<InputProps, "startIcon"> & { prefix?: string }) {
   return (
-    <div className={`relative flex items-center rounded-xl border bg-white ${error ? "border-red-500" : "border-brand-surface"} ${className}`}>
+    <div className={`relative flex items-center rounded-xl border bg-white ${error ? "border-alert-error" : "border-brand-surface"} ${className}`}>
       <span
         dir="ltr"
         className="ps-3.5 pe-2 py-2.5 text-sm font-mono font-medium text-brand-espresso/70 border-e border-brand-surface bg-brand-surface/20 rounded-s-xl select-none"
@@ -220,7 +220,7 @@ export function UrlInput({
   ...props
 }: Omit<InputProps, "startIcon"> & { protocol?: string }) {
   return (
-    <div className={`relative flex items-center rounded-xl border bg-white ${error ? "border-red-500" : "border-brand-surface"} ${className}`}>
+    <div className={`relative flex items-center rounded-xl border bg-white ${error ? "border-alert-error" : "border-brand-surface"} ${className}`}>
       <span
         dir="ltr"
         className="ps-3.5 pe-2 py-2.5 text-sm font-mono text-brand-espresso/60 border-e border-brand-surface bg-brand-surface/20 rounded-s-xl select-none"
@@ -250,7 +250,7 @@ export function FormHelperText({
   return (
     <p
       className={`text-xs text-start mt-1 ${
-        error ? "text-red-600 font-medium" : "text-brand-espresso/60"
+        error ? "text-alert-error font-medium" : "text-brand-espresso/60"
       } ${className}`}
     >
       {children}

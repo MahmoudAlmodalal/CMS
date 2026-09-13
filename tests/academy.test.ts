@@ -187,7 +187,11 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
   assert.match(tracksCode, /lg:ms-\[560px\]/, "Tracks heading starts 560px in");
   assert.match(tracksCode, /lg:ms-\[154px\]/, "Tracks grid starts 154px in");
   assert.match(tracksCode, /lg:w-\[1136px\]/, "Tracks grid is 1136 wide");
-  assert.match(tracksCode, /lg:grid-rows-\[325\.61px\]/, "Tracks row is a flat 325.61");
+  // The row height is the one figure both frames share: 325.61 on the 1440 one,
+  // 325.611 on the 390 one (139:13167), so it is stated once as auto-rows rather
+  // than as an lg:-only explicit row.
+  assert.match(tracksCode, /auto-rows-\[325\.611px\]/, "Tracks row is a flat 325.611 at both widths");
+  assert.doesNotMatch(tracksCode, /lg:grid-rows-/, "The row height is no longer lg:-only");
   assert.doesNotMatch(tracksCode, /tracksSubtitle/, "The design draws no standfirst here");
 
   // Track card 91:16439 — 20px radius on a 0.833px hairline, the numeral and the
@@ -212,8 +216,13 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
   assert.match(newsletterCode, /"use client"/, "Newsletter component must be client-interactive");
   assert.match(newsletterCode, /_hp/, "Newsletter must include honeypot field");
   assert.match(newsletterCode, /subscribeNewsletter/, "Newsletter must invoke subscribeNewsletter action");
-  assert.match(newsletterCode, /sm:w-\[491px\]/, "Email field is 491 wide");
-  assert.match(newsletterCode, /sm:w-\[149px\]/, "Submit button is 149 wide");
+  // The form row is 652 on the 1440 frame (91:16427) and 359 on the 390 one
+  // (139:13480), with the same 12 gap and the same 149 button on both. So the email
+  // field is not a breakpoint width: it is whatever the row has left — 491 and 198.
+  assert.match(newsletterCode, /h-11 w-\[149px\] shrink-0/, "Submit button is 149 wide at both widths");
+  assert.match(newsletterCode, /h-\[51px\] min-w-0 flex-1/, "Email field takes the remainder: 491 at 1440, 198 at 390");
+  assert.match(newsletterCode, /lg:max-w-\[652px\]/, "…which makes it 491 inside the 1440 frame's 652 row");
+  assert.doesNotMatch(newsletterCode, /sm:w-\[491px\]/, "The 491 is no longer an sm: width");
   assert.ok(
     newsletterCode.indexOf("type=\"email\"") < newsletterCode.indexOf("type=\"submit\""),
     "Field must precede the button so Arabic puts it on the right"
@@ -285,4 +294,56 @@ test("Task 36 — 6. Scope Integrity: No student enrollment, payments, or LMS", 
     assert.doesNotMatch(code, /enrollment_status/, `File ${file} must not contain student enrollment status`);
     assert.doesNotMatch(code, /course_completion/, `File ${file} must not contain course completion tracking`);
   }
+});
+
+/**
+ * الأكاديمية on the 390 frame — 139:12420.
+ *
+ * The band arithmetic closes exactly: 490 + 1413 + 737.91 + 15.09 + 353 = 3009,
+ * which is where the frame puts its footer. Recorded in docs/figma/DECISIONS.md §15.
+ */
+test("الأكاديمية — the 390 frame's bands", () => {
+  const strip = (s: string) =>
+    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
+  const page = strip(
+    fs.readFileSync(path.join(root, "src/app/[locale]/(public)/academy/page.tsx"), "utf-8")
+  );
+  const tracks = strip(
+    fs.readFileSync(path.join(root, "src/components/public/academy/AcademyTracks.tsx"), "utf-8")
+  );
+  const props = strip(
+    fs.readFileSync(path.join(root, "src/components/public/academy/AcademyValueProps.tsx"), "utf-8")
+  );
+  const news = strip(
+    fs.readFileSync(path.join(root, "src/components/public/academy/AcademyNewsletter.tsx"), "utf-8")
+  );
+
+  // 139:13053 is 390x500 hung at y=-10 — the one mobile band that is not 678.
+  assert.match(page, /mobileHeight=\{490\}/, "The academy hero band is 490 on the 390 frame");
+
+  // Tracks: heading at (52,733) on a 286 measure, container at (10,863) 362 wide.
+  assert.match(tracks, /pb-\[31\.16px\] pt-\[243px\]/, "243 opens the band and 31.16 closes it");
+  assert.match(tracks, /lg:pb-0 lg:pt-\[102px\]/, "The 1440 frame's own 102 is untouched");
+  assert.match(tracks, /mx-auto w-\[286px\] text-center/, "The heading is centred on a 286 measure");
+  assert.match(tracks, /leading-\[49\.5px\]/, "Its two lines make the 99 box the frame draws");
+  assert.match(tracks, /lg:ms-\[560px\].*lg:text-start/, "…and it is start-anchored again at 1440");
+  assert.doesNotMatch(tracks, /sm:text-\[40px\]/, "There is no tablet artboard to step the heading at sm:");
+  assert.match(tracks, /ms-\[18px\] mt-\[31px\] grid w-\[362px\]/, "The card container is 362 wide, 18 in from the start");
+  assert.doesNotMatch(tracks, /md:grid-cols-2/, "…and it does not pair the cards at an invented tablet width");
+
+  // 139:13444 is an empty 388x737.91 reservation — the height is reproduced, the
+  // internals are not invented.
+  assert.match(props, /min-h-\[737\.906px\]/, "The value-props band fills its reserved box");
+  assert.match(props, /lg:min-h-0/, "…and the 1440 frame keeps its own height");
+
+  // Newsletter 139:13473 / 91:16420 are the same 353-tall section at both widths:
+  // 96 of air, a 36 heading, a 34 standfirst, then 40 + a 51 form row.
+  assert.match(news, /className="w-full px-6 py-24"/, "96 of air at both widths");
+  assert.match(news, /text-\[32px\] leading-\[36px\]/, "The heading box is 36 at both widths");
+  assert.doesNotMatch(news, /sm:text-\[40px\]/, "The 40 was invented — the text is 326 wide on both frames");
+  assert.match(news, /leading-\[26px\]/, "The standfirst block is 8 + 26");
+  assert.match(news, /-mx-\[8\.5px\] flex w-auto items-start gap-3/, "The form row is 359 wide and 12 apart");
+  assert.doesNotMatch(news, /sm:flex-row/, "The row is a row at both widths, not only above sm:");
+  assert.match(news, /h-\[51px\] min-w-0 flex-1/, "The input takes the remainder: 198 at 390, 491 at 1440");
+  assert.match(news, /h-11 w-\[149px\] shrink-0/, "The button is a flat 149x44 at both widths");
 });

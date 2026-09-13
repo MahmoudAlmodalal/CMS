@@ -41,7 +41,7 @@ export function AcademyValueProps() {
   return (
     <section
       aria-labelledby="academy-values-heading"
-      className="relative isolate w-full overflow-hidden bg-brand-espresso px-6 py-16 lg:py-24"
+      className="relative isolate min-h-[737.906px] w-full overflow-hidden bg-brand-espresso px-6 py-16 lg:min-h-0 lg:py-24"
     >
       <div
         aria-hidden="true"
