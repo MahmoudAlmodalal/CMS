@@ -62,6 +62,13 @@ export const siteSettingsSchema = z
     footer_mission_en: translationString(2000),
     copyright_text: trimmedString(1, 255, "نص حقوق النشر"),
     copyright_text_en: translationString(255),
+    home_featured_artists_count: z.coerce.number().int().min(1).max(12).default(6),
+    home_featured_articles_count: z.coerce.number().int().min(1).max(12).default(4),
+    home_upcoming_events_count: z.coerce.number().int().min(1).max(12).default(3),
+    show_testimonials: z.boolean().default(true),
+    show_editorial: z.boolean().default(true),
+    show_events: z.boolean().default(true),
+    show_booking_banner: z.boolean().default(true),
   })
   .strict();
 
