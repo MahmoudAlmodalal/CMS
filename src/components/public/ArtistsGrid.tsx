@@ -46,33 +46,13 @@ export function ArtistsGrid({
     );
   }
 
-  const half = Math.ceil(artists.length / 2);
-  const rows = [artists.slice(0, half), artists.slice(half)].filter((row) => row.length > 0);
-
   return (
     <div
       data-testid="artists-grid"
-      className={`flex flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
+      className={`grid w-full min-w-0 grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 xl:grid-cols-4 ${className}`}
     >
-      {rows.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          data-testid={`artists-row-${rowIndex}`}
-          // The 355 is 5 wider than the page's own 350 content box: the row's inline
-          // start sits on it and the overhang falls on the inline end, off toward the
-          // cards that are already scrolled out. Scrollbar gutters are suppressed
-          // because the 442 is the design's height and a classic bar would eat 15 of
-          // it out of the card rather than out of the row.
-          className="flex h-[442px] w-full max-w-[355px] shrink-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
-        >
-          {row.map((artist, index) => (
-            <ArtistCard
-              key={artist.id || artist.slug}
-              artist={artist}
-              priority={rowIndex === 0 && index < 4}
-            />
-          ))}
-        </div>
+      {artists.map((artist, index) => (
+        <ArtistCard key={artist.id || artist.slug} artist={artist} priority={index < 4} />
       ))}
     </div>
   );

@@ -67,7 +67,7 @@ export function BookingSidebar({
   ];
 
   return (
-    <aside className="ms-8 flex w-[288px] min-w-0 max-w-[calc(100vw-3.25rem)] flex-col gap-5 text-start lg:ms-0 lg:w-[412px] lg:max-w-full">
+    <aside className="flex w-full min-w-0 flex-col gap-5 text-start lg:w-[412px] lg:shrink-0">
       <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-5 sm:p-8">
         <div
           aria-hidden="true"
@@ -80,7 +80,7 @@ export function BookingSidebar({
         </h2>
 
         {channels.map((channel) => (
-          <div key={channel.label} className={`w-[256px] max-w-full ${channel.spacing}`}>
+          <div key={channel.label} className={`w-full max-w-full ${channel.spacing}`}>
             <p className="text-[10px] font-bold leading-[15px] text-brand-tint">
               {channel.label}
             </p>
@@ -104,7 +104,7 @@ export function BookingSidebar({
           {STEPS.map((key, index) => (
             <li
               key={key}
-              className={`flex w-[256px] max-w-full items-start gap-3 ${
+              className={`flex w-full max-w-full items-start gap-3 ${
                 index === 0 ? "pt-5" : index === STEPS.length - 1 ? "py-[13.6px]" : "pt-[13.6px]"
               }`}
             >

@@ -51,7 +51,7 @@ export function ArtistFilterTabs({
       <div
         role="tablist"
         aria-orientation="horizontal"
-        className="ms-[-6px] flex h-[66.533px] w-[366px] items-center justify-start gap-8 overflow-x-auto overscroll-x-contain rounded-[16px] border-y-[0.667px] border-[rgba(236,230,208,0.07)] bg-white/80 px-6 py-[14.267px] [scrollbar-width:none] lg:ms-[88px] lg:h-auto lg:w-[506px] lg:overflow-visible lg:py-[13.6px] [&::-webkit-scrollbar]:hidden"
+        className="flex w-full flex-wrap items-center justify-start gap-2 rounded-[16px] border-y-[0.667px] border-[rgba(236,230,208,0.07)] bg-white/80 px-3 py-3 sm:px-6 lg:ms-[88px] lg:w-fit lg:max-w-full lg:py-[13.6px]"
       >
         {DISPLAY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
@@ -66,10 +66,10 @@ export function ArtistFilterTabs({
               aria-selected={isActive}
               aria-controls={`panel-${cat.id}`}
               onClick={() => onSelectCategory(cat.id)}
-              className={`shrink-0 cursor-pointer whitespace-nowrap text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
+              className={`inline-flex min-h-11 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap px-4 text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
                 isActive
-                  ? "w-[62px] shrink-0 rounded-[16px] bg-brand-primary py-2 text-white/80"
-                  : "border-b-2 border-transparent pb-[2px] text-gradscale-900 hover:border-brand-primary hover:text-brand-primary"
+                  ? "rounded-[16px] bg-brand-primary text-white/80"
+                  : "rounded-[16px] border-b-2 border-transparent text-gradscale-900 hover:border-brand-primary hover:text-brand-primary"
               }`}
             >
               {label}

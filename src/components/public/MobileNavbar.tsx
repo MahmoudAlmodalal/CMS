@@ -59,7 +59,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               width={292}
               height={178}
               loading="eager"
-              className="h-8 w-auto object-contain"
+              className="h-8 w-auto shrink-0 object-contain sm:h-10"
             />
           </Link>
 

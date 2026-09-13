@@ -36,10 +36,10 @@ const EVENT_TYPE_OPTIONS = [
  * sits straight on the page surface, 672 wide.
  */
 const FIELD_CLASS =
-  "h-12 w-full rounded-[16px] border-[1.333px] bg-white px-4 text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
+  "min-h-11 h-12 w-full rounded-[16px] border-[1.333px] bg-white px-4 text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
 const SELECT_CLASS = `${FIELD_CLASS} appearance-none pe-10`;
 const TEXTAREA_CLASS =
-  "h-[138px] w-full resize-none rounded-[16px] border-[1.333px] bg-white px-4 py-[13.6px] text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
+  "min-h-11 h-[138px] w-full resize-none rounded-[16px] border-[1.333px] bg-white px-4 py-[13.6px] text-[13px] leading-[19.5px] text-brand-espresso transition-colors placeholder:text-[12px] placeholder:leading-[15px] placeholder:text-gradscale-400 focus:outline-hidden focus:ring-2 focus:ring-brand-primary/30";
 const FIELD_BORDER = "border-[rgba(43,29,20,0.12)] hover:border-brand-primary/50";
 const FIELD_BORDER_ERROR = "border-alert-error ring-1 ring-alert-error/20";
 const LABEL_CLASS = "block pb-[7.2px] text-[13px] font-bold leading-[19.5px] text-gradscale-900";
@@ -120,7 +120,7 @@ export function BookingForm({
       key={submittedAgainKey}
       action={formAction}
       noValidate
-      className="flex w-full flex-col text-start pb-[52.8px] lg:w-[672px]"
+      className="flex w-full min-w-0 flex-col pb-[52.8px] text-start"
     >
       {/* Hidden Event Preselection Linkage */}
       {defaultEventId && <input type="hidden" name="event_id" value={defaultEventId} />}
@@ -162,7 +162,7 @@ export function BookingForm({
           <span>{t("groupPersonal")}</span>
         </legend>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 sm:grid-cols-2 md:grid-cols-[318px_246px]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 md:grid-cols-2">
           {/* Full Name */}
           <div className="flex flex-col text-start">
             <label htmlFor="full_name" className={LABEL_CLASS}>
@@ -211,7 +211,7 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 sm:grid-cols-2 md:grid-cols-[318px_246px] md:pt-[20.3px]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 md:grid-cols-2 md:pt-[20.3px]">
           {/* Phone Number */}
           <div className="flex flex-col text-start">
             <label htmlFor="phone" className={LABEL_CLASS}>
@@ -266,7 +266,7 @@ export function BookingForm({
           <span>{t("groupOccasion")}</span>
         </legend>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 sm:grid-cols-2 md:grid-cols-[320px_246px]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 md:grid-cols-2">
           {/* Event Type */}
           <div className="flex flex-col text-start">
             <label htmlFor="event_type" className={LABEL_CLASS}>
@@ -324,7 +324,7 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 md:w-[582px] md:grid-cols-1 md:pt-[26px]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 md:pt-[26px]">
           {/* Artist Dropdown */}
           <div className="flex flex-col text-start">
             <label htmlFor="artist_id" className={LABEL_CLASS}>
@@ -361,7 +361,7 @@ export function BookingForm({
         </div>
 
         {/* Message / Additional Details */}
-        <div className="flex flex-col pt-4 text-start md:w-[580px] md:pb-[6.5px]">
+        <div className="flex w-full flex-col pt-4 text-start md:pb-[6.5px]">
           <label htmlFor="message" className={LABEL_CLASS}>
             {t("fieldDetails")} <span className="text-brand-primary" aria-hidden="true">*</span>
           </label>
@@ -388,7 +388,7 @@ export function BookingForm({
       {/* ================================================================== */}
       {/* Legal Disclaimer Notice (Figma Node 91:17246)                      */}
       {/* ================================================================== */}
-      <div className="flex flex-col items-start gap-4 pb-6 text-start md:w-[507px]">
+      <div className="flex w-full flex-col items-start gap-4 pb-6 text-start">
         <p className="text-[12px] leading-[15px] text-gradscale-400">{t("consent")}</p>
 
         {/* Submit (91:17789): 175x44 on a 16px radius, Cairo Bold 16/24. */}
@@ -397,7 +397,7 @@ export function BookingForm({
           variant="primary"
           size="lg"
           disabled={isPending}
-          className="h-11 w-[175px] rounded-[16px] text-[16px] font-bold leading-[24px]"
+          className="h-11 w-full rounded-[16px] text-[16px] font-bold leading-[24px] md:w-auto md:px-8"
         >
           {isPending ? (
             <span className="inline-flex items-center gap-2">
