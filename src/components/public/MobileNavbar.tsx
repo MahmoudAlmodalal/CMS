@@ -36,9 +36,9 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
     <>
       {/* Wrapper is inert so the hero underneath stays clickable either side of
           the pill, matching the desktop floating bar. */}
-      <div className="lg:hidden fixed inset-x-2.5 top-[44px] z-40 pointer-events-none">
+      <div className="pointer-events-none fixed inset-x-2.5 top-[max(12px,env(safe-area-inset-top))] z-40 lg:hidden">
         <header
-          className="pointer-events-auto flex h-14 items-center justify-between rounded-[20px] bg-white px-5"
+          className="pointer-events-auto flex h-14 min-w-0 items-center justify-between rounded-[20px] bg-white px-3 shadow-subtle sm:px-5"
           role="banner"
         >
           {/* Inline Start: brand logo (Figma Node 139:12341 — 104x32 raster) */}
@@ -67,7 +67,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="flex size-6 shrink-0 items-center justify-center text-gradscale-500 transition-colors hover:text-brand-primary cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
+            className="flex size-11 shrink-0 items-center justify-center rounded-xl p-2 text-gradscale-500 transition-colors hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
             aria-label={a11y("openMenu")}
             aria-expanded={drawerOpen}
             aria-controls="mobile-navigation-drawer"

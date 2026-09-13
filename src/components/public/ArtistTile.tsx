@@ -37,7 +37,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
     <Link
       href={`/artists/${artist.slug}`}
       data-testid={`artist-tile-${artist.slug}`}
-      className="group relative block h-[239px] w-[160px] shrink-0 rounded-[16px] lg:h-[293px] lg:w-[220px] overflow-hidden bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className="group relative block aspect-[160/239] w-full min-w-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:aspect-[220/293]"
       aria-label={t("viewProfile", { name: artist.name })}
     >
       {resolved ? (
@@ -45,7 +45,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
           src={resolved}
           alt={t("portraitAlt", { name: artist.name })}
           fill
-          sizes="(max-width: 1023px) 160px, 220px"
+          sizes="(max-width: 639px) 46vw, (max-width: 1023px) 30vw, (max-width: 1279px) 22vw, 220px"
           priority={priority}
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
@@ -63,13 +63,13 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,16,10,0.92)_0%,rgba(23,16,10,0)_55%)] pointer-events-none" />
 
       {/* Text block 87:14245 — placed at 208.54, padded 20. */}
-      <div className="absolute inset-x-0 top-[163px] flex flex-col items-start p-[20px] text-start lg:top-[208.54px]">
+      <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-3 text-start sm:p-4 lg:p-5">
         {/* 87:14246 */}
         <p className="w-full truncate font-sans text-[16.8px] font-bold leading-[25.2px] text-[#F0EBE1]">
           {artist.name}
         </p>
         {/* 87:14248 */}
-        <div className="h-[20px] w-[180px] max-w-full pt-[4px]">
+        <div className="w-full max-w-full pt-1">
           <p className="truncate font-mono text-[10.4px] leading-[15.6px] tracking-[1.04px] text-[#C8441B]">
             {artist.genre_tag}
           </p>

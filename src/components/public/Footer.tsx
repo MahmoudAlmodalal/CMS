@@ -4,33 +4,17 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
-type FooterSettings = Pick<
-  SiteSettings,
-  "footer_mission" | "copyright_text" | "contact_email" | "operational_regions" | "social_links"
->;
-
-/** Only absolute http(s) links from admin settings are rendered as hrefs. */
-function safeExternalUrl(url: string | undefined): string | null {
-  const trimmed = url?.trim();
-  return trimmed && /^https?:\/\//i.test(trimmed) ? trimmed : null;
+function safeExternalUrl(value: unknown): string | null {
+  if (typeof value !== "string" || !value.trim()) return null;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : null;
+  } catch { return null; }
 }
 
-/**
- * Global Public Footer
- * Verified against Figma Node 94:18289 / 91:18221:
- * - Canvas: max width 1454px, canonical desktop height 385px
- * - Background: #2B1D14 + arabesque texture (ref da60c98546b43a3524b1bbd7667d8f518e1c7ee3)
- * - Container padding 64px 24px 32px; inner content block 736x190
- * - 4 columns, RTL reading order: brand · استكشف · تواصل · booking CTA
- * - Bottom bar: motto (Cairo SemiBold 9.92px / 0.14em / uppercase) + copyright
- *
- * Figma carries NO partner/patron marquee and NO social icon buttons here — contact
- * is a single plain text line. Both were removed as unverified inventions.
- */
-export function Footer({ settings }: { settings?: FooterSettings }) {
+export function Footer({ settings }: { settings?: SiteSettings }) {
   const t = useTranslations("footer");
   const a11y = useTranslations("a11y");
-  // Admin settings win; blank values fall back to the built-in translations.
   const mission = settings?.footer_mission?.trim() || t("mission");
   const email = settings?.contact_email?.trim() || t("contactEmail");
   const regions = settings?.operational_regions?.trim() || t("contactRegions");
@@ -39,146 +23,46 @@ export function Footer({ settings }: { settings?: FooterSettings }) {
     { label: "Instagram", href: safeExternalUrl(settings?.social_links?.instagram) },
     { label: "TikTok", href: safeExternalUrl(settings?.social_links?.tiktok) },
   ].filter((s): s is { label: string; href: string } => s.href !== null);
+  const linkClass = "flex min-h-11 items-center text-sm font-medium text-primary-50 transition-colors hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs";
 
   return (
-    <footer
-      className="w-full bg-[#2B1D14] bg-brand-espresso text-brand-tint relative overflow-hidden"
-      role="contentinfo"
-    >
-      {/* Arabesque corner mark. The design draws it once at the top-left at 6.39%
-          x 14.14% of a 1454-wide footer that starts 14px off the artboard, not as
-          a repeating field over the whole surface. Cropped 1:1 out of the
-          reference render, so it carries its own espresso ground. */}
-      <div
-        className="pointer-events-none absolute left-0 top-0 h-[14.14%] w-[79px] bg-[url('/assets/branding/footer-mark.png')] bg-contain bg-no-repeat"
-        aria-hidden="true"
-        data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
-      />
-
-      {/* Outer container (Figma Node 87:14546 — padding 64px 24px 32px, max 1454px).
-          The mobile instance 140:14746 is a different rhythm, not a reflow of the
-          desktop one: 390x882 bottom-anchored, opening on 21px of padding and
-          closing on 26.333. Its bottom bar is the only block that lands on the
-          24px side padding (x=24 w=342), which is what confirms px-6 for both. */}
-      <div className="relative z-10 mx-auto w-full max-w-[1454px] px-6 pb-[26.333px] pt-[21px] lg:pb-8 lg:pt-16">
-        {/* max-w-desktop is --container-desktop (1280px), confirmed by this very
-            node: the footer instance is 1454 wide and its inner Container is 1280. */}
-        <div className="mx-auto w-full max-w-desktop">
-          {/* Content block 87:14547 is 736x190 and its four columns are placed at
-              absolute offsets inside it — two of them overhanging it, at -193 and
-              at 594+297 — so the row is neither an even grid nor centred.
-              On mobile the same four blocks are a column, each with its own width
-              and its own inset from the inline start (right, in Arabic): brand
-              345 at 1, explore and contact 156 at 12, booking 321 at 25. Those
-              insets are smaller than the footer's own 24px padding, so the column
-              has to span the full 390 — hence -mx-6 here and ms-* per block. */}
-          <div className="-mx-6 flex flex-col items-start text-start lg:relative lg:mx-auto lg:block lg:h-[190px] lg:w-[736px]">
-            {/* Column 1: Brand & Mission (Figma Node 87:14548; mobile 136:7852,
-                345x179.5 at y=21, everything flush to the inline start; LTR Figma 142:17241 at left: -241px). */}
-            <div className="ms-px mb-[46.5px] flex w-[345px] flex-col items-start text-start lg:absolute rtl:lg:left-[594px] ltr:lg:left-[-241px] lg:top-0 lg:mb-0 lg:ms-0 lg:w-[297px] lg:max-w-none lg:items-center lg:text-center">
-              <Image
-                src="/assets/branding/logo-footer.png"
-                alt={a11y("brandHome")}
-                width={211}
-                height={86}
-                className="h-[85px] w-auto object-contain"
-              />
-
-              {/* 136:7854 is 230 wide on mobile against 206 on desktop; both hold
-                  the mission to the two 19.5px lines the design draws. */}
-              <p className="text-[13px] leading-[1.5] text-primary-50 font-normal pt-4 max-w-[230px] lg:max-w-[206px]">
-                {mission}
-              </p>
-
-              <p className="text-[13px] font-bold text-brand-primary pt-5">
-                {t("motto")}
-              </p>
-            </div>
-
-            {/* Column 2: Explore Navigation (Figma Node 87:14554; mobile 136:7819,
-                156x190 at y=247; LTR Figma 142:17247 at left: 188px). */}
-            <div className="ms-3 flex h-[190px] w-[156px] flex-col items-center text-center lg:absolute rtl:lg:left-[290px] ltr:lg:left-[188px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[156px]">
-              <h4 className="text-[13px] font-bold leading-[20px] text-brand-primary">{t("exploreHeading")}</h4>
-              <nav className="flex flex-col items-center pt-5 gap-[10.8px]" aria-label={a11y("exploreLinks")}>
-                {([
-                  { href: "/artists", key: "exploreArtists" },
-                  { href: "/events", key: "exploreEvents" },
-                  { href: "/news", key: "exploreNews" },
-                  { href: "/academy", key: "exploreAcademy" },
-                ] as const).map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-[13px] font-medium leading-[20px] text-primary-50 hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-                  >
-                    {t(item.key)}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-
-            {/* Column 3: Contact & Presence (Figma Node 87:14565; mobile 136:7830,
-                156x137 at y=437; LTR Figma 142:17258 at left: 368px). */}
-            <div className="ms-3 mb-[29px] flex h-[137px] w-[156px] flex-col items-center text-center lg:absolute rtl:lg:left-[90px] ltr:lg:left-[368px] lg:top-0 lg:mb-0 lg:ms-0 lg:h-auto lg:w-[156px]">
-              <h4 className="text-[13px] font-bold leading-[20px] text-brand-primary">{t("contactHeading")}</h4>
-              <div className="flex flex-col items-center pt-5 gap-2 text-[13px] font-medium leading-[20px] text-primary-50">
-                <a
-                  href={`mailto:${email}`}
-                  dir="ltr"
-                  className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-                >
-                  <bdi>{email}</bdi>
-                </a>
-                {socials.length > 0 ? (
-                  <span dir="ltr">
-                    {socials.map((social, index) => (
-                      <React.Fragment key={social.label}>
-                        {index > 0 && " · "}
-                        <a
-                          href={social.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs"
-                        >
-                          {social.label}
-                        </a>
-                      </React.Fragment>
-                    ))}
-                  </span>
-                ) : (
-                  <span>{t("contactSocial")}</span>
-                )}
-                <span>{regions}</span>
-              </div>
-            </div>
-
-            {/* Column 4: Booking Pitch & CTA (Figma Node 87:14574 — 235px; mobile
-                136:7839, 321x190 at y=603; LTR Figma 142:17267 at left: 666px). */}
-            <div className="ms-[25px] flex h-[190px] w-[321px] flex-col lg:absolute rtl:lg:left-[-193px] ltr:lg:left-[666px] lg:top-0 lg:ms-0 lg:h-auto lg:w-[235px] lg:max-w-none">
-              <h4 className="text-base font-bold text-[#ECE6D0] max-w-[213px]">
-                {t("bookingHeading")}
-              </h4>
-              <p className="text-[13px] font-medium leading-[1.5] text-primary-50 pt-2.5 pb-6 max-w-[308px] lg:max-w-[201px]">
-                {t("bookingBody")}
-              </p>
-              <Link
-                href="/booking"
-                className="inline-flex items-center justify-center w-[150px] h-12 rounded-[12px] bg-brand-primary hover:bg-brand-primary-hover active:bg-brand-primary-pressed text-[#ECE6D0] text-base font-bold transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-espresso"
-              >
-                {t("bookingCta")}
-              </Link>
+    <footer className="relative w-full overflow-hidden bg-brand-espresso text-brand-tint" role="contentinfo">
+      <div className="pointer-events-none absolute inset-0 bg-[url('/assets/branding/arabesque-texture.png')] bg-repeat opacity-[0.06]" aria-hidden="true" />
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-16 xl:px-16">
+        <div className="grid grid-cols-1 gap-8 text-start sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+          <div className="flex min-w-0 flex-col items-start">
+            <Image src="/assets/branding/logo-footer.png" alt={a11y("brandHome")} width={211} height={86} sizes="211px" className="h-auto w-[min(211px,70vw)] object-contain" />
+            <p className="max-w-[260px] pt-4 text-sm leading-relaxed text-primary-50">{mission}</p>
+            <p className="pt-4 text-sm font-bold text-brand-primary">{t("motto")}</p>
+          </div>
+          <div className="flex min-w-0 flex-col items-start">
+            <h4 className="text-sm font-bold text-brand-primary">{t("exploreHeading")}</h4>
+            <nav className="mt-2 flex flex-col items-start" aria-label={a11y("exploreLinks")}>
+              {([
+                { href: "/artists", key: "exploreArtists" },
+                { href: "/events", key: "exploreEvents" },
+                { href: "/news", key: "exploreNews" },
+                { href: "/academy", key: "exploreAcademy" },
+              ] as const).map((item) => <Link key={item.href} href={item.href} className={linkClass}>{t(item.key)}</Link>)}
+            </nav>
+          </div>
+          <div className="flex min-w-0 flex-col items-start">
+            <h4 className="text-sm font-bold text-brand-primary">{t("contactHeading")}</h4>
+            <div className="mt-2 flex flex-col items-start text-sm font-medium leading-6 text-primary-50">
+              <a href={`mailto:${email}`} dir="ltr" className={linkClass}><bdi>{email}</bdi></a>
+              {socials.length > 0 ? <span dir="ltr" className="flex min-h-11 items-center gap-2">{socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary">{social.label}</a>)}</span> : <span className="flex min-h-11 items-center">{t("contactSocial")}</span>}
+              <span className="flex min-h-11 items-center">{regions}</span>
             </div>
           </div>
-
-          {/* Bottom Bar (Figma Node 87:14584 — 0.667px rule, 24px top padding; LTR Figma 142:17275) */}
-          <div className="mt-5 flex flex-row-reverse ltr:flex-row items-end justify-between gap-3 border-t-[0.667px] border-[rgba(236,230,208,0.15)] pt-6 text-primary-50 lg:mt-14">
-            <span className="text-[9.92px] font-semibold uppercase leading-[14.88px] tracking-[0.14em]">
-              {t("strapline")}
-            </span>
-            <span className="text-[12px] font-normal leading-[18px]">
-              {copyright}
-            </span>
+          <div className="flex min-w-0 flex-col items-start">
+            <h4 className="max-w-[240px] text-base font-bold text-[#ECE6D0]">{t("bookingHeading")}</h4>
+            <p className="max-w-[280px] pt-2.5 pb-5 text-sm leading-relaxed text-primary-50">{t("bookingBody")}</p>
+            <Link href="/booking" className="inline-flex min-h-11 w-full max-w-[180px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary">{t("bookingCta")}</Link>
           </div>
+        </div>
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-white/15 pt-5 text-primary-50 sm:flex-row sm:items-center">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em]">{t("strapline")}</span>
+          <span className="text-xs">{copyright}</span>
         </div>
       </div>
     </footer>
