@@ -15,13 +15,13 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
   const t = useTranslations("home");
   if (!artists || artists.length === 0) return null;
   return (
-    <section className="w-full bg-black pb-[44px] pt-[52px] sm:py-16 md:py-20 lg:min-h-[615px] lg:py-24">
+    <section className="w-full overflow-x-hidden bg-black pb-[44px] pt-[52px] sm:py-16 md:py-20 lg:min-h-[615px] lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
         <h2 className="text-center font-display text-4xl font-normal leading-tight text-[#F9EDE8] lg:text-[64px] lg:leading-tight">
           {heading || t("artistsHeading")}
         </h2>
         <div
-          className="mx-auto mt-5 grid max-w-full grid-cols-2 justify-items-center gap-x-0 gap-y-1 sm:mt-7 sm:gap-x-2 sm:gap-y-3 md:grid-cols-3 md:gap-x-4 md:gap-y-4 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-5 xl:grid-cols-6 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block max-[359px]:grid-cols-1"
+          className="mx-auto mt-5 grid w-full max-w-full grid-cols-1 justify-items-center gap-y-3 sm:mt-7 sm:grid-cols-2 sm:gap-x-2 sm:gap-y-3 md:grid-cols-3 md:gap-x-4 md:gap-y-4 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-5 xl:grid-cols-6 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block"
         >
           {artists.slice(0, 6).map((artist, i) => (
             <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
