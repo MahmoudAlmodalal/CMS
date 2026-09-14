@@ -42,30 +42,25 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
           className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-5 shadow-subtle"
           role="banner"
         >
-          {/* Inline Start: drawer toggle. Logical flex ordering places it on the
+          {/* Inline Start: drawer toggle. The standalone hit area stays on the
               left in English and on the right in Arabic. */}
-          <div
-            className="flex shrink-0 items-center gap-2"
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="motion-press flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-espresso/[0.04] p-1.5 text-gradscale-500 transition-colors hover:bg-primary-50 hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
+            aria-label={a11y("openMenu")}
+            aria-expanded={drawerOpen}
+            aria-controls="mobile-navigation-drawer"
             data-node-id="I142:17048;134:8254"
           >
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="motion-press flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-espresso/[0.04] p-1.5 text-gradscale-500 transition-colors hover:bg-primary-50 hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
-              aria-label={a11y("openMenu")}
-              aria-expanded={drawerOpen}
-              aria-controls="mobile-navigation-drawer"
-            >
-              <MenuIcon size={24} className="size-6" />
-            </button>
-            <LocaleSwitcher mobile />
-          </div>
+            <MenuIcon size={24} className="size-6" />
+          </button>
 
           {/* Inline End: brand logo. The wordmark is raster, so the band name is
               carried by the alt text rather than a second visible text node. */}
           <Link
             href="/"
-            className="flex h-12 w-[120px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[140px]"
+            className="mx-auto flex h-12 w-[120px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[140px]"
             aria-label={a11y("brandHome")}
           >
             <Image
@@ -77,6 +72,10 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               className="h-14 w-auto shrink-0 object-contain"
             />
           </Link>
+
+          {/* Inline End: language switcher. It has its own hit area, so it can
+              never be mistaken for or covered by the menu trigger. */}
+          <LocaleSwitcher mobile />
         </header>
       </div>
 

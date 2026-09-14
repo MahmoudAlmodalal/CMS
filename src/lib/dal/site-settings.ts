@@ -1,5 +1,6 @@
 import { cache } from "react";
-import { createClient } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import { createStaticClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { getContentLocale, localizeContent, LOCALIZED_FIELDS } from "./localize";
@@ -385,30 +386,24 @@ const getSiteSettingsForLocale = cache(async (locale: AppLocale): Promise<SiteSe
   return settings;
 });
 
-async function getSiteSettingsRaw(): Promise<SiteSettings> {
+const getSiteSettingsRaw = unstable_cache(
+  async (): Promise<SiteSettings> => {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
     }
-
-    const supabase = await createClient();
-    let { data, error } = await supabase
+    // Public settings do not depend on the visitor session. Prefer the
+    // service-role read when configured so a stale RLS policy cannot cause a
+    // slow anon request followed by a second fallback request. The service
+    // role remains server-only and this result is cached below.
+    const supabase = process.env.SUPABASE_SERVICE_ROLE_KEY
+      ? createAdminClient()
+      : createStaticClient();
+    const { data, error } = await supabase
       .from("site_settings")
       .select("*")
       .eq("id", "default")
       .single();
-    // Public pages normally use the anon/RLS client. If the deployed database
-    // has a stale or missing public SELECT policy, retry server-side so the
-    // CMS content still renders without exposing the service key.
-    if ((error || !data) && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      const admin = createAdminClient();
-      ({ data, error } = await admin
-        .from("site_settings")
-        .select("*")
-        .eq("id", "default")
-        .single());
-    }
-
     if (error || !data) {
       return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
     }
@@ -442,4 +437,7 @@ async function getSiteSettingsRaw(): Promise<SiteSettings> {
   } catch {
     return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
   }
-}
+  },
+  ["site-settings-public"],
+  { revalidate: 300 },
+);
