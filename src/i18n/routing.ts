@@ -17,6 +17,8 @@ export const routing = defineRouting({
   locales,
   defaultLocale: "ar",
   localePrefix: "as-needed",
+  // Unprefixed URLs are always Arabic; never bounce them to /en from Accept-Language or a cookie.
+  localeDetection: false,
 });
 
 export function isAppLocale(value: string | undefined): value is AppLocale {

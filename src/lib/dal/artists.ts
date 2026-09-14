@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createStaticClient } from "@/lib/supabase/server";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { localizeContent, localizeContentList } from "./localize";
@@ -69,6 +69,22 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
   } catch {
     return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : []);
   }
+}
+
+/**
+ * Published artist slugs for generateStaticParams, which runs without a request,
+ * so it must not touch cookies() via the session-aware client.
+ */
+export async function getPublishedArtistSlugs(): Promise<{ slug: string }[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.map((a) => ({ slug: a.slug })) : [];
+  }
+  const { data, error } = await createStaticClient().from("artists").select("slug").eq("is_published", true);
+  if (error) {
+    console.warn("DAL Warning [getPublishedArtistSlugs]:", error.message);
+    return [];
+  }
+  return data ?? [];
 }
 
 /**

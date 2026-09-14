@@ -9,7 +9,7 @@ import {
   ArtistDiscography,
   BookingBanner,
 } from "@/components/public";
-import { getArtistBySlug, getPublishedArtists } from "@/lib/dal/artists";
+import { getArtistBySlug, getPublishedArtistSlugs } from "@/lib/dal/artists";
 import { getPublishedReleasesByArtist } from "@/lib/dal/releases";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
@@ -33,8 +33,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
   // Published-only slugs: drafts never pre-render (Task 40 draft exclusion).
-  const artists = await getPublishedArtists();
-  return artists.map((a) => ({ slug: a.slug }));
+  return getPublishedArtistSlugs();
 }
 
 export async function generateMetadata({

@@ -1,5 +1,6 @@
 'use server';
 
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import {
   NEWSLETTER_MESSAGES,
@@ -12,9 +13,16 @@ export interface NewsletterActionState {
   error?: string | null;
 }
 
+/** Arabic keeps its source text; other locales read academy.newsletter* so /en never shows Arabic. */
+async function serverMessages() {
+  const locale = await getLocale();
+  const t = await getTranslations("academy");
+  return (key: string, arabic: string) => (locale === "ar" ? arabic : t(key as never));
+}
+
 /**
  * Server Action for subscribing a visitor to the newsletter on /academy.
- * 
+ *
  * Security & Data Model:
  * - Validates email via Zod (publicNewsletterSubmissionSchema via validateNewsletterEmail).
  * - Enforces honeypot protection (_hp) to silently neutralize spam bots.
@@ -26,12 +34,14 @@ export async function subscribeNewsletter(
   _prevState: NewsletterActionState,
   formData: FormData
 ): Promise<NewsletterActionState> {
+  const msg = await serverMessages();
+
   // Honeypot check: if bot filled out hidden field, fake success
   const honeypot = formData.get("_hp") as string | null;
   if (honeypot && honeypot.trim().length > 0) {
     return {
       success: true,
-      message: NEWSLETTER_MESSAGES.SUCCESS,
+      message: msg("newsletterSuccess", NEWSLETTER_MESSAGES.SUCCESS),
       error: null,
     };
   }
@@ -41,7 +51,7 @@ export async function subscribeNewsletter(
   // 1. Zod Validation
   const validation = validateNewsletterEmail(rawEmail);
   if (!validation.success || !validation.email) {
-    const errorMsg = validation.error || NEWSLETTER_MESSAGES.INVALID_EMAIL;
+    const errorMsg = msg("newsletterInvalidEmail", validation.error || NEWSLETTER_MESSAGES.INVALID_EMAIL);
     return {
       success: false,
       message: errorMsg,
@@ -56,7 +66,7 @@ export async function subscribeNewsletter(
     // Graceful offline/demo fallback
     return {
       success: true,
-      message: NEWSLETTER_MESSAGES.SUCCESS,
+      message: msg("newsletterSuccess", NEWSLETTER_MESSAGES.SUCCESS),
       error: null,
     };
   }
@@ -73,7 +83,7 @@ export async function subscribeNewsletter(
       if (error.code === "23505" || error.message.includes("unique")) {
         return {
           success: true,
-          message: NEWSLETTER_MESSAGES.ALREADY_SUBSCRIBED,
+          message: msg("newsletterAlreadySubscribed", NEWSLETTER_MESSAGES.ALREADY_SUBSCRIBED),
           error: null,
         };
       }
@@ -81,21 +91,21 @@ export async function subscribeNewsletter(
       console.error("Newsletter subscription error:", error.message);
       return {
         success: false,
-        message: NEWSLETTER_MESSAGES.SERVER_ERROR,
+        message: msg("newsletterServerError", NEWSLETTER_MESSAGES.SERVER_ERROR),
         error: error.message,
       };
     }
 
     return {
       success: true,
-      message: NEWSLETTER_MESSAGES.SUCCESS,
+      message: msg("newsletterSuccess", NEWSLETTER_MESSAGES.SUCCESS),
       error: null,
     };
   } catch (err: unknown) {
     console.error("Newsletter submission exception:", err);
     return {
       success: false,
-      message: "تعذر الاتصال بالخادم، يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+      message: msg("newsletterConnectionError", "تعذر الاتصال بالخادم، يرجى التحقق من اتصالك والمحاولة مرة أخرى."),
       error: "Connection exception",
     };
   }

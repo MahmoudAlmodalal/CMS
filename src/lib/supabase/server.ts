@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./types";
 
 function publicEnv(name: "NEXT_PUBLIC_SUPABASE_URL" | "NEXT_PUBLIC_SUPABASE_ANON_KEY"): string {
@@ -30,5 +31,17 @@ export async function createClient() {
         },
       },
     },
+  );
+}
+
+/**
+ * Cookie-less anon client for contexts with no request, e.g. generateStaticParams,
+ * where calling cookies() throws. RLS-enforced; use for published-only reads.
+ */
+export function createStaticClient() {
+  return createSupabaseClient<Database>(
+    publicEnv("NEXT_PUBLIC_SUPABASE_URL"),
+    publicEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
+    { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }

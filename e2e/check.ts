@@ -45,7 +45,7 @@ export async function checkPage(page: Page, path: string, { locale = "ar", statu
   expect.soft(overflow, `${path} horizontal overflow px`).toBeLessThanOrEqual(1);
 
   // A missing translation renders its key path, e.g. "home.hero.title".
-  const rawKeys = (await page.locator("body").innerText()).match(/\b[a-z]+(?:\.[a-zA-Z]+){2,}\b/g)?.filter((k) => !/\.(com|org|net|art|png|jpg|webp|svg)$/.test(k)) ?? [];
+  const rawKeys = (await page.locator("body").innerText()).match(/\b[a-z]+(?:\.[a-zA-Z]+){2,}\b/g)?.filter((k) => !/\.(com|org|net|art|co|io|app|dev|ai|png|jpg|webp|svg)$/.test(k)) ?? [];
   expect.soft(rawKeys, `${path} raw i18n keys`).toEqual([]);
 
   expect.soft(problems, `${path} console/network errors`).toEqual([]);

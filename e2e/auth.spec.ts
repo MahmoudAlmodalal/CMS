@@ -58,13 +58,13 @@ test.describe("Admin Authentication", () => {
 
     // Both empty: submit should be blocked by email required validation
     await submitButton.click();
-    let emailValid = await emailInput.evaluate((el: HTMLInputElement) => el.checkValidity());
+    const emailValid = await emailInput.evaluate((el: HTMLInputElement) => el.checkValidity());
     expect(emailValid).toBe(false);
 
     // Email filled, password empty: submit should be blocked by password required validation
     await emailInput.fill("admin@andalusia.art");
     await submitButton.click();
-    let passwordValid = await passwordInput.evaluate((el: HTMLInputElement) => el.checkValidity());
+    const passwordValid = await passwordInput.evaluate((el: HTMLInputElement) => el.checkValidity());
     expect(passwordValid).toBe(false);
 
     // URL remains /login and no alert is displayed because form submission was prevented

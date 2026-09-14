@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createStaticClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { localizeContent, localizeContentList } from "./localize";
 import {
@@ -103,7 +103,7 @@ export async function getAllPublishedArticleSlugs(): Promise<{ slug: string }[]>
   const nowIso = new Date().toISOString();
   if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return demoArticles().map((a) => ({ slug: a.slug }));
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase.from("articles").select("slug").eq("is_published", true).lte("published_at", nowIso);
     if (error) return canonicalArticles().map((a) => ({ slug: a.slug }));
     const rows = (data as Array<{ slug: string }> || []).map((row) => ({ slug: row.slug }));

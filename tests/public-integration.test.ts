@@ -31,7 +31,7 @@ test("Task 40 — 2. Every route reads published content via its DAL", () => {
   const wiring: [string, string[]][] = [
     ["page.tsx", ["getSiteSettings", "getFeaturedArtists", "getPublishedTestimonials", "getFeaturedArticles", "getUpcomingEvents"]],
     ["artists/page.tsx", ["getPublishedArtists", "getSiteSettings"]],
-    ["artists/[slug]/page.tsx", ["getArtistBySlug", "getPublishedArtists"]],
+    ["artists/[slug]/page.tsx", ["getArtistBySlug", "getPublishedArtistSlugs"]],
     ["events/page.tsx", ["getPublishedEvents", "getFeaturedEvent", "getEventsSubtitle"]],
     ["academy/page.tsx", ["getSiteSettings", "getPublishedAcademyCourses"]],
     ["news/page.tsx", ["getPublishedArticles", "getFeaturedArticles"]],
@@ -92,10 +92,11 @@ test("Task 40 — 4. Cache contract matches APPLICATION_ARCHITECTURE.md", () => 
   assert.match(read(pub("events/page.tsx")), /export const revalidate\s*=\s*1800;/);
   assert.match(read(pub("news/page.tsx")), /export const revalidate\s*=\s*1800;/);
   assert.match(read(pub("news/[slug]/page.tsx")), /export const revalidate\s*=\s*1800;/);
-  assert.match(
+  assert.match(read(pub("academy/page.tsx")), /export const revalidate\s*=\s*3600;/);
+  assert.doesNotMatch(
     read(pub("academy/page.tsx")),
     /export const dynamic\s*=\s*"force-static";/,
-    "/academy is Static per architecture (no searchParams/cookies)"
+    "force-static loses the next-intl request locale — /en/academy rendered in Arabic"
   );
   // Detail routes pre-render published slugs only
   for (const r of ["artists/[slug]/page.tsx", "news/[slug]/page.tsx"]) {

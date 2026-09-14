@@ -190,7 +190,12 @@
     "newsletterPlaceholder": "Your email",
     "newsletterSubmit": "Book now",
     "newsletterError": "Something went wrong. Please try again later.",
-    "newsletterSubmitLabel": "Subscribe to the newsletter"
+    "newsletterSubmitLabel": "Subscribe to the newsletter",
+    "newsletterSuccess": "You have subscribed to the newsletter.",
+    "newsletterAlreadySubscribed": "You are already on our mailing list.",
+    "newsletterInvalidEmail": "Please enter a valid email address.",
+    "newsletterServerError": "Something went wrong while subscribing you. Please try again later.",
+    "newsletterConnectionError": "Could not reach the server. Please check your connection and try again."
   },
   "events": {
     "kicker": "Show and event schedule",
@@ -272,7 +277,23 @@
     "fieldEmailPlaceholder": "name@email.com",
     "fieldPhonePlaceholder": "+961 70 000 000",
     "fieldOccasionPlaceholder": "Choose a type",
-    "fieldArtistPlaceholder": "Choose…"
+    "fieldArtistPlaceholder": "Choose…",
+    "server": {
+      "invalid": "Please correct the errors in the form before continuing.",
+      "saveFailed": "We could not save your booking request right now. Please try again later or contact us directly.",
+      "success": "Your request was received! We will contact you within 48 hours to discuss the details and confirm the booking.",
+      "unexpected": "An unexpected error occurred while processing your request. Please try again.",
+      "field_full_name": "Please enter your full name (2–150 characters).",
+      "field_email": "Please enter a valid email address.",
+      "field_phone": "Please enter a valid phone number.",
+      "field_budget_range": "Budget must be 100 characters or fewer.",
+      "field_event_type": "Please choose an occasion type.",
+      "field_event_date": "Please choose a valid date that is today or later.",
+      "field_preferred_artist": "Artist name must be 150 characters or fewer.",
+      "field_artist_id": "Please choose a valid artist.",
+      "field_event_id": "The selected event is not valid.",
+      "field_message": "Please describe your booking (5–2000 characters)."
+    }
   },
   "player": {
     "unavailable": "This audio track is not available right now.",
