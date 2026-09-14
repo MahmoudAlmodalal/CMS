@@ -130,10 +130,10 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 left-0 right-auto z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)]">
+      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 end-auto z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
-          <div className="flex items-center gap-3" dir="rtl">
+          <div className="flex items-center gap-3">
             <div className="flex size-11 items-center justify-center rounded-2xl bg-[#F3E5C8] text-[#B88935] shadow-sm">
               <MusicIcon size={22} />
             </div>
@@ -176,7 +176,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
                   )}
                   aria-current={active ? "page" : undefined}
                 >
-                  <span className="flex items-center gap-3" dir="rtl">
+                  <span className="flex items-center gap-3 text-start">
                     <ItemIcon size={19} className={cn(active ? "text-brand-primary" : "text-[#B88935]/80")} />
                     <span>{nav(item.key)}</span>
                   </span>
