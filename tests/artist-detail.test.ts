@@ -229,7 +229,8 @@ test("الفنان 134:4420 — 8. Page assembles the frame's bands in order", (
 
   // Contract carried over from Task 40
   assert.match(src, /getArtistBySlug/);
-  assert.match(src, /getPublishedArtists/);
+  // Static params read slugs through a cookie-less client (cookies() throws there).
+  assert.match(src, /getPublishedArtistSlugs/);
   assert.match(src, /getPublishedReleasesByArtist/);
   assert.match(src, /export async function generateStaticParams\(/);
   assert.match(src, /notFound\(\)/);

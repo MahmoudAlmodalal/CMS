@@ -10,7 +10,9 @@ import {
 } from "@/components/public/academy";
 import { PageHero } from "@/components/public";
 
-export const dynamic = "force-static"; // Static per APPLICATION_ARCHITECTURE.md (no searchParams/cookies)
+// Not `dynamic = "force-static"`: it drops the locale set by setRequestLocale, so
+// next-intl fell back to Arabic and /en/academy rendered entirely in Arabic.
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,

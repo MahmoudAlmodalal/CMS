@@ -190,7 +190,12 @@
     "newsletterPlaceholder": "بريدك الإلكتروني",
     "newsletterSubmit": "أحجز الآن",
     "newsletterError": "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى لاحقاً.",
-    "newsletterSubmitLabel": "اشترك في النشرة البريدية"
+    "newsletterSubmitLabel": "اشترك في النشرة البريدية",
+    "newsletterSuccess": "تم الاشتراك بنجاح في النشرة البريدية.",
+    "newsletterAlreadySubscribed": "أنت مسجل بالفعل في قائمتنا البريدية.",
+    "newsletterInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
+    "newsletterServerError": "حدث خطأ أثناء تسجيل اشتراكك. يرجى المحاولة لاحقاً.",
+    "newsletterConnectionError": "تعذر الاتصال بالخادم، يرجى التحقق من اتصالك والمحاولة مرة أخرى."
   },
   "events": {
     "kicker": "جدول العروض والفعاليات",
@@ -272,7 +277,23 @@
     "fieldEmailPlaceholder": "name@email.com",
     "fieldPhonePlaceholder": "+961 70 000 000",
     "fieldOccasionPlaceholder": "اختر النوع",
-    "fieldArtistPlaceholder": "أختار..."
+    "fieldArtistPlaceholder": "أختار...",
+    "server": {
+      "invalid": "يرجى تصحيح الأخطاء الواردة في النموذج قبل المتابعة.",
+      "saveFailed": "تعذر حفظ طلب الحجز في الوقت الحالي. يرجى المحاولة لاحقاً أو التواصل معنا مباشرة.",
+      "success": "تم استلام طلبك بنجاح! سنتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الحجز.",
+      "unexpected": "حدث خطأ غير متوقع أثناء معالجة الطلب. يرجى إعادة المحاولة.",
+      "field_full_name": "يرجى إدخال الاسم الكامل (2–150 حرفاً).",
+      "field_email": "يرجى إدخال بريد إلكتروني صحيح.",
+      "field_phone": "يرجى إدخال رقم هاتف صحيح.",
+      "field_budget_range": "يجب ألا تتجاوز الميزانية 100 حرف.",
+      "field_event_type": "يرجى اختيار نوع المناسبة.",
+      "field_event_date": "يرجى اختيار تاريخ صحيح اليوم أو بعده.",
+      "field_preferred_artist": "يجب ألا يتجاوز اسم الفنان 150 حرفاً.",
+      "field_artist_id": "يرجى اختيار فنان صحيح.",
+      "field_event_id": "الفعالية المحددة غير صحيحة.",
+      "field_message": "يرجى كتابة تفاصيل الحجز (5–2000 حرف)."
+    }
   },
   "player": {
     "unavailable": "المقطع الصوتي غير متوفر حالياً.",

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getLocale, getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@/lib/supabase/types";
 import {
@@ -18,6 +19,8 @@ export type { BookingActionState };
 function sanitizeFormData(formData: FormData): Record<string, unknown> {
   const raw: Record<string, unknown> = {};
   for (const [key, value] of formData.entries()) {
+    // React/Next add $ACTION_* bookkeeping fields to action FormData; the strict schema would reject them.
+    if (key.startsWith("$ACTION")) continue;
     if (typeof value === "string") {
       const trimmed = value.trim();
       if (trimmed === "" || trimmed === "none" || trimmed === "undefined" || trimmed === "null") {
@@ -30,6 +33,13 @@ function sanitizeFormData(formData: FormData): Record<string, unknown> {
     }
   }
   return raw;
+}
+
+/** Arabic keeps its source text; other locales read booking.server.* so /en never shows Arabic errors. */
+async function serverMessages() {
+  const locale = await getLocale();
+  const t = await getTranslations("booking.server");
+  return (key: string, arabic: string) => (locale === "ar" ? arabic : t(key as never));
 }
 
 /**
@@ -47,13 +57,16 @@ export async function submitBookingAction(
 ): Promise<BookingActionState> {
   const sanitized = sanitizeFormData(formData);
   const validated = publicBookingSubmissionSchema.safeParse(sanitized);
+  const msg = await serverMessages();
 
   if (!validated.success) {
     const flattened = validated.error.flatten();
     return {
       success: false,
-      error: "يرجى تصحيح الأخطاء الواردة في النموذج قبل المتابعة.",
-      fieldErrors: flattened.fieldErrors,
+      error: msg("invalid", "يرجى تصحيح الأخطاء الواردة في النموذج قبل المتابعة."),
+      fieldErrors: Object.fromEntries(
+        Object.entries(flattened.fieldErrors).map(([field, errors]) => [field, [msg(`field_${field}`, errors?.[0] ?? "")]]),
+      ),
     };
   }
 
@@ -82,7 +95,7 @@ export async function submitBookingAction(
       console.error("[Booking Submission DB Error]:", error.message);
       return {
         success: false,
-        error: "تعذر حفظ طلب الحجز في الوقت الحالي. يرجى المحاولة لاحقاً أو التواصل معنا مباشرة.",
+        error: msg("saveFailed", "تعذر حفظ طلب الحجز في الوقت الحالي. يرجى المحاولة لاحقاً أو التواصل معنا مباشرة."),
       };
     }
 
@@ -95,13 +108,13 @@ export async function submitBookingAction(
 
     return {
       success: true,
-      message: "تم استلام طلبك بنجاح! سنتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الحجز.",
+      message: msg("success", "تم استلام طلبك بنجاح! سنتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الحجز."),
     };
   } catch (err: unknown) {
     console.error("[Booking Submission Exception]:", err instanceof Error ? err.message : String(err));
     return {
       success: false,
-      error: "حدث خطأ غير متوقع أثناء معالجة الطلب. يرجى إعادة المحاولة.",
+      error: msg("unexpected", "حدث خطأ غير متوقع أثناء معالجة الطلب. يرجى إعادة المحاولة."),
     };
   }
 }

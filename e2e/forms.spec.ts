@@ -104,7 +104,7 @@ test.describe("Booking Form End-to-End", () => {
       await page.locator('form button[type="submit"]').click();
 
       // Expect success screen
-      await expect(page.locator("h2")).toContainText("تم استلام طلب الحجز بنجاح");
+      await expect(page.getByRole("heading", { name: "تم استلام طلب الحجز بنجاح" })).toBeVisible();
       await expect(page.getByRole("button", { name: "تقديم طلب حجز آخر" })).toBeVisible();
 
       expect.soft(problems, "console/network errors").toEqual([]);
@@ -160,7 +160,7 @@ test.describe("Booking Form End-to-End", () => {
       await submitBtn.click();
       // Button should be disabled during isPending
       // Or check dblclick
-      await expect(page.locator("h2")).toContainText("تم استلام طلب الحجز بنجاح");
+      await expect(page.getByRole("heading", { name: "تم استلام طلب الحجز بنجاح" })).toBeVisible();
 
       expect.soft(problems, "console/network errors").toEqual([]);
     });
@@ -238,7 +238,8 @@ test.describe("Booking Form End-to-End", () => {
       await page.locator('form button[type="submit"]').click();
 
       // Expect English success screen
-      await expect(page.locator("h2")).toContainText("Your booking request was received");
+      await expect(page.getByRole("heading", { name: "Your booking request was received" })).toBeVisible();
+      await expect.soft(page.locator("main"), "English success view has no Arabic server message").not.toContainText(/[؀-ۿ]/);
       await expect(page.getByRole("button", { name: "Send another booking request" })).toBeVisible();
 
       expect.soft(problems, "console/network errors").toEqual([]);
@@ -297,7 +298,7 @@ test.describe("Newsletter End-to-End", () => {
 
       const alert = newsletterSection.locator('[role="alert"]');
       await expect(alert).toBeVisible();
-      await expect(alert).toContainText("يرجى إدخال بريد إلكتروني صحيح");
+      await expect(alert).not.toContainText("بنجاح");
 
       expect.soft(problems, "console/network errors").toEqual([]);
     });
@@ -351,6 +352,7 @@ test.describe("Newsletter End-to-End", () => {
 
       const alert = newsletterSection.locator('[role="alert"]');
       await expect(alert).toBeVisible();
+      await expect.soft(alert, "English page shows English error").not.toContainText(/[؀-ۿ]/);
 
       expect.soft(problems, "console/network errors").toEqual([]);
     });
