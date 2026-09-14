@@ -86,7 +86,7 @@ export function EventsCatalogView({
             aria-label={t("listRegion")}
             // Frame 39 on the 390 frame is 390.33 wide and 10px padded, holding its
             // rows at x=10 with 10 between them.
-            className="flex flex-col gap-[10px] p-[10px] lg:mt-[13px] lg:w-[713px] lg:gap-4 lg:p-0"
+            className="flex w-full max-w-[600px] flex-col gap-6 px-4 lg:mt-[13px] lg:w-[713px] lg:max-w-none lg:gap-4 lg:p-0"
           >
             {filteredEvents.map((event, index) => (
               <EventCard key={event.id} event={event} priority={index < 3} />
@@ -127,7 +127,7 @@ export function EventsCatalogView({
           // slot. So the slot is reproduced and the existing banner fills it.
           <section
             aria-label={t("featuredRegion")}
-            className="self-center ms-5 h-[586px] w-[349px] lg:ms-0 lg:h-auto lg:w-[503px]"
+            className="mx-auto h-auto w-[calc(100%-32px)] max-w-[349px] lg:mx-0 lg:h-auto lg:w-[503px] lg:max-w-none"
           >
             <FeaturedEventBanner event={featuredEvent} />
           </section>
