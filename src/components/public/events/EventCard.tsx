@@ -65,7 +65,10 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
 
   // External ticket vendors win when the CMS carries a ticket_url; otherwise the
   // card deep-links into the booking context.
-  const bookingHref = event.ticket_url?.trim() || `/booking?event_id=${event.id}`;
+  const ticketUrl = event.ticket_url?.trim();
+  const bookingHref = ticketUrl?.includes("andalusia.art/booking")
+    ? `/booking?event_id=${event.id}`
+    : ticketUrl || `/booking?event_id=${event.id}`;
 
   return (
     <article
