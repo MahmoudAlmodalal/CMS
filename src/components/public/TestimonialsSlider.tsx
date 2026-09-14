@@ -73,7 +73,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
   return (
     <section
-      className="relative flex h-[450px] flex-col overflow-hidden bg-[#F9F7F0] pt-[83px] lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:pt-0"
+      className="relative flex h-[360px] flex-col overflow-hidden bg-[#F9F7F0] pt-[40px] lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:pt-0"
       aria-roledescription="carousel"
       aria-label={t("region")}
     >
@@ -85,19 +85,25 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
           </h2>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
-          <div className="ms-[33px] mt-[48px] h-[167px] w-[305px] rounded-[16px] bg-white lg:mx-auto lg:ms-0 lg:mt-0 lg:flex lg:h-auto lg:min-h-[161px] lg:w-full lg:max-w-[805px] lg:items-center lg:justify-between lg:gap-6 lg:rounded-none lg:bg-transparent">
+          <div className="mx-auto mt-[24px] flex h-[167px] w-full items-center justify-center gap-2 lg:mt-0 lg:h-auto lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
             {/* Previous Arrow (Logical RTL: right arrow moves back) */}
-            <button
-              type="button"
-              onClick={handlePrev}
-              className="hidden h-12 shrink-0 items-center justify-center rounded-[50px] bg-white px-3 text-brand-espresso transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:flex"
-              aria-label={t("previous")}
-            >
-              <ChevronStartIcon size={24} />
-            </button>
+            {total > 1 && (
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-sm transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:h-12 lg:w-auto lg:px-3"
+                aria-label={t("previous")}
+              >
+                <ChevronStartIcon size={20} />
+              </button>
+            )}
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
-            <div className="flex h-full flex-col-reverse items-start px-[20.67px] pt-[26.5px] text-start lg:h-auto lg:max-w-[553px] lg:flex-1 lg:flex-col lg:items-center lg:gap-4 lg:p-0 lg:text-center">
+            <div
+              className={`flex h-full shrink-0 flex-col-reverse items-start rounded-[16px] bg-white px-[20.67px] pt-[26.5px] text-start ${
+                total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-[305px]"
+              } lg:h-auto lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+            >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
               <blockquote className="h-[78px] w-full pt-[12px] font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
                 &ldquo;{current.quote}&rdquo;
@@ -171,14 +177,16 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
             </div>
 
             {/* Next Arrow */}
-            <button
-              type="button"
-              onClick={handleNext}
-              className="hidden h-12 shrink-0 items-center justify-center rounded-[50px] bg-white px-3 text-brand-espresso transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:flex"
-              aria-label={t("next")}
-            >
-              <ChevronEndIcon size={24} />
-            </button>
+            {total > 1 && (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-sm transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:h-12 lg:w-auto lg:px-3"
+                aria-label={t("next")}
+              >
+                <ChevronEndIcon size={20} />
+              </button>
+            )}
           </div>
         </div>
       </Container>
