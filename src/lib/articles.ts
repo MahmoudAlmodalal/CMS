@@ -30,6 +30,14 @@ export const ARTICLE_CATEGORIES = [
 
 export type ArticleCategoryId = (typeof ARTICLE_CATEGORIES)[number]["id"];
 
+export const ARTICLE_CATEGORY_MESSAGE_KEYS: Record<string, string> = {
+  all: "articleAll",
+  culture: "articleCulture",
+  artists: "articleArtists",
+  academy: "articleAcademy",
+  events: "articleEvents",
+};
+
 export const CATEGORY_LABELS: Record<string, string> = {
   all: "الكل",
   culture: "الأخبار الثقافية",

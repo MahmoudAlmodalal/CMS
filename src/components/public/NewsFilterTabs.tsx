@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
-import { ARTICLE_CATEGORIES } from "@/lib/articles";
+import { ARTICLE_CATEGORIES, ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 
 export interface NewsFilterTabsProps {
   activeCategory: string;
@@ -23,6 +23,7 @@ export function NewsFilterTabs({
   className = "",
 }: NewsFilterTabsProps) {
   const t = useTranslations("news");
+  const c = useTranslations("categories");
 
   return (
     <nav
@@ -53,7 +54,7 @@ export function NewsFilterTabs({
                   : "bg-white text-brand-espresso border border-brand-espresso/15 hover:border-brand-primary/40 hover:bg-brand-surface/30"
               }`}
             >
-              <span>{cat.label}</span>
+              <span>{c(ARTICLE_CATEGORY_MESSAGE_KEYS[cat.id])}</span>
               {typeof count === "number" && (
                 <span
                   className={`ms-2 text-xs px-1.5 py-0.5 rounded-full transition-colors ${

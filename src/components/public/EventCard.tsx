@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon, CalendarIcon } from "@/components/ui/Icons";
 import type { Event } from "@/lib/dal/events";
@@ -28,9 +28,11 @@ const EVENT_CATEGORY_LABEL_KEYS: Record<Event["category"], string> = {
 export function EventCard({ event }: EventCardProps) {
   const t = useTranslations("event");
   const c = useTranslations("categories");
+  const locale = useLocale();
   const eventDate = new Date(event.event_date);
-  const day = eventDate.getDate();
-  const month = new Intl.DateTimeFormat("ar-EG", { month: "short" }).format(eventDate);
+  const dateLocale = locale === "ar" ? "ar-EG" : "en-GB";
+  const day = new Intl.DateTimeFormat(dateLocale, { day: "numeric", timeZone: "UTC" }).format(eventDate);
+  const month = new Intl.DateTimeFormat(dateLocale, { month: "short", timeZone: "UTC" }).format(eventDate);
   const categoryLabel = c(EVENT_CATEGORY_LABEL_KEYS[event.category] ?? "eventFallback");
 
   const bookingHref = event.ticket_url || `/booking?event_id=${event.id}`;

@@ -1,8 +1,9 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { formatArabicDate } from "@/lib/formatters";
-import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
+import { formatLocalizedDate } from "@/lib/formatters";
+import { type Article } from "@/lib/dal/articles";
+import { ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
 
 interface EditorialFeatureProps {
@@ -43,6 +44,8 @@ interface EditorialFeatureProps {
  */
 export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   const t = useTranslations("home");
+  const c = useTranslations("categories");
+  const locale = useLocale();
 
   if (!articles || articles.length === 0) {
     return null;
@@ -87,13 +90,13 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
                   {/* Meta row I115:2439;87:14441 — category leads, date opposite. */}
                   <div className="flex w-full items-center justify-between gap-2">
                     <span className="min-w-0 truncate text-xs font-bold uppercase leading-5 tracking-wide text-primary-500">
-                      {getArticleCardCategoryLabel(article.category)}
+                      {c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback")}
                     </span>
                     <time
                       dateTime={article.published_at}
                       className="shrink-0 text-[10px] leading-[15px] text-gradscale-400"
                     >
-                      {formatArabicDate(article.published_at)}
+                      {formatLocalizedDate(article.published_at, locale)}
                     </time>
                   </div>
 

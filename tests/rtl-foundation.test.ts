@@ -83,6 +83,7 @@ test("RTL Foundation — 4. Mixed Arabic/English Content & Bidi Isolation", () =
   const bidiContent = fs.readFileSync(path.resolve("src/components/ui/Bidi.tsx"), "utf-8");
   assert.ok(bidiContent.includes("<bdi"), "Bidi component must utilize native <bdi> element");
   assert.ok(bidiContent.includes("unicodeBidi"), "Bidi component applies unicodeBidi: isolate");
+  assert.ok(bidiContent.includes('dir="auto"'), "Mixed text must resolve its own direction");
   assert.ok(bidiContent.includes("MixedText"), "MixedText component handles Latin phrases safely");
 
   // Verify globals.css bdi helper

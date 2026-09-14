@@ -1,10 +1,10 @@
 import React from "react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
-import { formatArabicDate } from "@/lib/formatters";
-import { getNewsCardCategoryLabel, type Article } from "@/lib/dal/articles";
+import { formatLocalizedDate } from "@/lib/formatters";
+import { type Article } from "@/lib/dal/articles";
+import { ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface ArticleCardProps {
@@ -34,7 +34,9 @@ export interface ArticleCardProps {
  */
 export function ArticleCard({ article }: ArticleCardProps) {
   const t = useTranslations("article");
-  const dateFormatted = formatArabicDate(article.published_at);
+  const c = useTranslations("categories");
+  const locale = useLocale();
+  const dateFormatted = formatLocalizedDate(article.published_at, locale);
 
   // Card 91:17378 is a flat 423.5px on the desktop frame — 1px border, a 192px
   // cover, a 229.5px body and 1px border. Below lg the card hugs its content,
@@ -70,7 +72,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             landed at y=1166 and y=1176 in the same row). */}
         <div className="flex flex-1 flex-col p-6 text-start lg:pt-7">
           <span className="shrink-0 pb-2 text-[13px] font-bold leading-[19.5px] text-eyebrow">
-            {getNewsCardCategoryLabel(article.category)}
+            {c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback")}
           </span>
 
           <h3 className="shrink-0 pb-3 text-[20px] font-bold leading-[30px] text-ink-heading transition-colors group-hover:text-brand-primary">

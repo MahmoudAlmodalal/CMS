@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { pickLocalized, localizeRow } from "../src/lib/utils/localized.ts";
+import { formatLocalizedDate } from "../src/lib/formatters.ts";
 import {
   siteSettingsSchema,
   artistSchema,
@@ -277,4 +278,40 @@ test("English content — 7. Admin forms expose an English input for every trans
       `${field} must submit an empty input as null, not as ""`
     );
   }
+});
+
+test("English content — 8. Public readers and presentation controls stay locale-aware", () => {
+  const events = read("src/lib/dal/events.ts");
+  for (const column of ["title_en", "location_en", "city_en", "performer_name_en", "description_en"]) {
+    assert.match(events, new RegExp(`\\b${column}\\b`), `events reader must fetch ${column}`);
+  }
+  assert.match(events, /events_subtitle, events_subtitle_en/);
+  assert.match(events, /pickLocalized\(data, "events_subtitle", locale\)/);
+
+  const academy = read("src/lib/dal/academy.ts");
+  for (const column of ["title_en", "track_category_en", "description_en", "instructor_name_en"]) {
+    assert.match(academy, new RegExp(`\\b${column}\\b`), `academy reader must fetch ${column}`);
+  }
+
+  const releases = read("src/lib/dal/releases.ts");
+  assert.match(releases, /localizeContentList\("releases"/);
+
+  const settings = read("src/lib/dal/site-settings.ts");
+  assert.match(settings, /getSiteSettingsForLocale\(locale\)/);
+  assert.match(settings, /cache\(async \(locale: AppLocale\)/);
+  assert.match(settings, /if \(locale !== "ar"\)/);
+
+  const categories = read("src/messages/en.json");
+  for (const key of ["articleAll", "artistSinging", "eventAll"]) {
+    assert.match(categories, new RegExp(`"${key}"`), `English catalog must define categories.${key}`);
+  }
+
+  assert.match(read("src/components/public/events/EventsFilterTabs.tsx"), /useTranslations\("categories"\)/);
+  assert.match(read("src/components/public/ArtistFilterTabs.tsx"), /useTranslations\("categories"\)/);
+  assert.match(read("src/components/public/NewsFilterTabs.tsx"), /ARTICLE_CATEGORY_MESSAGE_KEYS/);
+  assert.match(read("src/components/public/EventCard.tsx"), /useLocale/);
+  assert.match(read("src/components/public/HomeEvents.tsx"), /useLocale/);
+
+  assert.match(formatLocalizedDate("2026-09-10T12:00:00Z", "en"), /September/);
+  assert.match(formatLocalizedDate("2026-09-10T12:00:00Z", "ar"), /سبتمبر|٢٠٢٦|2026/);
 });

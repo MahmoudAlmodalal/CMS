@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { type Release, CANONICAL_RELEASES } from "@/lib/releases";
+import { localizeContentList } from "./localize";
 
 export { type Release, CANONICAL_RELEASES };
 
@@ -17,7 +18,7 @@ export async function getPublishedReleasesByArtist(artistId: string): Promise<Re
 
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return canonical;
+      return localizeContentList("releases", canonical);
     }
 
     const supabase = await createClient();
@@ -29,10 +30,10 @@ export async function getPublishedReleasesByArtist(artistId: string): Promise<Re
       .order("display_order", { ascending: true })
       .order("release_year", { ascending: false });
 
-    if (error || !data) return canonical;
+    if (error || !data) return localizeContentList("releases", canonical);
 
-    return data as unknown as Release[];
+    return localizeContentList("releases", data as unknown as Release[]);
   } catch {
-    return canonical;
+    return localizeContentList("releases", canonical);
   }
 }

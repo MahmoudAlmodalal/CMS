@@ -1,9 +1,9 @@
 import React from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
-import { formatArabicDate } from "@/lib/formatters";
-import { getArticleCategoryLabel, type Article } from "@/lib/articles";
+import { formatLocalizedDate } from "@/lib/formatters";
+import { ARTICLE_CATEGORY_MESSAGE_KEYS, type Article } from "@/lib/articles";
 import { ArticleCard } from "./ArticleCard";
 
 export interface ArticleViewProps {
@@ -20,8 +20,10 @@ export interface ArticleViewProps {
 export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps) {
   const t = useTranslations("news");
   const nav = useTranslations("nav");
-  const categoryLabel = getArticleCategoryLabel(article.category);
-  const dateFormatted = formatArabicDate(article.published_at);
+  const c = useTranslations("categories");
+  const locale = useLocale();
+  const categoryLabel = c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback");
+  const dateFormatted = formatLocalizedDate(article.published_at, locale);
 
   // Estimate reading time in Arabic (approx 180-200 words per minute)
   const wordCount = (article.content || "").trim().split(/\s+/).length;

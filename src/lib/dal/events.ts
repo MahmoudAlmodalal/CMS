@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
-import { localizeContent, localizeContentList } from "./localize";
+import { getContentLocale, localizeContent, localizeContentList } from "./localize";
+import { pickLocalized } from "@/lib/utils";
 import type { EventItem } from "@/lib/types/events";
 
 export type Event = EventItem;
@@ -8,9 +9,11 @@ export type { EventItem };
 
 export const DEFAULT_EVENTS_SUBTITLE =
   "كل فنان في أندلسيا يحمل قصة ومعاناة، وكل عرض هو مساحة حية لتوثيق هذا الإبداع ومشاركته مع الجمهور.";
+export const DEFAULT_EVENTS_SUBTITLE_EN =
+  "Dates that leave a beautiful mark on anyone who loves music with roots.";
 
 const EVENT_COLUMNS =
-  "id, title, slug, category, event_date, location, city, performer_name, artist_id, description, image_url, ticket_url, is_featured, status, is_published, display_order, created_at, updated_at";
+  "id, title, title_en, slug, category, event_date, location, location_en, city, city_en, performer_name, performer_name_en, artist_id, description, description_en, image_url, ticket_url, is_featured, status, is_published, display_order, created_at, updated_at";
 
 function isJwtClockError(error: { message?: string } | null | undefined): boolean {
   return error?.message?.toLowerCase().includes("jwt issued at future") ?? false;
@@ -183,25 +186,24 @@ export async function getFeaturedEvent(): Promise<EventItem | null> {
  * Fetches the configurable events page subtitle from site_settings singleton
  */
 export async function getEventsSubtitle(): Promise<string> {
+  const locale = await getContentLocale();
+  const fallback = locale === "en" ? DEFAULT_EVENTS_SUBTITLE_EN : DEFAULT_EVENTS_SUBTITLE;
+
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return DEFAULT_EVENTS_SUBTITLE;
+      return fallback;
     }
 
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("site_settings")
-      .select("events_subtitle")
+      .select("events_subtitle, events_subtitle_en")
       .eq("id", "default")
       .maybeSingle();
 
-    const subtitle = (data as { events_subtitle?: string | null } | null)?.events_subtitle;
-    if (error || !subtitle) {
-      return DEFAULT_EVENTS_SUBTITLE;
-    }
-
-    return subtitle;
+    if (error || !data) return fallback;
+    return pickLocalized(data, "events_subtitle", locale) || fallback;
   } catch {
-    return DEFAULT_EVENTS_SUBTITLE;
+    return fallback;
   }
 }

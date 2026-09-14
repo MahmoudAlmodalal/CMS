@@ -110,6 +110,13 @@
     "bookingRegion": "حجز فرقة أندلسيا"
   },
   "categories": {
+    "all": "الكل",
+    "artistSinging": "غناء",
+    "artistOud": "عود وموسيقى",
+    "artistPercussion": "إيقاع",
+    "artistContemporary": "معاصر",
+    "artistHeritage": "تراث",
+    "articleAll": "الكل",
     "articleCulture": "ثقافة وفكر",
     "articleArtists": "حوارات فنية",
     "articleAcademy": "تعليم وتراث",
@@ -123,7 +130,8 @@
     "eventShortConcert": "حفل",
     "eventShortFestival": "مهرجان",
     "eventShortEvening": "أمسية",
-    "eventShortWorkshop": "ورشة"
+    "eventShortWorkshop": "ورشة",
+    "eventAll": "الكل"
   },
   "artists": {
     "kicker": "دليل الفنانين",

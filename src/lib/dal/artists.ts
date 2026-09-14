@@ -138,6 +138,8 @@ export async function getArtistBySlug(slug: string): Promise<Artist | null> {
 
     return localizeContent("artists", data as unknown as Artist);
   } catch {
-    return (USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null : null);
+    const fallback = USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null : null;
+    const localized = fallback ? await localizeContent("artists", fallback) : null;
+    return localized || null;
   }
 }

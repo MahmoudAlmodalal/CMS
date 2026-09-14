@@ -45,8 +45,22 @@ export function formatArabicDate(
     day: "numeric",
   }
 ): string {
+  return formatLocalizedDate(date, "ar", options);
+}
+
+/** Formats a date using the active page locale while preserving Arabic defaults. */
+export function formatLocalizedDate(
+  date: Date | string | number,
+  locale: string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+): string {
   const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
-  return new Intl.DateTimeFormat("ar-EG", options).format(d);
+  const dateLocale = locale.startsWith("ar") ? "ar-EG" : "en-GB";
+  return new Intl.DateTimeFormat(dateLocale, options).format(d);
 }
 
 /**
