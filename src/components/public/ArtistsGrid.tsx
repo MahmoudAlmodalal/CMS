@@ -77,12 +77,12 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
   };
 
   return (
-    <div className="relative h-[442px] w-full max-w-[355px] lg:contents">
+    <div className="relative h-[442px] w-full max-w-none lg:contents">
       <div
         ref={rowRef}
         role="region"
         aria-label={`Artist row ${rowIndex + 1}`}
-        className="flex h-[442px] w-full snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
+        className="flex h-[442px] w-full min-w-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
       >
         {artists.map((artist, index) => (
           <ArtistCard
