@@ -251,7 +251,7 @@ bdi, .bdi-isolate {
 }
 
 @keyframes motion-drawer-in-rtl {
-  from { opacity: 0; transform: translate3d(100%, 0, 0); }
+  from { opacity: 0; transform: translate3d(-100%, 0, 0); }
   to { opacity: 1; transform: translateX(0); }
 }
 
@@ -299,6 +299,7 @@ bdi, .bdi-isolate {
     will-change: transform, opacity;
   }
 
+  /* The mobile menu trigger is physically on the right in the public shell. */
   [dir="rtl"] .motion-drawer { animation-name: motion-drawer-in-rtl; }
 
   .motion-drawer-backdrop {
