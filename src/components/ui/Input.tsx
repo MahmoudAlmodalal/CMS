@@ -31,7 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           type={type}
           disabled={disabled}
           className={cn(
-            "w-full h-[48px] bg-white rounded-input px-4 py-3.5 text-sm font-sans text-gradscale-900 placeholder:text-gradscale-400 placeholder:text-xs border transition-colors duration-150",
+            "motion-press w-full h-[48px] bg-white rounded-input px-4 py-3.5 text-sm font-sans text-gradscale-900 placeholder:text-gradscale-400 placeholder:text-xs border transition-colors duration-150",
             "border-brand-espresso-subtle focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/15",
             error && "border-alert-error focus:border-alert-error focus:ring-alert-error/15 text-alert-error",
             disabled && "bg-secondary-100 opacity-60 cursor-not-allowed",

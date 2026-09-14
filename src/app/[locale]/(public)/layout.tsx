@@ -25,7 +25,7 @@ export default async function PublicLayout({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
+    <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
       {/* 1. Accessible Skip Link */}
       <SkipToContent />
 

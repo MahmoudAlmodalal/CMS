@@ -140,7 +140,7 @@ export function SafeImage({
             loading={effectiveLoading}
             priority={priority}
             onError={() => setHasError(true)}
-            className={`w-full h-full object-cover object-center ${className}`}
+            className={`motion-image w-full h-full object-cover object-center ${className}`}
           />
         ) : (
           <Image
@@ -153,7 +153,7 @@ export function SafeImage({
             loading={effectiveLoading}
             priority={priority}
             onError={() => setHasError(true)}
-            className={`w-full h-full object-cover object-center ${className}`}
+            className={`motion-image w-full h-full object-cover object-center ${className}`}
           />
         )
       ) : (
