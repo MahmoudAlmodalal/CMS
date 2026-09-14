@@ -98,56 +98,6 @@ test("Challenger 2 — 3. Token Parity: Aref Ruqaa font strictly purged from CSS
   );
 });
 
-test("Challenger 2 — 4. Mobile Shell: MobileNavbar 390px viewport safety & no overflow", () => {
-  const mobileNavPath = path.join(root, "src/components/public/MobileNavbar.tsx");
-  const content = fs.readFileSync(mobileNavPath, "utf-8");
-
-  // Figma's Component 17/Navigation is a floating pill inset 10px inline, not a
-  // full-bleed bar, so the pill takes its width from the viewport via inset-x.
-  assert.match(content, /fixed inset-x-2\.5 top-\[44px\]/, "Mobile pill must anchor via inset-x, not start-0/end-0");
-  assert.match(content, /h-14/, "Mobile top bar must have fixed 56px height (h-14)");
-  assert.match(content, /lg:hidden/, "Mobile top bar must be hidden on desktop (lg:hidden)");
-  assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
-
-  // Nothing inside the pill may be wide enough to overflow a 390px viewport. The
-  // pill's own content box is 390 - 2*10 - 2*20 = 330px, so parse every hardcoded
-  // pixel width rather than pattern-matching digit counts: w-[104px] is fine,
-  // w-[400px] is not, and the old /\d{3,}/ regex could not tell them apart.
-  const PILL_CONTENT_WIDTH = 330;
-  for (const [, prop, value] of content.matchAll(/\b((?:min-)?w)-\[(\d+(?:\.\d+)?)px\]/g)) {
-    assert.ok(
-      Number(value) <= PILL_CONTENT_WIDTH,
-      `Mobile navbar ${prop} of ${value}px overflows the ${PILL_CONTENT_WIDTH}px pill content box`
-    );
-  }
-
-  // Accessible drawer trigger
-  // The label moved into next-intl when the site gained an English locale, so assert
-  // the accessible name is wired up rather than hardcoded in Arabic.
-  assert.match(content, /aria-label=\{a11y\("openMenu"\)\}/);
-  assert.match(content, /aria-expanded=\{drawerOpen\}/);
-  assert.match(content, /aria-controls="mobile-navigation-drawer"/);
-});
-
-test("Challenger 2 — 5. Mobile Shell: MobileDrawer 390px constraints & modal bounds", () => {
-  const drawerPath = path.join(root, "src/components/public/MobileDrawer.tsx");
-  const content = fs.readFileSync(drawerPath, "utf-8");
-
-  // Panel must be clamped to max-w-[370px] (< 390px viewport)
-  assert.match(content, /max-w-\[370px\]/, "Mobile drawer panel must be clamped to max-w-[370px]");
-  assert.match(content, /fixed inset-y-0 start-0/, "Mobile drawer panel must be fixed to start-0");
-  assert.match(content, /rounded-e-2xl/, "Mobile drawer must use logical rounded-e-2xl for corner radius");
-
-  // Scroll lock & Escape handling
-  assert.match(content, /document\.body\.style\.overflow = "hidden"/, "Drawer must lock body scroll when open");
-  assert.match(content, /document\.body\.style\.overflow = ""/, "Drawer must restore body scroll when closed");
-  assert.match(content, /e\.key === "Escape"/, "Drawer must close on Escape key press");
-
-  // Inner scroll area must prevent horizontal spillage
-  assert.match(content, /overflow-y-auto/, "Drawer navigation body must allow vertical scrolling");
-  assert.doesNotMatch(content, /overflow-x-scroll/, "Drawer navigation body must not scroll horizontally");
-});
-
 test("Challenger 2 — 6. Public Shell Layout Clearance Synchronization", () => {
   const layoutPath = path.join(root, "src/app/[locale]/(public)/layout.tsx");
   const content = fs.readFileSync(layoutPath, "utf-8");

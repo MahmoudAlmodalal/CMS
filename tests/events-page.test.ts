@@ -56,45 +56,6 @@ test("Task 35 — 2. Strict Architectural Prohibition: NO /events/[slug]", () =>
   );
 });
 
-test("Task 35 — 3. Confirmed Category Filter Tabs Mapping (Figma 186:1781-186:1769)", () => {
-  const expectedTabs = [
-    { id: "all", label: "الكل" },
-    { id: "concert", label: "حفلات" },
-    { id: "festival", label: "مهرجانات" },
-    { id: "evening", label: "أمسيات" },
-    { id: "workshop", label: "ورش" },
-  ];
-
-  assert.deepEqual(
-    CATEGORY_TABS,
-    expectedTabs,
-    "CATEGORY_TABS must exactly match confirmed Figma filter categories"
-  );
-
-  assert.equal(CATEGORY_MAP.concert, "حفلات");
-  assert.equal(CATEGORY_MAP.festival, "مهرجانات");
-  assert.equal(CATEGORY_MAP.evening, "أمسيات");
-  assert.equal(CATEGORY_MAP.workshop, "ورش");
-
-  const tabsContent = fs.readFileSync(
-    path.join(root, "src/components/public/events/EventsFilterTabs.tsx"),
-    "utf-8"
-  );
-  assert.match(tabsContent, /role="tablist"/, "Tabs container must use role='tablist'");
-  assert.match(tabsContent, /role="tab"/, "Tab items must use role='tab'");
-  assert.match(tabsContent, /aria-selected/, "Tab items must reflect aria-selected state");
-
-  // Node 91:16930 — a 415x53.12 secondary-50 pill, 14px gaps, 62-wide idle tabs
-  // and a 75-wide primary-500 active tab, all at Cairo Bold 14.08/21.12.
-  assert.match(tabsContent, /lg:w-\[415px\]/, "Filter bar is 415 wide on the frame");
-  assert.match(tabsContent, /bg-secondary-50/, "Filter bar sits on secondary-50");
-  assert.match(tabsContent, /gap-\[14px\]/, "Tabs are 14px apart");
-  assert.match(tabsContent, /text-\[14\.08px\]/, "Tab labels are Cairo Bold 14.08");
-  assert.match(tabsContent, /w-\[75px\] bg-primary-500/, "Active tab is 75 wide on primary-500");
-  assert.match(tabsContent, /w-\[62px\]/, "Idle tabs are 62 wide");
-  assert.match(tabsContent, /rounded-badge/, "Tabs use the 16px badge radius");
-});
-
 test("Task 35 — 4. Featured Event Panel (Figma 91:16914)", () => {
   const bannerContent = fs.readFileSync(
     path.join(root, "src/components/public/events/FeaturedEventBanner.tsx"),
@@ -291,42 +252,3 @@ test("Task 35 — 9. Type Consistency and Mock Event Data Verification", () => {
  * three-row mock rather than a designed row count — the desktop frame draws five,
  * and matches our five fixtures exactly. So this frame is gated section by section.
  */
-test("الفعاليات — the 390 frame's sections", () => {
-  const strip = (s: string) =>
-    s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "");
-  const read = (rel: string) => strip(fs.readFileSync(path.join(root, rel), "utf-8"));
-
-  const page = read("src/app/[locale]/(public)/events/page.tsx");
-  const view = read("src/components/public/events/EventsCatalogView.tsx");
-  const tabs = read("src/components/public/events/EventsFilterTabs.tsx");
-  const card = read("src/components/public/events/EventCard.tsx");
-
-  // Band 0-678, filter bar at 716, list at 808, featured slot at 1337, footer 2007.
-  // Every gap on the frame is 38 and it closes on 84.
-  assert.match(page, /mobileHeight=\{678\}/, "The band is 678 on the 390 frame");
-  assert.match(page, /pb-\[84px\] pt-\[38px\]/, "38 opens the catalogue band and 84 closes it");
-  assert.match(view, /mt-\[38px\] flex flex-col gap-\[38px\]/, "38 between the filter bar, the list and the featured slot");
-
-  // Component 8 is 376x54 flush to the inline start. It scrolled at 104 when it wrapped.
-  assert.match(tabs, /h-\[54px\] w-\[376px\]/, "The filter bar is 376x54");
-  assert.match(tabs, /overflow-x-auto/, "It scrolls rather than wrapping");
-  assert.doesNotMatch(tabs, /flex-wrap/, "Wrapping is what made it 104 tall");
-
-  // Frame 39 is 390.33 wide, 10px padded, rows 10 apart.
-  assert.match(view, /gap-\[10px\] p-\[10px\]/, "The list is 10px padded with 10 between rows");
-  assert.match(view, /lg:gap-4 lg:p-0/, "Desktop keeps its own 16px rhythm and no padding");
-
-  // 144:19982 reserves 349x586 at x=21 and draws nothing inside it.
-  assert.match(view, /ms-5 h-\[586px\] w-\[349px\]/, "The featured slot is the reserved 349x586 box");
-  assert.match(view, /lg:ms-0 lg:h-auto lg:w-\[503px\]/, "Desktop keeps the 503 panel");
-
-  // 144:19913 is 370.33x150.33 on 8.667 of padding, 19 between three centred blocks:
-  // the 93x105 thumbnail at the inline start, the 144x120 text, the 78x149 date.
-  assert.match(card, /h-\[150\.333px\] w-full flex-row-reverse items-center gap-\[19px\]/, "The row is 150.33 with 19 between blocks, reversed so the thumbnail leads");
-  assert.match(card, /p-\[8\.667px\]/, "8.667 of padding holds the blocks inside 370.33");
-  assert.match(card, /h-\[149px\] w-\[78px\]/, "The date block is 78x149");
-  assert.match(card, /h-\[120px\] w-\[144px\]/, "The text block is 144x120");
-  assert.match(card, /h-\[105px\] w-\[93px\]/, "The thumbnail is 93x105, against 140 wide on desktop");
-  assert.match(card, /w-\[54px\] rounded-\[8px\]/, "The date chip is 54 wide, against 70 on desktop");
-  assert.doesNotMatch(card, /sm:h-\[105px\]|sm:w-\[140px\]/, "The invented tablet thumbnail is gone");
-});

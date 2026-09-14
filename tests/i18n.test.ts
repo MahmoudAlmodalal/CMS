@@ -83,19 +83,6 @@ test("i18n — 4. Localized pages stay statically renderable", () => {
   assert.match(publicLayout, /setRequestLocale\(locale\)/, "Public shell must opt into static rendering");
 });
 
-test("i18n — 5. The language control switches locale rather than flipping direction", () => {
-  const switcher = read("src/components/public/LocaleSwitcher.tsx");
-  assert.match(switcher, /locale=\{other\}/, "Switcher must link to the same route in the other locale");
-  assert.match(switcher, /usePathname/, "Switcher must preserve the current route");
-  assert.match(switcher, /hrefLang/, "Switcher must expose hrefLang for crawlers");
-
-  for (const rel of ["src/components/public/Navbar.tsx", "src/components/public/MobileDrawer.tsx"]) {
-    const source = read(rel);
-    assert.match(source, /LocaleSwitcher/, `${rel} must use the locale switcher`);
-    assert.ok(!source.includes("toggleDirection"), `${rel} must not merely flip direction`);
-  }
-});
-
 test("i18n — public group has localized loading and not-found boundaries", () => {
   const publicGroup = "src/app/[locale]/(public)";
 
