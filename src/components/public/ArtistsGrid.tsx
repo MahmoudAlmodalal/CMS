@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import { type Artist } from "@/lib/types/artists";
 import { ArtistCard } from "./ArtistCard";
 import { ArtistsEmptyState } from "./ArtistsEmptyState";
+import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
 
 export interface ArtistsGridProps {
   artists: Artist[];
@@ -58,19 +61,55 @@ export function ArtistsGrid({
       className={`flex flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
     >
       {rows.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="flex h-[442px] w-full max-w-[355px] snap-x snap-mandatory gap-[10px] overflow-x-auto p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
-        >
-          {row.map((artist, index) => (
-            <ArtistCard
-              key={artist.id || artist.slug}
-              artist={artist}
-              priority={rowIndex === 0 && index < 4}
-            />
-          ))}
-        </div>
+        <ArtistRow key={rowIndex} artists={row} rowIndex={rowIndex} />
       ))}
+    </div>
+  );
+}
+
+function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number }) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const scrollRow = (direction: "start" | "end") => {
+    rowRef.current?.scrollBy({
+      left: direction === "end" ? 306 : -306,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <div className="relative h-[442px] w-full max-w-[355px] lg:contents">
+      <div
+        ref={rowRef}
+        role="region"
+        aria-label={`Artist row ${rowIndex + 1}`}
+        className="flex h-[442px] w-full snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
+      >
+        {artists.map((artist, index) => (
+          <ArtistCard
+            key={artist.id || artist.slug}
+            artist={artist}
+            priority={rowIndex === 0 && index < 4}
+          />
+        ))}
+      </div>
+      <div className="pointer-events-none absolute inset-x-1 top-1/2 z-10 flex -translate-y-1/2 justify-between lg:hidden">
+        <button
+          type="button"
+          onClick={() => scrollRow("start")}
+          className="pointer-events-auto flex size-10 items-center justify-center rounded-full border border-black/10 bg-white/95 text-brand-espresso shadow-md transition-transform hover:scale-105 active:scale-95"
+          aria-label="Previous artists"
+        >
+          <ChevronStartIcon size={20} />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollRow("end")}
+          className="pointer-events-auto flex size-10 items-center justify-center rounded-full border border-black/10 bg-white/95 text-brand-espresso shadow-md transition-transform hover:scale-105 active:scale-95"
+          aria-label="Next artists"
+        >
+          <ChevronEndIcon size={20} />
+        </button>
+      </div>
     </div>
   );
 }
