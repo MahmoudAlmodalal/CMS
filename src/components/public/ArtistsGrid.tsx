@@ -58,7 +58,7 @@ export function ArtistsGrid({
   return (
     <div
       data-testid="artists-grid"
-      className={`flex flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
+      className={`flex min-w-0 w-full max-w-full flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:max-w-none lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
     >
       {rows.map((row, rowIndex) => (
         <ArtistRow key={rowIndex} artists={row} rowIndex={rowIndex} />
@@ -77,7 +77,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
   };
 
   return (
-    <div className="relative h-[442px] w-full max-w-none lg:contents">
+    <div className="relative min-w-0 h-[442px] w-full max-w-full overflow-hidden lg:contents">
       <div
         ref={rowRef}
         role="region"
