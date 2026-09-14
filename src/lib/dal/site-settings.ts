@@ -390,7 +390,10 @@ const getSiteSettingsRaw = unstable_cache(
   async (): Promise<SiteSettings> => {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
+      // A public-site configuration failure must not turn every homepage band
+      // off. Keep the built-in content visible while the CMS connection is
+      // repaired; a valid database row still controls the published flags.
+      return DEFAULT_SITE_SETTINGS;
     }
     // Public settings do not depend on the visitor session. Prefer the
     // service-role read when configured so a stale RLS policy cannot cause a
@@ -405,7 +408,7 @@ const getSiteSettingsRaw = unstable_cache(
       .eq("id", "default")
       .single();
     if (error || !data) {
-      return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
+      return DEFAULT_SITE_SETTINGS;
     }
     if (!USE_DEMO_CONTENT) return data as unknown as SiteSettings;
 
@@ -435,9 +438,9 @@ const getSiteSettingsRaw = unstable_cache(
     };
 
   } catch {
-    return USE_DEMO_CONTENT ? DEFAULT_SITE_SETTINGS : EMPTY_SITE_SETTINGS;
+    return DEFAULT_SITE_SETTINGS;
   }
   },
-  ["site-settings-public"],
+  ["site-settings-public-v2"],
   { revalidate: 300 },
 );
