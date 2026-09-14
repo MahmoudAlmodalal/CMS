@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { MenuIcon } from "@/components/ui/Icons";
 import { MobileDrawer, type DrawerContact } from "./MobileDrawer";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 /**
  * Mobile Top Bar Navigation
@@ -59,7 +60,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               width={292}
               height={178}
               loading="eager"
-              className="h-8 w-auto object-contain shrink-0"
+              className="h-14 w-auto object-contain shrink-0"
             />
           </Link>
 
@@ -70,6 +71,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
             className="flex shrink-0 items-center gap-2"
             data-node-id="I142:17048;134:8254"
           >
+            <LocaleSwitcher mobile />
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}

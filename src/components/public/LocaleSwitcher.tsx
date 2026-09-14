@@ -11,7 +11,7 @@ import type { AppLocale } from "@/i18n/routing";
  * Figma node 134:8271 uses Remix Icon `ri:english-input` (24x24 box)
  * rendering "En" on Arabic screens, and switches to English.
  */
-export function LocaleSwitcher({ className }: { className?: string }) {
+export function LocaleSwitcher({ className, mobile = false }: { className?: string; mobile?: boolean }) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
   const t = useTranslations("locale");
@@ -25,10 +25,18 @@ export function LocaleSwitcher({ className }: { className?: string }) {
       aria-label={t("switchLabel")}
       className={cn(
         "inline-flex items-center justify-center size-[24px] text-brand-espresso hover:text-brand-primary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary rounded-xs shrink-0",
+        mobile && "h-9 min-w-[52px] gap-1 rounded-xl px-1.5 text-[11px] font-bold",
         className,
       )}
     >
-      {locale === "ar" ? (
+      {mobile ? (
+        <>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="size-5">
+            <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM4.07 13H7.1c.12 1.7.49 3.27 1.08 4.62A8.02 8.02 0 0 1 4.07 13Zm0-2a8.02 8.02 0 0 1 4.11-4.62A17.3 17.3 0 0 0 7.1 11H4.07Zm5.04 0c.16-1.84.68-3.48 1.42-4.67.48-.2.97-.33 1.47-.33s.99.13 1.47.33c.74 1.19 1.26 2.83 1.42 4.67H9.11Zm5.78 2c-.16 1.84-.68 3.48-1.42 4.67-.48.2-.97.33-1.47.33s-.99-.13-1.47-.33C9.79 16.48 9.27 14.84 9.11 13h5.78Zm1.93 4.62c.59-1.35.96-2.92 1.08-4.62h3.03a8.02 8.02 0 0 1-4.11 4.62ZM17.9 11a17.3 17.3 0 0 0-1.08-4.62A8.02 8.02 0 0 1 19.93 11H17.9ZM12 4c.19 0 .39.01.58.03A13.7 13.7 0 0 1 14.74 11H9.26a13.7 13.7 0 0 1 2.16-6.97C11.61 4.01 11.81 4 12 4Z" />
+          </svg>
+          <span aria-hidden="true">{other.toUpperCase()}</span>
+        </>
+      ) : locale === "ar" ? (
         <svg
           width="24"
           height="24"
