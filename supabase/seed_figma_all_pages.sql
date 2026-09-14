@@ -290,3 +290,55 @@ ON CONFLICT (slug) DO UPDATE SET
   is_published = EXCLUDED.is_published,
   is_featured = EXCLUDED.is_featured,
   display_order = EXCLUDED.display_order;
+
+-- 4. HOME TESTIMONIALS
+INSERT INTO public.testimonials (
+  id, quote, quote_en, author_name, author_name_en, author_role, author_role_en,
+  avatar_image_url, display_order, is_published
+) VALUES
+(
+  '10000000-0000-0000-0000-000000000001',
+  'من أفضل الفرق الموسيقية التي شاركت في فعالياتنا على مدى عشر سنوات. الانسجام بين الفنانين والحضور يخلق سحراً حقيقياً.',
+  'One of the best musical groups to perform at our events over the past ten years. The harmony between the artists and the audience creates real magic.',
+  'عمر الحاج',
+  'Omar Al-Hajj',
+  'منظم فعاليات ثقافية',
+  'Cultural Events Organizer',
+  NULL,
+  1,
+  true
+),
+(
+  '10000000-0000-0000-0000-000000000002',
+  'التنظيم والاحترافية العالية التي قدمتها فرقة أندلسيا جعلت من أمسيتنا ذكرى لا تُنسى لجميع الحاضرين.',
+  'Andalusia’s organization and professionalism turned our evening into an unforgettable memory for everyone who attended.',
+  'د. ناديا القاسم',
+  'Dr. Nadia Al-Qasim',
+  'مديرة مهرجان أصداء التراث الدولي',
+  'Director, Echoes of Heritage International Festival',
+  NULL,
+  2,
+  true
+),
+(
+  '10000000-0000-0000-0000-000000000003',
+  'المستوى الموسيقي المتقن والشغف الذي يلمسه الجمهور في أداء فناني أندلسيا يعيد للموشحات الأندلسية بريقها الخالد.',
+  'The musicians’ mastery and passion bring the timeless brilliance of Andalusian muwashahat back to life.',
+  'كريم الزهراني',
+  'Karim Al-Zahrani',
+  'باحث في المقامات التراثية والأندلسية',
+  'Researcher in Traditional and Andalusian Maqams',
+  NULL,
+  3,
+  true
+)
+ON CONFLICT (id) DO UPDATE SET
+  quote = EXCLUDED.quote,
+  quote_en = EXCLUDED.quote_en,
+  author_name = EXCLUDED.author_name,
+  author_name_en = EXCLUDED.author_name_en,
+  author_role = EXCLUDED.author_role,
+  author_role_en = EXCLUDED.author_role_en,
+  avatar_image_url = EXCLUDED.avatar_image_url,
+  display_order = EXCLUDED.display_order,
+  is_published = EXCLUDED.is_published;

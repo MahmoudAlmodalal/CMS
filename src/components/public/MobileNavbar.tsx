@@ -36,15 +36,15 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
     <>
       {/* Wrapper is inert so the hero underneath stays clickable either side of
           the pill, matching the desktop floating bar. */}
-      <div className="pointer-events-none fixed inset-x-2.5 top-[max(12px,env(safe-area-inset-top))] z-40 lg:hidden">
+      <div className="pointer-events-none fixed inset-x-2.5 top-[44px] z-40 lg:hidden">
         <header
-          className="pointer-events-auto flex h-14 min-w-0 items-center justify-between rounded-[20px] bg-white px-3 shadow-subtle sm:px-5"
+          className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-5 shadow-subtle"
           role="banner"
         >
           {/* Inline Start: brand logo (Figma Node 139:12341 — 104x32 raster) */}
           <Link
             href="/"
-            className="flex shrink-0 items-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="flex h-12 w-[120px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[140px]"
             aria-label={a11y("brandHome")}
           >
             {/* The wordmark is raster, so the band name is carried by the alt text
@@ -59,21 +59,28 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               width={292}
               height={178}
               loading="eager"
-              className="h-8 w-auto shrink-0 object-contain sm:h-10"
+              className="h-8 w-auto object-contain shrink-0"
             />
           </Link>
 
-          {/* Inline End: drawer toggle (Figma Node 139:12338 — 24x24, #404040) */}
-          <button
-            type="button"
-            onClick={() => setDrawerOpen(true)}
-            className="flex size-11 shrink-0 items-center justify-center rounded-xl p-2 text-gradscale-500 transition-colors hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
-            aria-label={a11y("openMenu")}
-            aria-expanded={drawerOpen}
-            aria-controls="mobile-navigation-drawer"
+          {/* Inline End: drawer toggle (Figma Node 139:12338 — 24x24 box).
+              Component 17 carries exactly two children: the hamburger and the
+              logo. The booking CTA and the locale switcher live in the drawer. */}
+          <div
+            className="flex shrink-0 items-center gap-2"
+            data-node-id="I142:17048;134:8254"
           >
-            <MenuIcon size={24} />
-          </button>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="flex size-9 shrink-0 items-center justify-center rounded-xl p-1.5 text-gradscale-500 transition-colors hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
+              aria-label={a11y("openMenu")}
+              aria-expanded={drawerOpen}
+              aria-controls="mobile-navigation-drawer"
+            >
+              <MenuIcon size={24} className="size-6" />
+            </button>
+          </div>
         </header>
       </div>
 

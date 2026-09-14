@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CATEGORY_MAP, type EventItem } from "@/lib/types/events";
@@ -64,9 +63,9 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
   const categoryLabel = CATEGORY_MAP[event.category] || event.category;
   const performerCityString = `${event.performer_name} · ${event.city}`;
 
-  const bookingHref = `/booking?event_id=${event.id}`;
-  const actionHref = event.ticket_url?.trim() || bookingHref;
-  const isExternalTicket = Boolean(event.ticket_url?.trim());
+  // External ticket vendors win when the CMS carries a ticket_url; otherwise the
+  // card deep-links into the booking context.
+  const bookingHref = event.ticket_url?.trim() || `/booking?event_id=${event.id}`;
 
   return (
     <article
@@ -90,12 +89,10 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
 
         <div className="flex w-full justify-center">
           <Link
-            href={actionHref}
-            target={isExternalTicket ? "_blank" : undefined}
-            rel={isExternalTicket ? "noopener noreferrer" : undefined}
-            className="rounded-[6px] bg-primary-500 px-[14.4px] py-[7.2px] text-center text-[12px] font-bold leading-[18px] text-white transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            href={bookingHref}
+            className="inline-flex max-w-full items-center justify-center whitespace-nowrap rounded-[6px] bg-primary-500 px-2 py-[7.2px] text-center text-[12px] font-bold leading-[18px] text-white transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:px-[14.4px]"
           >
-            {isExternalTicket ? t("bookTicket") : t("book")}
+            {t("book")}
           </Link>
         </div>
       </div>

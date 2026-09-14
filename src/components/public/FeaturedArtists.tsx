@@ -13,14 +13,14 @@ interface FeaturedArtistsProps {
 
 export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: FeaturedArtistsProps) {
   const t = useTranslations("home");
-  if (!artists?.length) return null;
+  if (!artists || artists.length === 0) return null;
   return (
-    <section className="w-full bg-black py-12 sm:py-16 md:py-20 lg:py-24">
+    <section className="w-full bg-black pb-[44px] pt-[52px] sm:py-16 md:py-20 lg:min-h-[615px] lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
-        <h2 className="text-center font-display text-[clamp(2rem,5vw,4rem)] font-normal leading-tight text-[#F9EDE8]">
+        <h2 className="text-center font-display text-4xl font-normal leading-tight text-[#F9EDE8] lg:text-[64px] lg:leading-tight">
           {heading || t("artistsHeading")}
         </h2>
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-5">
+        <div className="mx-auto mt-8 grid w-[336px] grid-cols-2 gap-x-4 gap-y-[29px] max-w-full sm:mt-10 md:w-full md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-5 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block">
           {artists.slice(0, 6).map((artist, i) => (
             <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
           ))}

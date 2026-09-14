@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         hostname: "*.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      {
+        protocol: "https",
+        hostname: "cms-drab-eight.vercel.app",
+        pathname: "/assets/**",
+      },
     ],
     formats: ["image/avif", "image/webp"],
     // The default 75 visibly softens the portrait and cover photography the design

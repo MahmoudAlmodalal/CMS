@@ -46,13 +46,30 @@ export function ArtistsGrid({
     );
   }
 
+  // Two rows is the design's own split of the eight artists: Frame 40 is 387x900
+  // holding two rows of 355x442 sixteen apart. Each row is a horizontal RTL
+  // carousel; above lg the rows flatten away so the cards are grid children again.
+  const half = Math.ceil(artists.length / 2);
+  const rows = [artists.slice(0, half), artists.slice(half)];
+
   return (
     <div
       data-testid="artists-grid"
-      className={`grid w-full min-w-0 grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 xl:grid-cols-4 ${className}`}
+      className={`flex flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
     >
-      {artists.map((artist, index) => (
-        <ArtistCard key={artist.id || artist.slug} artist={artist} priority={index < 4} />
+      {rows.map((row, rowIndex) => (
+        <div
+          key={rowIndex}
+          className="flex h-[442px] w-full max-w-[355px] snap-x snap-mandatory gap-[10px] overflow-x-auto p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
+        >
+          {row.map((artist, index) => (
+            <ArtistCard
+              key={artist.id || artist.slug}
+              artist={artist}
+              priority={rowIndex === 0 && index < 4}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );

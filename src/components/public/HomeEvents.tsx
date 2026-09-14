@@ -106,7 +106,7 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
           {/* Content column 87:14472 */}
           <div className="contents text-start lg:absolute lg:start-[31.67px] lg:top-[96px] lg:block lg:w-[875.333px]">
             {/* Heading 87:14480 */}
-            <h2 className="order-1 mx-auto h-[64px] w-[326px] pt-[8px] text-start font-display text-[32px] font-normal leading-[32px] text-brand-espresso lg:mx-0 lg:h-[55.6px] lg:w-auto lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
+            <h2 className="order-1 mx-auto mb-4 h-auto min-h-[64px] w-[326px] max-w-full pt-[8px] text-start font-display text-[32px] font-normal leading-[32px] text-brand-espresso lg:mx-0 lg:mb-0 lg:h-[55.6px] lg:w-auto lg:min-h-0 lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
               {heading || t("eventsHeading")}
             </h2>
 

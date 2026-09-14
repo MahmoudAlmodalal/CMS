@@ -355,6 +355,20 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 /** One settings query per request (metadata + layout + page share it). */
 const getSiteSettingsForLocale = cache(async (): Promise<SiteSettings> => {
   const settings = { ...(await getSiteSettingsRaw()) };
+  // A row from a database that predates the page-controls migration carries no
+  // show_* columns. A missing flag means "visible" (the historic `!== false`
+  // semantics) — only an explicit false hides a band.
+  for (const flag of [
+    "show_hero",
+    "show_about",
+    "show_featured_artists",
+    "show_testimonials",
+    "show_editorial",
+    "show_events",
+    "show_booking_banner",
+  ] as const) {
+    settings[flag] = settings[flag] ?? true;
+  }
   if ((await getContentLocale()) !== "ar") {
     const row = settings as unknown as Record<string, unknown>;
     for (const field of LOCALIZED_FIELDS.site_settings) {

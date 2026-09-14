@@ -53,13 +53,13 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
 
       <div className="absolute inset-x-0 bottom-10 flex flex-col items-center gap-5 px-5 sm:bottom-16 lg:inset-0 lg:bottom-auto lg:block lg:gap-0 lg:px-0">
         {/* Heading 1 — 134:4634 */}
         <div className="flex w-full flex-col items-center lg:absolute lg:inset-x-0 lg:top-[241px]">
-          <div className="flex flex-col items-center text-center lg:items-start lg:pb-[20px] lg:text-start">
+          <div className="flex flex-col items-center text-center lg:items-center lg:pb-[20px] lg:text-center">
             <h1 className="font-display text-[32px] leading-tight text-brand-surface sm:text-[40px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[44px]">
               {artist.name}
             </h1>

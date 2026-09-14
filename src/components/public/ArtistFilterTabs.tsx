@@ -51,7 +51,7 @@ export function ArtistFilterTabs({
       <div
         role="tablist"
         aria-orientation="horizontal"
-        className="flex w-full flex-wrap items-center justify-start gap-2 rounded-[16px] border-y-[0.667px] border-[rgba(236,230,208,0.07)] bg-white/80 px-3 py-3 sm:px-6 lg:ms-[88px] lg:w-fit lg:max-w-full lg:py-[13.6px]"
+        className="ms-[-6px] flex h-[66.533px] w-[366px] max-w-none items-center gap-8 overflow-x-auto rounded-[16px] border-y-[0.667px] border-[rgba(236,230,208,0.07)] bg-white/80 px-6 py-[14.267px] lg:ms-[88px] lg:h-auto lg:w-[506px] lg:py-[13.6px]"
       >
         {DISPLAY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;

@@ -1,8 +1,6 @@
 import React from "react";
-import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { localeDirection, type AppLocale } from "@/i18n/routing";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
@@ -60,7 +58,7 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
       </div>
 
       {/* Cards 115:2436…115:2439 */}
-      <div className="mx-auto mt-8 grid w-full max-w-7xl grid-cols-1 gap-5 px-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 md:px-6 xl:mt-12 xl:grid-cols-4 xl:gap-7">
+      <div className="mx-auto mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
         {articles.slice(0, 4).map((article) => {
           return (
             <article
