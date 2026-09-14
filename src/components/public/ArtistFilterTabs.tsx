@@ -12,6 +12,14 @@ import { ARTIST_CATEGORIES } from "@/lib/types/artists";
  */
 const [ALL_CATEGORY, ...REST_CATEGORIES] = ARTIST_CATEGORIES;
 const DISPLAY_CATEGORIES = [ALL_CATEGORY, ...[...REST_CATEGORIES].reverse()];
+const ARTIST_CATEGORY_MESSAGE_KEYS: Record<string, string> = {
+  all: "all",
+  singing: "artistSinging",
+  oud: "artistOud",
+  percussion: "artistPercussion",
+  contemporary: "artistContemporary",
+  heritage: "artistHeritage",
+};
 
 export interface ArtistFilterTabsProps {
   activeCategory: string;
@@ -45,6 +53,7 @@ export function ArtistFilterTabs({
   allLabel,
 }: ArtistFilterTabsProps) {
   const t = useTranslations("artists");
+  const c = useTranslations("categories");
 
   return (
     <nav aria-label={t("filterTabs")} className={`w-full ${className}`}>
@@ -55,7 +64,10 @@ export function ArtistFilterTabs({
       >
         {DISPLAY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
-          const label = cat.id === "all" && allLabel?.trim() ? allLabel.trim() : cat.label;
+          const label =
+            cat.id === "all" && allLabel?.trim()
+              ? allLabel.trim()
+              : c(ARTIST_CATEGORY_MESSAGE_KEYS[cat.id]);
 
           return (
             <button

@@ -25,7 +25,7 @@ export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
     const { data, error } = await supabase
       .from("academy_courses")
       .select(
-        "id, title, slug, track_category, description, instructor_name, instructor_id, image_url, display_order, is_published, created_at, updated_at"
+        "id, title, title_en, slug, track_category, track_category_en, description, description_en, instructor_name, instructor_name_en, instructor_id, image_url, display_order, is_published, created_at, updated_at"
       )
       .eq("is_published", true)
       .order("display_order", { ascending: true });
@@ -72,6 +72,6 @@ export async function getAcademyCourseBySlug(slug: string): Promise<AcademyCours
     return localizeContent("academy_courses", data as unknown as AcademyCourse);
   } catch {
     const fallback = USE_DEMO_CONTENT ? findCanonicalAcademyCourse(slug) : null;
-    return (fallback || null);
+    return fallback ? localizeContent("academy_courses", fallback) : null;
   }
 }

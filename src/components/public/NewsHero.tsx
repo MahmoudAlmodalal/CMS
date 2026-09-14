@@ -60,23 +60,23 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
           className="absolute inset-x-0 top-0 h-full bg-linear-to-t from-brand-espresso/95 via-brand-espresso/45 to-transparent lg:top-[101px] lg:h-[668px]"
         />
 
-        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 lg:h-[178px] lg:w-[660px] lg:px-0 lg:left-[677px]">
+        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 min-[1440px]:h-[178px] min-[1440px]:w-[660px] min-[1440px]:px-0 min-[1440px]:left-[677px]">
           <h1
             id="featured-news-heading"
-            className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] lg:absolute lg:left-8 lg:top-[66px] lg:w-[660px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[40px]"
+            className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] min-[1440px]:absolute min-[1440px]:left-8 min-[1440px]:top-[66px] min-[1440px]:w-[660px] min-[1440px]:whitespace-nowrap min-[1440px]:text-[48px] min-[1440px]:leading-[40px]"
           >
             <Link href={`/news/${primaryArticle.slug}`} className="hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary">
               {primaryArticle.title}
             </Link>
           </h1>
-          <p className="mt-3 text-start text-sm leading-[24px] text-tint-hero sm:text-base lg:absolute lg:left-8 lg:top-[130px] lg:mt-0 lg:w-[660px] lg:overflow-hidden lg:whitespace-nowrap">
+          <p className="mt-3 text-start text-sm leading-[24px] text-tint-hero sm:text-base min-[1440px]:absolute min-[1440px]:left-8 min-[1440px]:top-[130px] min-[1440px]:mt-0 min-[1440px]:w-[660px] min-[1440px]:overflow-hidden min-[1440px]:whitespace-nowrap">
             {primaryArticle.excerpt}
           </p>
         </div>
       </div>
 
       {secondaryArticles.length > 0 && (
-        <div className="relative mx-auto mt-4 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card lg:absolute lg:left-[130px] lg:top-[229px] lg:mt-0 lg:w-[392px]">
+        <div className="relative mx-auto mt-4 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px]">
           <div className="flex flex-col gap-6">
             {secondaryArticles.map((article) => (
               <Link

@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Event } from "@/lib/dal/events";
 import { SafeImage } from "@/components/ui/SafeImage";
@@ -79,13 +79,15 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
   const t = useTranslations("home");
   const ev = useTranslations("event");
   const c = useTranslations("categories");
+  const locale = useLocale();
 
   if (!events || events.length === 0) {
     return null;
   }
 
-  const day = new Intl.DateTimeFormat("ar-EG", { day: "numeric", timeZone: "UTC" });
-  const month = new Intl.DateTimeFormat("ar-EG", { month: "long", timeZone: "UTC" });
+  const dateLocale = locale === "ar" ? "ar-EG" : "en-GB";
+  const day = new Intl.DateTimeFormat(dateLocale, { day: "numeric", timeZone: "UTC" });
+  const month = new Intl.DateTimeFormat(dateLocale, { month: "long", timeZone: "UTC" });
 
   return (
     <section className="relative flex w-full flex-col overflow-hidden bg-brand-cream pb-[54px] pt-[48px] lg:block lg:h-[678px] lg:py-0">
@@ -189,4 +191,3 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
     </section>
   );
 }
-

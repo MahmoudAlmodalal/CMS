@@ -295,16 +295,20 @@ test("Figma 91:17296 — News page geometry matches the frame", () => {
   // Band 91:17298 is full-bleed and exactly 668 tall; the navbar floats over it.
   assert.match(hero, /lg:h-\[668px\]/, "Hero band must be 668px tall on desktop");
   // Headline block 91:17299: left 677, right 103, bottom 15, height 178.
-  assert.match(hero, /lg:start-\[103px\]/, "Headline block must be inset 103px from the inline end");
-  assert.match(hero, /lg:w-\[660px\]/, "Headline block must be 660px wide");
-  assert.match(hero, /lg:h-\[178px\]/, "Headline block must be 178px tall");
+  // Artboard geometry applies only at the 1440 artboard width; below it the block
+  // is fluid so the nowrap headline cannot run off tablet screens.
+  const xl = "min-\\[1440px\\]:";
+  assert.match(hero, new RegExp(`${xl}left-\\[677px\\]`), "Headline block must sit at left 677");
+  assert.match(hero, new RegExp(`${xl}w-\\[660px\\]`), "Headline block must be 660px wide");
+  assert.match(hero, new RegExp(`${xl}h-\\[178px\\]`), "Headline block must be 178px tall");
   assert.match(hero, /bottom-\[15px\]/, "Headline block must sit 15px off the band's bottom");
-  assert.match(hero, /lg:top-\[66px\]/, "Heading 91:17303 must sit at +66 in the block");
-  assert.match(hero, /lg:top-\[130px\]/, "Standfirst 91:17305 must sit at +130 in the block");
+  assert.match(hero, new RegExp(`${xl}top-\\[66px\\]`), "Heading 91:17303 must sit at +66 in the block");
+  assert.match(hero, new RegExp(`${xl}top-\\[130px\\]`), "Standfirst 91:17305 must sit at +130 in the block");
   // Both lines are nowrap; only the standfirst clips where it runs past its box.
-  assert.match(hero, /lg:overflow-hidden lg:whitespace-nowrap/, "Standfirst must clip, not wrap");
+  assert.match(hero, new RegExp(`${xl}overflow-hidden ${xl}whitespace-nowrap`), "Standfirst must clip, not wrap");
+  assert.doesNotMatch(hero, /lg:(left-\[677px\]|whitespace-nowrap)/, "Artboard geometry must not apply at tablet widths");
   // Floating card 91:17307 is physically left in both directions.
-  assert.match(hero, /lg:left-\[130px\] lg:top-\[229px\]/, "Floating card must sit at left 130 / top 229");
+  assert.match(hero, new RegExp(`${xl}left-\\[130px\\] ${xl}top-\\[229px\\]`), "Floating card must sit at left 130 / top 229");
 
   // Section 91:17798 is 1208 wide, 103 from the inline end — deliberately off-centre.
   assert.match(page, /lg:ms-\[103px\] lg:w-\[1208px\]/, "Grid section must be 1208 wide at 103 from the inline end");

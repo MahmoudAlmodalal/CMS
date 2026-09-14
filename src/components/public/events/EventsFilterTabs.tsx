@@ -5,6 +5,14 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { CATEGORY_TABS, type CategoryFilterId } from "@/lib/types/events";
 
+const EVENT_CATEGORY_MESSAGE_KEYS: Record<CategoryFilterId, string> = {
+  all: "eventAll",
+  concert: "eventConcert",
+  festival: "eventFestival",
+  evening: "eventEvening",
+  workshop: "eventWorkshop",
+};
+
 export interface EventsFilterTabsProps {
   activeCategory: CategoryFilterId;
   onSelectCategory: (category: CategoryFilterId) => void;
@@ -37,6 +45,7 @@ export function EventsFilterTabs({
   allLabel,
 }: EventsFilterTabsProps) {
   const t = useTranslations("events");
+  const c = useTranslations("categories");
 
   return (
     <div
@@ -53,7 +62,10 @@ export function EventsFilterTabs({
     >
       {CATEGORY_TABS.map((tab) => {
         const isActive = activeCategory === tab.id;
-        const label = tab.id === "all" && allLabel?.trim() ? allLabel.trim() : tab.label;
+        const label =
+          tab.id === "all" && allLabel?.trim()
+            ? allLabel.trim()
+            : c(EVENT_CATEGORY_MESSAGE_KEYS[tab.id]);
         return (
           <button
             key={tab.id}

@@ -20,7 +20,7 @@ export function Bdi({
   dir?: "ltr" | "rtl" | "auto";
 }) {
   return (
-    <bdi dir={dir} className={`inline-block ${className}`}>
+    <bdi dir={dir ?? "auto"} className={`inline-block ${className}`}>
       {children}
     </bdi>
   );
@@ -192,7 +192,7 @@ export function MixedText({
   className?: string;
 }) {
   return (
-    <span className={`inline ${className}`}>
+    <span dir="auto" className={`bdi-isolate inline ${className}`}>
       <span>{arabicLead}</span>{" "}
       <bdi dir="ltr" className="font-semibold text-brand-primary">
         {`"${latinPhrase}"`}

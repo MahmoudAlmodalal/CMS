@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { getContentLocale, localizeContent, LOCALIZED_FIELDS } from "./localize";
+import type { AppLocale } from "@/i18n/routing";
 
 export interface SiteSettings {
   id: string;
@@ -349,11 +350,12 @@ const EMPTY_SITE_SETTINGS: SiteSettings = {
  * Falls back to DEFAULT_SITE_SETTINGS if not found or on connection error.
  */
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return localizeContent("site_settings", await getSiteSettingsForLocale());
+  const locale = await getContentLocale();
+  return localizeContent("site_settings", await getSiteSettingsForLocale(locale));
 }
 
 /** One settings query per request (metadata + layout + page share it). */
-const getSiteSettingsForLocale = cache(async (): Promise<SiteSettings> => {
+const getSiteSettingsForLocale = cache(async (locale: AppLocale): Promise<SiteSettings> => {
   const settings = { ...(await getSiteSettingsRaw()) };
   // A row from a database that predates the page-controls migration carries no
   // show_* columns. A missing flag means "visible" (the historic `!== false`
@@ -369,7 +371,7 @@ const getSiteSettingsForLocale = cache(async (): Promise<SiteSettings> => {
   ] as const) {
     settings[flag] = settings[flag] ?? true;
   }
-  if ((await getContentLocale()) !== "ar") {
+  if (locale !== "ar") {
     const row = settings as unknown as Record<string, unknown>;
     for (const field of LOCALIZED_FIELDS.site_settings) {
       const english = row[`${field}_en`];

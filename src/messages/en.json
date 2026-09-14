@@ -110,6 +110,13 @@
     "bookingRegion": "Book Andalusia"
   },
   "categories": {
+    "all": "All",
+    "artistSinging": "Singing",
+    "artistOud": "Oud & music",
+    "artistPercussion": "Percussion",
+    "artistContemporary": "Contemporary",
+    "artistHeritage": "Heritage",
+    "articleAll": "All",
     "articleCulture": "Culture & ideas",
     "articleArtists": "Artist interviews",
     "articleAcademy": "Teaching & heritage",
@@ -123,7 +130,8 @@
     "eventShortConcert": "Concert",
     "eventShortFestival": "Festival",
     "eventShortEvening": "Evening",
-    "eventShortWorkshop": "Workshop"
+    "eventShortWorkshop": "Workshop",
+    "eventAll": "All"
   },
   "artists": {
     "kicker": "Artist directory",
