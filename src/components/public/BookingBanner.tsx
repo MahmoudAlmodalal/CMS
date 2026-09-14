@@ -80,6 +80,10 @@ export function BookingBanner({
   const title = headline || settings?.booking_banner_title || t("bookingHeadingFallback");
   const copy = body || settings?.booking_banner_body || t("bookingBodyFallback");
   const cta = ctaLabel?.trim() || settings?.booking_cta_label?.trim() || t("bookingCta");
+  const configuredBookingHref = ctaHref || settings?.booking_cta_href || "/booking";
+  // Booking CTAs must stay inside the localized app. A stale CMS value such as
+  // andalusia.art would otherwise send visitors to an unresolvable host.
+  const bookingHref = configuredBookingHref.startsWith("/") ? configuredBookingHref : "/booking";
 
   return (
     <section
@@ -141,7 +145,7 @@ export function BookingBanner({
           style={{ top: `${v.ctaTop}px` }}
         >
           <Link
-            href={ctaHref || settings?.booking_cta_href || "/booking"}
+            href={bookingHref}
             className={`inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
             style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
           >

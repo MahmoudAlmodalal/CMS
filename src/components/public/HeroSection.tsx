@@ -39,6 +39,8 @@ function isVideoUrl(url: string | null | undefined): boolean {
 
 export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: HeroSectionProps) {
   const t = useTranslations("home");
+  const configuredSecondaryHref = settings.home_hero_secondary_href || "/booking";
+  const secondaryHref = configuredSecondaryHref.startsWith("/") ? configuredSecondaryHref : "/booking";
   const heroUrl = settings.hero_image_url;
   const isVideo = isVideoUrl(heroUrl);
 
@@ -92,7 +94,12 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             </PublicButton>
 
             {/* Outline secondary (Figma component 115:1091, fixed 207x48) */}
-            <PublicButton href={settings.home_hero_secondary_href || "/booking"} variant="secondary" size="md" expandOnHover={false}>
+            <PublicButton
+              href={secondaryHref}
+              variant="secondary"
+              size="md"
+              expandOnHover={false}
+            >
               {secondaryCtaLabel || t("heroSecondaryCta")}
             </PublicButton>
           </div>
