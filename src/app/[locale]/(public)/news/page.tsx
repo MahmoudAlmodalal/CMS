@@ -84,7 +84,7 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
           2102.5, so 60.5 closes the band. The 24 of side padding is what makes the
           grid the 342 the frame draws; there is no tablet frame to step it up at
           sm:, so it holds until the 1440 one takes over. */}
-      <div className="mx-auto w-full max-w-[1440px] px-6 pb-[60.5px] pt-[47px] lg:px-0 lg:pb-[151.5px] lg:pt-[240px]">
+      <div className="mx-auto w-full max-w-[1440px] px-4 pb-[60.5px] pt-[47px] sm:px-6 lg:px-0 lg:pb-[151.5px] lg:pt-[240px]">
         <div className="w-full lg:ms-[103px] lg:w-[1208px] lg:max-w-[calc(100%-103px)]">
           <NewsGrid
             articles={gridArticles}
