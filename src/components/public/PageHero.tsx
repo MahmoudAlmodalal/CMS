@@ -62,7 +62,7 @@ export function PageHero({
       // The 500 that used to sit at sm: was invented — Figma has no tablet frame —
       // so the band holds its measured 390 height until the 1440 one takes over,
       // rather than passing through a figure no frame declares.
-      className="relative isolate flex min-h-[clamp(18rem,70svh,38rem)] w-full items-end overflow-hidden bg-brand-espresso py-12 text-white sm:min-h-[clamp(20rem,65svh,42rem)] lg:min-h-[clamp(30rem,70svh,38rem)] lg:items-start lg:py-0"
+      className="relative isolate flex min-h-[clamp(18rem,70svh,38rem)] w-full items-center overflow-hidden bg-brand-espresso py-12 text-white sm:min-h-[clamp(20rem,65svh,42rem)] lg:min-h-[clamp(30rem,70svh,38rem)] lg:items-start lg:py-0"
       style={
         {
           "--hero-height": `${height}px`,
@@ -78,7 +78,7 @@ export function PageHero({
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
 
       {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at

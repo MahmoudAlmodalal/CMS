@@ -68,7 +68,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             so a two-line heading grew the whole row to 445px instead of 423.5 and
             pushed each card's rows out of alignment with its neighbours (headings
             landed at y=1166 and y=1176 in the same row). */}
-        <div className="flex flex-1 flex-col p-6 text-start">
+        <div className="flex flex-1 flex-col p-6 text-start lg:pt-7">
           <span className="shrink-0 pb-2 text-[13px] font-bold leading-[19.5px] text-eyebrow">
             {getNewsCardCategoryLabel(article.category)}
           </span>

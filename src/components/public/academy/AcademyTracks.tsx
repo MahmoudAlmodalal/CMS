@@ -43,8 +43,10 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
     <section
       id="tracks"
       aria-labelledby="academy-tracks-heading"
-      className="relative w-full pb-[31.16px] pt-[243px] lg:pb-0 lg:pt-[102px]"
+      className="relative w-full pb-[31.16px] pt-12 lg:pb-0 lg:pt-[102px]"
     >
+      {/* Responsive override: Figma's 243px mobile gap assumed the hero fills the
+          full 490 band; real hero content ends higher, so 48px closes the hole. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-[228px] hidden h-[112px] w-[74px] bg-[url('/assets/branding/dots-start.png')] bg-contain bg-no-repeat lg:block"

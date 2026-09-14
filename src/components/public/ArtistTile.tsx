@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/types/artists";
@@ -38,7 +37,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
     <Link
       href={`/artists/${artist.slug}`}
       data-testid={`artist-tile-${artist.slug}`}
-      className="group relative block aspect-[160/239] w-full min-w-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:aspect-[220/293]"
+      className="group relative block h-[239px] w-[160px] min-w-0 shrink-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:h-[293px] lg:w-[220px]"
       aria-label={t("viewProfile", { name: artist.name })}
     >
       <SafeImage
@@ -56,7 +55,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,16,10,0.92)_0%,rgba(23,16,10,0)_55%)] pointer-events-none" />
 
       {/* Text block 87:14245 — placed at 208.54, padded 20. */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-3 text-start sm:p-4 lg:p-5">
+      <div className="absolute inset-x-0 bottom-0 top-[163px] flex flex-col items-start overflow-hidden p-3 text-start sm:p-4 lg:top-[208px] lg:p-5">
         {/* 87:14246 */}
         <p className="w-full truncate font-sans text-[16.8px] font-bold leading-[25.2px] text-[#F0EBE1]">
           {artist.name}

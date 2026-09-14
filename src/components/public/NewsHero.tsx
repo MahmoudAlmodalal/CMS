@@ -78,7 +78,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
       </div>
 
       {secondaryArticles.length > 0 && (
-        <div className="relative mx-auto -mt-16 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card lg:absolute lg:left-[130px] lg:top-[229px] lg:mt-0 lg:w-[392px]">
+        <div className="relative mx-auto mt-4 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card lg:absolute lg:left-[130px] lg:top-[229px] lg:mt-0 lg:w-[392px]">
           <div className="flex flex-col gap-6">
             {secondaryArticles.map((article) => (
               <Link
@@ -96,7 +96,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-1 pb-1 text-end">
+                <div className="flex flex-col gap-1 pb-1 pt-1 text-end lg:pt-2">
                   <span className="text-[13px] font-bold leading-[19.5px] text-eyebrow">
                     {getArticleCategoryLabel(article.category)}
                   </span>

@@ -69,6 +69,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
     getSiteSettings(),
     getTranslations("events"),
   ]);
+  const resolvedFeaturedEvent = featuredEvent || events[0] || null;
 
   return (
     <div className="flex w-full flex-col bg-brand-cream">
@@ -112,7 +113,7 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
           <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
             <EventsCatalogView
               initialEvents={events}
-              featuredEvent={featuredEvent}
+              featuredEvent={resolvedFeaturedEvent}
               initialCategory={requestedCategory}
               allLabel={settings.events_filter_all_label}
             />

@@ -43,7 +43,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
   const isVideo = isVideoUrl(heroUrl);
 
   return (
-    <section className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso py-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:py-28 lg:min-h-[min(100svh,46.25rem)] lg:py-32">
+    <section className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso py-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:py-28 lg:h-[740px] lg:min-h-0 lg:py-0">
       {/* Background Stage Video/Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {isVideo ? (
@@ -75,12 +75,12 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       <Container className="relative z-10 w-full">
         <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
-          <h1 className="font-display text-[clamp(1.75rem,5vw,4rem)] font-normal leading-[1.3] text-[#EFEBD9]">
+          <h1 className="font-display text-[40px] font-normal leading-[55px] text-[#EFEBD9] lg:text-[64px] lg:leading-[93px]">
             <Highlight text={settings.hero_headline} />
           </h1>
 
           {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
-          <p className="max-w-[693px] text-[clamp(0.9375rem,2vw,1.5625rem)] font-medium leading-relaxed text-[#EFEBD9]">
+          <p className="max-w-[693px] text-[16px] font-medium leading-[37.5px] text-[#EFEBD9] lg:text-[25px]">
             {settings.hero_subheadline}
           </p>
 

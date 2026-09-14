@@ -44,10 +44,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
   }).format(new Date(event.event_date));
   const dateLocationString = `${formattedDate} · ${event.city}`;
 
-  const cover = event.image_url;
   const bookingHref = `/booking?event_id=${event.id}`;
-  const actionHref = event.ticket_url?.trim() || bookingHref;
-  const isExternalTicket = Boolean(event.ticket_url?.trim());
 
   return (
     <article
@@ -61,7 +58,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
 
       <div className="relative aspect-[503/397] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
         <SafeImage
-          src={cover}
+          src={event.image_url}
           alt={event.title}
           fill
           priority
@@ -91,16 +88,13 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
 
         <div className="relative mt-auto h-[45.594px] w-full">
           <Link
-            href={actionHref}
-            target={isExternalTicket ? "_blank" : undefined}
-            rel={isExternalTicket ? "noopener noreferrer" : undefined}
+            href={bookingHref}
             className="absolute left-1/2 top-[0.2px] flex h-11 w-full max-w-[341px] -translate-x-1/2 items-center justify-center rounded-[16px] bg-primary-500 text-[16px] font-bold leading-[24px] text-primary-50 transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-tint"
           >
-            {isExternalTicket ? t("bookTicket") : t("bookNow")}
+            {t("bookNow")}
           </Link>
         </div>
       </div>
     </article>
   );
 }
-

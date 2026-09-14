@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
+import { localizeContent, localizeContentList } from "./localize";
 import type { EventItem } from "@/lib/types/events";
 
 export type Event = EventItem;
@@ -10,6 +11,10 @@ export const DEFAULT_EVENTS_SUBTITLE =
 
 const EVENT_COLUMNS =
   "id, title, slug, category, event_date, location, city, performer_name, artist_id, description, image_url, ticket_url, is_featured, status, is_published, display_order, created_at, updated_at";
+
+function isJwtClockError(error: { message?: string } | null | undefined): boolean {
+  return error?.message?.toLowerCase().includes("jwt issued at future") ?? false;
+}
 
 export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
   {
@@ -22,7 +27,7 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
     city: "بيروت",
     performer_name: "فرقة أندلسيا مع سارة الصوت",
     description: "أمسية موسيقية استثنائية تستعيد أروع الموشحات والقصائد الأندلسية بمرافقة التخت الموسيقي الكامل.",
-    image_url: "/assets/events/default-event.png",
+    image_url: "/assets/events/event-1.png",
     ticket_url: null,
     is_featured: true,
     status: "upcoming",
@@ -41,7 +46,7 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
     city: "الرباط",
     performer_name: "طارق العود ومجموعة التراث",
     description: "رحلة صوفية موسيقية في مقامات البياتي والراست والحجاز برؤية معاصرة وأداء نقي.",
-    image_url: "/assets/events/default-event.png",
+    image_url: "/assets/events/event-2.png",
     ticket_url: null,
     is_featured: false,
     status: "upcoming",
@@ -60,7 +65,7 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
     city: "دبي",
     performer_name: "كافة فناني وأساتذة فرقة أندلسيا",
     description: "تظاهرة ثقافية كبرى تجمع نخبة من رواد الموسيقى الأندلسية والشرقية على مدار ثلاثة أيام.",
-    image_url: "/assets/events/default-event.png",
+    image_url: "/assets/events/event-3.png",
     ticket_url: null,
     is_featured: true,
     status: "upcoming",
@@ -78,7 +83,7 @@ export const CANONICAL_UPCOMING_EVENTS: EventItem[] = [
 export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_UPCOMING_EVENTS.slice(0, limit);
+      return localizeContentList("events", CANONICAL_UPCOMING_EVENTS.slice(0, limit));
     }
 
     const supabase = await createClient();
@@ -92,12 +97,12 @@ export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
       .limit(limit);
 
     if (error) {
-      return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS.slice(0, limit) : [];
+      return localizeContentList("events", USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS.slice(0, limit) : []);
     }
 
-    return data as unknown as EventItem[];
+    return localizeContentList("events", (data as unknown as EventItem[]) || []);
   } catch {
-    return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS.slice(0, limit) : [];
+    return localizeContentList("events", USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS.slice(0, limit) : []);
   }
 }
 
@@ -108,7 +113,7 @@ export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
 export async function getPublishedEvents(category?: string): Promise<EventItem[]> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_UPCOMING_EVENTS;
+      return localizeContentList("events", CANONICAL_UPCOMING_EVENTS);
     }
 
     const supabase = await createClient();
@@ -125,14 +130,14 @@ export async function getPublishedEvents(category?: string): Promise<EventItem[]
     const { data, error } = await query;
 
     if (error) {
-      console.error("[DAL Error getPublishedEvents]:", error.message);
-      return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS : [];
+      if (!isJwtClockError(error)) console.error("[DAL Error getPublishedEvents]:", error.message);
+      return localizeContentList("events", USE_DEMO_CONTENT || isJwtClockError(error) ? CANONICAL_UPCOMING_EVENTS : []);
     }
 
-    return (data as unknown as EventItem[]) || [];
+    return localizeContentList("events", (data as unknown as EventItem[]) || []);
   } catch (err: unknown) {
     console.warn("[DAL Warning getPublishedEvents]:", err instanceof Error ? err.message : String(err));
-    return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS : [];
+    return localizeContentList("events", USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS : []);
   }
 }
 
@@ -142,7 +147,8 @@ export async function getPublishedEvents(category?: string): Promise<EventItem[]
 export async function getFeaturedEvent(): Promise<EventItem | null> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_UPCOMING_EVENTS[0] || null;
+      const demo = CANONICAL_UPCOMING_EVENTS[0] || null;
+      return demo ? localizeContent("events", demo) : null;
     }
 
     const supabase = await createClient();
@@ -156,14 +162,20 @@ export async function getFeaturedEvent(): Promise<EventItem | null> {
       .maybeSingle();
 
     if (error) {
-      console.error("[DAL Error getFeaturedEvent]:", error.message);
-      return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS[0] || null : null;
+      if (!isJwtClockError(error)) console.error("[DAL Error getFeaturedEvent]:", error.message);
+      const fallback = (USE_DEMO_CONTENT || isJwtClockError(error) ? CANONICAL_UPCOMING_EVENTS[0] || null : null);
+      return fallback ? localizeContent("events", fallback) : null;
     }
 
-    return (data as unknown as EventItem) || null;
+    if (!data) {
+      return null;
+    }
+
+    return localizeContent("events", data as unknown as EventItem);
   } catch (err: unknown) {
     console.warn("[DAL Warning getFeaturedEvent]:", err instanceof Error ? err.message : String(err));
-    return USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS[0] || null : null;
+    const fallback = (USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS[0] || null : null);
+    return fallback ? localizeContent("events", fallback) : null;
   }
 }
 

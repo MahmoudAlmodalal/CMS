@@ -93,7 +93,7 @@ export default async function HomePage({
   return (
     <>
       {/* Stage 1: Hero Banner (Figma Component 20, 740px) */}
-      {settings.show_hero !== false && (
+      {settings.show_hero && (
         <HeroSection
           settings={settings}
           primaryCtaLabel={settings.home_hero_primary_cta || undefined}
@@ -102,14 +102,14 @@ export default async function HomePage({
       )}
 
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
-      {settings.show_about !== false && (
+      {settings.show_about && (
         <div className="lg:-mt-[22px]">
           <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
         </div>
       )}
 
       {/* Stage 3: Featured Artists Rail (Figma Frame 14, 615px, #000000, 220x293 tiles) */}
-      {settings.show_featured_artists !== false && (
+      {settings.show_featured_artists && (
         <div className="lg:mt-[22px]">
           <FeaturedArtists
             artists={artists}

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { type Artist } from "@/lib/types/artists";
@@ -36,14 +35,14 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`group flex min-w-0 w-full flex-col overflow-hidden rounded-[16px] bg-white text-start ${className}`}
+      className={`group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start ${className}`}
     >
       <Link
         href={`/artists/${artist.slug}`}
         aria-label={a("viewProfile", { name: artist.name })}
-        className="flex flex-1 flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+        className="flex h-full w-full flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
-        <div className="relative aspect-[3/4] w-full overflow-hidden bg-brand-espresso">
+        <div className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-espresso">
           <SafeImage
             src={portrait}
             alt={a("portraitAlt", { name: artist.name })}
@@ -57,7 +56,7 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
           />
         </div>
 
-        <div className="min-h-[108px] p-3 sm:p-5">
+        <div className="h-[134px] shrink-0 p-5">
           <p className="text-[13px] font-medium leading-[19.5px] text-brand-primary">
             {artist.genre_tag}
           </p>

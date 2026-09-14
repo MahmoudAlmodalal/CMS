@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
+import { localizeContent, localizeContentList } from "./localize";
 import type { Database } from "@/lib/supabase/types";
 import {
   type Artist,
@@ -47,7 +48,7 @@ export async function getAdminArtists(): Promise<Artist[]> {
 export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_FEATURED_ARTISTS.slice(0, limit);
+      return localizeContentList("artists", CANONICAL_FEATURED_ARTISTS.slice(0, limit));
     }
 
     const supabase = await createClient();
@@ -61,12 +62,12 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
       .limit(limit);
 
     if (error) {
-      return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : [];
+      return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : []);
     }
 
-    return data as unknown as Artist[];
+    return localizeContentList("artists", (data as unknown as Artist[]) || []);
   } catch {
-    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : [];
+    return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.slice(0, limit) : []);
   }
 }
 
@@ -74,12 +75,10 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
  * Fetches all published artists from Supabase ordered by display_order ASC, name ASC.
  * Draft artists (is_published = false) are never returned.
  */
-export async function getPublishedArtists(options?: {
-  category?: string;
-}): Promise<Artist[]> {
+export async function getPublishedArtists(options?: { category?: string }): Promise<Artist[]> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_FEATURED_ARTISTS;
+      return localizeContentList("artists", CANONICAL_FEATURED_ARTISTS);
     }
 
     const supabase = await createClient();
@@ -104,13 +103,13 @@ export async function getPublishedArtists(options?: {
 
     if (error) {
       console.error("DAL Error [getPublishedArtists]:", error.message);
-      return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : [];
+      return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : []);
     }
 
-    return (data as unknown as Artist[]) || [];
+    return localizeContentList("artists", (data as unknown as Artist[]) || []);
   } catch (err) {
     console.warn("DAL Warning [getPublishedArtists]: Failed to fetch artists", err);
-    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : [];
+    return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : []);
   }
 }
 
@@ -121,7 +120,8 @@ export async function getPublishedArtists(options?: {
 export async function getArtistBySlug(slug: string): Promise<Artist | null> {
   try {
     if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-      return CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
+      const demo = CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null;
+      return demo ? localizeContent("artists", demo) : null;
     }
 
     const supabase = await createClient();
@@ -136,8 +136,8 @@ export async function getArtistBySlug(slug: string): Promise<Artist | null> {
       return null;
     }
 
-    return data as unknown as Artist;
+    return localizeContent("artists", data as unknown as Artist);
   } catch {
-    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null : null;
+    return (USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS.find((a) => a.slug === slug) || null : null);
   }
 }

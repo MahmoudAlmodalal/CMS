@@ -5,7 +5,10 @@
    immediately; until then the browser silently falls through to Cairo via --font-display. */
 @font-face {
   font-family: "Qahwa Arabic";
-  src: local("Qahwa Arabic"), url("/assets/fonts/qahwa-arabic.woff2") format("woff2");
+  src: local("Qahwa Arabic"),
+       url("/assets/fonts/qahwa-arabic.woff2") format("woff2"),
+       url("/assets/fonts/qahwa-arabic.woff") format("woff"),
+       url("/assets/fonts/Qahwa-Arabic.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;

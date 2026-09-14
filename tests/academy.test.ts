@@ -322,7 +322,7 @@ test("الأكاديمية — the 390 frame's bands", () => {
   assert.match(page, /mobileHeight=\{490\}/, "The academy hero band is 490 on the 390 frame");
 
   // Tracks: heading at (52,733) on a 286 measure, container at (10,863) 362 wide.
-  assert.match(tracks, /pb-\[31\.16px\] pt-\[243px\]/, "243 opens the band and 31.16 closes it");
+  assert.match(tracks, /pb-\[31\.16px\] pt-12/, "48px opens the band on mobile (Figma 243 reduced — hero content ends above the 490 band) and 31.16 closes it");
   assert.match(tracks, /lg:pb-0 lg:pt-\[102px\]/, "The 1440 frame's own 102 is untouched");
   assert.match(tracks, /mx-auto w-\[286px\] text-center/, "The heading is centred on a 286 measure");
   assert.match(tracks, /leading-\[49\.5px\]/, "Its two lines make the 99 box the frame draws");

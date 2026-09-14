@@ -120,7 +120,7 @@ export function BookingForm({
       key={submittedAgainKey}
       action={formAction}
       noValidate
-      className="flex w-full min-w-0 flex-col pb-[52.8px] text-start"
+      className="flex w-full flex-col text-start pb-[52.8px] lg:w-[672px]"
     >
       {/* Hidden Event Preselection Linkage */}
       {defaultEventId && <input type="hidden" name="event_id" value={defaultEventId} />}
@@ -162,7 +162,7 @@ export function BookingForm({
           <span>{t("groupPersonal")}</span>
         </legend>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 sm:grid-cols-2 md:grid-cols-[318px_246px]">
           {/* Full Name */}
           <div className="flex flex-col text-start">
             <label htmlFor="full_name" className={LABEL_CLASS}>
@@ -211,7 +211,7 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 md:grid-cols-2 md:pt-[20.3px]">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-4 sm:grid-cols-2 md:grid-cols-[318px_246px] md:pt-[20.3px]">
           {/* Phone Number */}
           <div className="flex flex-col text-start">
             <label htmlFor="phone" className={LABEL_CLASS}>
@@ -266,7 +266,7 @@ export function BookingForm({
           <span>{t("groupOccasion")}</span>
         </legend>
 
-        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+        <div className="grid min-w-0 grid-cols-1 gap-4 pt-6 sm:grid-cols-2 md:grid-cols-[320px_246px]">
           {/* Event Type */}
           <div className="flex flex-col text-start">
             <label htmlFor="event_type" className={LABEL_CLASS}>
