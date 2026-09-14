@@ -44,7 +44,6 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
         >
           {/* Inline Start: language and menu controls stay together. */}
           <div className="flex shrink-0 items-center gap-2">
-            <LocaleSwitcher mobile />
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
@@ -56,6 +55,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
             >
               <MenuIcon size={24} className="size-6" />
             </button>
+            <LocaleSwitcher mobile />
           </div>
 
           {/* Inline End: brand logo, kept outside the controls group so it has a
