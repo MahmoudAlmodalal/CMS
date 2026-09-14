@@ -77,7 +77,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
   };
 
   return (
-    <div className="relative min-w-0 h-[442px] w-full max-w-full overflow-hidden lg:contents">
+    <div className="relative h-[442px] w-full max-w-[355px] min-w-0 mx-auto overflow-hidden isolate lg:contents">
       <div
         ref={rowRef}
         role="region"
