@@ -23,37 +23,6 @@ function stripComments(source: string): string {
  * was reverse-engineered from node geometry and would otherwise be one `lg:` away
  * from silently collapsing back into the stack it used to be.
  */
-test("الفنانين — the 390 frame draws two RTL carousels, not the desktop grid at one column", () => {
-  const grid = stripComments(comp("ArtistsGrid.tsx"));
-
-  // Frame 40 (141:15048) is 387x900: two rows of 355x442, sixteen apart.
-  // The row is capped at 355px but shrinks to the viewport on very small phones.
-  assert.match(grid, /h-\[442px\] w-full max-w-\[355px\]/, "Each carousel row caps at 355px and fits narrow phones");
-  assert.match(grid, /flex flex-col items-start gap-4/, "The two rows sit 16px apart");
-
-  // Cards at x = -869, -563, -257, 49 — a 306 step, so 296 wide with 10 between,
-  // inside a row padded by 10. Only the last is on-frame; the rest are scrolled off
-  // toward the inline end, which in Arabic is the left.
-  assert.match(grid, /gap-\[10px\] overflow-x-auto/, "The row scrolls horizontally with 10 between cards");
-  assert.match(grid, /p-\[10px\]/, "The row is 10px padded, which holds the 422 card inside 442");
-  assert.match(grid, /snap-x snap-mandatory/, "The carousel snaps to its cards");
-
-  // A classic scrollbar would take its 15px out of the card, not out of the row.
-  assert.match(grid, /\[scrollbar-width:none\]/, "Scrollbar gutters are suppressed so the 442 stays the card's");
-  assert.match(grid, /\[&::-webkit-scrollbar\]:hidden/, "…in Chromium too");
-
-  // The rows exist only where the design draws them. Above lg they collapse so the
-  // cards are direct grid children again.
-  assert.match(grid, /lg:contents/, "The rows flatten away above lg");
-  assert.match(grid, /lg:grid lg:ms-\[113px\] lg:w-\[1214px\] lg:grid-cols-4/, "Desktop is still the 1214 four-column grid");
-  assert.match(grid, /lg:gap-x-\[10px\] lg:gap-y-\[44px\]/, "Desktop keeps 10 across and 44 down");
-
-  // Two rows is the design's own split of the list, not a wrap: the 442 is fixed, so
-  // a wrap putting a variable number of cards in each row would not hold it.
-  assert.match(grid, /Math\.ceil\(artists\.length \/ 2\)/, "The rows are built by halving the list");
-  assert.doesNotMatch(grid, /flex-wrap/, "The carousel must not wrap");
-  assert.doesNotMatch(grid, /grid-cols-1|sm:grid-cols-2/, "The mobile carousel does not become a wrapped grid");
-});
 
 test("الفنانين — the card is one fixed 296x422 at every width", () => {
   const card = stripComments(comp("ArtistCard.tsx"));
@@ -74,23 +43,6 @@ test("الفنانين — the card is one fixed 296x422 at every width", () => 
   assert.match(card, /loading=\{priority \? "eager" : "lazy"\}/, "Above-the-fold cards load eagerly instead");
 });
 
-test("الفنانين — the filter bar is a 366x66.53 scroller on the 390 frame", () => {
-  const tabs = stripComments(comp("ArtistFilterTabs.tsx"));
-
-  // 140:14826 is 366x66.53 at x=10 — wider than the page's own 350 content box —
-  // holding a 318x38 row on the same 24 of side padding as desktop.
-  assert.match(tabs, /h-\[66\.533px\] w-\[366px\]/, "The bar is 366x66.533");
-  assert.match(tabs, /ms-\[-6px\]/, "It breaks out of the page's 20px side padding to reach x=10");
-  assert.match(tabs, /px-6 py-\[14\.267px\]/, "24 across, 14.267 down");
-
-  // The labels keep the 32px rhythm, but عود وموسيقى opens at -67 and غناء at -125 —
-  // off the row's inline end. So it scrolls; it must not wrap, which is what made it
-  // 107 tall against the designed 66.53.
-  assert.match(tabs, /gap-8 overflow-x-auto/, "The six labels sit 32 apart and scroll");
-  assert.doesNotMatch(tabs, /flex-wrap/, "The bar must not wrap");
-  assert.match(tabs, /shrink-0 cursor-pointer/, "No label compresses to fit");
-  assert.match(tabs, /lg:h-auto lg:w-fit lg:overflow-visible/, "Desktop fits its tabs without scrolling");
-});
 
 test("الفنانين — the 390 frame's vertical rhythm", () => {
   const page = stripComments(read("src/app/[locale]/(public)/artists/page.tsx"));

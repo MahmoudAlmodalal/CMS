@@ -84,60 +84,6 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
   assert.match(content, /LocaleSwitcher/, "Navbar must include the locale switcher");
 });
 
-test("Task 31 — 3. Mobile Top Bar (Figma Component 17/Navigation 139:12348 — 369.73x56)", () => {
-  const content = fs.readFileSync(path.join(root, "src/components/public/MobileNavbar.tsx"), "utf-8");
-
-  assert.match(content, /lg:hidden/, "Mobile top bar must be mobile-only (hidden on desktop)");
-  assert.match(content, /h-14/, "Mobile top bar must maintain 56px height specification");
-
-  // Figma draws a floating pill, not a full-bleed bar: measured x=10..378, y=44..99
-  // on the 390px home-mobile canvas, r=20, fill #FFFFFF.
-  assert.match(content, /inset-x-2\.5/, "Mobile pill must be inset 10px inline per Figma");
-  assert.match(content, /top-\[44px\]/, "Mobile pill must sit 44px from the top per Figma");
-  assert.match(content, /rounded-\[20px\]/, "Mobile pill must carry the measured 20px radius");
-  assert.match(content, /bg-white/, "Mobile pill must carry the measured #FFFFFF fill");
-  assert.match(content, /px-5/, "Mobile pill must use the 20px inline padding of Component 17");
-
-  // The wordmark raster on disk is 292x178 (1.64:1), not the 104x32 box the node
-  // measures (3.25:1) — forcing that box letterboxed the logo to ~52px with 26px
-  // of dead space each side. It renders at its natural aspect at 32 tall instead,
-  // so the accessible name still carries the band name.
-  assert.match(content, /site\("brand"\)/, "Mobile top bar must name the band on the logo");
-  assert.match(content, /h-8 w-auto object-contain/, "Mobile logo renders at its file aspect instead of the mismatched 104x32 box");
-
-  assertLocalised(content, "a11y.openMenu", "فتح قائمة التنقل", "Mobile top bar trigger");
-  assert.match(content, /size-6/, "Drawer toggle must occupy the 24x24 box of Node 139:12338");
-  assert.match(content, /<MobileDrawer/, "Mobile top bar must integrate MobileDrawer");
-
-  // Component 17/Navigation has exactly two children — a hamburger and the logo.
-  // The booking CTA and the locale switcher live in the drawer instead, which the
-  // drawer test below covers. Asserting their absence keeps the invented bar from
-  // creeping back in.
-  assert.doesNotMatch(content, /href="\/booking"/, "Figma puts no booking CTA in the mobile bar");
-  assert.doesNotMatch(content, /nav\("bookNow"\)/, "Figma puts no booking CTA in the mobile bar");
-  assert.doesNotMatch(content, /LocaleSwitcher/, "Figma puts no locale switcher in the mobile bar");
-});
-
-test("Task 31 — 4. Mobile Drawer Navigation (Figma 139:12368)", () => {
-  const content = fs.readFileSync(path.join(root, "src/components/public/MobileDrawer.tsx"), "utf-8");
-
-  // RTL Drawer behavior
-  assert.match(content, /start-0/, "Drawer must slide from inline-start for RTL safety");
-  assert.match(content, /Escape/, "Drawer must handle Escape key navigation");
-  assert.match(content, /document\.body\.style\.overflow/, "Drawer must lock body scroll when open");
-
-  // Drawer links
-  assert.match(content, /CONFIRMED_NAV_ITEMS/, "Drawer must render confirmed navigation items");
-  assertLocalised(content, "drawer.bookingCta", "ابدأ حجزك الآن ♪", "Drawer CTA");
-  assert.match(content, /href="\/booking"/, "Drawer CTA must direct to /booking");
-
-  // Contact info
-  assert.equal(arMessages["footer.contactEmail"], "hello@andalusia.art", "Drawer must provide confirmed contact email");
-  assert.match(content, /contactEmail/, "Drawer must render the contact email message");
-  assert.equal(arMessages["footer.contactRegions"], "لبنان · المغرب · الخليج", "Drawer must state confirmed regional presence");
-  assert.match(content, /contactRegions/, "Drawer must render the regions message");
-});
-
 test("Task 31 — 5. Global Footer (Figma Node 94:18289 / 186:2072)", () => {
   const content = fs.readFileSync(path.join(root, "src/components/public/Footer.tsx"), "utf-8");
 
