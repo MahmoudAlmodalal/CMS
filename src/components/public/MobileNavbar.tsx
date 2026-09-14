@@ -62,7 +62,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               clear visual anchor in both directions. */}
           <Link
             href="/"
-            className="flex h-12 w-[132px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[152px]"
+            className="-me-5 flex h-12 w-[132px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[152px]"
             aria-label={a11y("brandHome")}
           >
             <Image
