@@ -71,7 +71,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               width={292}
               height={178}
               loading="eager"
-              className="h-16 w-auto shrink-0 object-contain sm:h-[68px]"
+              className="h-16 w-auto shrink-0 translate-y-1 object-contain sm:h-[68px] sm:translate-y-1.5"
             />
           </Link>
         </header>
