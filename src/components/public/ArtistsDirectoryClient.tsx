@@ -75,7 +75,7 @@ export function ArtistsDirectoryClient({
   }, [initialArtists, selectedCategory]);
 
   return (
-    <div className={`flex flex-col items-start gap-[32.467px] lg:items-stretch lg:gap-[41.7px] ${className}`}>
+    <div className={`flex w-full min-w-0 flex-col items-start gap-[32.467px] lg:items-stretch lg:gap-[41.7px] ${className}`}>
       {/* 1. Category Filter Tabs */}
       <ArtistFilterTabs
         activeCategory={selectedCategory}
