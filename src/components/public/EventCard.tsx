@@ -35,8 +35,10 @@ export function EventCard({ event }: EventCardProps) {
   const month = new Intl.DateTimeFormat(dateLocale, { month: "short", timeZone: "UTC" }).format(eventDate);
   const categoryLabel = c(EVENT_CATEGORY_LABEL_KEYS[event.category] ?? "eventFallback");
 
-  const bookingHref = event.ticket_url || `/booking?event_id=${event.id}`;
-  const isExternal = Boolean(event.ticket_url);
+  const ticketUrl = event.ticket_url?.trim();
+  const isLegacyBookingUrl = ticketUrl?.includes("andalusia.art/booking") ?? false;
+  const bookingHref = isLegacyBookingUrl ? `/booking?event_id=${event.id}` : ticketUrl || `/booking?event_id=${event.id}`;
+  const isExternal = Boolean(ticketUrl) && !isLegacyBookingUrl;
 
   return (
     <div className="group flex flex-col bg-white rounded-card overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start">
