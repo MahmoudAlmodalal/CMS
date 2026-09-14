@@ -33,6 +33,7 @@ export function Card({
     <div
       className={cn(
         "relative rounded-card overflow-hidden text-start transition-all",
+        variant === "interactive" && "motion-card",
         variantStyles[variant],
         className
       )}

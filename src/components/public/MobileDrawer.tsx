@@ -130,7 +130,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside ref={panelRef} className="fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-2xl">
+      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
           <div className="flex items-center gap-3" dir="rtl">

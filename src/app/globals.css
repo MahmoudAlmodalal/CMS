@@ -228,3 +228,90 @@ bdi, .bdi-isolate {
   unicode-bidi: isolate;
   text-align: start;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Public motion language                                                     */
+/* -------------------------------------------------------------------------- */
+:root {
+  --motion-fast: 180ms;
+  --motion-normal: 300ms;
+  --motion-slow: 450ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-interaction: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes motion-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes motion-drawer-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-drawer-in-rtl {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@layer components {
+  .public-motion-shell :where(a, button, input, select, textarea) {
+    transition-timing-function: var(--motion-interaction);
+  }
+
+  .public-motion-shell :where(a, button):focus-visible,
+  .public-motion-shell :where(input, select, textarea):focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 3px;
+  }
+
+  .public-motion-shell main > * {
+    animation: motion-fade-up var(--motion-slow) var(--motion-ease) both;
+  }
+
+  .motion-card {
+    transition: transform var(--motion-normal) var(--motion-ease),
+      box-shadow var(--motion-normal) var(--motion-interaction),
+      border-color var(--motion-normal) var(--motion-interaction);
+  }
+
+  .motion-image {
+    transition: transform var(--motion-slow) var(--motion-ease);
+    transform-origin: center;
+  }
+
+  .motion-press {
+    transition: transform var(--motion-fast) var(--motion-interaction),
+      color var(--motion-fast) var(--motion-interaction),
+      background-color var(--motion-fast) var(--motion-interaction),
+      border-color var(--motion-fast) var(--motion-interaction),
+      box-shadow var(--motion-fast) var(--motion-interaction);
+  }
+
+  .motion-drawer {
+    animation: motion-drawer-in var(--motion-normal) var(--motion-ease) both;
+  }
+
+  [dir="rtl"] .motion-drawer { animation-name: motion-drawer-in-rtl; }
+
+  .motion-no-wrap { white-space: nowrap; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .public-motion-shell .motion-card:hover { transform: translateY(-2px); }
+  .public-motion-shell .motion-image:hover { transform: scale(1.04); }
+  .public-motion-shell .motion-press:not(:disabled):hover { transform: translateY(-1px); }
+}
+
+.public-motion-shell :where(button, a):active { transform: scale(0.97); }
+.public-motion-shell :where(button, a)[aria-disabled="true"],
+.public-motion-shell :where(button, a):disabled { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .public-motion-shell main > *, .motion-drawer { animation: none !important; }
+  .public-motion-shell .motion-card:hover,
+  .public-motion-shell .motion-image:hover,
+  .public-motion-shell .motion-press:not(:disabled):hover,
+  .public-motion-shell :where(button, a):active { transform: none !important; }
+}
