@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { EventItem } from "@/lib/types/events";
@@ -56,7 +55,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
         className="absolute left-0 top-0 -z-10 h-[12.68%] w-[16.67%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat"
       />
 
-      <div className="relative aspect-[503/397] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
+      <div className="relative h-[240px] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
         <SafeImage
           src={event.image_url}
           alt={event.title}

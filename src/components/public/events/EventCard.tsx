@@ -70,13 +70,13 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
   return (
     <article
       data-testid={`event-card-${event.slug}`}
-      className={`relative flex h-[150.333px] w-full flex-row-reverse items-center gap-[19px] overflow-hidden rounded-[16px] border-[0.667px] border-brand-espresso/10 bg-white p-[8.667px] lg:block lg:h-[150.135px] lg:p-0 ${className}`}
+      className={`relative flex h-auto w-full flex-col gap-4 overflow-hidden rounded-[16px] border-[0.667px] border-brand-espresso/10 bg-white p-4 lg:block lg:h-[150.135px] lg:p-0 ${className}`}
     >
       {/* Date block 91:16805 */}
       {/* 78x149 on the 390 frame: the 54-wide chip is wider than the 38 its padded
           box leaves, so it overhangs symmetrically — which is 12 of side padding. */}
-      <div className="flex h-[149px] w-[78px] shrink-0 flex-col items-center px-3 py-5 lg:absolute lg:end-0 lg:top-0 lg:h-[148.802px] lg:w-[110px] lg:items-start lg:p-5">
-        <div className="w-full pb-3">
+      <div className="order-3 flex h-auto w-full shrink-0 flex-row items-center justify-between lg:absolute lg:end-0 lg:top-0 lg:h-[148.802px] lg:w-[110px] lg:flex-col lg:items-start lg:p-5">
+        <div className="w-auto pb-0 lg:w-full lg:pb-3">
           <div className="w-[54px] rounded-[8px] bg-brand-espresso px-2 py-3 lg:w-auto lg:min-w-[70px] lg:px-4">
             <p className="text-center font-mono tabular-nums text-[24px] font-black leading-[24px] text-[#e9ebf8]">
               {dayArabic}
@@ -87,7 +87,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
           </div>
         </div>
 
-        <div className="flex w-full justify-center">
+        <div className="flex w-auto justify-center lg:w-full">
           <Link
             href={bookingHref}
             className="inline-flex max-w-full items-center justify-center whitespace-nowrap rounded-[6px] bg-primary-500 px-2 py-[7.2px] text-center text-[12px] font-bold leading-[18px] text-white transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:px-[14.4px]"
@@ -98,7 +98,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Text block 91:16797 */}
-      <div className="flex h-[120px] w-[144px] min-w-0 shrink-0 flex-col items-start pt-5 text-start lg:absolute lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-[418px] lg:flex-none lg:p-5 lg:pt-5">
+      <div className="order-2 flex h-auto w-full min-w-0 shrink-0 flex-col items-start text-start lg:absolute lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-[418px] lg:flex-none lg:p-5 lg:pt-5">
         {/* The eyebrow is a bare 64x20 line on the 390 frame, not the 32.313 row the
             1440 one leaves above the title. */}
         <div className="relative h-5 w-full lg:h-[32.313px]">
@@ -117,7 +117,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Thumbnail 91:16815 */}
-      <div className="relative h-[105px] w-[93px] shrink-0 overflow-hidden rounded-[8px] bg-brand-surface/40 lg:absolute lg:start-[21px] lg:top-[24.33px] lg:w-[140px]">
+      <div className="relative order-1 h-[180px] w-full shrink-0 overflow-hidden rounded-[8px] bg-brand-surface/40 lg:absolute lg:start-[21px] lg:top-[24.33px] lg:h-[105px] lg:w-[140px]">
         <SafeImage
           src={event.image_url}
           alt={event.title}
@@ -132,4 +132,3 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
     </article>
   );
 }
-
