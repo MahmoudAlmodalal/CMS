@@ -54,7 +54,7 @@ export function EventsFilterTabs({
       className={cn(
         // Component 8 on the 390 frame is 376x54 flush to the inline start, so it
         // scrolls rather than wrapping — wrapping made it 104 against that 54.
-        "flex h-[54px] w-[376px] items-center justify-center gap-[14px] overflow-x-auto overscroll-x-contain rounded-badge bg-secondary-50 px-5 py-2 [scrollbar-width:none]",
+        "flex h-[54px] w-[376px] flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain rounded-badge bg-secondary-50 px-4 py-2 [scrollbar-width:none]",
         "lg:h-[53.12px] lg:w-[415px] lg:overflow-visible",
         "[&::-webkit-scrollbar]:hidden",
         className
@@ -75,11 +75,11 @@ export function EventsFilterTabs({
             aria-controls="events-catalog-grid"
             onClick={() => onSelectCategory(tab.id)}
             className={cn(
-              "shrink-0 cursor-pointer rounded-badge py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
+              "inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
               "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
               isActive
-                ? "w-[75px] bg-primary-500 text-white/80"
-                : "w-[62px] text-gradscale-900"
+                ? "bg-primary-500 text-white/80 lg:w-[75px] lg:px-0"
+                : "text-gradscale-900 lg:w-[62px] lg:px-0"
             )}
           >
             <span className="block py-1">{label}</span>
