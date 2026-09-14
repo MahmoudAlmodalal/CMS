@@ -60,27 +60,15 @@ export function ArtistsGrid({
       {rows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          role="region"
-          aria-label={`Artist row ${rowIndex + 1}`}
-          className="relative w-full max-w-[355px] lg:contents"
+          className="flex h-[442px] w-full max-w-[355px] snap-x snap-mandatory gap-[10px] overflow-x-auto p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
         >
-          <div className="flex h-[442px] w-full snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden">
-            {row.map((artist, index) => (
-              <ArtistCard
-                key={artist.id || artist.slug}
-                artist={artist}
-                priority={rowIndex === 0 && index < 4}
-              />
-            ))}
-          </div>
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-3 start-0 z-10 w-8 bg-gradient-to-r from-brand-cream via-brand-cream/60 to-transparent lg:hidden"
-          />
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-3 end-0 z-10 w-10 bg-gradient-to-l from-brand-cream via-brand-cream/60 to-transparent lg:hidden"
-          />
+          {row.map((artist, index) => (
+            <ArtistCard
+              key={artist.id || artist.slug}
+              artist={artist}
+              priority={rowIndex === 0 && index < 4}
+            />
+          ))}
         </div>
       ))}
     </div>
