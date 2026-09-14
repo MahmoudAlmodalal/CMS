@@ -132,8 +132,8 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
       {/* Drawer Panel */}
       <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 end-auto z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full items-center border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
+          <div className="me-auto flex items-center gap-3 self-start text-start">
             <div className="flex size-11 items-center justify-center rounded-2xl bg-[#F3E5C8] text-[#B88935] shadow-sm">
               <MusicIcon size={22} />
             </div>
@@ -151,7 +151,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
             type="button"
             onClick={onClose}
             aria-label={a11y("closeMenu")}
-            className="motion-press cursor-pointer rounded-xl p-2 text-brand-espresso/60 transition-colors hover:bg-[#F3E5C8]/60 hover:text-brand-espresso focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="motion-press ms-auto cursor-pointer rounded-xl p-2 text-brand-espresso/60 transition-colors hover:bg-[#F3E5C8]/60 hover:text-brand-espresso focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <CloseIcon size={20} />
           </button>
