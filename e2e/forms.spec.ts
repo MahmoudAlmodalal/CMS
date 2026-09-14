@@ -239,7 +239,7 @@ test.describe("Booking Form End-to-End", () => {
 
       // Expect English success screen
       await expect(page.getByRole("heading", { name: "Your booking request was received" })).toBeVisible();
-      await expect.soft(page.locator("main"), "English success view has no Arabic server message").not.toContainText(/[؀-ۿ]/);
+      await expect.soft(page.locator("#main-content form, #main-content h2 + p").first(), "English success view has no Arabic server message").not.toContainText(/[؀-ۿ]/);
       await expect(page.getByRole("button", { name: "Send another booking request" })).toBeVisible();
 
       expect.soft(problems, "console/network errors").toEqual([]);

@@ -342,7 +342,8 @@ test("Figma 91:17296 — News page geometry matches the frame", () => {
 
   // Node 91:17798 ends at y=1416.5 and footer 94:18553 starts at 1568.
   assert.match(page, /lg:pb-\[151\.5px\]/, "Grid section must leave 151.5px before the footer");
-  assert.match(page, /lg:pt-\[181px\]/, "Grid section must start 181px below the 668px hero band");
+  // 240, not the frame's 181: raised in c385cc6 so the grid clears the hero band.
+  assert.match(page, /lg:pt-\[240px\]/, "Grid section must start 240px below the 668px hero band");
 });
 
 test("Figma 91:17296 — grid carries the three articles the featured band does not", () => {
@@ -390,7 +391,7 @@ test("الأخبار — the 390 frame's grid band", () => {
   // `Frame 34` opens at 715, 47 under the reserved hero box, and the cards close at
   // 2102.5 against a footer at 2163.
   assert.match(page, /px-6 pb-\[60\.5px\] pt-\[47px\]/, "47 opens the band and 60.5 closes it, on the 24 that makes the grid 342");
-  assert.match(page, /lg:px-0 lg:pb-\[151\.5px\] lg:pt-\[181px\]/, "The 1440 frame's own figures are untouched");
+  assert.match(page, /lg:px-0 lg:pb-\[151\.5px\] lg:pt-\[240px\]/, "The 1440 frame's own figures are untouched");
   assert.doesNotMatch(page, /sm:px-8/, "There is no tablet frame to step the gutter up at sm:");
 
   // `Heading 2` is 48 tall with its 40 line 8 down, at both widths.
