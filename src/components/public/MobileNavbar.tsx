@@ -75,7 +75,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
-              className="flex size-9 shrink-0 items-center justify-center rounded-xl p-1.5 text-gradscale-500 transition-colors hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
+              className="motion-press flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-espresso/[0.04] p-1.5 text-gradscale-500 transition-colors hover:bg-primary-50 hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
               aria-label={a11y("openMenu")}
               aria-expanded={drawerOpen}
               aria-controls="mobile-navigation-drawer"

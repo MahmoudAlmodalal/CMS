@@ -124,13 +124,13 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-brand-espresso/60 backdrop-blur-xs transition-opacity"
+        className="motion-drawer-backdrop fixed inset-0 bg-brand-espresso/60 backdrop-blur-xs"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Drawer Panel */}
-      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-2xl">
+      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
           <div className="flex items-center gap-3" dir="rtl">
@@ -151,7 +151,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
             type="button"
             onClick={onClose}
             aria-label={a11y("closeMenu")}
-            className="cursor-pointer rounded-xl p-2 text-brand-espresso/60 transition-colors hover:bg-[#F3E5C8]/60 hover:text-brand-espresso focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="motion-press cursor-pointer rounded-xl p-2 text-brand-espresso/60 transition-colors hover:bg-[#F3E5C8]/60 hover:text-brand-espresso focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <CloseIcon size={20} />
           </button>
@@ -169,7 +169,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
                   href={item.href}
                   onClick={onClose}
                   className={cn(
-                    "flex h-14 items-center justify-between rounded-2xl px-4 text-[15px] font-semibold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
+                    "motion-press flex h-14 items-center justify-between rounded-2xl px-4 text-[15px] font-semibold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
                     active
                       ? "bg-[#F3E5C8]/70 font-bold text-brand-primary"
                       : "text-brand-espresso/85 hover:bg-white/70 hover:text-brand-primary"
@@ -191,7 +191,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
             <Link
               href="/booking"
               onClick={onClose}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-primary py-4 text-base font-bold text-white shadow-[0_8px_20px_rgba(197,71,22,0.18)] transition-all hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="motion-press flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-primary py-4 text-base font-bold text-white shadow-[0_8px_20px_rgba(197,71,22,0.18)] transition-all hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
               <span>{t("bookingCta")}</span>
               <ArrowEndIcon size={18} />
