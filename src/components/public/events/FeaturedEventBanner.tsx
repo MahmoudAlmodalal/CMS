@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { EventItem } from "@/lib/types/events";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface FeaturedEventBannerProps {
   event: EventItem;
@@ -59,35 +60,36 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
       />
 
       <div className="relative aspect-[503/397] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
-        <Image
+        <SafeImage
           src={cover}
           alt={event.title}
           fill
           priority
           quality={90}
+          fallbackText={event.title}
           sizes="(min-width: 1024px) 503px, 100vw"
           className="object-cover"
         />
       </div>
 
-      <div className="flex flex-col items-start p-8">
+      <div className="flex flex-1 flex-col items-start p-8">
         <p className="text-[9.92px] font-bold uppercase leading-[14.88px] tracking-[1.3888px] text-primary-500">
           {t("featuredBadge")}
         </p>
 
-        <h2 className="h-[39px] max-w-[296px] pt-3 text-[20px] font-bold leading-[27px] text-secondary-200">
+        <h2 className="line-clamp-2 min-h-[39px] max-w-[296px] pt-3 text-[20px] font-bold leading-[27px] text-secondary-200">
           {event.title}
         </h2>
 
-        <p className="h-[29px] max-w-[296px] pt-2 text-[13.6px] leading-[20.4px] text-secondary-300">
+        <p className="line-clamp-1 min-h-[29px] max-w-[296px] pt-2 text-[13.6px] leading-[20.4px] text-secondary-300">
           {event.performer_name}
         </p>
 
-        <p className="h-[56.8px] max-w-[296px] pb-8 pt-[4.8px] text-[13.12px] leading-[19.68px] text-secondary-200">
+        <p className="min-h-[56.8px] max-w-[296px] pb-8 pt-[4.8px] text-[13.12px] leading-[19.68px] text-secondary-200">
           {dateLocationString}
         </p>
 
-        <div className="relative h-[45.594px] w-full">
+        <div className="relative mt-auto h-[45.594px] w-full">
           <Link
             href={actionHref}
             target={isExternalTicket ? "_blank" : undefined}
@@ -101,3 +103,4 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
     </article>
   );
 }
+

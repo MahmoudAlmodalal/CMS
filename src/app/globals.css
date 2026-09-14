@@ -149,6 +149,14 @@
   --text-display: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --text-h2: clamp(1.5rem, 1.15rem + 1.8vw, 2.25rem);
   --text-h3: clamp(1.125rem, 1rem + 0.8vw, 1.5rem);
+  /* Floating header offset for content safety */
+  --header-offset: 96px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-offset: 120px;
+  }
 }
 
 @layer base {
@@ -165,11 +173,19 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
+    line-height: 1.6;
   }
 
-  /* Long Arabic/English strings wrap instead of forcing horizontal scroll. */
-  p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote {
-    overflow-wrap: break-word;
+  /* Text overflow & break rules: never overlap, never clip mid-glyph, never escape container */
+  p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, span, div, a, button {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Arabic typography rules */
+  [dir="rtl"] {
+    line-height: 1.6;
+    letter-spacing: normal !important;
   }
 }
 

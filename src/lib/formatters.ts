@@ -50,6 +50,34 @@ export function formatArabicDate(
 }
 
 /**
+ * Formats date badge parts (day and month) preventing awkward splits like "MAR CH"
+ */
+export function formatDateBadge(
+  date: Date | string | number,
+  locale: string = "ar"
+): { day: string; month: string } {
+  const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
+  const isArabic = locale.startsWith("ar");
+  const dateLocale = isArabic ? "ar-EG" : "en-GB";
+
+  const day = new Intl.DateTimeFormat(dateLocale, {
+    day: "2-digit",
+    timeZone: "UTC",
+  }).format(d);
+
+  // Use short month for English (e.g. "MAR", "APR") and short/long for Arabic
+  const month = new Intl.DateTimeFormat(dateLocale, {
+    month: isArabic ? "long" : "short",
+    timeZone: "UTC",
+  }).format(d);
+
+  return {
+    day,
+    month: month.toUpperCase(),
+  };
+}
+
+/**
  * Formats a date using the Islamic / Hijri calendar
  */
 export function formatHijriDate(
@@ -63,6 +91,7 @@ export function formatHijriDate(
   const d = typeof date === "string" || typeof date === "number" ? new Date(date) : date;
   return new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", options).format(d);
 }
+
 
 /**
  * Normalizes and formats a telephone number for safe display in RTL context.

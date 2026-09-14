@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Article } from "@/lib/articles";
 import { getArticleCategoryLabel } from "@/lib/articles";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 /**
  * Featured news band — Figma node 91:17298 inside frame 91:17296.
@@ -43,9 +44,9 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
   return (
     <section className="relative w-full" aria-labelledby="featured-news-heading">
       <div className="relative h-[430px] w-full overflow-hidden sm:h-[540px] lg:h-[668px]">
-        <Image
+        <SafeImage
           src={primaryArticle.cover_image_url || "/assets/articles/default-hero.png"}
-          alt=""
+          alt={primaryArticle.title}
           fill
           priority
           sizes="100vw"
@@ -86,11 +87,12 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
                 className="group flex flex-col gap-4 rounded-xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
               >
                 <div className="relative h-[192px] w-full overflow-hidden rounded-[8px]">
-                  <Image
+                  <SafeImage
                     src={article.cover_image_url || "/assets/articles/default-article.png"}
-                    alt=""
+                    alt={article.title}
                     fill
                     sizes="392px"
+                    fallbackText={article.title}
                     className="object-cover"
                   />
                 </div>

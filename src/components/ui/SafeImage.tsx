@@ -1,0 +1,166 @@
+"use client";
+
+import React, { useState } from "react";
+import Image from "next/image";
+
+export interface SafeImageProps {
+  src?: string | null;
+  alt: string;
+  fill?: boolean;
+  width?: number;
+  height?: number;
+  className?: string;
+  containerClassName?: string;
+  aspectRatio?: string; // e.g. "3/4", "16/9", "1/1", "4/3"
+  priority?: boolean;
+  loading?: "lazy" | "eager";
+  sizes?: string;
+  quality?: number;
+  fallbackText?: string;
+  fallbackIcon?: React.ReactNode;
+  fallbackTestId?: string;
+}
+
+/**
+ * Normalizes media URLs: absolute https/http, protocol-relative (//),
+ * storage CDN paths, and relative /uploads/... or /assets/...
+ */
+export function normalizeMediaUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  // Blob URLs that may have expired or data URLs
+  if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {
+    return trimmed;
+  }
+
+  // Protocol relative
+  if (trimmed.startsWith("//")) {
+    return `https:${trimmed}`;
+  }
+
+  // Absolute URLs
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+    return trimmed;
+  }
+
+  // If relative path starts with /, keep it if in public or prefix storage base
+  if (trimmed.startsWith("/")) {
+    return trimmed;
+  }
+
+  // Stored path without host or leading slash (e.g. "artists/portraits/..." or "uploads/...")
+  const direct = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL;
+  if (direct) {
+    return `${direct.replace(/\/+$/, "")}/${trimmed}`;
+  }
+  const project = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (project) {
+    return `${project.replace(/\/+$/, "")}/storage/v1/object/public/${trimmed}`;
+  }
+
+  return `/${trimmed}`;
+}
+
+/**
+ * SafeImage Component
+ * Enforces resilient CMS image loading:
+ * - Never breaks the UI or renders native broken image icons.
+ * - Handles empty, whitespace, 404, corrupt URLs with Andalusia cream/brown gradient fallback.
+ * - Enforces object-fit: cover and rounded wrapper overflow: hidden.
+ * - Supports decorative fallback or initial letter / geometric mark.
+ */
+export function SafeImage({
+  src,
+  alt,
+  fill = true,
+  width,
+  height,
+  className = "object-cover",
+  containerClassName = "",
+  aspectRatio,
+  priority = false,
+  loading,
+  sizes,
+  quality = 90,
+  fallbackText,
+  fallbackIcon,
+  fallbackTestId,
+}: SafeImageProps) {
+  const normalizedSrc = normalizeMediaUrl(src);
+  const [hasError, setHasError] = useState(!normalizedSrc);
+
+  const initialChar = fallbackText?.trim() ? fallbackText.trim().charAt(0) : "";
+
+  // Render branded fallback container
+  const renderFallback = () => (
+    <div
+      data-testid={fallbackTestId}
+      className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B1D14] to-[#1F0900] text-brand-surface selection:bg-transparent"
+      aria-label={alt ? alt : undefined}
+      role={alt ? "img" : undefined}
+      aria-hidden={alt ? undefined : true}
+    >
+      <div className="relative flex flex-col items-center justify-center text-center p-2">
+        {fallbackIcon ? (
+          fallbackIcon
+        ) : initialChar ? (
+          <span className="font-display font-bold text-2xl sm:text-3xl text-primary-500 select-none">
+            {initialChar}
+          </span>
+        ) : (
+          <span aria-hidden="true" className="font-sans text-xl sm:text-2xl font-bold text-primary-500/80 select-none">
+            ♪
+          </span>
+        )}
+      </div>
+    </div>
+  );
+
+  const containerStyles: React.CSSProperties = aspectRatio
+    ? { aspectRatio }
+    : {};
+
+  const effectiveLoading = priority ? "eager" : loading || "lazy";
+
+  return (
+    <div
+      className={`relative w-full h-full overflow-hidden ${containerClassName}`}
+      style={containerStyles}
+    >
+      {!hasError && normalizedSrc ? (
+        fill ? (
+          <Image
+            src={normalizedSrc}
+            alt={alt || ""}
+            fill
+            sizes={sizes || "(max-width: 768px) 100vw, 50vw"}
+            quality={quality}
+            loading={effectiveLoading}
+            priority={priority}
+            onError={() => setHasError(true)}
+            className={`w-full h-full object-cover object-center ${className}`}
+          />
+        ) : (
+          <Image
+            src={normalizedSrc}
+            alt={alt || ""}
+            width={width || 400}
+            height={height || 300}
+            sizes={sizes}
+            quality={quality}
+            loading={effectiveLoading}
+            priority={priority}
+            onError={() => setHasError(true)}
+            className={`w-full h-full object-cover object-center ${className}`}
+          />
+        )
+      ) : (
+        renderFallback()
+      )}
+    </div>
+  );
+}
+
+export default SafeImage;

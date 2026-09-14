@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { localeDirection, type AppLocale } from "@/i18n/routing";
 import { formatArabicDate } from "@/lib/formatters";
 import { getArticleCardCategoryLabel, type Article } from "@/lib/dal/articles";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface EditorialFeatureProps {
   articles: Article[];
@@ -72,12 +73,13 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
               >
                 {/* Cover I115:2439;87:14439 */}
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
-                  <Image
+                  <SafeImage
                     src={article.cover_image_url || "/assets/articles/default-article.png"}
-                    alt=""
+                    alt={article.title}
                     fill
                     sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
                     quality={90}
+                    fallbackText={article.title}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Event } from "@/lib/dal/events";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface HomeEventsProps {
   events: Event[];
@@ -126,10 +127,10 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
                   >
                     {/* Date badge 87:14485 */}
                     <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
-                      <span className="block w-full text-center text-[22.4px] font-black leading-[22.4px] text-primary-50">
+                      <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
                         {day.format(eventDate)}
                       </span>
-                      <span className="block h-[14px] w-full pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
+                      <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
                         {month.format(eventDate)}
                       </span>
                     </span>
@@ -175,10 +176,9 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
 
         {/* Photograph 87:14467 — 509 wide hung 4px off the inline end, 505 drawn. */}
         <div className="relative order-2 mx-auto h-[224px] w-[calc(100vw-2rem)] max-w-[369.735px] overflow-hidden rounded-[16px] bg-brand-espresso lg:absolute lg:end-0 lg:top-0 lg:mx-0 lg:h-[678px] lg:w-[505px] lg:rounded-s-[16px] lg:rounded-e-none">
-          <Image
+          <SafeImage
             src={imageUrl || BAND_PHOTOGRAPH}
             alt=""
-            aria-hidden="true"
             fill
             sizes="(max-width: 1023px) 370px, 505px"
             quality={90}
@@ -189,3 +189,4 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
     </section>
   );
 }
+

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface ArtistTileProps {
   artist: Artist;
@@ -40,24 +41,16 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
       className="group relative block aspect-[160/239] w-full min-w-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:aspect-[220/293]"
       aria-label={t("viewProfile", { name: artist.name })}
     >
-      {resolved ? (
-        <Image
-          src={resolved}
-          alt={t("portraitAlt", { name: artist.name })}
-          fill
-          sizes="(max-width: 639px) 46vw, (max-width: 1023px) 30vw, (max-width: 1279px) 22vw, 220px"
-          priority={priority}
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-        />
-      ) : (
-        <div
-          data-testid="artist-tile-fallback"
-          className="absolute inset-0 flex items-center justify-center bg-[#2A1D13] text-[#F0EBE1]/40 font-sans text-5xl font-bold"
-          aria-hidden="true"
-        >
-          {artist.name.charAt(0)}
-        </div>
-      )}
+      <SafeImage
+        src={resolved}
+        alt={t("portraitAlt", { name: artist.name })}
+        fill
+        sizes="(max-width: 639px) 46vw, (max-width: 1023px) 30vw, (max-width: 1279px) 22vw, 220px"
+        priority={priority}
+        fallbackTestId="artist-tile-fallback"
+        fallbackText={artist.name}
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+      />
 
       {/* Scrim: linear-gradient(0deg, rgba(23,16,10,.92) 0%, transparent 55%) */}
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(23,16,10,0.92)_0%,rgba(23,16,10,0)_55%)] pointer-events-none" />
