@@ -8,10 +8,12 @@ import {
   ChevronEndIcon,
   MusicIcon,
   ArrowEndIcon,
+  CalendarIcon,
+  PlayIcon,
+  SearchIcon,
 } from "@/components/ui/Icons";
 import { cn } from "@/lib/utils";
 import { CONFIRMED_NAV_ITEMS, ENGLISH_NAV_ITEMS } from "./Navbar";
-import { LocaleSwitcher } from "./LocaleSwitcher";
 
 /** Admin-controlled contact details (site settings); blank falls back to translations. */
 export interface DrawerContact {
@@ -128,18 +130,18 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside ref={panelRef} className="fixed inset-y-0 start-0 z-50 w-full max-w-[370px] bg-white border-e border-brand-surface shadow-2xl flex flex-col text-brand-espresso rounded-e-2xl">
+      <aside ref={panelRef} className="fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-brand-surface bg-white">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-primary flex items-center justify-center text-white shadow-xs">
-              <MusicIcon size={20} />
+        <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
+          <div className="flex items-center gap-3" dir="rtl">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-[#F3E5C8] text-[#B88935] shadow-sm">
+              <MusicIcon size={22} />
             </div>
             <div className="flex flex-col text-start">
-              <span className="font-calligraphic text-xl font-bold text-brand-espresso leading-none">
+              <span className="font-calligraphic text-[23px] font-bold leading-none text-brand-espresso">
                 {site("brand")}
               </span>
-              <span className="text-[10px] font-semibold text-brand-primary mt-0.5">
+              <span className="mt-1 text-[10px] font-semibold tracking-[0.02em] text-brand-primary">
                 {t("tagline")}
               </span>
             </div>
@@ -149,49 +151,47 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
             type="button"
             onClick={onClose}
             aria-label={a11y("closeMenu")}
-            className="p-2 rounded-xl text-brand-espresso/70 hover:bg-brand-surface hover:text-brand-espresso transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="cursor-pointer rounded-xl p-2 text-brand-espresso/60 transition-colors hover:bg-[#F3E5C8]/60 hover:text-brand-espresso focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
           >
             <CloseIcon size={20} />
           </button>
         </div>
 
         {/* Navigation Items */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          <nav className="flex flex-col gap-2" aria-label={t("nav")}>
+        <div className="flex-1 overflow-y-auto px-6 py-7 sm:px-7">
+          <nav className="flex flex-col gap-2.5" aria-label={t("nav")}>
             {navItems.map((item) => {
               const active = isLinkActive(item.href);
+              const ItemIcon = item.key === "events" ? CalendarIcon : item.key === "academy" ? PlayIcon : item.key === "news" ? SearchIcon : MusicIcon;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
                   className={cn(
-                    "flex items-center justify-between h-11 px-4 rounded-[10px] text-sm font-semibold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
+                    "flex h-14 items-center justify-between rounded-2xl px-4 text-[15px] font-semibold transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
                     active
-                      ? "bg-brand-primary/10 text-brand-primary font-bold"
-                      : "text-brand-espresso/85 hover:bg-brand-surface/50 hover:text-brand-primary"
+                      ? "bg-[#F3E5C8]/70 font-bold text-brand-primary"
+                      : "text-brand-espresso/85 hover:bg-white/70 hover:text-brand-primary"
                   )}
                   aria-current={active ? "page" : undefined}
                 >
-                  <span>{nav(item.key)}</span>
-                  <ChevronEndIcon
-                    size={18}
-                    className={cn(
-                      "transition-colors",
-                      active ? "text-brand-primary" : "text-brand-espresso/30"
-                    )}
-                  />
+                  <span className="flex items-center gap-3" dir="rtl">
+                    <ItemIcon size={19} className={cn(active ? "text-brand-primary" : "text-[#B88935]/80")} />
+                    <span>{nav(item.key)}</span>
+                  </span>
+                  <ChevronEndIcon size={17} className={cn("transition-colors", active ? "text-brand-primary" : "text-brand-espresso/25")} />
                 </Link>
               );
             })}
           </nav>
 
           {/* Booking CTA Button */}
-          <div className="pt-2 border-t border-brand-surface/60">
+          <div className="mt-7 border-t border-[#E9DDCE]/80 pt-6">
             <Link
               href="/booking"
               onClick={onClose}
-              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-brand-primary text-white text-base font-bold shadow-md hover:bg-brand-primary-hover active:bg-brand-primary-pressed transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-primary py-4 text-base font-bold text-white shadow-[0_8px_20px_rgba(197,71,22,0.18)] transition-all hover:bg-brand-primary-hover active:bg-brand-primary-pressed focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
             >
               <span>{t("bookingCta")}</span>
               <ArrowEndIcon size={18} />
@@ -199,9 +199,9 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
           </div>
 
           {/* Quick Contact & Presence */}
-          <div className="space-y-3 pt-4 border-t border-brand-surface/40 text-sm">
+          <div className="mt-6 space-y-5 border-t border-[#E9DDCE]/70 pt-6 text-sm">
             <div className="flex flex-col gap-1 text-start">
-              <span className="text-xs font-bold text-brand-primary">{t("contactHeading")}</span>
+              <span className="text-xs font-bold tracking-wide text-brand-primary">{t("contactHeading")}</span>
               <a
                 href={`mailto:${email}`}
                 dir="ltr"
@@ -212,17 +212,12 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
             </div>
 
             <div className="flex flex-col gap-1 text-start">
-              <span className="text-xs font-bold text-brand-primary">{t("regionsHeading")}</span>
+              <span className="text-xs font-bold tracking-wide text-brand-primary">{t("regionsHeading")}</span>
               <span className="text-brand-espresso/80">{contact?.regions?.trim() || footer("contactRegions")}</span>
             </div>
           </div>
         </div>
 
-        {/* Footer: Language switch */}
-        <div className="p-4 border-t border-brand-surface bg-white/40 flex items-center justify-between">
-          <span className="text-xs text-brand-espresso/60">{t("languageHeading")}</span>
-          <LocaleSwitcher className="px-3 py-1.5 rounded-full border border-brand-surface bg-white text-xs font-semibold h-auto" />
-        </div>
       </aside>
     </div>
   );
