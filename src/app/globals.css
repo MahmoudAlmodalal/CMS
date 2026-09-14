@@ -246,13 +246,18 @@ bdi, .bdi-isolate {
 }
 
 @keyframes motion-drawer-in {
-  from { opacity: 0; transform: translateX(-16px); }
+  from { opacity: 0; transform: translate3d(-100%, 0, 0); }
   to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes motion-drawer-in-rtl {
-  from { opacity: 0; transform: translateX(16px); }
+  from { opacity: 0; transform: translate3d(100%, 0, 0); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-drawer-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @layer components {
@@ -291,9 +296,14 @@ bdi, .bdi-isolate {
 
   .motion-drawer {
     animation: motion-drawer-in var(--motion-normal) var(--motion-ease) both;
+    will-change: transform, opacity;
   }
 
   [dir="rtl"] .motion-drawer { animation-name: motion-drawer-in-rtl; }
+
+  .motion-drawer-backdrop {
+    animation: motion-drawer-backdrop-in var(--motion-normal) var(--motion-interaction) both;
+  }
 
   .motion-no-wrap { white-space: nowrap; }
 }
@@ -309,7 +319,7 @@ bdi, .bdi-isolate {
 .public-motion-shell :where(button, a):disabled { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .public-motion-shell main > *, .motion-drawer { animation: none !important; }
+  .public-motion-shell main > *, .motion-drawer, .motion-drawer-backdrop { animation: none !important; }
   .public-motion-shell .motion-card:hover,
   .public-motion-shell .motion-image:hover,
   .public-motion-shell .motion-press:not(:disabled):hover,
