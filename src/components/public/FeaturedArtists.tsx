@@ -21,13 +21,13 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
           {heading || t("artistsHeading")}
         </h2>
         <div
-          className="mx-auto mt-8 grid max-w-full grid-cols-2 justify-items-center gap-x-2 gap-y-3 sm:mt-10 sm:gap-x-4 sm:gap-y-5 md:grid-cols-3 md:gap-x-5 md:gap-y-6 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-6 xl:grid-cols-6 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block max-[359px]:grid-cols-1"
+          className="mx-auto mt-5 grid max-w-full grid-cols-2 justify-items-center gap-x-0 gap-y-1 sm:mt-7 sm:gap-x-2 sm:gap-y-3 md:grid-cols-3 md:gap-x-4 md:gap-y-4 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-5 xl:grid-cols-6 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block max-[359px]:grid-cols-1"
         >
           {artists.slice(0, 6).map((artist, i) => (
             <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
           ))}
         </div>
-        <div className="mt-8 flex justify-center sm:mt-10">
+        <div className="mt-5 flex justify-center sm:mt-7">
           <Link
             href={ctaHref || "/artists"}
             className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl border border-[#F9EDE8] px-5 text-center font-system text-base font-bold text-[#F9EDE8] transition-colors hover:bg-[#F9EDE8]/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
