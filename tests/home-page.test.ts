@@ -562,7 +562,7 @@ test("الرئيسية — the 390 frame's seven bands", () => {
 
   // أصوات 1741..2516: a 2x2 grid of 160x239 tiles, not a rail.
   assert.match(artists, /pb-\[44px\] pt-\[52px\]/, "The artists band opens 52 and closes 44");
-  assert.match(artists, /grid w-\[352px\] grid-cols-2 gap-x-8 gap-y-10/, "Four tiles in a 352-wide 2x2 grid");
+  assert.match(artists, /grid max-w-full grid-cols-2 justify-items-center/, "Four tiles in a fluid, centred 2x2 grid");
   assert.match(artists, /\[&>\*:nth-child\(n\+5\)\]:hidden/, "The frame draws four tiles, so the rest are dropped");
   assert.match(tile, /h-\[239px\] w-\[160px\]/, "The 390 tile is 160x239");
   assert.match(tile, /top-\[163px\]/, "…with its caption block 163 down");
