@@ -29,7 +29,7 @@ export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: 
   const t = useTranslations("news");
 
   return (
-    <section aria-labelledby="news-grid-heading" className={`flex flex-col gap-6 ${className}`}>
+    <section aria-labelledby="news-grid-heading" className={`flex w-full flex-col gap-6 ${className}`}>
       <div className="flex flex-col items-start pt-2">
         {kicker && (
           <p className="pb-2 text-sm font-bold uppercase tracking-[0.12em] text-brand-primary">
@@ -61,7 +61,7 @@ export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: 
         // figure: on the 390 one that box's bottom would fall 11.5 past the footer,
         // so there the space between the last card and the footer is the band's own
         // 60.5 instead.
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
+        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
           {articles.map((article) => (
             <ArticleCard key={article.id || article.slug} article={article} />
           ))}

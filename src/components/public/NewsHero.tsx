@@ -76,7 +76,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
       </div>
 
       {secondaryArticles.length > 0 && (
-        <div className="relative mx-auto mt-4 w-[calc(100%-2.5rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-5 shadow-card min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px]">
+        <div className="relative mx-auto mt-4 w-[calc(100%-2rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-4 shadow-card sm:p-5 min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px]">
           <div className="flex flex-col gap-6">
             {secondaryArticles.map((article) => (
               <Link
