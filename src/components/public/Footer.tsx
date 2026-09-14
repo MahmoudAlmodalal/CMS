@@ -35,19 +35,20 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
         data-texture-ref="da60c98546b43a3524b1bbd7667d8f518e1c7ee3"
         className="pointer-events-none absolute left-0 top-0 h-[120px] w-[120px] bg-[url('/assets/branding/footer-mark.png')] bg-contain bg-no-repeat opacity-10"
       />
-      <div className="relative mx-auto w-full max-w-[1454px] px-6 pb-[26.333px] pt-[21px] lg:pb-8 lg:pt-16 lg:px-10 xl:px-16">
+      <div className="relative mx-auto w-full max-w-[1454px] px-5 pb-10 pt-8 lg:px-10 lg:pb-8 lg:pt-16 xl:px-16">
         {/* Mobile (136:7847): one column of four fixed boxes broken out of the
             footer's own padding to span the full 390. Desktop (94:18509): the
             same four columns at absolute offsets in a 736x190 block. */}
-        <div className="-mx-6 flex flex-col items-start px-6 lg:relative lg:mx-auto lg:block lg:h-[190px] lg:w-[736px] lg:px-0">
-          <div className="ms-px mb-[46.5px] flex w-[345px] max-w-full min-w-0 flex-col items-start lg:absolute lg:left-[594px] lg:top-0 lg:mb-0 lg:w-[220px]">
+        <div className="flex flex-col items-center gap-8 lg:relative lg:mx-auto lg:block lg:h-[190px] lg:w-[736px]">
+          <div className="flex w-full max-w-[345px] min-w-0 flex-col items-center text-center lg:absolute lg:left-[594px] lg:top-0 lg:items-start lg:text-start">
             <Image src="/assets/branding/logo-footer.png" alt={a11y("brandHome")} width={211} height={86} sizes="211px" className="h-auto w-[min(211px,70vw)] object-contain" />
             <p className="max-w-[260px] pt-4 text-sm leading-relaxed text-primary-50">{mission}</p>
             <p className="pt-4 text-sm font-bold text-brand-primary">{t("motto")}</p>
           </div>
-          <div className="ms-3 flex h-[190px] w-[156px] min-w-0 flex-col items-start lg:absolute lg:left-[290px] lg:top-0 lg:ms-0">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:absolute lg:left-[290px] lg:top-0 lg:h-[190px] lg:w-[156px] lg:max-w-none lg:border-0 lg:pt-0">
+            <div className="flex flex-col items-center lg:items-start">
             <h4 className="text-sm font-bold text-brand-primary">{t("exploreHeading")}</h4>
-            <nav className="mt-2 flex flex-col items-start" aria-label={a11y("exploreLinks")}>
+            <nav className="mt-3 flex flex-col items-center gap-1 lg:items-start" aria-label={a11y("exploreLinks")}>
               {([
                 { href: "/artists", key: "exploreArtists" },
                 { href: "/events", key: "exploreEvents" },
@@ -55,24 +56,27 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
                 { href: "/academy", key: "exploreAcademy" },
               ] as const).map((item) => <Link key={item.href} href={item.href} className={linkClass}>{t(item.key)}</Link>)}
             </nav>
+            </div>
           </div>
-          <div className="ms-3 mb-[29px] flex h-[137px] w-[156px] min-w-0 flex-col items-start lg:absolute lg:left-[90px] lg:top-0 lg:mb-0 lg:ms-0">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:absolute lg:left-[90px] lg:top-0 lg:h-[137px] lg:w-[156px] lg:max-w-none lg:border-0 lg:pt-0">
+            <div className="flex flex-col items-center lg:items-start">
             <h4 className="text-sm font-bold text-brand-primary">{t("contactHeading")}</h4>
-            <div className="mt-2 flex flex-col items-start text-sm font-medium leading-6 text-primary-50">
+            <div className="mt-3 flex flex-col items-center text-sm font-medium leading-6 text-primary-50 lg:items-start">
               <a href={`mailto:${email}`} dir="ltr" className={linkClass}><bdi>{email}</bdi></a>
               {socials.length > 0 ? <span dir="ltr" className="flex min-h-11 items-center gap-2">{socials.map((social) => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary">{social.label}</a>)}</span> : <span className="flex min-h-11 items-center">{t("contactSocial")}</span>}
               <span className="flex min-h-11 items-center">{regions}</span>
             </div>
+            </div>
           </div>
-          <div className="ms-[25px] flex h-[190px] w-[321px] max-w-full min-w-0 flex-col items-start lg:absolute lg:left-[-193px] lg:top-0 lg:ms-0">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 text-center lg:absolute lg:left-[-193px] lg:top-0 lg:h-[190px] lg:w-[321px] lg:max-w-none lg:border-0 lg:pt-0 lg:text-start">
             <h4 className="max-w-[240px] text-base font-bold text-[#ECE6D0]">{t("bookingHeading")}</h4>
             <p className="max-w-[280px] pt-2.5 pb-5 text-sm leading-relaxed text-primary-50">{t("bookingBody")}</p>
-            <Link href="/booking" className="inline-flex min-h-11 w-full max-w-[180px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary">{t("bookingCta")}</Link>
+            <Link href="/booking" className="mx-auto inline-flex min-h-12 w-full max-w-[300px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:mx-0 lg:max-w-[180px]">{t("bookingCta")}</Link>
           </div>
         </div>
         {/* Bottom bar: strapline at the inline start, copyright at the inline end —
             reversed against the reading direction at every width, never stacked. */}
-        <div className="mt-5 flex flex-row-reverse items-center justify-between gap-3 border-t border-white/15 pt-5 text-primary-50 lg:mt-14">
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 border-t border-white/15 pt-6 text-center text-primary-50 lg:mt-14 lg:flex-row-reverse lg:justify-between lg:pt-5 lg:text-start">
           <span className="text-[10px] font-semibold uppercase tracking-[0.14em]">{t("strapline")}</span>
           <span className="text-xs">{copyright}</span>
         </div>

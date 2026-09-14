@@ -83,7 +83,7 @@ export function BookingBanner({
 
   return (
     <section
-      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-14 text-brand-tint lg:block lg:h-[498px] lg:py-0"
+      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-16 text-brand-tint sm:py-20 lg:block lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
       <div
@@ -99,7 +99,7 @@ export function BookingBanner({
         className="absolute left-0 top-0 h-[12.05%] w-[6.39%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat opacity-[0.08]"
       />
 
-      <div className="relative flex flex-col items-center gap-6 px-5 text-center lg:block lg:gap-0 lg:px-0">
+      <div className="relative flex flex-col items-center gap-7 px-5 text-center lg:block lg:gap-0 lg:px-0">
         {/* ♪ — 87:14537 / 134:4663 */}
         <div
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
@@ -142,7 +142,7 @@ export function BookingBanner({
         >
           <Link
             href={ctaHref || settings?.booking_cta_href || "/booking"}
-            className={`inline-flex items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
+            className={`inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
             style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
           >
             {cta}
