@@ -37,7 +37,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
     <>
       {/* Wrapper is inert so the hero underneath stays clickable either side of
           the pill, while keeping the bar anchored to the top of the page. */}
-      <div className="pointer-events-none absolute inset-x-2.5 top-[44px] z-40 lg:hidden">
+      <div className="pointer-events-none absolute inset-x-2.5 top-[36px] z-40 lg:hidden">
         <header
           className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-5 shadow-subtle"
           role="banner"

@@ -73,7 +73,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
   return (
     <section
-      className="relative flex min-h-[320px] flex-col overflow-hidden bg-[#F9F7F0] pb-8 pt-8 lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:pb-0 lg:pt-0"
+      className="relative flex min-h-0 flex-col overflow-hidden bg-[#F9F7F0] py-12 lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:py-0"
       aria-roledescription="carousel"
       aria-label={t("region")}
     >
@@ -85,7 +85,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
           </h2>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
-          <div className="mx-auto mt-4 flex h-auto min-h-[167px] w-full items-center justify-center gap-2 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
+          <div className="mx-auto mt-6 flex h-auto min-h-0 w-full min-w-0 items-center justify-center gap-2 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
             {/* Previous Arrow (Logical RTL: right arrow moves back) */}
             {total > 1 && (
               <button
@@ -100,12 +100,12 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
             <div
-              className={`flex min-h-[167px] shrink-0 flex-col-reverse items-start rounded-[16px] bg-white px-5 py-6 text-start ${
-                total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-[305px]"
-              } lg:h-auto lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+              className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
+                total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
+              } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
             >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
-              <blockquote className="h-auto min-h-[78px] w-full break-words [overflow-wrap:anywhere] pt-3 font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
+              <blockquote className="h-auto min-h-[78px] w-full max-w-full break-words [overflow-wrap:break-word] pt-3 font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
                 &ldquo;{current.quote}&rdquo;
               </blockquote>
 

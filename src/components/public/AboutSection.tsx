@@ -13,10 +13,10 @@ interface AboutSectionProps {
 export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
   const t = useTranslations("home");
   return (
-    <section className="relative w-full bg-[#F9F7F0] pb-[56px] pt-[48px] sm:py-16 md:py-20 lg:min-h-[879px] lg:py-24">
+    <section className="relative w-full bg-[#F9F7F0] py-12 sm:py-16 md:py-20 lg:min-h-[879px] lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
         {/* Kicker copy: من نحن */}
-        <h2 className="text-center font-sans text-[61px] font-bold leading-[91.5px] text-black">
+        <h2 className="text-center font-sans text-[36px] font-bold leading-[1.2] text-black sm:text-[48px] sm:leading-[1.3] lg:text-[61px] lg:leading-[91.5px]">
           <Highlight
             text={settings.home_about_heading || t("aboutHeading")}
             highlightClassName="text-primary-500"
@@ -34,7 +34,7 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               />
             </div>
           </div>
-          <div className="order-2 flex min-w-0 w-[324px] flex-col items-start gap-[32px] text-start md:order-1 md:w-auto md:gap-7 lg:gap-8">
+          <div className="order-2 flex min-w-0 w-full max-w-[324px] flex-col items-start gap-6 text-start md:order-1 md:w-auto md:max-w-none md:gap-7 lg:gap-8">
             <h3 className="font-display text-4xl font-normal leading-tight text-primary-500 lg:text-[48px] lg:leading-tight">
               {settings.about_headline}
             </h3>
