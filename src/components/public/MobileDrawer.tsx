@@ -130,7 +130,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
       />
 
       {/* Drawer Panel */}
-      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 start-0 z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)]">
+      <aside ref={panelRef} className="motion-drawer fixed inset-y-0 left-0 right-auto z-50 flex w-full max-w-[370px] flex-col overflow-hidden rounded-e-[28px] border-e border-[#E9DDCE] bg-[linear-gradient(180deg,#FFFDFC_0%,#F8F2E9_100%)] text-brand-espresso shadow-[0_18px_60px_rgba(43,29,20,0.28)] rtl:left-auto rtl:right-0 rtl:rounded-e-none rtl:rounded-s-[28px] rtl:border-e-0 rtl:border-s rtl:border-[#E9DDCE]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#E9DDCE]/80 px-6 py-6 sm:px-7">
           <div className="flex items-center gap-3" dir="rtl">
