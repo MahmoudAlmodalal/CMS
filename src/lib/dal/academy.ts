@@ -11,7 +11,8 @@ export { CANONICAL_ACADEMY_COURSES, findCanonicalAcademyCourse, type AcademyCour
 /**
  * Fetches all published academy courses ordered strictly by display_order ASC.
  * Draft or unpublished courses are never returned to public callers.
- * Falls back to canonical courses if database is unreachable or empty.
+ * Falls back to canonical courses if database is unreachable or empty. This keeps
+ * the public Figma content visible while the CMS is being populated.
  */
 export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
   if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
@@ -29,16 +30,16 @@ export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
       .order("display_order", { ascending: true });
 
     if (error) {
-      if (error) {
-        console.warn("DAL Warning [getPublishedAcademyCourses]:", error.message);
-      }
-      return USE_DEMO_CONTENT ? CANONICAL_ACADEMY_COURSES : [];
+      console.warn("DAL Warning [getPublishedAcademyCourses]:", error.message);
+      return CANONICAL_ACADEMY_COURSES;
     }
 
-    return data as unknown as AcademyCourse[];
+    // An empty successful response is still an unpopulated CMS, not a reason to
+    // render the public page's empty state when canonical content is available.
+    return data?.length ? (data as unknown as AcademyCourse[]) : CANONICAL_ACADEMY_COURSES;
   } catch (err) {
     console.warn("DAL Warning [getPublishedAcademyCourses]: Connection failed", err);
-    return USE_DEMO_CONTENT ? CANONICAL_ACADEMY_COURSES : [];
+    return CANONICAL_ACADEMY_COURSES;
   }
 }
 
@@ -62,7 +63,7 @@ export async function getAcademyCourseBySlug(slug: string): Promise<AcademyCours
       .maybeSingle();
 
     if (error || !data) {
-      return null;
+      return findCanonicalAcademyCourse(slug);
     }
 
     return data as unknown as AcademyCourse;
