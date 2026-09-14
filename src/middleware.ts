@@ -11,7 +11,26 @@ function isUnlocalized(pathname: string) {
   return pathname === "/login" || pathname === "/admin" || pathname.startsWith("/admin/");
 }
 
+function collapseDuplicateLocalePrefix(pathname: string): string | null {
+  const locale = routing.locales.find(
+    (candidate) =>
+      pathname === `/${candidate}/${candidate}` ||
+      pathname.startsWith(`/${candidate}/${candidate}/`),
+  );
+  if (!locale) return null;
+
+  const duplicatePrefix = `/${locale}/${locale}`;
+  return `/${locale}${pathname.slice(duplicatePrefix.length)}`;
+}
+
 export async function middleware(request: NextRequest) {
+  const canonicalPathname = collapseDuplicateLocalePrefix(request.nextUrl.pathname);
+  if (canonicalPathname) {
+    const canonicalUrl = new URL(request.url);
+    canonicalUrl.pathname = canonicalPathname;
+    return NextResponse.redirect(canonicalUrl);
+  }
+
   if (!isUnlocalized(request.nextUrl.pathname)) {
     return handleI18n(request);
   }

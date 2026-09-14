@@ -37,7 +37,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
     <Link
       href={`/artists/${artist.slug}`}
       data-testid={`artist-tile-${artist.slug}`}
-      className="group relative block h-[239px] w-[160px] min-w-0 shrink-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black lg:h-[293px] lg:w-[220px]"
+      className="group relative block h-[239px] w-[160px] max-w-[calc(50%-16px)] min-w-0 shrink-0 overflow-hidden rounded-[16px] bg-[#2A1D13] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:max-w-none lg:h-[293px] lg:w-[220px]"
       aria-label={t("viewProfile", { name: artist.name })}
     >
       <SafeImage

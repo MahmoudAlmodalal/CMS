@@ -1,5 +1,3 @@
-import React from "react";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import type { Article } from "@/lib/articles";
 import { getArticleCategoryLabel } from "@/lib/articles";
@@ -62,7 +60,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
           className="absolute inset-x-0 top-0 h-full bg-linear-to-t from-brand-espresso/95 via-brand-espresso/45 to-transparent lg:top-[101px] lg:h-[668px]"
         />
 
-        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 lg:end-auto lg:h-[178px] lg:w-[660px] lg:px-0 lg:start-[103px]">
+        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 lg:h-[178px] lg:w-[660px] lg:px-0 lg:left-[677px]">
           <h1
             id="featured-news-heading"
             className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] lg:absolute lg:left-8 lg:top-[66px] lg:w-[660px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[40px]"
