@@ -73,7 +73,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       </div>
 
       <Container className="relative z-10 w-full">
-        <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
+        <div className="relative top-4 mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:top-0 sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
           <h1 className="font-display text-[40px] font-normal leading-[55px] text-[#EFEBD9] lg:text-[64px] lg:leading-[93px]">
             <Highlight text={settings.hero_headline} />
