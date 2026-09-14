@@ -96,7 +96,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         <button
           type="button"
           onClick={() => scrollRow("start")}
-          className="pointer-events-auto absolute start-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="pointer-events-auto absolute left-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Previous artists"
         >
           <ChevronStartIcon size={20} />
@@ -104,7 +104,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         <button
           type="button"
           onClick={() => scrollRow("end")}
-          className="pointer-events-auto absolute end-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="pointer-events-auto absolute right-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Next artists"
         >
           <ChevronEndIcon size={20} />
