@@ -42,25 +42,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
           className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-5 shadow-subtle"
           role="banner"
         >
-          {/* Inline Start: brand logo. Keeping it outside the controls group
-              gives the wordmark a clear visual anchor in both directions. */}
-          <Link
-            href="/"
-            className="flex h-12 w-[132px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[152px]"
-            aria-label={a11y("brandHome")}
-          >
-            <Image
-              src="/assets/branding/logo-navbar.png"
-              alt={site("brand")}
-              width={292}
-              height={178}
-              loading="eager"
-              className="h-16 w-auto shrink-0 object-contain sm:h-[68px]"
-            />
-          </Link>
-
-          {/* Inline End: language and menu controls stay together, away from
-              the logo, while flex direction mirrors the group for RTL. */}
+          {/* Inline Start: language and menu controls stay together. */}
           <div className="flex shrink-0 items-center gap-2">
             <LocaleSwitcher mobile />
             <button
@@ -75,6 +57,23 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               <MenuIcon size={24} className="size-6" />
             </button>
           </div>
+
+          {/* Inline End: brand logo, kept outside the controls group so it has a
+              clear visual anchor in both directions. */}
+          <Link
+            href="/"
+            className="flex h-12 w-[132px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[152px]"
+            aria-label={a11y("brandHome")}
+          >
+            <Image
+              src="/assets/branding/logo-navbar.png"
+              alt={site("brand")}
+              width={292}
+              height={178}
+              loading="eager"
+              className="h-16 w-auto shrink-0 object-contain sm:h-[68px]"
+            />
+          </Link>
         </header>
       </div>
 
