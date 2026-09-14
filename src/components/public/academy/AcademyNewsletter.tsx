@@ -84,7 +84,7 @@ export function AcademyNewsletter({
             <input type="text" id="_hp_newsletter" name="_hp" tabIndex={-1} autoComplete="off" />
           </div>
 
-          <div className="mx-auto flex w-full max-w-[652px] flex-col items-stretch gap-3 sm:flex-row sm:items-start">
+          <div className="-mx-[8.5px] flex w-auto items-start gap-3 lg:mx-auto lg:w-full lg:max-w-[652px]">
             <label htmlFor="academy-newsletter-email" className="sr-only">
               {t("newsletterPlaceholder")}
             </label>
@@ -104,7 +104,7 @@ export function AcademyNewsletter({
               type="submit"
               disabled={isPending}
               aria-label={t("newsletterSubmitLabel")}
-              className="min-h-11 w-full shrink-0 rounded-[16px] bg-brand-primary px-4 text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70 sm:w-[149px]"
+              className="h-11 w-[149px] shrink-0 rounded-[16px] bg-brand-primary px-4 text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70"
             >
               {t("newsletterSubmit")}
             </button>

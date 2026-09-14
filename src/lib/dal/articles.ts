@@ -15,19 +15,25 @@ import {
 export { type Article, ARTICLE_CATEGORIES, type ArticleCategoryId, CATEGORY_LABELS, getArticleCategoryLabel, CARD_CATEGORY_LABELS, getArticleCardCategoryLabel, CANONICAL_ARTICLES, CANONICAL_FEATURED_ARTICLES };
 export const getNewsCardCategoryLabel = getArticleCardCategoryLabel;
 
-const demoArticles = (limit?: number) => {
+const canonicalArticles = (category?: string, limit?: number) => {
   const now = new Date().toISOString();
-  const rows = CANONICAL_ARTICLES.filter((a) => a.is_published && a.published_at <= now);
+  const rows = CANONICAL_ARTICLES.filter(
+    (a) =>
+      a.is_published &&
+      a.published_at <= now &&
+      (!category || category === "all" || a.category === category),
+  );
   return typeof limit === "number" ? rows.slice(0, limit) : rows;
 };
+
+const demoArticles = (limit?: number) => canonicalArticles(undefined, limit);
 
 export async function getPublishedArticles(options?: { category?: string; limit?: number }): Promise<Article[]> {
   const category = options?.category;
   const limit = options?.limit;
   const nowIso = new Date().toISOString();
   if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
-    const rows = demoArticles().filter((a) => !category || category === "all" || a.category === category);
-    return typeof limit === "number" ? rows.slice(0, limit) : rows;
+    return canonicalArticles(category, limit);
   }
   try {
     const supabase = await createClient();
@@ -37,11 +43,12 @@ export async function getPublishedArticles(options?: { category?: string; limit?
     const { data, error } = await query;
     if (error) {
       console.error("DAL Error [getPublishedArticles]:", error.message);
-      return USE_DEMO_CONTENT ? demoArticles(limit) : [];
+      return canonicalArticles(category, limit);
     }
-    return (data as unknown as Article[]) || [];
+    const rows = (data as unknown as Article[]) || [];
+    return rows.length ? rows : canonicalArticles(category, limit);
   } catch {
-    return USE_DEMO_CONTENT ? demoArticles(limit) : [];
+    return canonicalArticles(category, limit);
   }
 }
 
@@ -53,10 +60,11 @@ export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.from("articles").select("*").eq("is_published", true).eq("is_featured", true).lte("published_at", nowIso).order("published_at", { ascending: false }).limit(limit);
-    if (error) return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTICLES.slice(0, limit) : [];
-    return (data as unknown as Article[]) || [];
+    if (error) return CANONICAL_FEATURED_ARTICLES.slice(0, limit);
+    const rows = (data as unknown as Article[]) || [];
+    return rows.length ? rows : CANONICAL_FEATURED_ARTICLES.slice(0, limit);
   } catch {
-    return USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTICLES.slice(0, limit) : [];
+    return CANONICAL_FEATURED_ARTICLES.slice(0, limit);
   }
 }
 
@@ -66,10 +74,18 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.from("articles").select("*").eq("slug", slug).eq("is_published", true).lte("published_at", nowIso).maybeSingle();
-    if (error || !data) return null;
+    if (error || !data) {
+      const found = CANONICAL_ARTICLES.find(
+        (a) => a.slug === slug && a.is_published && a.published_at <= nowIso,
+      );
+      return found || null;
+    }
     return data as unknown as Article;
   } catch {
-    return USE_DEMO_CONTENT ? CANONICAL_ARTICLES.find((a) => a.slug === slug && a.is_published && a.published_at <= nowIso) || null : null;
+    const found = CANONICAL_ARTICLES.find(
+      (a) => a.slug === slug && a.is_published && a.published_at <= nowIso,
+    );
+    return found || null;
   }
 }
 
@@ -85,9 +101,10 @@ export async function getAllPublishedArticleSlugs(): Promise<{ slug: string }[]>
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.from("articles").select("slug").eq("is_published", true).lte("published_at", nowIso);
-    if (error) return USE_DEMO_CONTENT ? demoArticles().map((a) => ({ slug: a.slug })) : [];
-    return (data as Array<{ slug: string }> || []).map((row) => ({ slug: row.slug }));
+    if (error) return canonicalArticles().map((a) => ({ slug: a.slug }));
+    const rows = (data as Array<{ slug: string }> || []).map((row) => ({ slug: row.slug }));
+    return rows.length ? rows : canonicalArticles().map((a) => ({ slug: a.slug }));
   } catch {
-    return USE_DEMO_CONTENT ? demoArticles().map((a) => ({ slug: a.slug })) : [];
+    return canonicalArticles().map((a) => ({ slug: a.slug }));
   }
 }

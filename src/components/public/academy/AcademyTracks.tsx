@@ -43,7 +43,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
     <section
       id="tracks"
       aria-labelledby="academy-tracks-heading"
-      className="relative w-full py-12 md:py-16"
+      className="relative w-full pb-[31.16px] pt-[243px] lg:pb-0 lg:pt-[102px]"
     >
       <div
         aria-hidden="true"
@@ -57,7 +57,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
       <div className="mx-auto w-full max-w-[1440px]">
         <h2
           id="academy-tracks-heading"
-          className="mx-auto w-full max-w-2xl px-5 text-center font-display text-[32px] leading-tight text-brand-espresso lg:me-0 lg:ms-auto lg:w-fit lg:max-w-full lg:px-8 lg:text-start lg:text-[40px]"
+          className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:ms-[560px] lg:w-fit lg:px-8 lg:text-start lg:text-[40px]"
         >
           {heading || t.rich("tracksHeading", {
             em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
@@ -69,7 +69,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
             <p className="text-gradscale-400">{t("tracksEmpty")}</p>
           </div>
         ) : (
-          <div className="mx-auto mt-8 grid w-full max-w-6xl grid-cols-1 gap-4 px-5 md:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-6 lg:px-8">
+          <div className="ms-[18px] mt-[31px] grid w-[362px] max-w-[calc(100%-28px)] grid-cols-1 gap-4 lg:ms-[154px] lg:mt-[42px] lg:w-[1136px] lg:max-w-none lg:auto-rows-[325.611px] lg:grid-cols-3 lg:gap-6 lg:px-8">
             {courses.map((course, idx) => (
               <TrackCard key={course.id || course.slug} course={course} index={idx} />
             ))}

@@ -39,7 +39,7 @@ export function TrackCard({ course, index }: TrackCardProps) {
         <span className="text-[14px] font-bold uppercase leading-[20px] tracking-[1.4px] text-brand-primary">
           {course.track_category}
         </span>
-        <span aria-hidden="true" className="shrink-0 text-[64px] font-black leading-none text-secondary-400 md:text-[96px]">
+        <span aria-hidden="true" className="shrink-0 text-[60px] font-black leading-[60px] text-secondary-400">
           {displayNum}
         </span>
       </div>
@@ -55,7 +55,7 @@ export function TrackCard({ course, index }: TrackCardProps) {
       <Link
         href={`/booking?course=${encodeURIComponent(course.slug)}`}
         aria-label={t("enrollLabel", { title: course.title })}
-        className="mt-auto inline-flex min-h-11 items-center self-end px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-colors hover:text-brand-primary-hover"
+        className="mt-auto self-end inline-flex min-h-11 items-center px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-colors hover:text-brand-primary-hover"
       >
         {t("enroll")} <span aria-hidden="true">←</span>
       </Link>
