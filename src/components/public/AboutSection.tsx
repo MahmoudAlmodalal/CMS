@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Highlight } from "@/components/ui/Highlight";
 import type { SiteSettings } from "@/lib/dal/site-settings";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface AboutSectionProps {
   settings: SiteSettings;
@@ -23,14 +24,15 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
         </h2>
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
           <div className="order-1 min-w-0 md:order-2">
-            <Image
-              src={settings.about_image_url || "/assets/figma/about-musician.png"}
-              alt={t("aboutImageAlt")}
-              width={551}
-              height={491}
-              sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
-              className="mx-auto h-auto w-full max-w-[551px] object-cover"
-            />
+            <div className="relative mx-auto aspect-[551/491] w-full max-w-[551px] overflow-hidden rounded-[16px]">
+              <SafeImage
+                src={settings.about_image_url || "/assets/figma/about-musician.png"}
+                alt={t("aboutImageAlt")}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
+                className="object-cover"
+              />
+            </div>
           </div>
           <div className="order-2 flex min-w-0 flex-col items-start gap-6 text-start md:order-1 md:gap-7 lg:gap-8">
             <h3 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-normal leading-tight text-primary-500">

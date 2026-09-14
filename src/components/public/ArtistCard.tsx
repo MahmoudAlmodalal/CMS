@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { type Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface ArtistCardProps {
   artist: Artist;
@@ -43,29 +44,17 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
         className="flex flex-1 flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-brand-espresso">
-          {portrait ? (
-            <Image
-              src={portrait}
-              alt={a("portraitAlt", { name: artist.name })}
-              fill
-              sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
-              // `priority` is deprecated in Next 16; the docs point at
-              // loading="eager" for an above-the-fold image that is not the LCP
-              // element, which is what the first row of cards is.
-              loading={priority ? "eager" : "lazy"}
-              quality={90}
-              className="object-cover"
-            />
-          ) : (
-            /* Missing-asset fallback: the initial on the card's own surface, so an
-               artist without a portrait never renders a broken image. */
-            <div
-              data-testid="artist-card-fallback-image"
-              className="flex h-full w-full items-center justify-center bg-brand-surface/60 text-3xl font-bold text-brand-primary"
-            >
-              {artist.name.charAt(0)}
-            </div>
-          )}
+          <SafeImage
+            src={portrait}
+            alt={a("portraitAlt", { name: artist.name })}
+            fill
+            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+            loading={priority ? "eager" : "lazy"}
+            quality={90}
+            fallbackTestId="artist-card-fallback-image"
+            fallbackText={artist.name}
+            className="object-cover"
+          />
         </div>
 
         <div className="min-h-[108px] p-3 sm:p-5">

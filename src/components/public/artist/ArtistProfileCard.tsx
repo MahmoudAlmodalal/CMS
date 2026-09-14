@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { Artist } from "@/lib/artists";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface ArtistProfileCardProps {
   artist: Artist;
@@ -36,9 +37,9 @@ export function ArtistProfileCard({ artist }: ArtistProfileCardProps) {
 
   return (
     <section className="w-full border-t-[0.833px] border-secondary-400 lg:py-[48px]">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col-reverse items-center gap-8 px-[14px] text-center lg:h-[160px] lg:flex-row lg:items-center lg:gap-[40px] lg:px-[32px] lg:text-start">
-        <div className="flex min-w-0 flex-col items-center lg:flex-[936.016_0_0] lg:items-start">
-          <h2 className="text-[24px] font-bold leading-[36px] text-brand-espresso lg:whitespace-nowrap lg:text-[31px] lg:leading-[46.5px]">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col-reverse items-center gap-8 px-[14px] text-center lg:min-h-[160px] lg:flex-row lg:items-center lg:gap-[40px] lg:px-[32px] lg:text-start">
+        <div className="flex min-w-0 flex-1 flex-col items-center lg:flex-[936.016_0_0] lg:items-start">
+          <h2 className="break-words text-[24px] font-bold leading-[36px] text-brand-espresso lg:text-[31px] lg:leading-[46.5px]">
             {artist.name}
           </h2>
           <p className="w-full pt-[8px] text-[13px] font-bold leading-[20px] tracking-[0.35px] text-primary-500 lg:h-[28px] lg:text-[14px]">
@@ -53,12 +54,13 @@ export function ArtistProfileCard({ artist }: ArtistProfileCardProps) {
         </div>
 
         <div className="relative size-[160px] shrink-0 overflow-hidden rounded-full border-[3.333px] border-primary-500/20">
-          <Image
+          <SafeImage
             src={portrait}
             alt={t("portraitAlt", { name: artist.name })}
             fill
             sizes="160px"
             quality={90}
+            fallbackText={artist.name}
             className="object-cover"
           />
         </div>

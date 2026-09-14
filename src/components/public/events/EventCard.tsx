@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CATEGORY_MAP, type EventItem } from "@/lib/types/events";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface EventCardProps {
   event: EventItem;
@@ -56,7 +57,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
     timeZone: "UTC",
   }).format(eventDate);
   const monthArabic = new Intl.DateTimeFormat(dateLocale, {
-    month: "long",
+    month: locale === "ar" ? "long" : "short",
     timeZone: "UTC",
   }).format(eventDate);
 
@@ -77,11 +78,11 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
           box leaves, so it overhangs symmetrically — which is 12 of side padding. */}
       <div className="flex h-[149px] w-[78px] shrink-0 flex-col items-center px-3 py-5 lg:absolute lg:end-0 lg:top-0 lg:h-[148.802px] lg:w-[110px] lg:items-start lg:p-5">
         <div className="w-full pb-3">
-          <div className="w-[54px] rounded-[8px] bg-brand-espresso px-4 py-3 lg:w-auto lg:min-w-[70px]">
-            <p className="text-center text-[24px] font-black leading-[24px] text-[#e9ebf8]">
+          <div className="w-[54px] rounded-[8px] bg-brand-espresso px-2 py-3 lg:w-auto lg:min-w-[70px] lg:px-4">
+            <p className="text-center font-mono tabular-nums text-[24px] font-black leading-[24px] text-[#e9ebf8]">
               {dayArabic}
             </p>
-            <p className="pt-[2px] text-center text-[9.6px] font-semibold uppercase leading-[14.4px] text-brand-surface/50">
+            <p className="truncate whitespace-nowrap pt-[2px] text-center text-[9.6px] font-semibold uppercase leading-[14.4px] text-brand-surface/50">
               {monthArabic}
             </p>
           </div>
@@ -104,12 +105,12 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
         {/* The eyebrow is a bare 64x20 line on the 390 frame, not the 32.313 row the
             1440 one leaves above the title. */}
         <div className="relative h-5 w-full lg:h-[32.313px]">
-          <span className="absolute start-0 top-[4.27px] flex h-[20.042px] w-[44.948px] items-center justify-center rounded-[2px] border-[0.667px] border-primary-500/25 bg-primary-100/20 text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500">
+          <span className="absolute start-0 top-[4.27px] flex h-[20.042px] max-w-full items-center justify-center truncate rounded-[2px] border-[0.667px] border-primary-500/25 bg-primary-100/20 px-1 text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500">
             {categoryLabel}
           </span>
         </div>
 
-        <h3 className="w-full truncate text-[16px] font-bold leading-[24px] text-brand-espresso lg:w-auto lg:overflow-visible lg:whitespace-nowrap">
+        <h3 className="line-clamp-2 w-full break-words text-[16px] font-bold leading-[24px] text-brand-espresso lg:w-auto lg:overflow-visible lg:whitespace-nowrap">
           {event.title}
         </h3>
 
@@ -119,28 +120,19 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Thumbnail 91:16815 */}
-      <div className="relative h-[105px] w-[93px] shrink-0 overflow-hidden bg-brand-surface/40 lg:absolute lg:start-[21px] lg:top-[24.33px] lg:w-[140px]">
-        {event.image_url ? (
-          <Image
-            src={event.image_url}
-            alt={event.title}
-            fill
-            sizes="140px"
-            priority={priority}
-            quality={90}
-            className="object-cover"
-          />
-        ) : (
-          /* Missing-asset fallback: the band mark on the card's own surface, so an
-             event without a photograph never renders a broken image. */
-          <div
-            data-testid="event-card-fallback-image"
-            className="flex h-full w-full items-center justify-center bg-brand-surface/60 text-lg font-bold text-brand-primary"
-          >
-            ♪
-          </div>
-        )}
+      <div className="relative h-[105px] w-[93px] shrink-0 overflow-hidden rounded-[8px] bg-brand-surface/40 lg:absolute lg:start-[21px] lg:top-[24.33px] lg:w-[140px]">
+        <SafeImage
+          src={event.image_url}
+          alt={event.title}
+          fill
+          sizes="(max-width: 1023px) 93px, 140px"
+          priority={priority}
+          fallbackTestId="event-card-fallback-image"
+          fallbackText={event.title}
+          className="object-cover"
+        />
       </div>
     </article>
   );
 }
+

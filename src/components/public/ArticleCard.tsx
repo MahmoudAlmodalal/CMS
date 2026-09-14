@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatArabicDate } from "@/lib/formatters";
 import { getNewsCardCategoryLabel, type Article } from "@/lib/dal/articles";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface ArticleCardProps {
   article: Article;
@@ -42,15 +43,16 @@ export function ArticleCard({ article }: ArticleCardProps) {
     <article className="group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
       <Link href={`/news/${article.slug}`} className="flex flex-1 flex-col">
         <div className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface">
-          <Image
+          <SafeImage
             src={article.cover_image_url || "/assets/articles/default-article.png"}
-            alt=""
+            alt={article.title}
             fill
             sizes="(min-width: 1024px) 387px, (min-width: 640px) 50vw, 100vw"
             quality={90}
+            fallbackText={article.title}
             className="object-cover"
           />
-          <span className="absolute start-4 top-4 rounded-[2px] bg-[rgba(255,248,246,0.9)] px-2 py-1 text-[12px] leading-[16px] tracking-[0.6px] text-ink-heading backdrop-blur-[4px]">
+          <span className="absolute start-4 top-4 z-10 rounded-[2px] bg-[rgba(255,248,246,0.9)] px-2 py-1 text-[12px] leading-[16px] tracking-[0.6px] text-ink-heading backdrop-blur-[4px]">
             {dateFormatted}
           </span>
         </div>

@@ -6,3 +6,4 @@ export * from "./Card";
 export * from "./Badge";
 export * from "./LayoutPrimitives";
 export * from "./Icons";
+export * from "./SafeImage";
