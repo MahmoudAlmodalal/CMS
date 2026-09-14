@@ -20,7 +20,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
         <h2 className="text-center font-display text-4xl font-normal leading-tight text-[#F9EDE8] lg:text-[64px] lg:leading-tight">
           {heading || t("artistsHeading")}
         </h2>
-        <div className="mx-auto mt-8 grid w-[336px] grid-cols-2 gap-x-4 gap-y-[29px] max-w-full sm:mt-10 md:w-full md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-5 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block">
+        <div className="mx-auto mt-8 grid w-[352px] grid-cols-2 gap-x-10 gap-y-10 max-w-full sm:mt-10 md:w-full md:grid-cols-3 md:gap-x-8 lg:grid-cols-4 xl:grid-cols-6 xl:gap-6 [&>*:nth-child(n+5)]:hidden md:[&>*:nth-child(n+5)]:block">
           {artists.slice(0, 6).map((artist, i) => (
             <ArtistTile key={artist.id} artist={artist} priority={i < 2} />
           ))}

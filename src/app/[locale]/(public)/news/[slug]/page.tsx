@@ -94,7 +94,7 @@ export default async function NewsDetailPage({
   const relatedArticles = await getRelatedArticles(slug, article.category, 3);
 
   return (
-    <div className="py-8 sm:py-12 lg:py-16">
+    <div className="pb-8 pt-8 sm:pb-12 sm:pt-12 lg:pb-16 lg:pt-[130px] xl:pt-[151px]">
       <Container>
         <ArticleView article={article} relatedArticles={relatedArticles} />
       </Container>

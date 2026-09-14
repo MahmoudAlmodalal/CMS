@@ -89,7 +89,7 @@ test("الفنانين — the filter bar is a 366x66.53 scroller on the 390 fra
   assert.match(tabs, /gap-8 overflow-x-auto/, "The six labels sit 32 apart and scroll");
   assert.doesNotMatch(tabs, /flex-wrap/, "The bar must not wrap");
   assert.match(tabs, /shrink-0 cursor-pointer/, "No label compresses to fit");
-  assert.match(tabs, /lg:h-auto lg:w-\[506px\]/, "Desktop is still the 506 pill");
+  assert.match(tabs, /lg:h-auto lg:w-fit lg:overflow-visible/, "Desktop fits its tabs without scrolling");
 });
 
 test("الفنانين — the 390 frame's vertical rhythm", () => {

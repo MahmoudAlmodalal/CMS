@@ -24,6 +24,21 @@ test("i18n — 1. Locale routing keeps Arabic canonical and adds English", () =>
   assert.match(config, /createNextIntlPlugin\("\.\/src\/i18n\/request\.ts"\)/, "next.config must register the plugin");
 });
 
+test("i18n — duplicate locale prefixes redirect to one canonical prefix", () => {
+  const middleware = read("src/middleware.ts");
+  assert.match(middleware, /collapseDuplicateLocalePrefix/, "Middleware must normalize duplicated locale prefixes");
+  assert.match(middleware, /routing\.locales\.find/, "Only configured locales may be normalized");
+  assert.match(middleware, /pathname === `\/\$\{candidate\}\/\$\{candidate\}`/, "Locale-only duplicates must be handled");
+  assert.match(
+    middleware,
+    /pathname\.startsWith\(`\/\$\{candidate\}\/\$\{candidate\}\/`\)/,
+    "Nested duplicate locale prefixes must be handled",
+  );
+  assert.match(middleware, /const canonicalUrl = new URL\(request\.url\)/, "Redirects must preserve the original URL query");
+  assert.match(middleware, /canonicalUrl\.pathname = canonicalPathname/, "Only the duplicated path prefix may change");
+  assert.match(middleware, /return NextResponse\.redirect\(canonicalUrl\)/, "Duplicate prefixes must redirect to the canonical path");
+});
+
 test("i18n — 2. Message catalogs are complete in both locales", () => {
   const ar = flattenMessages(loadMessages("ar"));
   const en = flattenMessages(loadMessages("en"));
