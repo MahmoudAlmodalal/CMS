@@ -63,14 +63,14 @@ export function Drawer({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
+        className="motion-drawer-backdrop fixed inset-0 bg-black/50 backdrop-blur-xs"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Drawer Panel */}
       <aside
-        className={`fixed inset-y-0 ${positionClass} z-50 flex flex-col w-full max-w-sm bg-brand-cream border-s border-brand-surface shadow-2xl transition-transform duration-300 ease-out text-brand-espresso ${className}`}
+        className={`motion-drawer fixed inset-y-0 ${positionClass} z-50 flex flex-col w-full max-w-sm bg-brand-cream border-s border-brand-surface shadow-2xl text-brand-espresso ${className}`}
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between p-5 border-b border-brand-surface bg-white/70">

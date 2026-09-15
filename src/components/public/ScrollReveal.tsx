@@ -16,9 +16,13 @@ import React, { useEffect, useRef, useState } from "react";
 export function ScrollReveal({
   children,
   className = "",
+  delay = 0,
+  variant = "up",
 }: {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
+  variant?: "up" | "soft" | "image";
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState<boolean | null>(null);
@@ -43,7 +47,7 @@ export function ScrollReveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.15, rootMargin: "0px 0px -12% 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -52,7 +56,8 @@ export function ScrollReveal({
   return (
     <div
       ref={ref}
-      className={`motion-reveal ${className}`.trim()}
+      className={`motion-reveal motion-reveal-${variant} ${className}`.trim()}
+      style={{ "--reveal-delay": `${Math.min(Math.max(delay, 0), 400)}ms` } as React.CSSProperties}
       data-revealed={revealed === null ? undefined : String(revealed)}
     >
       {children}

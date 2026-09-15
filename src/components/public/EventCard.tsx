@@ -6,6 +6,7 @@ import type { Event } from "@/lib/dal/events";
 
 interface EventCardProps {
   event: Event;
+  style?: React.CSSProperties;
 }
 
 /** Event category -> key under the `categories` message namespace. */
@@ -25,7 +26,7 @@ const EVENT_CATEGORY_LABEL_KEYS: Record<Event["category"], string> = {
  * - Location, city, and performer line
  * - Action button: routes to ticket_url or /booking?event_id=[id]
  */
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event, style }: EventCardProps) {
   const t = useTranslations("event");
   const c = useTranslations("categories");
   const locale = useLocale();
@@ -41,7 +42,7 @@ export function EventCard({ event }: EventCardProps) {
   const isExternal = Boolean(ticketUrl) && !isLegacyBookingUrl;
 
   return (
-    <div className="group flex flex-col bg-white rounded-card overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start">
+    <div style={style} className="motion-card group flex flex-col bg-white rounded-card overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start">
       {/* Visual Header with Date Badge */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-brand-surface">
         <div

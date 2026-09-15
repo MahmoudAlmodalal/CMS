@@ -8,6 +8,7 @@ export interface EventCardProps {
   event: EventItem;
   priority?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -43,7 +44,7 @@ export interface EventCardProps {
  * The thumbnail is 93 wide there against 140 on desktop and the date chip 54 against
  * 70, both of which the frame states outright.
  */
-export function EventCard({ event, priority = false, className = "" }: EventCardProps) {
+export function EventCard({ event, priority = false, className = "", style }: EventCardProps) {
   const t = useTranslations("events");
   const locale = useLocale();
 
@@ -73,6 +74,7 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
   return (
     <article
       data-testid={`event-card-${event.slug}`}
+      style={style}
       className={`relative flex h-auto w-full flex-col gap-4 overflow-hidden rounded-[16px] border-[0.667px] border-brand-espresso/10 bg-white p-4 lg:block lg:h-[150.135px] lg:p-0 ${className}`}
     >
       {/* Date block 91:16805 */}
