@@ -26,8 +26,10 @@ interface AcademyTracksProps {
  * Two dotted marks (91:16120, 91:16225) flank the grid, each hanging off its own
  * edge of the artboard so only part of it shows. They are cropped 1:1 out of the
  * reference render, so they carry the page's cream ground with them, and they are
- * drawn only from lg up — below that the grid stacks and there is no margin to
- * hang them in.
+ * drawn only from hd up — the margin they hang in is the 1440 artboard's, and at
+ * lg the grid reaches the page edge and the start mark landed on the first card.
+ *
+ * The frame's inline offset and width are measured on the 1440 artboard; applied from lg they hung the block off the viewport all the way to 1439 (and overflow-x: clip silently sliced it). They are held back to 1440 and the range below centres the same measure instead.
  *
  * The 390 frame (139:12420) keeps the same card but re-lays the band: the heading
  * (139:12432) is centred on a 286px measure at y=733 — 243 under the hero's 490 —
@@ -49,17 +51,17 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
           full 490 band; real hero content ends higher, so 48px closes the hole. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-[228px] hidden h-[112px] w-[74px] bg-[url('/assets/branding/dots-start.png')] bg-contain bg-no-repeat lg:block"
+        className="pointer-events-none absolute left-0 top-[228px] hidden h-[112px] w-[74px] bg-[url('/assets/branding/dots-start.png')] bg-contain bg-no-repeat hd:block"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-[455px] hidden h-[112px] w-[86px] bg-[url('/assets/branding/dots-end.png')] bg-contain bg-no-repeat lg:block"
+        className="pointer-events-none absolute right-0 top-[455px] hidden h-[112px] w-[86px] bg-[url('/assets/branding/dots-end.png')] bg-contain bg-no-repeat hd:block"
       />
 
       <div className="mx-auto w-full max-w-[1440px]">
         <h2
           id="academy-tracks-heading"
-          className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:ms-[560px] lg:w-fit lg:px-8 lg:text-start lg:text-[40px]"
+          className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:w-full lg:max-w-[1136px] lg:px-8 lg:text-center lg:text-[40px] hd:mx-0 hd:ms-[560px] hd:w-fit hd:max-w-none hd:text-start"
         >
           {heading || t.rich("tracksHeading", {
             em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
@@ -71,7 +73,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
             <p className="text-gradscale-400">{t("tracksEmpty")}</p>
           </div>
         ) : (
-          <div className="mx-auto mt-[31px] grid w-[calc(100%-32px)] max-w-[362px] grid-cols-1 gap-4 lg:mx-0 lg:ms-[154px] lg:mt-[42px] lg:w-[1136px] lg:max-w-none lg:auto-rows-[325.611px] lg:grid-cols-3 lg:gap-6 lg:px-8">
+          <div className="mx-auto mt-[31px] grid w-[calc(100%-32px)] max-w-[362px] grid-cols-1 gap-4 lg:mt-[42px] lg:w-full lg:max-w-[1136px] lg:auto-rows-[325.611px] lg:grid-cols-3 lg:gap-6 lg:px-8 hd:mx-0 hd:ms-[154px] hd:px-0">
             {courses.map((course, idx) => (
               <TrackCard key={course.id || course.slug} course={course} index={idx} />
             ))}

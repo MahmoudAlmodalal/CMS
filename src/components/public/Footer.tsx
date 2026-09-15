@@ -38,14 +38,23 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
       <div className="relative mx-auto w-full max-w-[1454px] px-5 pb-10 pt-8 lg:px-10 lg:pb-8 lg:pt-16 xl:px-16">
         {/* Mobile (136:7847): one column of four fixed boxes broken out of the
             footer's own padding to span the full 390. Desktop (94:18509): the
-            same four columns at absolute offsets in a 736x190 block. */}
-        <div className="flex flex-col items-center gap-8 lg:relative lg:mx-auto lg:block lg:h-[190px] lg:w-[736px]">
-          <div className="flex w-full max-w-[345px] min-w-0 flex-col items-center text-center lg:absolute lg:left-[594px] lg:top-0 lg:items-start lg:text-start">
+            same four columns, drawn as a row.
+
+            The frame places them by absolute `left` inside a 736px box, at
+            594/290/90/-193 — offsets that only resolve on the 1440 artboard. Below
+            it the row hung off both edges (the booking column lost its first
+            characters at 1024 and the brand column ran past the right edge), and
+            at 1440 the contact column already overlapped the booking copy. `left`
+            is also physical, so the whole row refused to mirror for English.
+            A flex row reproduces the frame's order and column widths at 1440 and
+            stays inside the page below it, in both directions. */}
+        <div className="flex flex-col items-center gap-8 lg:mx-auto lg:w-full lg:max-w-[1132px] lg:flex-row lg:items-start lg:justify-between lg:gap-8">
+          <div className="flex w-full max-w-[345px] min-w-0 flex-col items-center text-center lg:items-start lg:text-start">
             <Image src="/assets/branding/logo-footer.png" alt={a11y("brandHome")} width={211} height={86} sizes="211px" className="h-auto w-[min(211px,70vw)] object-contain" />
             <p className="max-w-[260px] pt-4 text-sm leading-relaxed text-primary-50">{mission}</p>
             <p className="pt-4 text-sm font-bold text-brand-primary">{t("motto")}</p>
           </div>
-          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:absolute lg:left-[290px] lg:top-0 lg:h-[190px] lg:w-[156px] lg:max-w-none lg:border-0 lg:pt-0">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:w-[156px] lg:shrink-0 lg:border-0 lg:pt-0">
             <div className="flex flex-col items-center lg:items-start">
             <h4 className="text-sm font-bold text-brand-primary">{t("exploreHeading")}</h4>
             <nav className="mt-3 flex flex-col items-center gap-1 lg:items-start" aria-label={a11y("exploreLinks")}>
@@ -58,7 +67,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             </nav>
             </div>
           </div>
-          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:absolute lg:left-[90px] lg:top-0 lg:h-[137px] lg:w-[156px] lg:max-w-none lg:border-0 lg:pt-0">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 lg:w-[186px] lg:shrink-0 lg:border-0 lg:pt-0">
             <div className="flex flex-col items-center lg:items-start">
             <h4 className="text-sm font-bold text-brand-primary">{t("contactHeading")}</h4>
             <div className="mt-3 flex flex-col items-center text-sm font-medium leading-6 text-primary-50 lg:items-start">
@@ -68,7 +77,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             </div>
             </div>
           </div>
-          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 text-center lg:absolute lg:left-[-193px] lg:top-0 lg:h-[190px] lg:w-[321px] lg:max-w-none lg:border-0 lg:pt-0 lg:text-start">
+          <div className="w-full max-w-[345px] border-t border-white/10 pt-6 text-center lg:w-[321px] lg:max-w-none lg:shrink-0 lg:border-0 lg:pt-0 lg:text-start">
             <h4 className="max-w-[240px] text-base font-bold text-[#ECE6D0]">{t("bookingHeading")}</h4>
             <p className="max-w-[280px] pt-2.5 pb-5 text-sm leading-relaxed text-primary-50">{t("bookingBody")}</p>
             <Link href="/booking" className="mx-auto inline-flex min-h-12 w-full max-w-[300px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:mx-0 lg:max-w-[180px]">{t("bookingCta")}</Link>
