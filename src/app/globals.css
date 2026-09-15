@@ -368,8 +368,18 @@ bdi, .bdi-isolate {
   .motion-reveal-image[data-revealed="false"] { transform: scale(0.96); }
   .motion-reveal-image[data-revealed="true"] { animation-name: motion-reveal-image-in; }
 
-  [data-motion-ready="true"] .motion-stagger > * {
+  [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="true"] > * {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) var(--stagger-delay, 0ms) both;
+  }
+
+  [data-motion-ready="true"] .public-motion-shell main > *[data-scroll-reveal="false"],
+  [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="false"] {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  [data-motion-ready="true"] .public-motion-shell main > *[data-scroll-reveal="true"] {
+    animation: motion-reveal-in var(--motion-slow) var(--motion-ease) both;
   }
 
   .testimonial-slide {
@@ -398,6 +408,8 @@ bdi, .bdi-isolate {
   .public-motion-shell main > *, .motion-drawer, .motion-drawer-backdrop { animation: none !important; }
   .motion-reveal, .testimonial-slide { animation: none !important; opacity: 1 !important; transform: none !important; }
   .motion-stagger > * { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .public-motion-shell main > *[data-scroll-reveal="false"],
+  .motion-stagger[data-stagger-revealed="false"] { opacity: 1 !important; transform: none !important; }
   .public-motion-shell .motion-card:hover,
   .public-motion-shell .motion-card:hover .motion-image,
   .public-motion-shell .motion-image:hover,
