@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { Highlight } from "@/components/ui/Highlight";
 import type { Testimonial } from "@/lib/dal/testimonials";
+import { ScrollReveal } from "@/components/public/ScrollReveal";
 
 interface TestimonialsSliderProps {
   testimonials: Testimonial[];
@@ -80,9 +81,11 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:space-y-10">
           {/* Section Header (Figma 87:14314 — Qahwa Arabic Regular 64px/48, 2-fill) */}
-          <h2 className="font-display text-[32px] font-normal leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
-            <Highlight text={heading || home("testimonialsHeading")} />
-          </h2>
+          <ScrollReveal>
+            <h2 className="font-display text-[32px] font-normal leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
+              <Highlight text={heading || home("testimonialsHeading")} />
+            </h2>
+          </ScrollReveal>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
           <div className="mx-auto mt-6 flex h-auto min-h-0 w-full min-w-0 items-center justify-center gap-2 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
@@ -100,9 +103,11 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
             <div
+              key={`${current.id ?? current.author_name}-${currentIndex}`}
               className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
                 total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
-              } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+              } testimonial-slide lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+              aria-live="polite"
             >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
               <blockquote className="h-auto min-h-[78px] w-full max-w-full break-words [overflow-wrap:break-word] pt-3 font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
