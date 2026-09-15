@@ -73,7 +73,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
             <p className="text-gradscale-400">{t("tracksEmpty")}</p>
           </div>
         ) : (
-          <div className="mx-auto mt-[31px] grid w-[calc(100%-32px)] max-w-[362px] grid-cols-1 gap-4 lg:mt-[42px] lg:w-full lg:max-w-[1136px] lg:auto-rows-[325.611px] lg:grid-cols-3 lg:gap-6 lg:px-8 hd:mx-0 hd:ms-[154px] hd:px-0">
+          <div className="motion-stagger mx-auto mt-[31px] grid w-[calc(100%-32px)] max-w-[362px] grid-cols-1 gap-4 lg:mt-[42px] lg:w-full lg:max-w-[1136px] lg:auto-rows-[325.611px] lg:grid-cols-3 lg:gap-6 lg:px-8 hd:mx-0 hd:ms-[154px] hd:px-0">
             {courses.map((course, idx) => (
               <TrackCard key={course.id || course.slug} course={course} index={idx} />
             ))}

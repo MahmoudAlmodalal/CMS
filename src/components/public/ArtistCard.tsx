@@ -9,6 +9,7 @@ export interface ArtistCardProps {
   artist: Artist;
   priority?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -32,13 +33,14 @@ export interface ArtistCardProps {
  * and drives the photo's zoom (SafeImage already carries `motion-image`). It is
  * transform and box-shadow only, so none of the pixel geometry above moves.
  */
-export function ArtistCard({ artist, priority = false, className = "" }: ArtistCardProps) {
+export function ArtistCard({ artist, priority = false, className = "", style }: ArtistCardProps) {
   const a = useTranslations("artist");
   const portrait = resolveMediaUrl("artists", artist.portrait_image_url?.trim() || "");
 
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
+      style={style}
       className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start lg:w-full ${className}`}
     >
       <Link

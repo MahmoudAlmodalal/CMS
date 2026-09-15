@@ -61,9 +61,13 @@ export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: 
         // figure: on the 390 one that box's bottom would fall 11.5 past the footer,
         // so there the space between the last card and the footer is the band's own
         // 60.5 instead.
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
-          {articles.map((article) => (
-            <ArticleCard key={article.id || article.slug} article={article} />
+        <div className="motion-stagger grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
+          {articles.map((article, index) => (
+            <ArticleCard
+              key={article.id || article.slug}
+              article={article}
+              style={{ "--stagger-delay": `${Math.min(index * 80, 400)}ms` } as React.CSSProperties}
+            />
           ))}
         </div>
       )}

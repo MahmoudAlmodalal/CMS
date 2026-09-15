@@ -88,10 +88,10 @@ export function EventsCatalogView({
             aria-label={t("listRegion")}
             // Frame 39 on the 390 frame is 390.33 wide and 10px padded, holding its
             // rows at x=10 with 10 between them.
-            className="flex w-full max-w-[600px] flex-col gap-6 px-4 lg:mt-[13px] lg:w-[713px] lg:max-w-none lg:gap-4 lg:p-0"
+            className="motion-stagger flex w-full max-w-[600px] flex-col gap-6 px-4 lg:mt-[13px] lg:w-[713px] lg:max-w-none lg:gap-4 lg:p-0"
           >
             {filteredEvents.map((event, index) => (
-              <EventCard key={event.id} event={event} priority={index < 3} />
+              <EventCard key={event.id} event={event} style={{ "--stagger-delay": `${Math.min(index * 80, 400)}ms` } as React.CSSProperties} />
             ))}
           </div>
         ) : (

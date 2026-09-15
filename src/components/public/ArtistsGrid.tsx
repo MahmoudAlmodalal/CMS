@@ -82,13 +82,14 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         ref={rowRef}
         role="region"
         aria-label={`Artist row ${rowIndex + 1}`}
-        className="flex h-[442px] w-full min-w-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
+        className="motion-stagger flex h-[442px] w-full min-w-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
       >
         {artists.map((artist, index) => (
           <ArtistCard
             key={artist.id || artist.slug}
             artist={artist}
             priority={rowIndex === 0 && index < 4}
+            style={{ "--stagger-delay": `${Math.min((rowIndex * 4 + index) * 80, 400)}ms` } as React.CSSProperties}
           />
         ))}
       </div>

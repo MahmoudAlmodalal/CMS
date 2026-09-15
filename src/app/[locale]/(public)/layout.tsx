@@ -6,6 +6,7 @@ import {
   Footer,
   SkipToContent,
 } from "@/components/public";
+import { MotionReady } from "@/components/public/MotionReady";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export default async function PublicLayout({
@@ -26,6 +27,7 @@ export default async function PublicLayout({
 
   return (
     <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
+      <MotionReady />
       {/* 1. Accessible Skip Link */}
       <SkipToContent />
 

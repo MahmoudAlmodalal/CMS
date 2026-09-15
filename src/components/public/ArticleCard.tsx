@@ -9,6 +9,7 @@ import { SafeImage } from "@/components/ui/SafeImage";
 
 export interface ArticleCardProps {
   article: Article;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -32,7 +33,7 @@ export interface ArticleCardProps {
  * Figma alternates the eyebrow between #9F3600 and #625E51 across the three cards
  * with no rule behind it; the branded value is used for all of them.
  */
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article, style }: ArticleCardProps) {
   const t = useTranslations("article");
   const c = useTranslations("categories");
   const locale = useLocale();
@@ -42,7 +43,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   // cover, a 229.5px body and 1px border. Below lg the card hugs its content,
   // since the 390px frame stacks the cards and sets its own height.
   return (
-    <article className="group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
+    <article style={style} className="motion-card group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
       <Link href={`/news/${article.slug}`} className="flex flex-1 flex-col">
         <div className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface">
           <SafeImage
