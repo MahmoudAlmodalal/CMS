@@ -101,7 +101,11 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
       </div>
 
       {/* Text block 91:16797 */}
-      <div className="order-2 flex h-auto w-full min-w-0 shrink-0 flex-col items-start text-start lg:absolute lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-[418px] lg:flex-none lg:p-5 lg:pt-5">
+      {/* The frame gives this block a flat 418px width, which is exactly the gap it
+          leaves between the 140px thumbnail (ending at 161) and the 110px date
+          block on a 1440 card. Anchored to both edges instead, it still measures
+          418 there and closes up on a narrower card rather than sliding out of it. */}
+      <div className="order-2 flex h-auto w-full min-w-0 shrink-0 flex-col items-start text-start lg:absolute lg:start-[175px] lg:end-[110.33px] lg:top-[14.33px] lg:h-[120px] lg:w-auto lg:flex-none lg:p-5 lg:pt-5">
         {/* The eyebrow is a bare 64x20 line on the 390 frame, not the 32.313 row the
             1440 one leaves above the title. */}
         <div className="relative h-5 w-full lg:h-[32.313px]">
@@ -110,11 +114,11 @@ export function EventCard({ event, priority = false, className = "" }: EventCard
           </span>
         </div>
 
-        <h3 className="line-clamp-2 w-full break-words text-[16px] font-bold leading-[24px] text-brand-espresso lg:w-auto lg:overflow-visible lg:whitespace-nowrap">
+        <h3 className="line-clamp-2 w-full break-words text-[16px] font-bold leading-[24px] text-brand-espresso lg:w-full">
           {event.title}
         </h3>
 
-        <p className="w-full truncate pt-1 text-[13px] leading-[19.5px] text-brand-espresso/50 lg:h-[24px] lg:w-[200px] lg:overflow-visible lg:whitespace-nowrap">
+        <p className="w-full truncate pt-1 text-[13px] leading-[19.5px] text-brand-espresso/50 lg:h-[24px] lg:w-full">
           {performerCityString}
         </p>
       </div>

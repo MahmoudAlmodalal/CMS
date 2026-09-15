@@ -131,9 +131,11 @@ export default async function BookingPage({ searchParams }: BookingPageProps) {
           past the 829px the frame gives its box, so the gap is measured off the
           rendered reference rather than off that number. The form comes first so
           that in Arabic it lands on the right, where the design draws it. */}
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-[7px] px-5 pb-[390.2px] pt-[84px] md:gap-10 md:px-8 lg:w-[1142px] lg:max-w-full lg:flex-row lg:gap-[58px] lg:px-4 lg:pb-[18px] lg:pt-[65px] xl:px-0">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-[7px] px-5 pb-[390.2px] pt-[84px] md:gap-10 md:px-8 lg:w-full lg:max-w-[1142px] lg:flex-row lg:gap-[58px] lg:px-4 lg:pb-[18px] lg:pt-[65px] xl:px-0">
         {/* A div, not <main>: the public layout already renders the page's one main landmark. */}
-        <div className="min-w-0 w-full max-w-full lg:ms-0 lg:w-[672px] lg:shrink-0">
+        {/* 672 + 58 + 412 is the frame's 1142. Both columns shrink in step below
+            that rather than holding their widths and forcing the row off the page. */}
+        <div className="min-w-0 w-full max-w-full lg:ms-0 lg:w-[672px] lg:shrink">
           <BookingContextBanner
             eventContext={eventContext}
             preferredArtistName={preferredArtistName}

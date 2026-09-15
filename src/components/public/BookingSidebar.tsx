@@ -67,7 +67,7 @@ export function BookingSidebar({
   ];
 
   return (
-    <aside className="ms-8 flex w-[288px] min-w-0 flex-col gap-5 text-start lg:ms-0 lg:w-[412px] lg:shrink-0">
+    <aside className="ms-8 flex w-[288px] min-w-0 flex-col gap-5 text-start lg:ms-0 lg:w-[412px] lg:shrink">
       <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-5 sm:p-8">
         <div
           aria-hidden="true"

@@ -55,7 +55,11 @@ export function EventsFilterTabs({
         // Component 8 on the 390 frame is 376x54 flush to the inline start, so it
         // scrolls rather than wrapping — wrapping made it 104 against that 54.
         "flex h-[54px] w-[376px] flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain rounded-badge bg-secondary-50 px-4 py-2 [scrollbar-width:none]",
-        "lg:h-[53.12px] lg:w-[415px] lg:overflow-visible",
+        // The frame's 415px bar and the 75/62px tabs inside it are measured on the
+        // Arabic labels. English runs much longer ("Cultural festival"), so the
+        // figures are floors rather than fixed sizes: Arabic still lays out at the
+        // measured width and English grows the bar instead of spilling out of it.
+        "lg:h-[53.12px] lg:w-fit lg:min-w-[415px] lg:max-w-full lg:overflow-visible",
         "[&::-webkit-scrollbar]:hidden",
         className
       )}
@@ -78,8 +82,8 @@ export function EventsFilterTabs({
               "inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
               "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
               isActive
-                ? "bg-primary-500 text-white/80 lg:w-[75px] lg:px-0"
-                : "text-gradscale-900 lg:w-[62px] lg:px-0"
+                ? "bg-primary-500 text-white/80 lg:min-w-[75px]"
+                : "text-gradscale-900 lg:min-w-[62px]"
             )}
           >
             <span className="block py-1">{label}</span>

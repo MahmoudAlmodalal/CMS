@@ -58,7 +58,7 @@ export function ArtistsGrid({
   return (
     <div
       data-testid="artists-grid"
-      className={`flex w-full min-w-0 max-w-full self-stretch flex-col items-start gap-4 lg:grid lg:ms-[113px] lg:w-[1214px] lg:max-w-none lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] ${className}`}
+      className={`flex w-full min-w-0 max-w-full self-stretch flex-col items-start gap-4 lg:mx-auto lg:grid lg:w-full lg:max-w-[1214px] lg:grid-cols-4 lg:gap-x-[10px] lg:gap-y-[44px] hd:mx-0 hd:ms-[113px] ${className}`}
     >
       {rows.map((row, rowIndex) => (
         <ArtistRow key={rowIndex} artists={row} rowIndex={rowIndex} />
