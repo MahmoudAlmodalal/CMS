@@ -277,6 +277,11 @@ bdi, .bdi-isolate {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes testimonial-slide-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @layer components {
   .public-motion-shell :where(a, button, input, select, textarea) {
     transition-timing-function: var(--motion-interaction);
@@ -343,6 +348,10 @@ bdi, .bdi-isolate {
   .motion-reveal[data-revealed="true"] {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) both;
   }
+
+  .testimonial-slide {
+    animation: testimonial-slide-in var(--motion-slow) var(--motion-ease) both;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -364,7 +373,7 @@ bdi, .bdi-isolate {
 
 @media (prefers-reduced-motion: reduce) {
   .public-motion-shell main > *, .motion-drawer, .motion-drawer-backdrop { animation: none !important; }
-  .motion-reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .motion-reveal, .testimonial-slide { animation: none !important; opacity: 1 !important; transform: none !important; }
   .public-motion-shell .motion-card:hover,
   .public-motion-shell .motion-card:hover .motion-image,
   .public-motion-shell .motion-image:hover,
