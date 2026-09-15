@@ -79,7 +79,7 @@ export function EventsFilterTabs({
             aria-controls="events-catalog-grid"
             onClick={() => onSelectCategory(tab.id)}
             className={cn(
-              "inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
+              "snap-start inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
               "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
               isActive
                 ? "bg-primary-500 text-white/80 lg:min-w-[75px]"

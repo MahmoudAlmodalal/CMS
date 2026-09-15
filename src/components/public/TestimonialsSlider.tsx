@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -40,6 +40,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
   const reducedMotion = useReducedMotion();
+  const swipeStartX = useRef<number | null>(null);
 
   const total = testimonials?.length ?? 0;
 
@@ -58,6 +59,23 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   const handleIndicatorChange = (index: number) => {
     setSlideDirection(index >= currentIndex ? "next" : "prev");
     setCurrentIndex(index);
+  };
+
+  const handleSwipeStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "mouse") return;
+    swipeStartX.current = event.clientX;
+  };
+
+  const handleSwipeEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (swipeStartX.current === null) return;
+    const deltaX = event.clientX - swipeStartX.current;
+    swipeStartX.current = null;
+    if (Math.abs(deltaX) < 45) return;
+
+    // A left swipe advances naturally; the visual motion remains RTL-safe.
+    const forward = deltaX < 0;
+    if (forward) handleNext();
+    else handlePrev();
   };
 
   // Keyboard navigation
@@ -120,6 +138,11 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
                 animate={{ opacity: 1, x: 0 }}
                 exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -24 : 24 }}
                 transition={{ duration: reducedMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+                onPointerDown={handleSwipeStart}
+                onPointerUp={handleSwipeEnd}
+                onPointerCancel={() => { swipeStartX.current = null; }}
+                onPointerLeave={() => { swipeStartX.current = null; }}
+                style={{ touchAction: "pan-y", userSelect: "none" }}
                 className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
                   total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
                 } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}

@@ -221,8 +221,11 @@
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
+  touch-action: pan-x;
   overscroll-behavior-x: contain;
+  overscroll-behavior-inline: contain;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: 1rem;
   -webkit-overflow-scrolling: touch;
   padding-block: 0.25rem;
 }
@@ -231,6 +234,11 @@
 /* A subtle edge fade signals that filter tabs continue horizontally. The mask
    is symmetrical, so it remains correct in both RTL and LTR. */
 .filter-scroll-mask {
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 1rem;
+  -webkit-overflow-scrolling: touch;
   -webkit-mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
 }
@@ -410,6 +418,14 @@ bdi, .bdi-isolate {
      cards read as static. */
   .public-motion-shell .motion-card:hover .motion-image { transform: scale(1.04); }
   .public-motion-shell .motion-press:not(:disabled):hover { transform: translateY(-1px); }
+}
+
+@media (max-width: 1023px) {
+  .public-motion-shell .motion-stagger {
+    touch-action: pan-x pan-y;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .public-motion-shell :where(button, a):active { transform: scale(0.97); }

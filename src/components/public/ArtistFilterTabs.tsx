@@ -78,7 +78,7 @@ export function ArtistFilterTabs({
               aria-selected={isActive}
               aria-controls={`panel-${cat.id}`}
               onClick={() => onSelectCategory(cat.id)}
-              className={`inline-flex min-h-11 min-w-max shrink-0 cursor-pointer items-center justify-center whitespace-nowrap px-5 text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
+              className={`snap-start inline-flex min-h-11 min-w-max shrink-0 cursor-pointer items-center justify-center whitespace-nowrap px-5 text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
                 isActive
                   ? "rounded-[16px] bg-brand-primary text-white/80"
                   : "rounded-[16px] border-b-2 border-transparent text-gradscale-900 hover:border-brand-primary hover:text-brand-primary"
