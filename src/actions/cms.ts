@@ -8,6 +8,7 @@ import {
   artistSchema,
   trackSchema,
   releaseSchema,
+  artistWorkSchema,
   eventSchema,
   academyCourseSchema,
   articleSchema,
@@ -18,6 +19,7 @@ import {
   type ArtistInput,
   type TrackInput,
   type ReleaseInput,
+  type ArtistWorkInput,
   type EventInput,
   type AcademyCourseInput,
   type ArticleInput,
@@ -53,6 +55,7 @@ export type PublishableTable =
   | "artists"
   | "tracks"
   | "releases"
+  | "artist_works"
   | "events"
   | "academy_courses"
   | "articles"
@@ -62,6 +65,7 @@ const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
   "artists",
   "tracks",
   "releases",
+  "artist_works",
   "events",
   "academy_courses",
   "articles",
@@ -132,6 +136,29 @@ export async function createReleaseAction(
 
   const { data, error } = await supabase
     .from("releases")
+    .insert(parsed.data as never)
+    .select("id")
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+  revalidateSite();
+  return { ok: true, data: { id: insertedId(data) } };
+}
+
+export async function createArtistWorkAction(
+  input: ArtistWorkInput,
+  ctx?: AuthContext
+): Promise<ActionResult<{ id: string }>> {
+  const { supabase } = await requireAdminSession(ctx);
+  const parsed = artistWorkSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+
+  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-artist-work-id" } };
+
+  const { data, error } = await supabase
+    .from("artist_works")
     .insert(parsed.data as never)
     .select("id")
     .single();
@@ -430,6 +457,34 @@ export async function updateReleaseAction(
   return { ok: true };
 }
 
+export async function updateArtistWorkAction(
+  id: string,
+  input: Partial<ArtistWorkInput>,
+  ctx?: AuthContext
+): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession(ctx);
+  if (!id) return { ok: false, error: "معرف العمل مطلوب" };
+
+  const parsed = artistWorkSchema.omit({ id: true }).partial().safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+  }
+  if (Object.keys(parsed.data).length === 0) {
+    return { ok: false, error: "لا توجد تغييرات للحفظ" };
+  }
+
+  if (!supabase) return { ok: true };
+
+  const { error } = await supabase
+    .from("artist_works")
+    .update(parsed.data as never)
+    .eq("id" as never, id as never);
+
+  if (error) return { ok: false, error: error.message };
+  revalidateSite();
+  return { ok: true };
+}
+
 export async function updateEventAction(
   id: string,
   input: Partial<EventInput>,
@@ -619,6 +674,16 @@ export async function deleteReleaseAction(id: string, ctx?: AuthContext): Promis
   if (!id) return { ok: false, error: "معرف الإصدار مطلوب" };
   if (!supabase) return { ok: true };
   const { error } = await supabase.from("releases").delete().eq("id" as never, id as never);
+  if (error) return { ok: false, error: error.message };
+  revalidateSite();
+  return { ok: true };
+}
+
+export async function deleteArtistWorkAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession(ctx);
+  if (!id) return { ok: false, error: "معرف العمل مطلوب" };
+  if (!supabase) return { ok: true };
+  const { error } = await supabase.from("artist_works").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };

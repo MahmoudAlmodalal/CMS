@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useCallback } from "react";
 import { uploadMediaAction } from "@/actions/storage";
-import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, type StorageBucket } from "@/lib/storage";
+import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, RECOMMENDED_DIMENSIONS, type StorageBucket } from "@/lib/storage";
 
 export const MEDIA_LIBRARY_ENTITY_ID = "media-library";
 
@@ -44,6 +44,7 @@ export function MediaUploadZone({ bucket, folder, onUploaded }: MediaUploadZoneP
 
   const allowedMimes = BUCKET_ALLOWED_MIMES[bucket];
   const maxBytes = BUCKET_BYTE_LIMITS[bucket];
+  const recommended = folder ? RECOMMENDED_DIMENSIONS[`${bucket}/${folder}`] : undefined;
 
   const validateClientSide = useCallback(
     (file: File): string | null => {
@@ -198,6 +199,11 @@ export function MediaUploadZone({ bucket, folder, onUploaded }: MediaUploadZoneP
             <p className="text-xs text-gray-400">
               الحد الأقصى: {humanBytes(maxBytes)}
             </p>
+            {recommended && (
+              <p className="text-xs text-gray-400">
+                المقاس الموصى به: {recommended.w}×{recommended.h} بكسل
+              </p>
+            )}
           </>
         )}
       </div>

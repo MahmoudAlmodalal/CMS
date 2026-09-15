@@ -96,7 +96,17 @@
     "coverAlt": "غلاف ألبوم {title}",
     "trackCount": "{count, plural, =0 {لا أغاني} one {أغنية واحدة} two {أغنيتان} few {{value} أغاني} many {{value} أغنية} other {{value} أغنية}}",
     "bookingHeadline": "تريد {name} في مناسبتك؟",
-    "bookingBody": "تواصل معنا وسنصمم لك تجربة موسيقية لا تُنسى."
+    "bookingBody": "تواصل معنا وسنصمم لك تجربة موسيقية لا تُنسى.",
+    "worksTitle": "<em>أعمال</em> على المسرح والشاشة",
+    "worksRegion": "أعمال الفنان",
+    "workPlay": "تشغيل {title}",
+    "workThumbAlt": "صورة مصغّرة لـ {title}",
+    "workType": {
+      "song": "أغنية",
+      "concert": "حفلة",
+      "interview": "مقابلة",
+      "documentary": "فيلم وثائقي"
+    }
   },
   "article": {
     "read": "اقرأ المقال",

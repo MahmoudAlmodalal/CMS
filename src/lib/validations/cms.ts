@@ -11,6 +11,8 @@ import {
   positiveInt,
   artistCategorySchema,
   releaseTypeSchema,
+  workTypeSchema,
+  youtubeUrlSchema,
   eventCategorySchema,
   eventStatusSchema,
   articleCategorySchema,
@@ -271,6 +273,29 @@ export const releaseSchema = z
   .strict();
 
 export type ReleaseInput = z.infer<typeof releaseSchema>;
+
+// ============================================================================
+// 4b. Artist Work Schema (أعمال الفنان — YouTube-hosted)
+// ============================================================================
+
+export const artistWorkSchema = z
+  .object({
+    id: uuidSchema.optional(),
+    artist_id: uuidSchema,
+    title: trimmedString(1, 200, "عنوان العمل"),
+    title_en: translationString(200),
+    work_type: workTypeSchema,
+    youtube_url: youtubeUrlSchema(500),
+    description: optionalTrimmedString(2000).nullable().optional(),
+    description_en: translationString(2000),
+    // Blank means "use YouTube's own poster frame".
+    thumbnail_image_url: optionalImageUrlSchema(500),
+    display_order: z.number().int().min(0).default(0),
+    is_published: z.boolean().default(false),
+  })
+  .strict();
+
+export type ArtistWorkInput = z.infer<typeof artistWorkSchema>;
 
 // ============================================================================
 // 5. Event Schema

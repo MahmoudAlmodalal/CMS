@@ -312,6 +312,8 @@ export function TestimonialsManager({ initialTestimonials }: TestimonialsManager
           id="testimonial-form"
           title={editingId ? "تعديل الشهادة" : "إضافة شهادة جديدة"}
           description="الحقول المعلّمة بنجمة مطلوبة."
+          onClose={closeForm}
+          notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل شهادة" : "نموذج إضافة شهادة"} className="contents">
             <Field id="testimonial-author-name" label="اسم صاحب الشهادة">

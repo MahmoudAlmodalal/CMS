@@ -24,6 +24,7 @@ import {
   findMediaReference,
   isAdminClaim,
   resolveMediaUrl,
+  storageErrorMessageAr,
   validateUploadFile,
   type StorageBucket,
   type StorageObjectInfo,
@@ -35,19 +36,26 @@ export interface StorageResult<T = unknown> {
   error?: string;
 }
 
-/** Canonical admin gate: session user must carry app_metadata.role === 'admin'. */
-async function requireStorageAdmin(): Promise<string> {
+/**
+ * Canonical admin gate: session user must carry app_metadata.role === 'admin'.
+ * Returns the caller's own RLS-enforcing client alongside their id, because the
+ * upload below prefers it over the service-role key (see uploadMediaAction).
+ */
+async function requireStorageAdmin(): Promise<{
+  userId: string;
+  supabase: Awaited<ReturnType<typeof createClient>>;
+}> {
   let supabase: Awaited<ReturnType<typeof createClient>>;
   try {
     supabase = await createClient();
   } catch {
-    throw new Error("Storage is not configured.");
+    throw new Error("تعذر الوصول إلى التخزين: الإعداد غير مكتمل.");
   }
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user || !isAdminClaim(data.user.app_metadata)) {
-    throw new Error("Unauthorized: admin session required.");
+    throw new Error("غير مصرّح: يلزم تسجيل الدخول كمشرف.");
   }
-  return data.user.id;
+  return { userId: data.user.id, supabase };
 }
 
 async function fileToBytes(file: File): Promise<Uint8Array> {
@@ -79,7 +87,7 @@ export async function uploadMediaAction(
   input: UploadMediaInput,
 ): Promise<StorageResult<UploadedMedia>> {
   try {
-    await requireStorageAdmin();
+    const { supabase } = await requireStorageAdmin();
     const mime = (input.file.type || "").trim().toLowerCase();
     const bytes = await fileToBytes(input.file);
     const check = validateUploadFile({
@@ -99,13 +107,31 @@ export async function uploadMediaAction(
       label: input.label,
       mime,
     });
-    const admin = createAdminClient();
-    const { error } = await admin.storage.from(input.bucket).upload(path, bytes, {
+    const options = {
       contentType: mime,
       upsert: false,
       cacheControl: input.bucket === "audio" ? "604800" : "31536000", // §9.1
-    });
-    if (error) return { ok: false, error: `Upload failed: ${error.message}` };
+    };
+
+    // The admin's own session token first. `storage_admin_insert` already
+    // grants is_admin() INSERT on all seven buckets, so this is sufficient —
+    // and unlike the service-role key it cannot be a malformed JWT, which is
+    // what "Invalid Compact JWS" meant when every upload died in production.
+    let uploadError = (await supabase.storage.from(input.bucket).upload(path, bytes, options)).error;
+
+    if (uploadError) {
+      // Fall back to the privileged client for the reverse case: a session
+      // whose claim is right but whose token Storage will not accept.
+      try {
+        const admin = createAdminClient();
+        const fallback = await admin.storage.from(input.bucket).upload(path, bytes, options);
+        if (!fallback.error) uploadError = null;
+      } catch {
+        // createAdminClient throws when the service key is absent; keep the
+        // session client's error, which is the one worth reporting.
+      }
+    }
+    if (uploadError) return { ok: false, error: storageErrorMessageAr(uploadError.message) };
     const publicUrl = resolveMediaUrl(input.bucket, path);
     if (!publicUrl) return { ok: false, error: "Could not resolve public URL." };
     return {
@@ -113,7 +139,7 @@ export async function uploadMediaAction(
       data: { bucket: input.bucket, path, publicUrl, mime, sizeBytes: input.file.size },
     };
   } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : "Upload failed." };
+    return { ok: false, error: e instanceof Error ? e.message : "تعذر رفع الملف." };
   }
 }
 
@@ -201,7 +227,7 @@ export async function deleteMediaAction(
       }
     }
     const { error } = await admin.storage.from(input.bucket).remove([input.path]);
-    if (error) return { ok: false, error: `Deletion failed: ${error.message}` };
+    if (error) return { ok: false, error: `تعذر حذف الملف: ${error.message}` };
     return { ok: true, data: { deleted: true } };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Deletion failed." };

@@ -100,6 +100,69 @@ export const RECOMMENDED_DIMENSIONS: Record<string, { w: number; h: number; labe
   "articles/covers": { w: 1200, h: 800, label: "3:2 cover" },
 };
 
+/**
+ * The one-line Arabic hint shown under an upload field: recommended pixel size,
+ * the bucket's byte ceiling and the extensions it accepts.
+ *
+ * Every number is read from the maps above, so the CMS copy can never drift
+ * from what validateUploadFile and the bucket policy actually enforce. Folders
+ * with no entry in RECOMMENDED_DIMENSIONS (audio/tracks) simply omit that clause.
+ */
+export function storageHintAr(bucket: StorageBucket, folder?: string): string {
+  const parts: string[] = [];
+  const dimensions = folder ? RECOMMENDED_DIMENSIONS[`${bucket}/${folder}`] : undefined;
+  if (dimensions) {
+    parts.push(`المقاس الموصى به ${dimensions.w}×${dimensions.h} بكسل`);
+  }
+
+  const limitBytes = BUCKET_BYTE_LIMITS[bucket];
+  const limitMb = limitBytes / (1024 * 1024);
+  parts.push(`الحد الأقصى ${Number.isInteger(limitMb) ? limitMb : limitMb.toFixed(1)}MB`);
+
+  const extensions = Array.from(
+    new Set(
+      BUCKET_ALLOWED_MIMES[bucket]
+        .map((mime) => MIME_CANONICAL_EXT[mime])
+        .filter((ext): ext is string => Boolean(ext)),
+    ),
+  ).map((ext) => ext.toUpperCase());
+  if (extensions.length > 0) parts.push(extensions.join("/"));
+
+  return parts.join(" · ");
+}
+
+/**
+ * Turns a Supabase Storage API error into something an Arabic-speaking editor
+ * can act on.
+ *
+ * The motivating case is `Invalid Compact JWS`: Storage rejecting the bearer
+ * token because the deployed SUPABASE_SERVICE_ROLE_KEY is not a valid JWT. That
+ * reached the CMS verbatim as "Upload failed: Invalid Compact JWS", which tells
+ * an editor nothing and a developer almost nothing.
+ */
+export function storageErrorMessageAr(raw: string): string {
+  const message = (raw || "").trim();
+  if (/invalid compact jws|invalid jwt|jwt malformed|jwserror|invalid signature/i.test(message)) {
+    return "تعذر الرفع: مفتاح خدمة التخزين على الخادم غير صالح. راجع إعداد SUPABASE_SERVICE_ROLE_KEY في بيئة النشر.";
+  }
+  if (/exceeded the maximum allowed size|payload too large|413/i.test(message)) {
+    return "حجم الملف يتجاوز الحد المسموح لهذه الحاوية.";
+  }
+  if (/mime type .* is not supported|invalid_mime_type/i.test(message)) {
+    return "نوع الملف غير مدعوم في هذه الحاوية.";
+  }
+  if (/bucket not found/i.test(message)) {
+    return "حاوية التخزين غير موجودة. راجع إعداد التخزين.";
+  }
+  if (/duplicate|already exists|409/i.test(message)) {
+    return "يوجد ملف بنفس المسار بالفعل. أعد المحاولة.";
+  }
+  if (/row-level security|unauthorized|403|401/i.test(message)) {
+    return "لا تملك صلاحية الرفع. سجّل الدخول كمشرف مرة أخرى ثم أعد المحاولة.";
+  }
+  return message ? `تعذر رفع الملف: ${message}` : "تعذر رفع الملف.";
+}
+
 /** Hard guardrails (engineering decision): reject corrupt/absurd images. */
 export const MIN_IMAGE_DIMENSION = 32;
 export const MAX_IMAGE_DIMENSION = 4096;
@@ -484,6 +547,7 @@ export const MEDIA_REFERENCES: readonly MediaReference[] = [
   { table: "testimonials", column: "avatar_image_url", bucket: "site" },
   { table: "tracks", column: "audio_file_url", bucket: "audio" },
   { table: "tracks", column: "cover_image_url", bucket: "releases" },
+  { table: "artist_works", column: "thumbnail_image_url", bucket: "artists" },
 ];
 
 export function findMediaReference(

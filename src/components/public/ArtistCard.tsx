@@ -27,6 +27,10 @@ export interface ArtistCardProps {
  * The design draws nothing else on the card — no scrim, no category pill, no
  * featured star, no quote, no specialties and no second link. All of those were
  * removed as unverified inventions; the whole card is the link to the profile.
+ *
+ * `motion-card` is the shared hover language from globals.css: it lifts the card
+ * and drives the photo's zoom (SafeImage already carries `motion-image`). It is
+ * transform and box-shadow only, so none of the pixel geometry above moves.
  */
 export function ArtistCard({ artist, priority = false, className = "" }: ArtistCardProps) {
   const a = useTranslations("artist");
@@ -35,7 +39,7 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start ${className}`}
+      className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start ${className}`}
     >
       <Link
         href={`/artists/${artist.slug}`}
