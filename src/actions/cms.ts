@@ -1,7 +1,7 @@
 "use server";
 
 import "server-only";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminSession, type AuthContext } from "@/lib/auth-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -45,6 +45,9 @@ function insertedId(data: unknown, fallback = "mock-record-id"): string {
 
 function revalidateSite(): void {
   try {
+    // The singleton settings query uses unstable_cache; invalidating only the
+    // route tree would leave old Global Config data in the Data Cache.
+    revalidateTag("site-settings-public", "max");
     revalidatePath("/", "layout");
   } catch {
     // Ignore cache invalidation errors outside request scope (tests or static execution).
