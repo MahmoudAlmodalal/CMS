@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { uploadMediaAction } from "@/actions/storage";
-import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, type StorageBucket } from "@/lib/storage";
+import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, storageHintAr, type StorageBucket } from "@/lib/storage";
 import { Input } from "@/components/ui/Input";
 
 interface ImageUploadFieldProps {
@@ -34,6 +34,7 @@ export function ImageUploadField({
   onChange,
   entityId = "new-artist",
   disabled = false,
+  help,
 }: ImageUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -125,6 +126,12 @@ export function ImageUploadField({
           {uploading ? "جارٍ الرفع..." : value ? "رفع صورة جديدة" : "اختر صورة للرفع"}
         </button>
       </div>
+
+      {/* The editor had no way to know what size to prepare; every number here
+          comes from the same maps validateUploadFile enforces. */}
+      <p className="text-xs leading-relaxed text-gradscale-400">
+        {help ?? storageHintAr(bucket, folder)}
+      </p>
 
       <div>
         <label htmlFor={`${id}-url`} className="mb-1 block text-xs font-bold text-gradscale-400">

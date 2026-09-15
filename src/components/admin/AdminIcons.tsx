@@ -37,6 +37,15 @@ export function AdminTracksIcon({ size = 20, className = "", ...props }: IconPro
   );
 }
 
+export function AdminWorksIcon({ size = 20, className = "", ...props }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" {...props}>
+      <rect x="2" y="4" width="20" height="16" rx="3" />
+      <path d="M10 9.5l5 2.5-5 2.5z" />
+    </svg>
+  );
+}
+
 export function AdminReleasesIcon({ size = 20, className = "", ...props }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" {...props}>
@@ -133,6 +142,8 @@ export function AdminIconDispatcher({ name, size = 18, className = "" }: { name:
       return <AdminArtistsIcon size={size} className={className} />;
     case "tracks":
       return <AdminTracksIcon size={size} className={className} />;
+    case "works":
+      return <AdminWorksIcon size={size} className={className} />;
     case "releases":
       return <AdminReleasesIcon size={size} className={className} />;
     case "events":

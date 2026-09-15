@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parseYouTubeId } from "../youtube.ts";
 
 // ============================================================================
 // Canonical Domain Enums (Task 30 / DATABASE_SCHEMA.md)
@@ -13,6 +14,9 @@ export const ARTIST_CATEGORIES = [
 ] as const;
 
 export const RELEASE_TYPES = ["studio", "live"] as const;
+
+/** artist_works.work_type — mirrors the CHECK in 20260918000000. */
+export const WORK_TYPES = ["song", "concert", "interview", "documentary"] as const;
 
 export const EVENT_CATEGORIES = [
   "concert",
@@ -64,6 +68,7 @@ export const STORAGE_BUCKETS = [
 
 export type ArtistCategory = (typeof ARTIST_CATEGORIES)[number];
 export type ReleaseType = (typeof RELEASE_TYPES)[number];
+export type WorkType = (typeof WORK_TYPES)[number];
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 export type EventStatus = (typeof EVENT_STATUSES)[number];
 export type ArticleCategory = (typeof ARTICLE_CATEGORIES)[number];
@@ -82,6 +87,10 @@ export const artistCategorySchema = z.enum(ARTIST_CATEGORIES, {
 
 export const releaseTypeSchema = z.enum(RELEASE_TYPES, {
   message: "نوع الإصدار غير صالح",
+});
+
+export const workTypeSchema = z.enum(WORK_TYPES, {
+  message: "نوع العمل غير صالح",
 });
 
 export const eventCategorySchema = z.enum(EVENT_CATEGORIES, {
@@ -194,6 +203,17 @@ export function safeUrlSchema(max: number = 500) {
         message: "يجب أن يكون الرابط عنوان ويب صالح يبدأ بـ http:// أو https://",
       }
     );
+}
+
+/**
+ * A YouTube link in any shape the share sheet produces. Composes safeUrlSchema
+ * so the scheme/length guards stay in one place, then defers to parseYouTubeId
+ * — the same function the renderer uses, so a link that validates always plays.
+ */
+export function youtubeUrlSchema(max: number = 500) {
+  return safeUrlSchema(max).refine((val) => parseYouTubeId(val) !== null, {
+    message: "يجب أن يكون الرابط رابط يوتيوب صالحاً (watch أو youtu.be أو shorts أو embed)",
+  });
 }
 
 function isHttpUrl(val: string): boolean {
