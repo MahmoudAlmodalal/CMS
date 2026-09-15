@@ -134,6 +134,13 @@
      footer's own inner Container node, which is 1280 wide inside the 1454-wide
      footer instance 94:18553. */
   --container-desktop: 1280px;
+  /* `hd` is the Figma artboard's own width. Blocks the design places by a raw
+     pixel offset into that canvas are held back to `hd:`; the range below it
+     lays the same measure out fluidly rather than hanging the block off the
+     viewport. Declared in rem (90rem = 1440px) deliberately: Tailwind sorts its
+     media blocks per unit, so a px value here would emit `hd:` BEFORE `lg:` and
+     the fluid rules would win at 1440 instead of the artboard ones. */
+  --breakpoint-hd: 90rem;
   --container-mobile: 390px;
 
   /* Shadows */
@@ -152,13 +159,15 @@
   --text-display: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --text-h2: clamp(1.5rem, 1.15rem + 1.8vw, 2.25rem);
   --text-h3: clamp(1.125rem, 1rem + 0.8vw, 1.5rem);
-  /* Floating header offset for content safety */
-  --header-offset: 96px;
+  /* Clearance the floating navbar needs: its top offset + the pill's height + air.
+     Mobile: 36px + 56px + 16px. Desktop: the deepest NAVBAR_TOP (57px) + 85px + 16px.
+     Heroes pad by this so the bar never lands on their headline. */
+  --header-offset: 108px;
 }
 
 @media (min-width: 1024px) {
   :root {
-    --header-offset: 120px;
+    --header-offset: 158px;
   }
 }
 
@@ -183,6 +192,14 @@
   p, h1, h2, h3, h4, h5, h6, li, td, th, blockquote, span, div, a, button {
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+
+  /* Headlines are short and set in the display face, so they have no long token to
+     rescue — `break-word` only buys the chance to snap a word in half mid-headline.
+     Keep the container guarantee, drop the licence to break inside a word. */
+  h1, h2, .font-display {
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   /* Arabic typography rules */

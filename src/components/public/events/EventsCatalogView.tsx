@@ -71,14 +71,16 @@ export function EventsCatalogView({
       <EventsFilterTabs
         activeCategory={selectedCategory}
         onSelectCategory={handleCategoryChange}
-        className="lg:ms-[55px]"
+        // Offset only: the tablist sets its own 415px width at lg, and a width here
+        // would merge in after it and stretch the bar across the page.
+        className="lg:mx-auto hd:mx-0 hd:ms-[55px]"
         allLabel={allLabel}
       />
 
       {/* 2. The list and the featured panel, side by side.
           The 390 frame stacks them and puts 38 between every section on the page —
           band to filter bar, filter bar to list, list to featured panel. */}
-      <div className="mt-[38px] flex flex-col gap-[38px] lg:mt-6 lg:ms-[78px] lg:w-[1262px] lg:flex-row lg:justify-between lg:gap-0">
+      <div className="mt-[38px] flex flex-col gap-[38px] lg:mx-auto lg:mt-6 lg:w-full lg:max-w-[1262px] lg:flex-row lg:justify-between lg:gap-6 hd:mx-0 hd:ms-[78px] hd:gap-0">
         {filteredEvents.length > 0 ? (
           <div
             id="events-catalog-grid"

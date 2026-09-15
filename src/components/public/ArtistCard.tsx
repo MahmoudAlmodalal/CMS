@@ -39,7 +39,7 @@ export function ArtistCard({ artist, priority = false, className = "" }: ArtistC
   return (
     <article
       data-testid={`artist-card-${artist.slug}`}
-      className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start ${className}`}
+      className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start lg:w-full ${className}`}
     >
       <Link
         href={`/artists/${artist.slug}`}

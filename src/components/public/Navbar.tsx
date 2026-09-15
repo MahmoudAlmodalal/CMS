@@ -74,7 +74,7 @@ export function Navbar() {
   return (
     <div
       className={cn(
-        "hidden lg:flex fixed start-0 end-0 z-50 justify-center px-4 pointer-events-none transition-all",
+        "hidden lg:flex fixed start-0 end-0 z-50 justify-center px-4 pointer-events-none transition-all sm:px-6 lg:px-12 xl:px-20",
         offset,
       )}
       data-node-id={isEn ? "144:19176" : undefined}
@@ -94,13 +94,15 @@ export function Navbar() {
           <Image
             src="/assets/branding/logo-navbar.png"
             alt={a11y("brandHome")}
-            width={196}
-            height={85}
+            width={628}
+            height={226}
             // `priority` is deprecated in Next 16; the docs point at loading="eager"
             // for an above-the-fold image that is not the LCP element.
             loading="eager"
-            className="h-12 w-auto object-contain xl:h-[85px]"
-            style={{ width: "auto" }}
+            // 196x85 is the slot the frame reserves, not the artwork: sized to the slot
+            // the logo sat flush with the pill's own edges. It is capped to the slot's
+            // width and given room to breathe inside it instead.
+            className="h-9 w-auto max-w-[196px] object-contain xl:h-14"
           />
         </Link>
 

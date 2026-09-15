@@ -180,13 +180,17 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
 
   // Tracks 91:16347 / 91:16437 — the heading anchored 560px in from the start edge,
   // the grid 1136 wide at 154 from that edge on a flat 325.61 row.
+  //
+  // Those offsets are measured on the 1440 artboard and only resolve there, so they
+  // are asserted at `hd:` (the 1440 breakpoint) rather than `lg:`: applied from 1024
+  // they hung the grid 266px off the viewport, which `overflow-x: clip` then sliced.
   const tracksCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/AcademyTracks.tsx"),
     "utf-8"
   );
-  assert.match(tracksCode, /lg:ms-\[560px\]/, "Tracks heading starts 560px in");
-  assert.match(tracksCode, /lg:ms-\[154px\]/, "Tracks grid starts 154px in");
-  assert.match(tracksCode, /lg:w-\[1136px\]/, "Tracks grid is 1136 wide");
+  assert.match(tracksCode, /hd:ms-\[560px\]/, "Tracks heading starts 560px in at the artboard width");
+  assert.match(tracksCode, /hd:ms-\[154px\]/, "Tracks grid starts 154px in at the artboard width");
+  assert.match(tracksCode, /lg:max-w-\[1136px\]/, "Tracks grid measures 1136 at most");
   // The row height is the one figure both frames share: 325.61 on the 1440 one,
   // 325.611 on the 390 one (139:13167), so it is stated once as auto-rows rather
   // than as an lg:-only explicit row.

@@ -39,7 +39,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
           the pill, while keeping the bar anchored to the top of the page. */}
       <div className="pointer-events-none absolute inset-x-2.5 top-[36px] z-40 lg:hidden">
         <header
-          className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-5 shadow-subtle"
+          className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] bg-white px-4 shadow-subtle sm:px-5"
           role="banner"
         >
           {/* Inline Start: language and menu controls stay together. */}
@@ -59,19 +59,22 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
           </div>
 
           {/* Inline End: brand logo, kept outside the controls group so it has a
-              clear visual anchor in both directions. */}
+              clear visual anchor in both directions. It sits inside the pill's own
+              padding — the fixed width and overflow-hidden this used to carry cropped
+              the wordmark, and the translate nudges only existed to compensate for
+              transparent margin the logo asset no longer has. */}
           <Link
             href="/"
-            className="-me-5 flex h-12 w-[132px] shrink-0 items-center overflow-hidden rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-14 sm:w-[152px]"
+            className="flex h-9 min-w-0 shrink items-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-11"
             aria-label={a11y("brandHome")}
           >
             <Image
               src="/assets/branding/logo-navbar.png"
               alt={site("brand")}
-              width={292}
-              height={178}
+              width={628}
+              height={226}
               loading="eager"
-              className="h-16 w-auto shrink-0 translate-y-1 object-contain sm:h-[68px] sm:translate-y-1.5"
+              className="h-full w-auto max-w-[140px] object-contain sm:max-w-[168px]"
             />
           </Link>
         </header>
