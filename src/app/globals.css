@@ -228,6 +228,13 @@
 }
 .scroll-row > * { scroll-snap-align: start; flex-shrink: 0; }
 
+/* A subtle edge fade signals that filter tabs continue horizontally. The mask
+   is symmetrical, so it remains correct in both RTL and LTR. */
+.filter-scroll-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
+}
+
 /* Respect reduced motion on all viewports. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

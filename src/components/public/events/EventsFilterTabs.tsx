@@ -54,7 +54,7 @@ export function EventsFilterTabs({
       className={cn(
         // Component 8 on the 390 frame is 376x54 flush to the inline start, so it
         // scrolls rather than wrapping — wrapping made it 104 against that 54.
-        "flex h-[54px] w-[376px] flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain rounded-badge bg-secondary-50 px-4 py-2 [scrollbar-width:none]",
+        "filter-scroll-mask flex h-[54px] w-[376px] snap-x snap-mandatory flex-nowrap items-center justify-start gap-2 overflow-x-auto overscroll-x-contain scroll-smooth rounded-badge bg-secondary-50 px-4 py-2 [scrollbar-width:none]",
         // The frame's 415px bar and the 75/62px tabs inside it are measured on the
         // Arabic labels. English runs much longer ("Cultural festival"), so the
         // figures are floors rather than fixed sizes: Arabic still lays out at the

@@ -1,18 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
-/**
- * Fades its children up the first time they scroll into view.
- *
- * Visible is the default: the server renders the content with no hidden state
- * at all, and this only ever *adds* one. So a visitor with JS disabled, an
- * engine without IntersectionObserver, or anyone who asked for reduced motion
- * sees the content immediately — the animation is strictly additive.
- *
- * The decision is made in a layout effect, before the browser paints, so a
- * section that starts below the fold is never seen flashing in and then out.
- */
+const variants = {
+  up: { opacity: 0, y: 30 },
+  soft: { opacity: 0, y: 14 },
+  image: { opacity: 0, scale: 0.96 },
+} as const;
+
 export function ScrollReveal({
   children,
   className = "",
@@ -22,46 +18,25 @@ export function ScrollReveal({
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  variant?: "up" | "soft" | "image";
+  variant?: keyof typeof variants;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [revealed, setRevealed] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const reduced =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || typeof IntersectionObserver === "undefined") return;
-
-    // Already on screen when the page loads: reveal without animating in.
-    if (node.getBoundingClientRect().top < window.innerHeight) return;
-
-    setRevealed(false);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setRevealed(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -12% 0px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+  const reducedMotion = useReducedMotion();
+  const hidden = variants[variant];
 
   return (
-    <div
-      ref={ref}
+    <motion.div
       className={`motion-reveal motion-reveal-${variant} ${className}`.trim()}
-      style={{ "--reveal-delay": `${Math.min(Math.max(delay, 0), 400)}ms` } as React.CSSProperties}
-      data-revealed={revealed === null ? undefined : String(revealed)}
+      initial={reducedMotion ? false : hidden}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.9,
+        delay: Math.min(Math.max(delay, 0), 0.4),
+        ease: [0.16, 1, 0.3, 1],
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
