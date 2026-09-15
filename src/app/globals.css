@@ -390,7 +390,6 @@ bdi, .bdi-isolate {
   .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: -18px; }
   [dir="rtl"] .testimonial-slide[data-direction="next"] { --testimonial-entry-x: -18px; }
   [dir="rtl"] .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: 18px; }
-  }
 }
 
 @media (hover: hover) and (pointer: fine) {
