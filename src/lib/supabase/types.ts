@@ -190,6 +190,38 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["tracks"]["Insert"]>;
         Relationships: [];
       };
+      artist_works: {
+        Row: {
+          id: string;
+          artist_id: string;
+          title: string;
+          title_en?: string | null;
+          work_type: "song" | "concert" | "interview" | "documentary";
+          youtube_url: string;
+          description: string | null;
+          description_en?: string | null;
+          thumbnail_image_url: string | null;
+          display_order: number;
+          is_published: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          artist_id: string;
+          title: string;
+          title_en?: string | null;
+          work_type?: "song" | "concert" | "interview" | "documentary";
+          youtube_url: string;
+          description?: string | null;
+          description_en?: string | null;
+          thumbnail_image_url?: string | null;
+          display_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["artist_works"]["Insert"]>;
+        Relationships: [];
+      };
       releases: {
         Row: {
           id: string;

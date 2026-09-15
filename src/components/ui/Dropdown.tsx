@@ -17,6 +17,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { useModalPortalContainer } from "@/components/ui/ModalPortal";
 import { CheckIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,11 @@ interface DropdownProps<T extends string> {
   size?: "md" | "sm";
   className?: string;
   ariaLabel?: string;
+  /**
+   * Where the listbox portals to. Defaults to the nearest open modal (so the
+   * panel is not painted under a top-layer `<dialog>`), else document.body.
+   */
+  container?: HTMLElement | null;
 }
 
 const PANEL_MAX_HEIGHT = 256;
@@ -53,7 +59,9 @@ export function Dropdown<T extends string>({
   size = "md",
   className = "",
   ariaLabel,
+  container,
 }: DropdownProps<T>) {
+  const modalContainer = useModalPortalContainer();
   const generatedId = useId();
   const buttonId = id ?? `dropdown-${generatedId}`;
   const listboxId = `${buttonId}-listbox`;
@@ -301,7 +309,7 @@ export function Dropdown<T extends string>({
               })
             )}
           </div>,
-          document.body,
+          container ?? modalContainer ?? document.body,
         )}
     </div>
   );

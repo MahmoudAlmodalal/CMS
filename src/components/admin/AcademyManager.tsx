@@ -316,6 +316,8 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
           id="course-form"
           title={editingId ? "تعديل مسار تعليمي" : "إضافة مسار جديد"}
           description="الحقول المعلّمة بنجمة مطلوبة، ويمكن حفظ المسار كمسودة قبل نشره."
+          onClose={closeForm}
+          notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مسار" : "نموذج إضافة مسار"} className="contents">
             <Field id="course-title" label="عنوان المسار">

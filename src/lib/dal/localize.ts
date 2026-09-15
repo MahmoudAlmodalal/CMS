@@ -30,6 +30,7 @@ export const LOCALIZED_FIELDS = {
   testimonials: ["quote", "author_name", "author_role"],
   releases: ["title"],
   tracks: ["title"],
+  artist_works: ["title", "description"],
   site_settings: [
     "hero_headline",
     "hero_subheadline",

@@ -8,6 +8,7 @@ test("Task 41 — 1. Canonical Admin Routes & Page Files Existence", () => {
   const expectedRoutes = [
     { path: "src/app/(admin)/admin/page.tsx", canonicalHref: "/admin", title: "الرئيسية" },
     { path: "src/app/(admin)/admin/artists/page.tsx", canonicalHref: "/admin/artists", title: "الفنانون" },
+    { path: "src/app/(admin)/admin/works/page.tsx", canonicalHref: "/admin/works", title: "الأعمال" },
     { path: "src/app/(admin)/admin/tracks/page.tsx", canonicalHref: "/admin/tracks", title: "المقاطع الموسيقية" },
     { path: "src/app/(admin)/admin/releases/page.tsx", canonicalHref: "/admin/releases", title: "الإصدارات" },
     { path: "src/app/(admin)/admin/events/page.tsx", canonicalHref: "/admin/events", title: "الفعاليات" },
@@ -20,7 +21,7 @@ test("Task 41 — 1. Canonical Admin Routes & Page Files Existence", () => {
     { path: "src/app/(admin)/admin/settings/page.tsx", canonicalHref: "/admin/settings", title: "إعدادات الموقع" },
   ];
 
-  assert.strictEqual(expectedRoutes.length, 12, "Must specify exactly 12 canonical admin routes");
+  assert.strictEqual(expectedRoutes.length, 13, "Must specify exactly 13 canonical admin routes");
 
   for (const route of expectedRoutes) {
     const fullPath = path.resolve(route.path);
@@ -54,7 +55,7 @@ test("Task 41 — 2. Layer 2 Security Guard in Admin Layout", () => {
 });
 
 test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
-  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 13, "CANONICAL_ADMIN_ROUTES must have 13 entries");
+  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 14, "CANONICAL_ADMIN_ROUTES must have 14 entries");
 
   // Verify all sections exist
   const sectionTitles = ADMIN_NAV_SECTIONS.map((s) => s.title);
@@ -66,7 +67,7 @@ test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
 
   // Verify total navigation items in sections match canonical routes
   const totalItems = ADMIN_NAV_SECTIONS.reduce((acc, s) => acc + s.items.length, 0);
-  assert.strictEqual(totalItems, 13, "Sections must collectively contain all 13 canonical routes");
+  assert.strictEqual(totalItems, 14, "Sections must collectively contain all 14 canonical routes");
 });
 
 test("Task 41 — 4. Dynamic Breadcrumbs Resolution Logic", () => {

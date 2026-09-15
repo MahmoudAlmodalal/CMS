@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { uploadMediaAction } from "@/actions/storage";
-import { VIDEO_MAX_BYTES, BUCKET_ALLOWED_MIMES, type StorageBucket } from "@/lib/storage";
+import { VIDEO_MAX_BYTES, BUCKET_ALLOWED_MIMES, storageHintAr, type StorageBucket } from "@/lib/storage";
 import { Input } from "@/components/ui/Input";
 
 export interface VideoUploadFieldProps {
@@ -42,6 +42,7 @@ export function VideoUploadField({
   onChange,
   entityId = "site-settings",
   disabled = false,
+  help,
 }: VideoUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -140,6 +141,11 @@ export function VideoUploadField({
           {uploading ? "جارٍ رفع الفيديو..." : value ? "رفع فيديو جديد" : "اختر فيديو للرفع"}
         </button>
       </div>
+
+      <p className="text-xs leading-relaxed text-gradscale-400">
+        {help ?? storageHintAr(bucket, folder)}
+      </p>
+
 
       <div>
         <label htmlFor={`${id}-url`} className="mb-1 block text-xs font-bold text-gradscale-400">

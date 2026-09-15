@@ -15,10 +15,10 @@ import {
 import type { EventInput } from "@/lib/validations";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import type { Artist } from "@/lib/dal/artists";
 import type { AdminEvent } from "@/lib/types/admin-events";
@@ -385,21 +385,21 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
       </Card>
 
       {formOpen && (
-        <Card variant="primary-border" id="event-form">
-          <CardHeader>
-            <CardTitle>{editingId ? "تعديل الفعالية" : "إضافة فعالية جديدة"}</CardTitle>
-            <CardDescription>الحقول المعلّمة بنجمة مطلوبة، ويمكن حفظ الفعالية كمسودة قبل نشرها.</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل فعالية" : "نموذج إضافة فعالية"}>
-            <CardContent className="grid gap-5 md:grid-cols-2">
-              <EventForm values={values} setField={setField} artists={artists} eventId={editingId} />
-            </CardContent>
-            <CardFooter className="justify-start">
+        <ModalShell
+          id="event-form"
+          title={editingId ? "تعديل الفعالية" : "إضافة فعالية جديدة"}
+          description="الحقول المعلّمة بنجمة مطلوبة، ويمكن حفظ الفعالية كمسودة قبل نشرها."
+          onClose={closeForm}
+          notice={<Notice notice={notice} />}
+        >
+          <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل فعالية" : "نموذج إضافة فعالية"} className="contents">
+            <EventForm values={values} setField={setField} artists={artists} eventId={editingId} />
+            <div className="flex items-center gap-3 md:col-span-2">
               <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ الفعالية"}</Button>
               <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </CardFooter>
+            </div>
           </form>
-        </Card>
+        </ModalShell>
       )}
     </div>
   );

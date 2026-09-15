@@ -96,7 +96,17 @@
     "coverAlt": "Cover of the album {title}",
     "trackCount": "{count, plural, =0 {No tracks} one {{value} track} other {{value} tracks}}",
     "bookingHeadline": "Want {name} at your occasion?",
-    "bookingBody": "Talk to us and we will shape a musical experience no one forgets."
+    "bookingBody": "Talk to us and we will shape a musical experience no one forgets.",
+    "worksTitle": "<em>Works</em> on stage and screen",
+    "worksRegion": "Artist works",
+    "workPlay": "Play {title}",
+    "workThumbAlt": "Thumbnail for {title}",
+    "workType": {
+      "song": "Song",
+      "concert": "Concert",
+      "interview": "Interview",
+      "documentary": "Documentary"
+    }
   },
   "article": {
     "read": "Read the article",
