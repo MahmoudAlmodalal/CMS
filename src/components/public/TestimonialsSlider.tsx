@@ -37,18 +37,26 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   const t = useTranslations("testimonials");
   const home = useTranslations("home");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
 
   const total = testimonials?.length ?? 0;
 
   const handlePrev = useCallback(() => {
     if (total === 0) return;
+    setSlideDirection("prev");
     setCurrentIndex((prev) => (prev === 0 ? total - 1 : prev - 1));
   }, [total]);
 
   const handleNext = useCallback(() => {
     if (total === 0) return;
+    setSlideDirection("next");
     setCurrentIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
   }, [total]);
+
+  const handleIndicatorChange = (index: number) => {
+    setSlideDirection(index >= currentIndex ? "next" : "prev");
+    setCurrentIndex(index);
+  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -104,9 +112,10 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
             <div
               key={`${current.id ?? current.author_name}-${currentIndex}`}
-              className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
+              data-direction={slideDirection}
+              className={`testimonial-slide flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
                 total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
-              } testimonial-slide lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+              } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
               aria-live="polite"
             >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
@@ -169,7 +178,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
                   <button
                     key={idx}
                     type="button"
-                    onClick={() => setCurrentIndex(idx)}
+                  onClick={() => handleIndicatorChange(idx)}
                     className={`h-3 mx-[1px] rounded-full transition-all duration-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
                       idx === currentIndex ? "w-6 bg-brand-primary" : "w-3 bg-white"
                     }`}
