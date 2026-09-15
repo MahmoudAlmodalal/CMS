@@ -250,15 +250,15 @@ bdi, .bdi-isolate {
 /* Public motion language                                                     */
 /* -------------------------------------------------------------------------- */
 :root {
-  --motion-fast: 180ms;
-  --motion-normal: 300ms;
-  --motion-slow: 620ms;
-  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --motion-interaction: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-fast: 220ms;
+  --motion-normal: 420ms;
+  --motion-slow: 900ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-interaction: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 @media (max-width: 767px) {
-  :root { --motion-slow: 500ms; }
+  :root { --motion-slow: 650ms; }
 }
 
 @keyframes motion-fade-up {
@@ -384,7 +384,7 @@ bdi, .bdi-isolate {
 
   .testimonial-slide {
     --testimonial-entry-x: 18px;
-    animation: testimonial-slide-in 620ms var(--motion-ease) both;
+    animation: testimonial-slide-in 900ms var(--motion-ease) both;
   }
 
   .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: -18px; }
