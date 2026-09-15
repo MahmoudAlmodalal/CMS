@@ -24,7 +24,7 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
         </h2>
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
           <div className="order-1 min-w-0 md:order-2">
-            <div className="relative mx-auto h-[304px] w-[335px] max-w-full overflow-hidden rounded-[16px] md:aspect-[551/491] md:h-auto md:w-full md:max-w-[551px]">
+            <div className="relative mx-auto aspect-square h-auto w-full max-w-[335px] overflow-hidden rounded-full md:max-w-[551px]">
               <SafeImage
                 src={settings.about_image_url || "/assets/figma/about-musician.png"}
                 alt={t("aboutImageAlt")}

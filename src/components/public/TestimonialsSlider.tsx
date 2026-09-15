@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { Highlight } from "@/components/ui/Highlight";
@@ -38,6 +39,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   const home = useTranslations("home");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
+  const reducedMotion = useReducedMotion();
 
   const total = testimonials?.length ?? 0;
 
@@ -110,14 +112,19 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
             )}
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
-            <div
-              key={`${current.id ?? current.author_name}-${currentIndex}`}
-              data-direction={slideDirection}
-              className={`testimonial-slide flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
-                total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
-              } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
-              aria-live="polite"
-            >
+            <AnimatePresence initial={false} mode="wait" custom={slideDirection}>
+              <motion.div
+                key={`${current.id ?? current.author_name}-${currentIndex}`}
+                custom={slideDirection}
+                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 24 : -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -24 : 24 }}
+                transition={{ duration: reducedMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
+                  total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
+                } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+                aria-live="polite"
+              >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}
               <blockquote className="h-auto min-h-[78px] w-full max-w-full break-words [overflow-wrap:break-word] pt-3 font-sans text-[14px] font-medium leading-[22px] text-black lg:h-auto lg:max-w-[540px] lg:pt-0 lg:text-[20px] lg:leading-[1.52]">
                 &ldquo;{current.quote}&rdquo;
@@ -188,7 +195,8 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
                   />
                 ))}
               </div>
-            </div>
+              </motion.div>
+            </AnimatePresence>
 
             {/* Next Arrow */}
             {total > 1 && (
