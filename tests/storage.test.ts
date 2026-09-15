@@ -220,8 +220,11 @@ test("Task 29 — canonical admin claim check", () => {
 });
 
 test("Task 29 — media reference map guards replace/delete", () => {
-  assert.equal(MEDIA_REFERENCES.length, 17);
+  assert.equal(MEDIA_REFERENCES.length, 18);
   assert.ok(findMediaReference("site_settings", "seo_og_image_url"));
+  // Custom work thumbnails are storage-hosted too; without this entry orphan
+  // cleanup would delete a thumbnail that is still on a published work.
+  assert.ok(findMediaReference("artist_works", "thumbnail_image_url"));
   assert.ok(findMediaReference("tracks", "cover_image_url"));
   assert.ok(findMediaReference("artists", "portrait_image_url"));
   assert.ok(findMediaReference("site_settings", "events_hero_image_url"));

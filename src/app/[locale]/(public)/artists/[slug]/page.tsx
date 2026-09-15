@@ -6,11 +6,14 @@ import {
   ArtistHero,
   ArtistProfileCard,
   ArtistGallery,
+  ArtistWorks,
   ArtistDiscography,
   BookingBanner,
+  ScrollReveal,
 } from "@/components/public";
 import { getArtistBySlug, getPublishedArtistSlugs } from "@/lib/dal/artists";
 import { getPublishedReleasesByArtist } from "@/lib/dal/releases";
+import { getPublishedWorksByArtist } from "@/lib/dal/artist-works";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
 /**
@@ -73,8 +76,9 @@ export default async function ArtistDetailPage({
     notFound();
   }
 
-  const [releases, t, settings] = await Promise.all([
+  const [releases, works, t, settings] = await Promise.all([
     getPublishedReleasesByArtist(artist.id),
+    getPublishedWorksByArtist(artist.id),
     getTranslations("artist"),
     getSiteSettings(),
   ]);
@@ -101,15 +105,27 @@ export default async function ArtistDetailPage({
 
       {/* 84 from `Frame 44`'s close at 1133 to the band heading `141:16466` at 1217. */}
       <div className="mt-[84px] lg:mt-[31.17px]">
-        <ArtistGallery
-          artistName={artist.name}
-          quote={artist.spotlight_quote?.trim() || artist.quote}
-        />
+        <ScrollReveal>
+          <ArtistGallery
+            artistName={artist.name}
+            quote={artist.spotlight_quote?.trim() || artist.quote}
+          />
+        </ScrollReveal>
+      </div>
+
+      {/* الأعمال — not a Figma band: the frame draws no works section because the
+          schema had no works table. It takes the gallery's own rhythm so the
+          page reads the same with or without it, and renders nothing when the
+          artist has no published work. */}
+      <div className="mt-[64px] empty:mt-0">
+        <ArtistWorks works={works} />
       </div>
 
       {/* 66 from the quote column's close at 2050 to `Section` 141:16468 at 2116. */}
       <div className="mt-[66px] lg:mt-[80.02px]">
-        <ArtistDiscography releases={releases} />
+        <ScrollReveal>
+          <ArtistDiscography releases={releases} />
+        </ScrollReveal>
       </div>
 
       <div className="lg:-mt-[4.16px]">

@@ -13,6 +13,7 @@ export interface AdminNavSection {
 export const CANONICAL_ADMIN_ROUTES: { href: string; title: string; section: string }[] = [
   { href: "/admin", title: "الرئيسية", section: "نظرة عامة" },
   { href: "/admin/artists", title: "الفنانون", section: "المحتوى الفني" },
+  { href: "/admin/works", title: "الأعمال", section: "المحتوى الفني" },
   { href: "/admin/tracks", title: "المقاطع الموسيقية", section: "المحتوى الفني" },
   { href: "/admin/releases", title: "الإصدارات", section: "المحتوى الفني" },
   { href: "/admin/events", title: "الفعاليات", section: "الأنشطة والتعليم" },
@@ -37,6 +38,7 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
     title: "المحتوى الفني",
     items: [
       { title: "الفنانون", href: "/admin/artists", iconName: "artists" },
+      { title: "الأعمال", href: "/admin/works", iconName: "works" },
       { title: "المقاطع الموسيقية", href: "/admin/tracks", iconName: "tracks" },
       { title: "الإصدارات", href: "/admin/releases", iconName: "releases" },
     ],

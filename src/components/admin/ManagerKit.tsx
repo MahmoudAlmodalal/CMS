@@ -3,10 +3,11 @@
 // Shared UI shapes lifted from ArtistsManager.tsx (ponytail: small duplication left there
 // on purpose — its test greps the file's own source for these shapes).
 
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
 import { Input } from "@/components/ui/Input";
+import { ModalPortalContext } from "@/components/ui/ModalPortal";
 import { Textarea } from "@/components/ui/Textarea";
 
 export function Field({
@@ -108,24 +109,92 @@ export function Notice({ notice }: { notice: { type: "success" | "error"; text: 
   );
 }
 
+/**
+ * The shell every manager's create/edit form lives in.
+ *
+ * A real modal: a native `<dialog>` opened with `showModal()`, which gives
+ * focus trapping, page inertness, the backdrop and top-layer painting for free.
+ * It replaced an inline Card rendered *below* the list, where clicking «تعديل»
+ * on a long table appeared to do nothing because the form opened off-screen.
+ *
+ * Callers keep their `{formOpen && <ModalShell …>}` conditional mount, so the
+ * dialog exists in the DOM only while open.
+ */
 export function ModalShell({
   id,
   title,
   description,
+  onClose,
+  notice,
+  maxWidth = "max-w-4xl",
   children,
 }: {
   id: string;
   title: string;
   description?: string;
+  /** Called for Esc, the backdrop and the close button. */
+  onClose?: () => void;
+  /** Rendered inside the dialog — a page-level notice would be behind the backdrop. */
+  notice?: React.ReactNode;
+  maxWidth?: string;
   children: React.ReactNode;
 }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  // Provided to portalling overlays (Dropdown) so their panels are not painted
+  // under the top-layer dialog. State, not the ref, so consumers re-render once
+  // the element exists.
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+    setPortalTarget(dialog);
+    return () => {
+      if (dialog.open) dialog.close();
+    };
+  }, []);
+
   return (
-    <Card variant="primary-border" id={id}>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
-      </CardHeader>
-      <CardContent className="grid gap-5 md:grid-cols-2">{children}</CardContent>
-    </Card>
+    <dialog
+      ref={dialogRef}
+      id={id}
+      dir="rtl"
+      aria-label={title}
+      onCancel={(event) => {
+        // Esc: let the caller unmount us instead of the browser closing a
+        // dialog React still believes is open.
+        event.preventDefault();
+        onClose?.();
+      }}
+      onClose={() => onClose?.()}
+      onClick={(event) => {
+        if (event.target === dialogRef.current) onClose?.();
+      }}
+      className={`m-auto max-h-[90vh] w-[calc(100vw-2rem)] ${maxWidth} overflow-y-auto rounded-2xl border border-brand-espresso-subtle bg-white p-0 text-start shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur-xs`}
+    >
+      <ModalPortalContext.Provider value={portalTarget}>
+        <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-brand-espresso-subtle bg-white px-5 py-4 sm:px-6">
+          <div className="min-w-0">
+            <h2 className="text-lg font-bold text-brand-espresso">{title}</h2>
+            {description && (
+              <p className="mt-1 text-sm leading-relaxed text-gradscale-400">{description}</p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => onClose?.()}
+            aria-label="إغلاق النموذج"
+            className="shrink-0 rounded-button px-3 py-2 text-sm font-bold text-gradscale-400 hover:bg-brand-surface hover:text-brand-espresso focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          >
+            ✕
+          </button>
+        </div>
+
+        {notice ? <div className="px-5 pt-4 sm:px-6">{notice}</div> : null}
+
+        <div className="grid gap-5 px-5 py-5 sm:px-6 md:grid-cols-2">{children}</div>
+      </ModalPortalContext.Provider>
+    </dialog>
   );
 }

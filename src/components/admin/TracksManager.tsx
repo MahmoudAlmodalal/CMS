@@ -9,10 +9,10 @@ import {
   updateTrackAction,
 } from "@/actions/cms";
 import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { AudioUploadField } from "@/components/admin/media/AudioUploadField";
 import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
@@ -257,74 +257,72 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
       </Card>
 
       {formOpen && (
-        <Card variant="primary-border" id="track-form">
-          <CardHeader>
-            <CardTitle>{editingId ? "تعديل المقطع الصوتي" : "إضافة مقطع صوتي جديد"}</CardTitle>
-            <CardDescription>الحقول المعلّمة بنجمة مطلوبة، ويمكن حفظ المقطع كمسودة قبل نشره.</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مقطع صوتي" : "نموذج إضافة مقطع صوتي"}>
-            <CardContent className="grid gap-5 md:grid-cols-2">
-              <Field id="track-artist" label="الفنان">
-                <select
-                  id="track-artist"
-                  value={values.artist_id}
-                  onChange={(event) => setField("artist_id", event.target.value)}
-                  className="h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
-                  required
-                >
-                  <option value="" disabled>اختر فناناً</option>
-                  {artists.map((artist) => (
-                    <option key={artist.id} value={artist.id}>{artist.name}</option>
-                  ))}
-                </select>
-              </Field>
-              <Field id="track-title" label="عنوان المقطع">
-                <Input id="track-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-              </Field>
-              <TranslationField id="track-title-en" label="عنوان المقطع" value={values.title_en} onChange={(value) => setField("title_en", value)} />
-              <Field
-                id="track-audio-url"
-                label="الملف الصوتي"
-                help="ارفع ملفاً صوتياً (MP3/OGG/WAV حتى 30MB) أو الصق رابطاً مباشراً. يُحفظ في مجلد audio/tracks."
+        <ModalShell
+          id="track-form"
+          title={editingId ? "تعديل المقطع الصوتي" : "إضافة مقطع صوتي جديد"}
+          description="الحقول المعلّمة بنجمة مطلوبة، ويمكن حفظ المقطع كمسودة قبل نشره."
+          onClose={closeForm}
+          notice={<Notice notice={notice} />}
+        >
+          <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مقطع صوتي" : "نموذج إضافة مقطع صوتي"} className="contents">
+            <Field id="track-artist" label="الفنان">
+              <select
+                id="track-artist"
+                value={values.artist_id}
+                onChange={(event) => setField("artist_id", event.target.value)}
+                className="h-[48px] w-full rounded-input border border-brand-espresso-subtle bg-white px-4 text-sm text-gradscale-900 focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/15"
+                required
               >
-                <AudioUploadField
-                  id="track-audio"
-                  folder="tracks"
-                  value={values.audio_file_url}
-                  onChange={(url) => setField("audio_file_url", url)}
-                  entityId={editingId ?? (values.title.trim() || "new-track")}
-                  disabled={pending}
-                />
-              </Field>
-              <Field id="track-duration" label="المدة بالثواني">
-                <Input id="track-duration" type="number" min="1" dir="ltr" value={values.duration_seconds} onChange={(event) => setField("duration_seconds", Number(event.target.value))} required />
-              </Field>
-              <Field id="track-cover" label="صورة الغلاف" required={false} help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
-                <MediaPickerField
-                  id="track-cover"
-                  value={values.cover_image_url ?? ""}
-                  onChange={(url) => setField("cover_image_url", url)}
-                  bucket="releases"
-                  folder="covers"
-                  disabled={pending}
-                />
-              </Field>
-              <Field id="track-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
-                <Input id="track-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
-              </Field>
-              <div className="flex flex-wrap items-center gap-5 md:col-span-2">
-                <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
-                  <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />
-                  نشر المقطع فوراً
-                </label>
-              </div>
-            </CardContent>
-            <CardFooter className="justify-start">
+                <option value="" disabled>اختر فناناً</option>
+                {artists.map((artist) => (
+                  <option key={artist.id} value={artist.id}>{artist.name}</option>
+                ))}
+              </select>
+            </Field>
+            <Field id="track-title" label="عنوان المقطع">
+              <Input id="track-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
+            </Field>
+            <TranslationField id="track-title-en" label="عنوان المقطع" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <Field
+              id="track-audio-url"
+              label="الملف الصوتي"
+              help="الصق رابطاً مباشراً للملف الصوتي. رفع الملفات الصوتية أُلغي؛ الأعمال المعروضة للجمهور تُضاف من صفحة «الأعمال» كفيديو يوتيوب."
+            >
+              <AudioUploadField
+                id="track-audio"
+                value={values.audio_file_url}
+                onChange={(url) => setField("audio_file_url", url)}
+                disabled={pending}
+              />
+            </Field>
+            <Field id="track-duration" label="المدة بالثواني">
+              <Input id="track-duration" type="number" min="1" dir="ltr" value={values.duration_seconds} onChange={(event) => setField("duration_seconds", Number(event.target.value))} required />
+            </Field>
+            <Field id="track-cover" label="صورة الغلاف" required={false} help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
+              <MediaPickerField
+                id="track-cover"
+                value={values.cover_image_url ?? ""}
+                onChange={(url) => setField("cover_image_url", url)}
+                bucket="releases"
+                folder="covers"
+                disabled={pending}
+              />
+            </Field>
+            <Field id="track-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
+              <Input id="track-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
+            </Field>
+            <div className="flex flex-wrap items-center gap-5 md:col-span-2">
+              <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
+                <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />
+                نشر المقطع فوراً
+              </label>
+            </div>
+            <div className="flex items-center gap-3 md:col-span-2">
               <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ المقطع"}</Button>
               <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </CardFooter>
+            </div>
           </form>
-        </Card>
+        </ModalShell>
       )}
     </div>
   );

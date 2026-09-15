@@ -426,6 +426,8 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
           id="article-form"
           title={editingId ? "تعديل المقال" : "إضافة مقال جديد"}
           description="الحقول المعلّمة بنجمة مطلوبة. المقال بموعد نشر مستقبلي يظهر كمجدول حتى يحين موعده."
+          onClose={closeForm}
+          notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مقال" : "نموذج إضافة مقال"} className="contents">
             <Field id="article-title" label="عنوان المقال">
