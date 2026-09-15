@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getContentLocale } from "./localize";
+import { getSiteSettings } from "./site-settings";
 import { pickLocalized } from "@/lib/utils";
 import type { AppLocale } from "@/i18n/routing";
 
@@ -40,14 +41,6 @@ type BookingEventRow = {
   location_en?: string | null;
   city_en?: string | null;
   performer_name_en?: string | null;
-};
-
-type BookingSettingsRow = {
-  booking_subtitle?: string | null;
-  booking_subtitle_en?: string | null;
-  contact_email?: string | null;
-  contact_phone?: string | null;
-  social_links?: Record<string, string> | null;
 };
 
 /** 
@@ -150,33 +143,12 @@ export async function getBookingEventContext(eventId?: string): Promise<BookingE
  */
 export async function getBookingPageData(eventId?: string): Promise<BookingPageData> {
   const locale = await getContentLocale();
-  let subtitle = localizedDefaultBookingSubtitle(locale);
-  let contactEmail = "hello@andalusia.art";
-  let contactPhone = "+961 1 234 567";
-  let instagramUrl = "https://instagram.com/andalusia.art";
-
-  try {
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      const supabase = await createClient();
-      const { data } = await supabase
-        .from("site_settings")
-        .select("booking_subtitle, booking_subtitle_en, contact_email, contact_phone, social_links")
-        .eq("id", "default")
-        .maybeSingle();
-
-      if (data) {
-        const s = data as BookingSettingsRow;
-        if (s.booking_subtitle) subtitle = pickLocalized(s, "booking_subtitle", locale);
-        if (s.contact_email) contactEmail = s.contact_email;
-        if (s.contact_phone) contactPhone = s.contact_phone;
-        if (s.social_links) {
-          if (s.social_links.instagram) instagramUrl = s.social_links.instagram;
-        }
-      }
-    }
-  } catch {
-    // Keep safe defaults
-  }
+  const settings = await getSiteSettings();
+  const s = settings;
+  const subtitle = pickLocalized(s, "booking_subtitle", locale)?.trim() || localizedDefaultBookingSubtitle(locale);
+  const contactEmail = settings.contact_email?.trim() || "hello@andalusia.art";
+  const contactPhone = settings.contact_phone?.trim() || "+961 1 234 567";
+  const instagramUrl = settings.social_links?.instagram || "https://instagram.com/andalusia.art";
 
   const [artists, eventContext] = await Promise.all([
     getBookingArtists(),

@@ -442,5 +442,5 @@ const getSiteSettingsRaw = unstable_cache(
   }
   },
   ["site-settings-public-v2"],
-  { revalidate: 300 },
+  { revalidate: 300, tags: ["site-settings-public"] },
 );
