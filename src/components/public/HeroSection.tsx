@@ -15,10 +15,11 @@ export interface HeroSectionProps {
 
 /**
  * Verified against Figma Component 20 (Node 148:3708, 1441x740):
- * - The band starts at y=0 with the floating navbar over it. It carries no top
- *   offset of its own: the public layout stopped padding for the navbar, so the
- *   negative margin that used to cancel that padding would now lift the whole
- *   page 96px out of alignment with the frame.
+ * - The band starts at y=0 with the floating navbar over it. The public layout
+ *   pads nothing, so the band itself reserves --header-offset at the top: the
+ *   frame centres the block in a 740px band that the navbar does not reach, and
+ *   without that reservation the headline rides under the pill on any viewport
+ *   shorter than the frame.
  * - Backdrop: photo fill + 2x rgba(0,0,0,.2) + linear-gradient(180deg, #000 0%,
  *   rgba(0,0,0,.1) 78%) — the scrim is heaviest at the TOP, under the navbar.
  * - Headline (148:3671): Qahwa Arabic Regular 64px/93px desktop and 32px/55px mobile, fill #EFEBD9, with `لاكتشاف` and
@@ -45,7 +46,13 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
   const isVideo = isVideoUrl(heroUrl);
 
   return (
-    <section className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso py-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:py-28 lg:h-[740px] lg:min-h-0 lg:py-0">
+    <section
+      // The band reserves the navbar's clearance up top rather than letting the
+      // centred block ride underneath the floating pill, and 740 is a floor rather
+      // than a fixed height so a longer headline lengthens the band instead of
+      // colliding with the row below it.
+      className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso pt-[var(--header-offset)] pb-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:pb-28 lg:min-h-[740px]"
+    >
       {/* Background Stage Video/Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {isVideo ? (
@@ -75,7 +82,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       </div>
 
       <Container className="relative z-10 w-full">
-        <div className="relative top-4 mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:top-0 sm:space-y-8">
+        <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
           <h1 className="font-display text-[40px] font-normal leading-[55px] text-[#EFEBD9] lg:text-[64px] lg:leading-[93px]">
             <Highlight text={settings.hero_headline} />
