@@ -23,7 +23,6 @@ import {
   extractStoragePath,
   findMediaReference,
   isAdminClaim,
-  resolveMediaUrl,
   storageErrorMessageAr,
   validateUploadFile,
   type StorageBucket,
@@ -132,7 +131,12 @@ export async function uploadMediaAction(
       }
     }
     if (uploadError) return { ok: false, error: storageErrorMessageAr(uploadError.message) };
-    const publicUrl = resolveMediaUrl(input.bucket, path);
+    // The SDK builds this from the client's own supabaseUrl, so it can only
+    // ever name the project that actually received the bytes. Building it by
+    // hand is what let a mistyped NEXT_PUBLIC_SUPABASE_STORAGE_URL — it was set
+    // to the app's own domain — persist a 404 URL for every upload.
+    const { data: pub } = supabase.storage.from(input.bucket).getPublicUrl(path);
+    const publicUrl = pub?.publicUrl;
     if (!publicUrl) return { ok: false, error: "Could not resolve public URL." };
     return {
       ok: true,

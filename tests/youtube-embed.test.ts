@@ -144,3 +144,22 @@ test("an image field rejects a video-page URL", async () => {
   assert.equal(schema.safeParse("https://proj.supabase.co/storage/v1/object/public/site/a.png").success, true);
   assert.equal(schema.safeParse("/assets/figma/hero-stage.png").success, true);
 });
+
+test("an upload's public URL comes from the SDK, never from the env override", () => {
+  const action = read("src/actions/storage.ts");
+
+  // Building the URL by hand from NEXT_PUBLIC_SUPABASE_STORAGE_URL is how a
+  // mistyped override (it pointed at the app's own domain) got *persisted* as a
+  // 404 for every upload. getPublicUrl derives it from the client's own
+  // supabaseUrl, so it can only name the project that received the bytes.
+  assert.match(
+    action,
+    /supabase\.storage\.from\(input\.bucket\)\.getPublicUrl\(path\)/,
+    "the upload path must ask the SDK for the public URL",
+  );
+  assert.doesNotMatch(
+    action,
+    /const publicUrl = resolveMediaUrl\(/,
+    "the write path must not rebuild the URL from the storage-base env var",
+  );
+});
