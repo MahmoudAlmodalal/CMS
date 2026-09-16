@@ -186,6 +186,8 @@
     "tracksEmpty": "No teaching tracks are available right now.",
     "enroll": "Register now",
     "enrollLabel": "Register now for {title}",
+    "learnMore": "Learn more",
+    "learnMoreLabel": "Learn more about {title}",
     "valuesHeading": "Learning here is different",
     "value1Title": "Small groups",
     "value1Body": "No more than eight participants — because true art is learned up close.",
