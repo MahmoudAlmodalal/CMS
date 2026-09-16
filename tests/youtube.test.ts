@@ -109,16 +109,25 @@ test("HeroSection — a YouTube link outranks the image, which stays as the fall
     "utf-8",
   );
   assert.match(hero, /parseYouTubeId\(settings\.hero_video_url\)/);
-  assert.match(hero, /youTubeBackdropEmbedUrl\(backdropVideoId\)/);
+  // The iframe itself lives in the shared YouTubeEmbed; the hero declares the
+  // backdrop variant and passes the crop class.
+  assert.match(hero, /variant="backdrop"/);
+  assert.match(hero, /className="hero-youtube-backdrop"/);
+  assert.doesNotMatch(hero, /<iframe/, "the hero must not hand-roll an iframe any more");
 
   // No link parses -> nothing changes about today's image/<video> backdrop.
   assert.match(hero, /!backdropVideoId && isVideoUrl\(heroUrl\)/);
   assert.match(hero, /hero_image_url/, "the image column remains the fallback");
 
   // The frame is cropped and unreachable, which is what hides the branding.
-  assert.match(hero, /hero-youtube-backdrop absolute inset-0 overflow-hidden/);
-  assert.match(hero, /pointer-events-none/);
-  assert.match(hero, /tabIndex=\{-1\}/);
+  const embed = fs.readFileSync(
+    path.join(import.meta.dirname, "..", "src/components/ui/YouTubeEmbed.tsx"),
+    "utf-8",
+  );
+  assert.match(embed, /youTubeBackdropEmbedUrl\(videoId\)/);
+  assert.match(embed, /absolute inset-0 overflow-hidden \$\{className\}/);
+  assert.match(embed, /pointer-events-none/);
+  assert.match(embed, /tabIndex=\{-1\}/);
 
   // Reduced motion drops the frame and uncovers the still image beneath it.
   const css = fs.readFileSync(path.join(import.meta.dirname, "..", "src/app/globals.css"), "utf-8");

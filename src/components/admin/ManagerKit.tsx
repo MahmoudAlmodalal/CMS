@@ -86,6 +86,98 @@ export function TranslationField({
   );
 }
 
+/**
+ * One translatable field, as one control.
+ *
+ * Before this, an Arabic <Field> and its standalone `— English` TranslationField
+ * were two sibling cells in the form grid, so every field read as the field above
+ * it repeated — which is what "duplicate English inputs" turned out to be. Here
+ * the label is said once, for the pair, and the two locales are sub-labelled
+ * inside a single bordered group, so nothing reads as a repeat.
+ *
+ * The English half is always optional: blank is stored as null and the English
+ * pages fall back to the Arabic text, so an untranslated row never renders empty.
+ */
+export function BilingualField({
+  id,
+  label,
+  help,
+  required = true,
+  multiline = false,
+  rows = 3,
+  className,
+  value,
+  onChange,
+  valueEn,
+  onChangeEn,
+}: {
+  id: string;
+  label: string;
+  help?: string;
+  required?: boolean;
+  multiline?: boolean;
+  rows?: number;
+  className?: string;
+  value: string;
+  onChange: (value: string) => void;
+  valueEn: string | null | undefined;
+  onChangeEn: (value: string) => void;
+}) {
+  const enId = `${id}-en`;
+  const control = (
+    locale: "ar" | "en",
+    controlId: string,
+    controlValue: string,
+    set: (value: string) => void,
+  ) =>
+    multiline ? (
+      <Textarea
+        id={controlId}
+        dir={locale === "en" ? "ltr" : undefined}
+        lang={locale}
+        rows={rows}
+        className={className}
+        required={locale === "ar" && required}
+        value={controlValue}
+        onChange={(event) => set(event.target.value)}
+      />
+    ) : (
+      <Input
+        id={controlId}
+        dir={locale === "en" ? "ltr" : undefined}
+        lang={locale}
+        className={className}
+        required={locale === "ar" && required}
+        value={controlValue}
+        onChange={(event) => set(event.target.value)}
+      />
+    );
+
+  return (
+    <div className="space-y-3 rounded-2xl border border-brand-espresso-subtle/50 bg-brand-surface/40 p-4 text-start md:col-span-2">
+      <div className="space-y-1">
+        {/* A group heading, not a <label>: the two inputs below carry their own. */}
+        <p className="text-sm font-bold text-brand-espresso">
+          {label}
+          {required && <span aria-hidden="true" className="text-brand-primary"> *</span>}
+        </p>
+        {help && <FormHelperText>{help}</FormHelperText>}
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <FormLabel htmlFor={id} required={required}>العربية</FormLabel>
+          {control("ar", id, value, onChange)}
+        </div>
+        <div className="space-y-2">
+          <FormLabel htmlFor={enId} required={false}>English</FormLabel>
+          {control("en", enId, valueEn ?? "", onChangeEn)}
+          <FormHelperText>اختياري — إن تُرك فارغاً يُعرض النص العربي.</FormHelperText>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StatusBadge({ published, labels }: { published: boolean; labels?: [string, string] }) {
   const [publishedLabel, draftLabel] = labels ?? ["منشور", "مسودة"];
   return (

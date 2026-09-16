@@ -87,6 +87,10 @@ export const BUCKET_FOLDERS: Record<StorageBucket, readonly string[]> = {
   audio: ["tracks"],
 };
 
+/** Entity id for assets uploaded through the Media Library rather than from a
+ *  record's own form — they belong to no owning row. */
+export const MEDIA_LIBRARY_ENTITY_ID = "media-library";
+
 /** Advisory recommended dimensions per folder (§2 matrix) for CMS UI hints. */
 export const RECOMMENDED_DIMENSIONS: Record<string, { w: number; h: number; label: string }> = {
   "site/hero": { w: 1920, h: 1080, label: "16:9 hero" },
@@ -250,6 +254,25 @@ export function resolveMediaUrl(
   const base = storageBaseUrl();
   if (!base) return v;
   return `${base}/${bucket}/${v.replace(/^\/+/, "")}`;
+}
+
+/**
+ * Quotes a URL for use inside a CSS `url(...)` token.
+ *
+ * An unquoted `url(https://…/my (final) cover.png)` is invalid CSS and the whole
+ * declaration is dropped, so a background silently disappears for any editor who
+ * uploaded a file with a space or a parenthesis in its name. JSON.stringify gives
+ * a double-quoted CSS string with the backslash escapes CSS and JSON agree on.
+ */
+export function cssUrl(
+  url: string | null | undefined,
+  fallback?: string,
+): string | undefined {
+  const v = url?.trim() || fallback?.trim();
+  // No value and no fallback: omit the declaration entirely rather than emit
+  // `url("")`, which resolves against the current page and re-requests it.
+  if (!v) return undefined;
+  return `url(${JSON.stringify(v)})`;
 }
 
 const PUBLIC_URL_RE =

@@ -5,6 +5,7 @@ import { ScrollReveal } from "./ScrollReveal";
 import { FloatParticles } from "./motion/FloatParticles";
 import { CursorGlow } from "./motion/CursorGlow";
 import type { SiteSettings } from "@/lib/dal/site-settings";
+import { cssUrl } from "@/lib/storage";
 
 /**
  * Two frames draw this band and they are not the same drawing, so the shape is
@@ -97,7 +98,7 @@ export function BookingBanner({
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${JSON.stringify(settings?.booking_banner_image_url || "/assets/branding/concert-stage.png")})`,
+          backgroundImage: cssUrl(settings?.booking_banner_image_url, "/assets/branding/concert-stage.png"),
         }}
       />
       <div aria-hidden="true" className="absolute inset-0 bg-[rgba(43,29,20,0.88)]" />

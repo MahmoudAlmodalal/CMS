@@ -60,7 +60,6 @@
     "statArtists": "فنان",
     "statEvents": "فعالية",
     "statCountries": "دولة",
-
     "artistsHeading": "أصوات تصنع التاريخ",
     "artistsCta": "عرض جميع الفنانين ←",
     "testimonialsHeading": "يقولون عن *أندلسيا*",
@@ -69,7 +68,8 @@
     "eventsCta": "عرض كل الفعاليات",
     "bookingHeadingFallback": "مناسبتك تستحق موسيقى حقيقية",
     "bookingBodyFallback": "احجز فرقة أندلسيا لحفلتك، مطعمك، مهرجانك — واصنع لحظة لا تُنسى.",
-    "bookingCta": "ابدأ حجزك الآن ♪"
+    "bookingCta": "ابدأ حجزك الآن ♪",
+    "videoTitle": "فيديو أندلسية للمواهب الإبداعية"
   },
   "testimonials": {
     "region": "يقولون عن أندلسيا",

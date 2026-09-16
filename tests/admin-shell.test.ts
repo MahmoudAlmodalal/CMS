@@ -55,7 +55,7 @@ test("Task 41 — 2. Layer 2 Security Guard in Admin Layout", () => {
 });
 
 test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
-  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 14, "CANONICAL_ADMIN_ROUTES must have 14 entries");
+  assert.strictEqual(CANONICAL_ADMIN_ROUTES.length, 15, "CANONICAL_ADMIN_ROUTES must have 15 entries");
 
   // Verify all sections exist
   const sectionTitles = ADMIN_NAV_SECTIONS.map((s) => s.title);
@@ -65,9 +65,15 @@ test("Task 41 — 3. Admin Navigation Config & Section Grouping", () => {
   assert.ok(sectionTitles.includes("التواصل والجمهور"), "Must include audience/CRM section");
   assert.ok(sectionTitles.includes("النظام والإعدادات"), "Must include system/settings section");
 
-  // Verify total navigation items in sections match canonical routes
-  const totalItems = ADMIN_NAV_SECTIONS.reduce((acc, s) => acc + s.items.length, 0);
-  assert.strictEqual(totalItems, 14, "Sections must collectively contain all 14 canonical routes");
+  // The two lists must stay in sync: a route added to one and forgotten in the
+  // other is a page with no way to reach it, or a dead link in the sidebar.
+  const navHrefs = ADMIN_NAV_SECTIONS.flatMap((s) => s.items.map((i) => i.href)).sort();
+  const canonicalHrefs = CANONICAL_ADMIN_ROUTES.map((r) => r.href).sort();
+  assert.deepStrictEqual(
+    navHrefs,
+    canonicalHrefs,
+    "ADMIN_NAV_SECTIONS and CANONICAL_ADMIN_ROUTES must cover exactly the same routes"
+  );
 });
 
 test("Task 41 — 4. Dynamic Breadcrumbs Resolution Logic", () => {

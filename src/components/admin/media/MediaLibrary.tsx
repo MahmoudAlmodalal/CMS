@@ -83,9 +83,18 @@ export function MediaLibrary() {
       {error && (
         <div
           role="alert"
-          className="my-4 rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700"
+          className="my-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700"
         >
-          {error}
+          <span>{error}</span>
+          {/* A failed listing is recoverable far more often than not, so the
+              panel offers the retry rather than asking for a page reload. */}
+          <button
+            type="button"
+            onClick={reload}
+            className="shrink-0 rounded-lg border border-red-300 bg-white px-3 py-1.5 font-bold text-red-700 transition-colors hover:bg-red-100"
+          >
+            إعادة المحاولة
+          </button>
         </div>
       )}
 

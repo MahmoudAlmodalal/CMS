@@ -279,8 +279,8 @@ test("English content — 6. Public DAL readers resolve content into the request
 test("English content — 7. Admin forms expose an English input for every translatable field", () => {
   assert.match(
     read("src/components/admin/ManagerKit.tsx"),
-    /export function TranslationField\(/,
-    "the shared English-input control must live in ManagerKit"
+    /export function BilingualField\(/,
+    "the shared Arabic+English control must live in ManagerKit"
   );
 
   // Each manager owns the tables it edits; the form must carry one English
@@ -310,16 +310,43 @@ test("English content — 7. Admin forms expose an English input for every trans
         new RegExp(`setField\\("${field}"`),
         `${file} must let an editor write ${field}`
       );
+      // Exactly one editor per field: two inputs writing the same column is the
+      // duplication that made /admin/settings and /admin/pages fight each other.
+      assert.equal(
+        source.match(new RegExp(`setField\\("${field}"`, "g"))?.length,
+        1,
+        `${file} must write ${field} from exactly one input`
+      );
     }
   }
 
-  // Site settings keeps its own local Field, and submits "" as null.
+  // Site settings copy is split by ownership: page copy is edited in the
+  // /admin/pages tabs, global config in SiteSettingsForm. Every key must have an
+  // editor, in exactly one of them.
   const settings = read("src/components/admin/SiteSettingsForm.tsx");
+  const tabs = fs
+    .readdirSync(path.join(root, "src/components/admin/pages"))
+    .filter((f) => f.endsWith("Tab.tsx"))
+    .map((f) => read(`src/components/admin/pages/${f}`))
+    .join("\n");
+
+  for (const field of ["hero_headline", "about_body", "footer_mission", "copyright_text"]) {
+    const inSettings = new RegExp(`setField\\("${field}_en"|id="${field}"`).test(settings);
+    const inTabs = new RegExp(`"${field}"`).test(tabs);
+    assert.ok(inSettings || inTabs, `${field} must be editable somewhere`);
+    assert.ok(
+      !(inSettings && inTabs),
+      `${field} must be editable in exactly one place — it is in both /admin/settings and /admin/pages`
+    );
+  }
+
+  // The real payload builder, not a comment describing one: blank submits as
+  // null so the English pages fall back to the Arabic text.
+  const kit = read("src/components/admin/pages/settingsFormKit.tsx");
   for (const field of ["hero_headline_en", "about_body_en", "footer_mission_en", "copyright_text_en"]) {
-    assert.match(settings, new RegExp(`setField\\("${field}"`), `settings form must edit ${field}`);
     assert.match(
-      settings,
-      new RegExp(`${field}: values\\.${field} \\|\\| null`),
+      kit,
+      new RegExp(`${field}: values\\.${field}\\.trim\\(\\) \\|\\| null`),
       `${field} must submit an empty input as null, not as ""`
     );
   }

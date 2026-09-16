@@ -8,6 +8,7 @@ import { ReadingProgress } from "./motion/ReadingProgress";
 import { ScrollReveal } from "./ScrollReveal";
 import { morphName } from "@/lib/morph";
 import { ArticleCard } from "./ArticleCard";
+import { cssUrl } from "@/lib/storage";
 
 export interface ArticleViewProps {
   article: Article;
@@ -191,7 +192,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${article.cover_image_url || "/assets/articles/default-article.png"})`,
+            backgroundImage: cssUrl(article.cover_image_url, "/assets/articles/default-article.png"),
             backgroundColor: "#2B1D14",
           }}
           aria-label={article.title}

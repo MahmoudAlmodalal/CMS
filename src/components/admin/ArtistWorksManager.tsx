@@ -11,9 +11,8 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { parseYouTubeId, youTubeThumbnailUrl } from "@/lib/youtube";
 import {
@@ -23,6 +22,7 @@ import {
   type ArtistOption,
 } from "@/lib/types/artist-works";
 import type { ArtistWorkInput } from "@/lib/validations";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 type WorkFormValues = Omit<ArtistWorkInput, "id">;
 
@@ -238,12 +238,13 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
                         <div className="flex min-w-[220px] items-center gap-3">
                           <div className="h-12 w-20 shrink-0 overflow-hidden rounded-lg bg-brand-surface">
                             {videoId ? (
-                              /* eslint-disable-next-line @next/next/no-img-element -- YouTube thumbnail preview in an admin table. */
-                              <img
+                              <SafeImage
                                 src={work.thumbnail_image_url || youTubeThumbnailUrl(videoId)}
+                                bucket="artists"
                                 alt=""
-                                className="h-full w-full object-cover"
-                                loading="lazy"
+                                fill
+                                sizes="80px"
+                                fallbackText={work.title}
                               />
                             ) : null}
                           </div>
@@ -332,10 +333,15 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
               </select>
             </Field>
 
-            <Field id="work-title" label="عنوان العمل" help="الاسم الذي يظهر تحت الفيديو في صفحة الفنان.">
-              <Input id="work-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-            </Field>
-            <TranslationField id="work-title-en" label="عنوان العمل" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <BilingualField
+              id="work-title"
+              label="عنوان العمل"
+              help="الاسم الذي يظهر تحت الفيديو في صفحة الفنان."
+              value={values.title}
+              onChange={(value) => setField("title", value)}
+              valueEn={values.title_en}
+              onChangeEn={(value) => setField("title_en", value)}
+            />
 
             <div className="md:col-span-2">
               <Field
@@ -361,11 +367,11 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
               {previewVideoId && (
                 <div className="mt-3 flex items-center gap-3">
                   <div className="h-[72px] w-32 shrink-0 overflow-hidden rounded-lg bg-brand-surface">
-                    {/* eslint-disable-next-line @next/next/no-img-element -- live preview of the pasted link. */}
-                    <img
+                    <SafeImage
                       src={youTubeThumbnailUrl(previewVideoId)}
                       alt=""
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="128px"
                     />
                   </div>
                   <p className="text-xs text-gradscale-400">
@@ -375,16 +381,18 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
               )}
             </div>
 
-            <Field id="work-description" label="وصف مختصر" required={false} help="اختياري. سطر أو سطران يظهران تحت العنوان.">
-              <Textarea
-                id="work-description"
-                rows={3}
-                className="min-h-[112px]"
-                value={values.description ?? ""}
-                onChange={(event) => setField("description", event.target.value || null)}
-              />
-            </Field>
-            <TranslationField id="work-description-en" label="وصف مختصر" multiline rows={3} className="min-h-[112px]" value={values.description_en} onChange={(value) => setField("description_en", value)} />
+            <BilingualField
+              id="work-description"
+              label="وصف مختصر"
+              required={false}
+              multiline
+              rows={3}
+              className="min-h-[112px]"
+              value={values.description ?? ""}
+              onChange={(value) => setField("description", value || null)}
+              valueEn={values.description_en}
+              onChangeEn={(value) => setField("description_en", value)}
+            />
 
             <Field
               id="work-thumbnail"

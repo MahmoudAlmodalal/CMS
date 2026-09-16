@@ -86,6 +86,19 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminRoute) {
     if (!user || user.app_metadata?.role !== "admin") {
+      // A Server Action is a POST that expects a React flight response. Answering
+      // it with a 307 to an HTML login page leaves the client-side action promise
+      // unsettled forever — neither .then, .catch nor .finally runs — which is
+      // exactly how the Media Library got stuck on "جارٍ تحميل الملفات…" instead
+      // of failing. A 401 rejects the action cleanly so the UI can show an error
+      // and offer a retry. Only document navigations get the redirect.
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        return new NextResponse(
+          JSON.stringify({ error: "UNAUTHORIZED_ADMIN_ACTION" }),
+          { status: 401, headers: { "content-type": "application/json" } },
+        );
+      }
+
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("next", pathname + (search || ""));
       if (hadAuthCookie && !user) {

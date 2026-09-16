@@ -4,6 +4,7 @@ import { morphName } from "@/lib/morph";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/artists";
 import { Parallax } from "../motion/Parallax";
+import { cssUrl } from "@/lib/storage";
 
 interface ArtistHeroProps {
   artist: Artist;
@@ -61,7 +62,7 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
           aria-hidden="true"
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
+            backgroundImage: cssUrl(imageUrl, "/assets/figma/hero-stage-landscape.png"),
           }}
         />
       </Parallax>

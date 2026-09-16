@@ -151,6 +151,8 @@ export function HomeTab({
               label="رابط صورة قسم من نحن"
               value={values.about_image_url}
               onChange={(url) => setField("about_image_url", url)}
+              bucket="site"
+              folder="about"
             />
             <p className="text-xs text-brand-espresso/60">اتركه فارغاً لاستخدام الصورة الافتراضية.</p>
           </div>

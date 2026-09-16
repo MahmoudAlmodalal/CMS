@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { Artist } from "@/lib/artists";
 import { SafeImage } from "@/components/ui/SafeImage";
@@ -56,6 +55,7 @@ export function ArtistProfileCard({ artist }: ArtistProfileCardProps) {
         <div className="relative size-[160px] shrink-0 overflow-hidden rounded-full border-[3.333px] border-primary-500/20">
           <SafeImage
             src={portrait}
+            bucket="artists"
             alt={t("portraitAlt", { name: artist.name })}
             fill
             sizes="160px"

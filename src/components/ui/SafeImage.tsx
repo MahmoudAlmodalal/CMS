@@ -2,9 +2,18 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { resolveMediaUrl, type StorageBucket } from "@/lib/storage";
 
 export interface SafeImageProps {
   src?: string | null;
+  /**
+   * The bucket a bare storage key belongs to. Required to resolve a value that
+   * is a key rather than a full URL: `portraits/<id>/x.jpg` is only reachable at
+   * `…/object/public/artists/portraits/<id>/x.jpg`, and the bucket segment
+   * cannot be guessed from the key. Callers that always store absolute URLs can
+   * omit it. See MEDIA_REFERENCES in @/lib/storage for the column→bucket map.
+   */
+  bucket?: StorageBucket;
   alt: string;
   fill?: boolean;
   width?: number;
@@ -25,7 +34,10 @@ export interface SafeImageProps {
  * Normalizes media URLs: absolute https/http, protocol-relative (//),
  * storage CDN paths, and relative /uploads/... or /assets/...
  */
-export function normalizeMediaUrl(url: string | null | undefined): string | null {
+export function normalizeMediaUrl(
+  url: string | null | undefined,
+  bucket?: StorageBucket,
+): string | null {
   if (!url) return null;
   const trimmed = url.trim();
   if (!trimmed) return null;
@@ -50,7 +62,14 @@ export function normalizeMediaUrl(url: string | null | undefined): string | null
     return trimmed;
   }
 
-  // Stored path without host or leading slash (e.g. "artists/portraits/..." or "uploads/...")
+  // Stored path without host or leading slash (e.g. "portraits/<id>/x.jpg").
+  // With a bucket, resolveMediaUrl inserts the bucket segment the CDN needs;
+  // without one we can only join the base, which is a 404 unless the stored key
+  // already happens to start with its bucket name.
+  if (bucket) {
+    return resolveMediaUrl(bucket, trimmed);
+  }
+
   const direct = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL;
   if (direct) {
     return `${direct.replace(/\/+$/, "")}/${trimmed}`;
@@ -73,6 +92,7 @@ export function normalizeMediaUrl(url: string | null | undefined): string | null
  */
 export function SafeImage({
   src,
+  bucket,
   alt,
   fill = true,
   width,
@@ -88,7 +108,7 @@ export function SafeImage({
   fallbackIcon,
   fallbackTestId,
 }: SafeImageProps) {
-  const normalizedSrc = normalizeMediaUrl(src);
+  const normalizedSrc = normalizeMediaUrl(src, bucket);
   const [hasError, setHasError] = useState(!normalizedSrc);
 
   const initialChar = fallbackText?.trim() ? fallbackText.trim().charAt(0) : "";

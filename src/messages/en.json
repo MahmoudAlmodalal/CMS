@@ -60,7 +60,6 @@
     "statArtists": "Artists",
     "statEvents": "Events",
     "statCountries": "Countries",
-
     "artistsHeading": "Voices that make history",
     "artistsCta": "View all artists →",
     "testimonialsHeading": "They say about *Andalusia*",
@@ -69,7 +68,8 @@
     "eventsCta": "View all events",
     "bookingHeadingFallback": "Your occasion deserves real music",
     "bookingBodyFallback": "Book Andalusia for your party, your restaurant, your festival — and make a moment no one forgets.",
-    "bookingCta": "Start your booking ♪"
+    "bookingCta": "Start your booking ♪",
+    "videoTitle": "Andalusia creative talent video"
   },
   "testimonials": {
     "region": "What people say about Andalusia",

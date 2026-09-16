@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
 import { CursorGlow } from "./motion/CursorGlow";
+import { cssUrl } from "@/lib/storage";
 
 interface PageHeroProps {
   /** Centred headline. Pass rich content to colour a phrase, as the design does. */
@@ -93,7 +94,7 @@ export function PageHero({
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${image})` }}
+          style={{ backgroundImage: cssUrl(image) }}
         />
       </Parallax>
 

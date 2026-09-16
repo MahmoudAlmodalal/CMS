@@ -14,16 +14,23 @@ test("MediaPickerField — client component structure and exports", () => {
   // Client component
   assert.match(source, /^"use client";/, 'Must have "use client" directive');
 
-  // Imports ImageUploadField and listMediaAction
+  // Imports ImageUploadField and listFolderMedia
   assert.match(
     source,
     /import\s+.*ImageUploadField.*from\s+["']@\/components\/admin\/media\/ImageUploadField["']/,
     "Must import ImageUploadField",
   );
+  // listFolderMedia, not listMediaAction directly: it is the one path that
+  // carries the timeout, so the picker cannot hang open on a spinner.
   assert.match(
     source,
-    /import\s+.*listMediaAction.*from\s+["']@\/actions\/admin-media["']/,
-    "Must import listMediaAction",
+    /import\s+.*listFolderMedia.*from\s+["']\.\/listFolderMedia["']/,
+    "Must load files through listFolderMedia",
+  );
+  assert.doesNotMatch(
+    source,
+    /from\s+["']@\/actions\/admin-media["']/,
+    "Must not call the listing action directly, bypassing the timeout",
   );
 
   // Exports MediaPickerField and MediaPickerFieldProps

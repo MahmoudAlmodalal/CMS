@@ -21,11 +21,24 @@ test("Task 43 — settings route loads the safe singleton fallback and form", ()
 
 test("Task 43 — form covers approved fields and guarded save feedback", () => {
   const form = read("src/components/admin/SiteSettingsForm.tsx");
+  const tabs = fs
+    .readdirSync(path.join(ROOT, "src/components/admin/pages"))
+    .filter((f) => f.endsWith("Tab.tsx"))
+    .map((f) => read(`src/components/admin/pages/${f}`))
+    .join("\n");
 
-  for (const field of [
+  // Global configuration: /admin/settings owns it and nothing else edits it.
+  const GLOBAL_FIELDS = [
+    "contact_email", "contact_phone", "operational_regions",
+    "footer_mission", "copyright_text", "social_links", "instagram", "tiktok",
+  ];
+
+  // Page copy: the /admin/pages tabs own it. It used to be editable from BOTH
+  // screens, writing the same site_settings row — so the same field appeared
+  // twice across the panel and the last save silently won.
+  const PAGE_COPY_FIELDS = [
     "hero_headline", "hero_subheadline", "hero_image_url", "about_headline", "about_body", "about_image_url",
     "booking_banner_title", "booking_banner_body", "artists_subtitle", "events_subtitle", "academy_subtitle", "booking_subtitle",
-    "contact_email", "contact_phone", "operational_regions", "footer_mission", "copyright_text", "social_links", "instagram", "tiktok",
     "home_featured_artists_count", "home_featured_articles_count", "home_upcoming_events_count",
     "show_testimonials", "show_editorial", "show_events", "show_booking_banner",
     "events_title", "events_hero_image_url", "artists_title", "artists_hero_image_url",
@@ -37,8 +50,18 @@ test("Task 43 — form covers approved fields and guarded save feedback", () => 
     "academy_values_heading", "academy_value1_title", "academy_value1_body",
     "academy_value2_title", "academy_value2_body", "academy_value3_title", "academy_value3_body",
     "academy_newsletter_heading", "academy_newsletter_tagline",
-  ]) {
+  ];
+
+  for (const field of GLOBAL_FIELDS) {
     assert.ok(form.includes(field), `settings form must include ${field}`);
+  }
+
+  for (const field of PAGE_COPY_FIELDS) {
+    assert.ok(tabs.includes(field), `the /admin/pages tabs must include ${field}`);
+    assert.ok(
+      !form.includes(field),
+      `${field} is page copy: it belongs to /admin/pages only, but /admin/settings still edits it`
+    );
   }
 
   assert.match(form, /updateSiteSettingsAction/);

@@ -8,8 +8,7 @@ import {
   setPublishStatusAction,
   updateArtistAction,
 } from "@/actions/cms";
-import { ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
-import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
+import { BilingualField, ModalShell, Notice } from "@/components/admin/ManagerKit";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -17,9 +16,9 @@ import { FormHelperText, FormLabel } from "@/components/ui/FormElements";
 import { Input } from "@/components/ui/Input";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Textarea } from "@/components/ui/Textarea";
 import { ARTIST_CATEGORIES, getCategoryLabel, type Artist } from "@/lib/types/artists";
 import type { ArtistInput } from "@/lib/validations/cms";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 type ArtistFormValues = Omit<ArtistInput, "id">;
 type StatusFilter = "all" | "published" | "draft";
@@ -348,9 +347,17 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                     <TableCell>
                       <div className="flex min-w-[220px] items-center gap-3">
                         <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-brand-surface">
-                          {/* The URL is already constrained by artistSchema; alt text keeps the table accessible. */}
-                          {/* eslint-disable-next-line @next/next/no-img-element -- media refs may use any approved public host. */}
-                          <img src={artist.portrait_image_url} alt="" className="h-full w-full object-cover" loading="lazy" />
+                          {/* SafeImage, so a portrait whose object is missing from
+                              storage shows the branded plate instead of the
+                              browser's broken-image icon in the admin table. */}
+                          <SafeImage
+                            src={artist.portrait_image_url}
+                            bucket="artists"
+                            alt=""
+                            fill
+                            sizes="48px"
+                            fallbackText={artist.name}
+                          />
                         </div>
                         <div className="min-w-0">
                           <p className="truncate font-bold text-brand-espresso">{artist.name}</p>
@@ -420,10 +427,15 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
           notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل فنان" : "نموذج إضافة فنان"} className="contents">
-            <Field id="artist-name" label="اسم الفنان" help="الاسم كما يظهر في بطاقة الفنان وعنوان صفحته.">
-              <Input id="artist-name" value={values.name} onChange={(event) => setField("name", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-name-en" label="اسم الفنان" value={values.name_en} onChange={(value) => setField("name_en", value)} />
+            <BilingualField
+              id="artist-name"
+              label="اسم الفنان"
+              help="الاسم كما يظهر في بطاقة الفنان وعنوان صفحته."
+              value={values.name}
+              onChange={(value) => setField("name", value)}
+              valueEn={values.name_en}
+              onChangeEn={(value) => setField("name_en", value)}
+            />
             <Field id="artist-slug" label="المعرّف المختصر" help="يُستخدم في رابط الصفحة ‎/artists/…‎ — أحرف لاتينية صغيرة وأرقام وشرطات فقط. تغييره بعد النشر يكسر الروابط القديمة.">
               <Input id="artist-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
@@ -440,14 +452,24 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                 ))}
               </select>
             </Field>
-            <Field id="artist-genre" label="وسم النمط الموسيقي" help="كلمتان أو ثلاث تظهر فوق الاسم في البطاقة، مثل: طرب أصيل، موشحات أندلسية.">
-              <Input id="artist-genre" value={values.genre_tag} onChange={(event) => setField("genre_tag", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-genre-en" label="وسم النمط الموسيقي" value={values.genre_tag_en} onChange={(value) => setField("genre_tag_en", value)} />
-            <Field id="artist-city" label="المدينة" help="تظهر أسفل الاسم في البطاقة، مثل: بيروت — لبنان.">
-              <Input id="artist-city" value={values.city} onChange={(event) => setField("city", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-city-en" label="المدينة" value={values.city_en} onChange={(value) => setField("city_en", value)} />
+            <BilingualField
+              id="artist-genre"
+              label="وسم النمط الموسيقي"
+              help="كلمتان أو ثلاث تظهر فوق الاسم في البطاقة، مثل: طرب أصيل، موشحات أندلسية."
+              value={values.genre_tag}
+              onChange={(value) => setField("genre_tag", value)}
+              valueEn={values.genre_tag_en}
+              onChangeEn={(value) => setField("genre_tag_en", value)}
+            />
+            <BilingualField
+              id="artist-city"
+              label="المدينة"
+              help="تظهر أسفل الاسم في البطاقة، مثل: بيروت — لبنان."
+              value={values.city}
+              onChange={(value) => setField("city", value)}
+              valueEn={values.city_en}
+              onChangeEn={(value) => setField("city_en", value)}
+            />
             <Field id="artist-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً في صفحة «الفنانين».">
               <Input id="artist-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
             </Field>
@@ -462,26 +484,64 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                 disabled={pending}
               />
             </Field>
-            <Field id="artist-specialties" label="التخصصات" help="قائمة مختصرة مفصولة بفواصل، تظهر في بطاقة التعريف داخل صفحة الفنان.">
-              <Input id="artist-specialties" value={values.specialties} onChange={(event) => setField("specialties", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-specialties-en" label="التخصصات" value={values.specialties_en} onChange={(value) => setField("specialties_en", value)} />
-            <Field id="artist-quote" label="الاقتباس الفني" help="جملة على لسان الفنان، تظهر تحت اسمه في أعلى صفحته.">
-              <Textarea id="artist-quote" rows={3} className="min-h-[112px]" value={values.quote} onChange={(event) => setField("quote", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-quote-en" label="الاقتباس الفني" multiline rows={3} className="min-h-[112px]" value={values.quote_en} onChange={(value) => setField("quote_en", value)} />
-            <Field id="artist-spotlight-quote" label="اقتباس الواجهة" required={false} help="اختياري. يظهر في بطاقة الاقتباس الكبيرة وسط الصفحة؛ إن تُرك فارغاً يُستخدم الاقتباس الفني.">
-              <Textarea id="artist-spotlight-quote" rows={3} className="min-h-[112px]" value={values.spotlight_quote ?? ""} onChange={(event) => setField("spotlight_quote", event.target.value)} />
-            </Field>
-            <TranslationField id="artist-spotlight-quote-en" label="اقتباس الواجهة" multiline rows={3} className="min-h-[112px]" value={values.spotlight_quote_en} onChange={(value) => setField("spotlight_quote_en", value)} />
-            <Field id="artist-short-bio" label="نبذة مختصرة" help="سطران إلى ثلاثة. تُستخدم أيضاً في وصف الصفحة لمحركات البحث ومعاينات المشاركة.">
-              <Textarea id="artist-short-bio" rows={4} value={values.short_bio} onChange={(event) => setField("short_bio", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-short-bio-en" label="نبذة مختصرة" multiline rows={4} value={values.short_bio_en} onChange={(value) => setField("short_bio_en", value)} />
-            <Field id="artist-full-bio" label="السيرة الذاتية الكاملة" help="النص الكامل الذي يظهر في بطاقة التعريف داخل صفحة الفنان.">
-              <Textarea id="artist-full-bio" rows={7} value={values.full_bio} onChange={(event) => setField("full_bio", event.target.value)} required />
-            </Field>
-            <TranslationField id="artist-full-bio-en" label="السيرة الذاتية الكاملة" multiline rows={7} value={values.full_bio_en} onChange={(value) => setField("full_bio_en", value)} />
+            <BilingualField
+              id="artist-specialties"
+              label="التخصصات"
+              help="قائمة مختصرة مفصولة بفواصل، تظهر في بطاقة التعريف داخل صفحة الفنان."
+              value={values.specialties}
+              onChange={(value) => setField("specialties", value)}
+              valueEn={values.specialties_en}
+              onChangeEn={(value) => setField("specialties_en", value)}
+            />
+            {/* Two quote fields, deliberately named apart: their old labels
+                («الاقتباس الفني» / «اقتباس الواجهة») read as the same field twice. */}
+            <BilingualField
+              id="artist-quote"
+              label="اقتباس تحت الاسم"
+              help="جملة على لسان الفنان، تظهر تحت اسمه مباشرةً في أعلى صفحته."
+              multiline
+              rows={3}
+              className="min-h-[112px]"
+              value={values.quote}
+              onChange={(value) => setField("quote", value)}
+              valueEn={values.quote_en}
+              onChangeEn={(value) => setField("quote_en", value)}
+            />
+            <BilingualField
+              id="artist-spotlight-quote"
+              label="اقتباس بطاقة الواجهة"
+              required={false}
+              help="اختياري. الاقتباس الكبير في منتصف الصفحة. إن تُرك فارغاً يُعاد استخدام «اقتباس تحت الاسم»."
+              multiline
+              rows={3}
+              className="min-h-[112px]"
+              value={values.spotlight_quote ?? ""}
+              onChange={(value) => setField("spotlight_quote", value)}
+              valueEn={values.spotlight_quote_en}
+              onChangeEn={(value) => setField("spotlight_quote_en", value)}
+            />
+            <BilingualField
+              id="artist-short-bio"
+              label="نبذة مختصرة"
+              help="سطران إلى ثلاثة. تُستخدم أيضاً في وصف الصفحة لمحركات البحث ومعاينات المشاركة."
+              multiline
+              rows={4}
+              value={values.short_bio}
+              onChange={(value) => setField("short_bio", value)}
+              valueEn={values.short_bio_en}
+              onChangeEn={(value) => setField("short_bio_en", value)}
+            />
+            <BilingualField
+              id="artist-full-bio"
+              label="السيرة الذاتية الكاملة"
+              help="النص الكامل الذي يظهر في بطاقة التعريف داخل صفحة الفنان."
+              multiline
+              rows={7}
+              value={values.full_bio}
+              onChange={(value) => setField("full_bio", value)}
+              valueEn={values.full_bio_en}
+              onChangeEn={(value) => setField("full_bio_en", value)}
+            />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

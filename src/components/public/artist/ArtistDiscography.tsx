@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { useLocale, useTranslations } from "next-intl";
 import type { Release } from "@/lib/releases";
 import { ScrollReveal } from "../ScrollReveal";
@@ -112,12 +112,17 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
             >
               <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2a1d13] lg:h-[268.997px]">
                 <div className="relative aspect-square w-full lg:h-full">
-                  <Image
+                  {/* SafeImage, not a bare next/image: a cover whose object is
+                      missing from storage must fall back to the branded plate
+                      rather than paint the browser's broken-image icon. */}
+                  <SafeImage
                     src={release.cover_image_url}
+                    bucket="releases"
                     alt={t("coverAlt", { title: release.title })}
                     fill
                     sizes="(max-width: 1023px) 100vw, 269px"
                     quality={90}
+                    fallbackText={release.title}
                     className="object-cover"
                   />
                 </div>

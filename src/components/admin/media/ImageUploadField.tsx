@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { uploadMediaAction } from "@/actions/storage";
 import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, storageHintAr, type StorageBucket } from "@/lib/storage";
 import { Input } from "@/components/ui/Input";
+import { SafeImage } from "@/components/ui/SafeImage";
 
 interface ImageUploadFieldProps {
   id: string;
@@ -89,8 +90,7 @@ export function ImageUploadField({
       {value ? (
         <div className="flex items-center gap-3">
           <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl border border-brand-espresso-subtle bg-brand-surface">
-            {/* eslint-disable-next-line @next/next/no-img-element -- preview of admin-uploaded media */}
-            <img src={value} alt="" className="h-full w-full object-cover" />
+            <SafeImage src={value} alt="" fill sizes="64px" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs text-gradscale-400" dir="ltr">

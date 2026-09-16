@@ -17,7 +17,10 @@ import { requireAdminSession } from "@/lib/auth-guard";
 import {
   validateUploadFile,
   resolveMediaUrl,
+  buildStoragePath,
+  BUCKET_FOLDERS,
   STORAGE_BUCKETS,
+  MEDIA_LIBRARY_ENTITY_ID,
   type StorageBucket,
 } from "@/lib/storage";
 import { listBucketFiles, deleteStorageFile } from "@/lib/dal/admin-media";
@@ -65,10 +68,20 @@ export async function uploadMediaAction(formData: FormData): Promise<MediaUpload
       return { success: false, error: validation.errors.join(" | ") };
     }
 
-    // Build a simple path: <timestamp>_<sanitized-name>
-    const ts = Math.floor(Date.now() / 1000);
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const path = `uploads/${ts}_${safeName}`;
+    // buildStoragePath, not an ad-hoc `uploads/` prefix: that folder is not in
+    // BUCKET_FOLDERS, so objects written there sit outside every folder the
+    // pickers list and inside the orphan-cleanup view's reap set.
+    const folder = (formData.get("folder") as string | null)?.trim() || undefined;
+    if (folder && !BUCKET_FOLDERS[bucket as StorageBucket].includes(folder)) {
+      return { success: false, error: `المجلد "${folder}" غير مسموح به في "${bucket}"` };
+    }
+    const path = buildStoragePath({
+      bucket: bucket as StorageBucket,
+      folder,
+      entityId: MEDIA_LIBRARY_ENTITY_ID,
+      label: file.name,
+      mime: mime as Parameters<typeof buildStoragePath>[0]["mime"],
+    });
 
     const admin = createAdminClient();
     const { error: uploadError } = await admin.storage.from(bucket as StorageBucket).upload(path, file, {
@@ -137,7 +150,10 @@ export async function listMediaAction(
       return { success: false, error: `حاوية التخزين "${bucket}" غير مسموح بها` };
     }
 
-    const files = await listBucketFiles(bucket as StorageBucket, folder);
+    const { files, error } = await listBucketFiles(bucket as StorageBucket, folder);
+    // A storage error is reported even when some files came back, so a partly
+    // broken bucket is visible instead of silently looking half-empty.
+    if (error) return { success: false, files, error: `تعذر قراءة التخزين: ${error}` };
     return { success: true, files };
   } catch (err) {
     const message = err instanceof Error ? err.message : "فشل تحميل الملفات";

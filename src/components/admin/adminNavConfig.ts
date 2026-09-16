@@ -25,6 +25,7 @@ export const CANONICAL_ADMIN_ROUTES: { href: string; title: string; section: str
   { href: "/admin/media", title: "مكتبة الوسائط", section: "النظام والإعدادات" },
   { href: "/admin/pages", title: "صفحات الموقع", section: "النظام والإعدادات" },
   { href: "/admin/settings", title: "إعدادات الموقع", section: "النظام والإعدادات" },
+  { href: "/admin/diagnostics", title: "فحص النشر", section: "النظام والإعدادات" },
 ];
 
 export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
@@ -65,6 +66,7 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
       { title: "مكتبة الوسائط", href: "/admin/media", iconName: "media" },
       { title: "صفحات الموقع", href: "/admin/pages", iconName: "articles" },
       { title: "إعدادات الموقع", href: "/admin/settings", iconName: "settings" },
+      { title: "فحص النشر", href: "/admin/diagnostics", iconName: "dashboard" },
     ],
   },
 ];
