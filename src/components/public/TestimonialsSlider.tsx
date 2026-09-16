@@ -9,6 +9,7 @@ import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { Highlight } from "@/components/ui/Highlight";
 import type { Testimonial } from "@/lib/dal/testimonials";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
+import { MagneticButton } from "@/components/public/motion/MagneticButton";
 
 interface TestimonialsSliderProps {
   testimonials: Testimonial[];
@@ -131,14 +132,16 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
           <div className="relative mx-auto mt-6 flex h-auto min-h-0 w-full min-w-0 items-center justify-center gap-3 sm:gap-4 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
             {/* Previous Arrow (Logical RTL: right arrow moves back) */}
             {total > 1 && (
-              <button
-                type="button"
-                onClick={handlePrev}
-                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-md transition-all hover:scale-105 hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-10 lg:h-12 lg:w-auto lg:px-3"
-                aria-label={t("previous")}
-              >
-                <ChevronStartIcon size={20} />
-              </button>
+              <MagneticButton strength={8}>
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-md transition-all hover:scale-105 hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-10 lg:h-12 lg:w-auto lg:px-3"
+                  aria-label={t("previous")}
+                >
+                  <ChevronStartIcon size={20} />
+                </button>
+              </MagneticButton>
             )}
 
             {/* Central Quote Content (Frame 176:2484 — max-w 553px, gap 16) */}
@@ -146,10 +149,10 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
               <motion.div
                 key={`${current.id ?? current.author_name}-${currentIndex}`}
                 custom={slideDirection}
-                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 16 : -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -16 : 16 }}
-                transition={{ duration: reducedMotion ? 0 : 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 16 : -16, filter: "blur(6px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -16 : 16, filter: "blur(4px)" }}
+                transition={{ duration: reducedMotion ? 0 : 0.38, ease: [0.25, 0.1, 0.25, 1] }}
                 onPointerDown={handleSwipeStart}
                 onPointerUp={handleSwipeEnd}
                 onPointerCancel={() => { swipeStartX.current = null; }}
@@ -220,7 +223,9 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
                     type="button"
                   onClick={() => handleIndicatorChange(idx)}
                     className={`h-3 mx-[1px] rounded-full transition-all duration-300 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
-                      idx === currentIndex ? "w-6 bg-brand-primary" : "w-3 bg-white"
+                      idx === currentIndex
+                        ? "motion-indicator-active w-6 bg-brand-primary"
+                        : "w-3 bg-white"
                     }`}
                     aria-label={t("goTo", { index: idx + 1 })}
                     aria-selected={idx === currentIndex}
@@ -233,14 +238,16 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
             {/* Next Arrow */}
             {total > 1 && (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-sm transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:h-12 lg:w-auto lg:px-3"
-                aria-label={t("next")}
-              >
-                <ChevronEndIcon size={20} />
-              </button>
+              <MagneticButton strength={8}>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-sm transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:h-12 lg:w-auto lg:px-3"
+                  aria-label={t("next")}
+                >
+                  <ChevronEndIcon size={20} />
+                </button>
+              </MagneticButton>
             )}
           </div>
         </div>

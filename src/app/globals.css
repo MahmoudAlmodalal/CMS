@@ -760,3 +760,120 @@ bdi, .bdi-isolate {
     animation: none;
   }
 }
+
+/* --- Floating particles -------------------------------------------------- */
+
+@keyframes motion-particle-float {
+  0%   { transform: translateY(0) scale(1); opacity: 0.8; }
+  70%  { opacity: 0.5; }
+  100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
+}
+
+.motion-particle {
+  position: absolute;
+  border-radius: 9999px;
+  animation: motion-particle-float var(--particle-dur, 7s) ease-in
+    var(--particle-delay, 0ms) infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-particle { animation: none !important; opacity: 0 !important; }
+}
+@media (max-width: 767px) {
+  .motion-particle { animation: none !important; opacity: 0 !important; }
+}
+
+/* --- Active indicator pulse ----------------------------------------------- */
+
+@keyframes motion-indicator-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.25); }
+}
+
+.motion-indicator-active {
+  animation: motion-indicator-pulse 1.6s var(--motion-ease) infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-indicator-active { animation: none !important; }
+}
+
+/* --- Click ripple on buttons --------------------------------------------- */
+
+.motion-ripple-click {
+  position: relative;
+  overflow: hidden;
+}
+
+.motion-ripple-click::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.motion-ripple-click.rippling::after {
+  animation: motion-ripple-click-expand 0.55s var(--motion-ease) forwards;
+}
+
+@keyframes motion-ripple-click-expand {
+  0%   { width: 0; height: 0; opacity: 0.6; }
+  100% { width: 350%; height: 350%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ripple-click::after { display: none !important; }
+}
+
+/* --- 3D Tilt perspective layer -------------------------------------------- */
+/* (transform-style and perspective handled via framer-motion inline styles)   */
+
+/* --- Number counter ------------------------------------------------------- */
+/* (Pure React + framer-motion animate utility, no CSS needed)                */
+
+/* --- Section stats row ---------------------------------------------------- */
+
+.motion-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+}
+
+.motion-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+}
+
+/* --- Booking success checkmark draw -------------------------------------- */
+
+.motion-check-circle {
+  opacity: 0;
+  transform: scale(0.6);
+  animation: motion-check-circle-in 0.45s var(--motion-ease) 0.1s both;
+}
+
+@keyframes motion-check-circle-in {
+  to { opacity: 1; transform: scale(1); }
+}
+
+.motion-check-circle .motion-check path {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: motion-stroke-draw var(--motion-expressive) var(--motion-ease) 0.35s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-check-circle { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .motion-check-circle .motion-check path { animation: none !important; stroke-dashoffset: 0 !important; }
+}

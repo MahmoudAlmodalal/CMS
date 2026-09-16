@@ -104,10 +104,11 @@ export function BookingSidebar({
           {t("stepsHeading")}
         </h2>
 
-        <ol className="m-0 list-none p-0">
+        <ol className="m-0 list-none p-0 motion-stagger">
           {STEPS.map((key, index) => (
             <li
               key={key}
+              style={{ "--stagger-delay": `${index * 80}ms` } as React.CSSProperties}
               className={`flex w-full max-w-full items-start gap-3 ${
                 index === 0 ? "pt-5" : index === STEPS.length - 1 ? "py-[13.6px]" : "pt-[13.6px]"
               }`}

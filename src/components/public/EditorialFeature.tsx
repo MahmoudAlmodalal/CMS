@@ -8,6 +8,8 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 import { TextReveal } from "./motion/TextReveal";
+import { CursorGlow } from "./motion/CursorGlow";
+import { Tilt3D } from "./motion/Tilt3D";
 
 interface EditorialFeatureProps {
   articles: Article[];
@@ -56,6 +58,8 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
 
   return (
     <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] py-12 md:py-16 lg:h-[709px] lg:py-0">
+      {/* Cursor spotlight over the dark editorial band */}
+      <CursorGlow color="rgba(197, 71, 22, 0.11)" size={480} />
 
       {/* Heading 87:14401 */}
       <div className="w-full px-5 text-center lg:px-0">
@@ -72,62 +76,64 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
         </ScrollReveal>
       </div>
 
-      {/* Cards 115:2436…115:2439 */}
-      <div className="mx-auto mt-8 grid grid-cols-1 justify-items-center gap-6 w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
+      {/* Cards 115:2436…115:2439 — motion-stagger cascades them in */}
+      <div className="motion-stagger mx-auto mt-8 grid grid-cols-1 justify-items-center gap-6 w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
         {articles.slice(0, 4).map((article) => {
           return (
-            <article
-              key={article.id}
-              className="group w-full h-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-            >
-              <Link
-                href={`/news/${article.slug}`}
-                className="flex h-full min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+            // Tilt3D gives each editorial card a subtle depth effect on desktop hover
+            <Tilt3D key={article.id} max={6} className="w-full h-full">
+              <article
+                className="group w-full h-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
-                {/* Cover I115:2439;87:14439 */}
-                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
-                  <SafeImage
-                    src={article.cover_image_url || "/assets/articles/default-article.png"}
-                    alt={article.title}
-                    fill
-                    sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
-                    quality={90}
-                    fallbackText={article.title}
-                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Body I115:2439;87:14440 */}
-                <div className="flex min-w-0 w-full flex-col items-start p-4 sm:p-5 lg:p-6">
-                  {/* Meta row I115:2439;87:14441 — category leads, date opposite. */}
-                  <div className="flex w-full items-center justify-between gap-2">
-                    <span className="min-w-0 truncate text-xs font-bold uppercase leading-5 tracking-wide text-primary-500">
-                      {c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback")}
-                    </span>
-                    <time
-                      dateTime={article.published_at}
-                      className="shrink-0 text-[10px] leading-[15px] text-gradscale-400"
-                    >
-                      {formatLocalizedDate(article.published_at, locale)}
-                    </time>
+                <Link
+                  href={`/news/${article.slug}`}
+                  className="flex h-full min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+                >
+                  {/* Cover I115:2439;87:14439 */}
+                  <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
+                    <SafeImage
+                      src={article.cover_image_url || "/assets/articles/default-article.png"}
+                      alt={article.title}
+                      fill
+                      sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
+                      quality={90}
+                      fallbackText={article.title}
+                      className="motion-image motion-kenburns object-cover object-center"
+                    />
                   </div>
 
-                  {/* Title I115:2439;87:14446 */}
-                  <div className="w-full pt-3">
-                    <h3 className="line-clamp-2 w-full text-base font-bold leading-6 text-brand-espresso transition-colors group-hover:text-brand-primary">
-                      {article.title}
-                    </h3>
-                  </div>
+                  {/* Body I115:2439;87:14440 */}
+                  <div className="flex min-w-0 w-full flex-col items-start p-4 sm:p-5 lg:p-6">
+                    {/* Meta row I115:2439;87:14441 — category leads, date opposite. */}
+                    <div className="flex w-full items-center justify-between gap-2">
+                      <span className="min-w-0 truncate text-xs font-bold uppercase leading-5 tracking-wide text-primary-500">
+                        {c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback")}
+                      </span>
+                      <time
+                        dateTime={article.published_at}
+                        className="shrink-0 text-[10px] leading-[15px] text-gradscale-400"
+                      >
+                        {formatLocalizedDate(article.published_at, locale)}
+                      </time>
+                    </div>
 
-                  {/* Standfirst I115:2439;87:14448 */}
-                  <div className="w-full pt-1.5">
-                    <p className="line-clamp-2 text-[13px] font-medium leading-5 text-gradscale-300">
-                      {article.excerpt}
-                    </p>
+                    {/* Title I115:2439;87:14446 */}
+                    <div className="w-full pt-3">
+                      <h3 className="line-clamp-2 w-full text-base font-bold leading-6 text-brand-espresso transition-colors group-hover:text-brand-primary">
+                        {article.title}
+                      </h3>
+                    </div>
+
+                    {/* Standfirst I115:2439;87:14448 */}
+                    <div className="w-full pt-1.5">
+                      <p className="line-clamp-2 text-[13px] font-medium leading-5 text-gradscale-300">
+                        {article.excerpt}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            </article>
+                </Link>
+              </article>
+            </Tilt3D>
           );
         })}
       </div>
