@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -83,13 +83,33 @@ export function MobileNavbar() {
   const t = useTranslations("nav");
   const a11y = useTranslations("a11y");
   const site = useTranslations("site");
+  const [topBarVisible, setTopBarVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollingUp = currentScrollY < lastScrollY.current;
+      setTopBarVisible(currentScrollY < 24 || scrollingUp);
+      lastScrollY.current = currentScrollY;
+    };
+
+    lastScrollY.current = window.scrollY;
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <>
-      <div className="pointer-events-none absolute inset-x-2.5 top-[36px] z-40 lg:hidden">
+      <div
+        className={cn(
+          "pointer-events-none fixed inset-x-2.5 top-[36px] z-40 transition-[transform,opacity] duration-500 ease-out lg:hidden",
+          topBarVisible ? "translate-y-0 opacity-100" : "-translate-y-[calc(100%+48px)] opacity-0",
+        )}
+      >
         <header
           className="pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-3 rounded-[20px] bg-white px-4 shadow-subtle sm:px-5"
           role="banner"
