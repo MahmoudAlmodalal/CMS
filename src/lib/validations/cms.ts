@@ -37,6 +37,9 @@ export const siteSettingsSchema = z
     hero_subheadline: trimmedString(1, 500, "العنوان الفرعي للهيرو"),
     hero_subheadline_en: translationString(500),
     hero_image_url: siteImageUrlSchema,
+    // YouTube only: the same parseYouTubeId the hero renders with, so a link
+    // that saves always plays. Blank = fall back to hero_image_url.
+    hero_video_url: z.union([z.literal(""), youtubeUrlSchema(500)]).optional().nullable(),
     about_headline: trimmedString(1, 255, "عنوان قسم من نحن"),
     about_headline_en: translationString(255),
     about_body: trimmedString(1, 10000, "نص قسم من نحن"),

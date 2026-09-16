@@ -54,17 +54,36 @@ export function HomeTab({
             onChange={setField}
             helpText="وصف موجز للمنصة تحت العنوان الرئيسي."
           />
+          <div className="md:col-span-2">
+            <Field
+              id="hero_video_url"
+              label="رابط فيديو الهيرو (يوتيوب)"
+              help="الصِق رابط يوتيوب — يُعرض كخلفية متحركة بلا صوت وبلا أي علامات يوتيوب. اتركه فارغاً لاستخدام صورة/فيديو الهيرو أدناه."
+            >
+              <Input
+                id="hero_video_url"
+                dir="ltr"
+                lang="en"
+                inputMode="url"
+                placeholder="https://www.youtube.com/watch?v=..."
+                value={values.hero_video_url}
+                onChange={(event) => setField("hero_video_url", event.target.value)}
+              />
+            </Field>
+          </div>
           <div className="space-y-2 text-start md:col-span-2">
             <MediaPickerField
               id="hero_image_url"
-              label="فيديو الهيرو"
+              label="صورة/فيديو الهيرو (احتياطي)"
               value={values.hero_image_url}
               onChange={(url) => setField("hero_image_url", url)}
               bucket="site"
               folder="hero"
               mediaType="video"
             />
-            <p className="text-xs text-brand-espresso/60">رفع فيديو للهيرو (أو إدخال رابط مباشر). اتركه فارغاً للافتراضي.</p>
+            <p className="text-xs text-brand-espresso/60">
+              يُستخدم عندما يكون حقل يوتيوب أعلاه فارغاً، ويظهر أيضاً لزوار يفضّلون تقليل الحركة. اتركه فارغاً للافتراضي.
+            </p>
           </div>
           <BilingualPair
             id="home_hero_primary_cta"

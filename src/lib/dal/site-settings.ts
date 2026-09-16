@@ -11,6 +11,8 @@ export interface SiteSettings {
   hero_headline: string;
   hero_subheadline: string;
   hero_image_url: string;
+  /** Optional YouTube link played as the hero backdrop; null/blank falls back to hero_image_url. */
+  hero_video_url: string | null;
   about_headline: string;
   about_body: string;
   about_image_url: string;
@@ -192,6 +194,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   hero_subheadline:
     "أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",
   hero_image_url: "/assets/figma/hero-stage-landscape.png",
+  hero_video_url: null,
   about_headline: "نكتشف · نصل · نحتفي",
   about_body:
     "وُلدنا من إيمان عميق بأن الفن ليس ترفاً بل ضرورة. نعمل على تقريب المسافة بين الفنان الموهوب والجمهور الذي ينتظره، وبين المناسبة التي تستحق اللحظة الفنية التي تجعلها لا تُنسى. أندلسيا منصة متخصصة في تمثيل ودعم المواهب الإبداعية، وربط الفنانين بالأماكن والمناسبات التي تستحق الجمال.",

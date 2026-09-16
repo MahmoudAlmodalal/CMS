@@ -8,6 +8,7 @@ import { FloatParticles } from "./motion/FloatParticles";
 import { CursorGlow } from "./motion/CursorGlow";
 import { MagneticButton } from "./motion/MagneticButton";
 import { PublicButton } from "./PublicButton";
+import { parseYouTubeId, youTubeBackdropEmbedUrl } from "@/lib/youtube";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
 export interface HeroSectionProps {
@@ -48,7 +49,11 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
   const configuredSecondaryHref = settings.home_hero_secondary_href || "/booking";
   const secondaryHref = configuredSecondaryHref.startsWith("/") ? configuredSecondaryHref : "/booking";
   const heroUrl = settings.hero_image_url;
-  const isVideo = isVideoUrl(heroUrl);
+  // A YouTube link wins over the image column: the image stays underneath as the
+  // poster the band shows before the frame paints, and as the whole backdrop
+  // under reduced motion, where .hero-youtube-backdrop is display:none.
+  const backdropVideoId = parseYouTubeId(settings.hero_video_url);
+  const isVideo = !backdropVideoId && isVideoUrl(heroUrl);
 
   return (
     <section
@@ -79,6 +84,25 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             aria-hidden="true"
           />
         )}
+
+        {/* YouTube backdrop. The frame is sized to cover 16:9 against either
+            axis and then overscaled, so the watermark and the hover title card
+            fall outside this overflow-hidden box: what is left reads as footage,
+            not as an embed. pointer-events-none and tabIndex=-1 keep the player
+            unreachable, so no interaction can summon its chrome back. */}
+        {backdropVideoId ? (
+          <div className="hero-youtube-backdrop absolute inset-0 overflow-hidden" aria-hidden="true">
+            <iframe
+              src={youTubeBackdropEmbedUrl(backdropVideoId)}
+              title="Hero backdrop"
+              tabIndex={-1}
+              loading="eager"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-[1.35] border-0"
+            />
+          </div>
+        ) : null}
         {/* Two flat 20% black washes, as stacked in the Figma rectangle fill */}
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-0 bg-black/20" />

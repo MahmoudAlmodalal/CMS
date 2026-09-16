@@ -69,7 +69,12 @@ function TabLivePreview({ tab, values }: { tab: TabKey; values: SiteSettingsForm
         {tab === "home" && (
           <>
             <section className="rounded-2xl bg-brand-espresso p-5 text-brand-tint" aria-label="معاينة هيرو الرئيسية">
-              <p className="text-xs font-bold text-brand-primary">واجهة الهيرو</p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-bold text-brand-primary">واجهة الهيرو</p>
+                <span className="rounded-md bg-brand-tint/10 px-2 py-0.5 text-[10px] text-brand-tint/80">
+                  {values.hero_video_url.trim() ? "الخلفية: فيديو يوتيوب" : "الخلفية: صورة/فيديو مرفوع"}
+                </span>
+              </div>
               <h3 className="mt-3 text-lg font-bold leading-relaxed">{text(values.hero_headline, "عنوان الهيرو الرئيسي")}</h3>
               <p className="mt-2 text-xs leading-relaxed text-brand-tint/80">{text(values.hero_subheadline, "العنوان الفرعي سيظهر هنا")}</p>
               <div className="mt-4 flex flex-wrap gap-2 pt-2 border-t border-brand-tint/15 text-xs">

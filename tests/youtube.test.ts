@@ -6,6 +6,7 @@ import {
   isYouTubeUrl,
   parseYouTubeId,
   youTubeEmbedUrl,
+  youTubeBackdropEmbedUrl,
   youTubeThumbnailUrl,
   youTubeWatchUrl,
 } from "../src/lib/youtube.ts";
@@ -73,6 +74,55 @@ test("youTubeEmbedUrl — privacy host, opt-in autoplay, never echoes raw input"
   assert.match(embed, /modestbranding=1/);
   assert.doesNotMatch(embed, /autoplay/, "autoplay is opt-in so the facade controls it");
   assert.match(youTubeEmbedUrl(ID, { autoplay: true }), /autoplay=1/);
+});
+
+test("youTubeBackdropEmbedUrl — silent looping footage with no player furniture", () => {
+  const backdrop = youTubeBackdropEmbedUrl(ID);
+  assert.ok(backdrop.startsWith(`https://www.youtube-nocookie.com/embed/${ID}?`), backdrop);
+
+  // Plays by itself, silently, forever. `loop` is inert unless `playlist` names
+  // the same id, so a missing playlist param means the hero shows one pass and
+  // then an end screen.
+  for (const param of ["autoplay=1", "mute=1", "loop=1", `playlist=${ID}`, "playsinline=1"]) {
+    assert.ok(backdrop.includes(param), `${param} missing from ${backdrop}`);
+  }
+
+  // Everything the player draws over the footage is switched off: the band must
+  // not read as an embed.
+  for (const param of [
+    "controls=0",
+    "modestbranding=1",
+    "rel=0",
+    "showinfo=0",
+    "disablekb=1",
+    "fs=0",
+    "iv_load_policy=3",
+    "cc_load_policy=0",
+  ]) {
+    assert.ok(backdrop.includes(param), `${param} missing from ${backdrop}`);
+  }
+});
+
+test("HeroSection — a YouTube link outranks the image, which stays as the fallback", () => {
+  const hero = fs.readFileSync(
+    path.join(import.meta.dirname, "..", "src/components/public/HeroSection.tsx"),
+    "utf-8",
+  );
+  assert.match(hero, /parseYouTubeId\(settings\.hero_video_url\)/);
+  assert.match(hero, /youTubeBackdropEmbedUrl\(backdropVideoId\)/);
+
+  // No link parses -> nothing changes about today's image/<video> backdrop.
+  assert.match(hero, /!backdropVideoId && isVideoUrl\(heroUrl\)/);
+  assert.match(hero, /hero_image_url/, "the image column remains the fallback");
+
+  // The frame is cropped and unreachable, which is what hides the branding.
+  assert.match(hero, /hero-youtube-backdrop absolute inset-0 overflow-hidden/);
+  assert.match(hero, /pointer-events-none/);
+  assert.match(hero, /tabIndex=\{-1\}/);
+
+  // Reduced motion drops the frame and uncovers the still image beneath it.
+  const css = fs.readFileSync(path.join(import.meta.dirname, "..", "src/app/globals.css"), "utf-8");
+  assert.match(css, /\.hero-youtube-backdrop \{ display: none !important; \}/);
 });
 
 test("youTubeThumbnailUrl / youTubeWatchUrl point at the hosts next.config allows", () => {

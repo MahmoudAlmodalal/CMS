@@ -23,7 +23,7 @@ test("Page controls — admin tabs expose the new fields", () => {
     "show_hero", "show_about", "show_featured_artists",
     "home_hero_primary_href", "home_hero_secondary_href", "home_about_href",
     "home_artists_href", "home_events_href", "booking_cta_href",
-    "home_about_heading", "home_events_image_url", "booking_banner_image_url",
+    "home_about_heading", "hero_video_url", "home_events_image_url", "booking_banner_image_url",
     "seo_default_title", "seo_default_description", "seo_og_image_url",
   ]) {
     assert.ok(home.includes(field), `HomeTab must include ${field}`);
@@ -48,6 +48,24 @@ test("Page controls — public pages read the new settings", () => {
   assert.match(booking, /seo_booking_title\?\.trim\(\) \|\| t\("bookingTitle"\)/);
   assert.match(booking, /booking_title/);
   assert.match(read("src/app/[locale]/layout.tsx"), /seo_default_title\?\.trim\(\) \|\| t\("title"\)/);
+});
+
+test("Hero video — the YouTube column is admin-editable, validated and not storage", () => {
+  // Only a real YouTube link saves: the schema defers to the same parseYouTubeId
+  // the hero renders with, so a link that saves always plays.
+  for (const url of ["https://www.youtube.com/watch?v=dQw4w9WgXcQ", "https://youtu.be/dQw4w9WgXcQ", "", null]) {
+    assert.ok(partial.safeParse({ hero_video_url: url }).success, `should accept ${String(url)}`);
+  }
+  for (const url of ["https://vimeo.com/76979871", "javascript:alert(1)", "/assets/hero.mp4"]) {
+    assert.equal(partial.safeParse({ hero_video_url: url }).success, false, `should reject ${url}`);
+  }
+
+  // The link lives on YouTube, so the orphan sweeper must not treat it as a
+  // storage object it can delete.
+  assert.doesNotMatch(read("src/lib/storage.ts"), /column: "hero_video_url"/);
+
+  const migration = read("supabase/migrations/20260920000000_add_home_hero_video.sql");
+  assert.match(migration, /ADD COLUMN IF NOT EXISTS hero_video_url TEXT NULL/);
 });
 
 test("Page controls — new image columns are storage references in the orphan view", () => {
