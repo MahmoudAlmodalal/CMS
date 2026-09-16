@@ -27,6 +27,8 @@ import {
   STORAGE_BUCKETS,
   resolveMediaUrl,
   storageBaseUrl,
+  isStorageBaseUrl,
+  repairLegacyMediaUrl,
   type StorageBucket,
 } from "@/lib/storage";
 import { parseYouTubeId } from "@/lib/youtube";
@@ -92,41 +94,80 @@ const MAX_PROBES_PER_COLUMN = 25;
 const PROBE_TIMEOUT_MS = 6000;
 
 /**
- * Shape-checks a JWT without verifying it.
+ * Describes the service-role key's FORMAT only.
  *
- * The deployed service-role key having been pasted as something that is not a
- * JWT at all ("Invalid Compact JWS") is a real failure this project has already
- * hit; every upload fails and the images that should exist never get written.
- * Three base64url segments with a decodable JSON header is enough to catch it,
- * and it reveals nothing secret.
+ * Supabase issues two shapes: the legacy `service_role` JWT (three base64url
+ * segments) and the newer `sb_secret_...` API key, which is not a JWT at all
+ * and has no segments. An earlier version of this check only knew about the
+ * first and reported every new-format key as corrupt — so format alone is
+ * reported as information, and whether the key actually WORKS is answered by
+ * the live privileged call below, which is the only thing that can settle it.
  */
-function describeJwt(value: string | undefined): CheckRow {
+function describeServiceKey(value: string | undefined): CheckRow {
   const label = "SUPABASE_SERVICE_ROLE_KEY";
   if (!value) {
     return { label, status: "fail", detail: "غير مضبوط — الرفع والحذف لن يعملا." };
+  }
+  if (value.startsWith("sb_secret_")) {
+    return { label, status: "ok", detail: "مفتاح Supabase السري بالصيغة الجديدة (sb_secret_…)." };
+  }
+  if (value.startsWith("sb_publishable_")) {
+    return {
+      label,
+      status: "fail",
+      detail: "هذا مفتاح عام (sb_publishable_…) وليس مفتاحاً سرياً — لن يملك صلاحيات الكتابة.",
+    };
   }
   const parts = value.split(".");
   if (parts.length !== 3) {
     return {
       label,
-      status: "fail",
-      detail: `ليس JWT صالحاً: عدد المقاطع ${parts.length} بدلاً من 3. الرفع سيفشل بالكامل.`,
+      status: "warn",
+      detail: `صيغة غير معروفة: ${parts.length} مقطع، وليس JWT ولا sb_secret_. راجع نتيجة الاختبار الحي أدناه.`,
     };
   }
   try {
-    const header = JSON.parse(Buffer.from(parts[0], "base64url").toString("utf-8"));
     const payload = JSON.parse(Buffer.from(parts[1], "base64url").toString("utf-8"));
     const role = typeof payload?.role === "string" ? payload.role : "(بلا role)";
     if (role !== "service_role") {
       return {
         label,
         status: "fail",
-        detail: `المفتاح صالح الشكل لكن role = "${role}" وليس "service_role".`,
+        detail: `JWT صالح الشكل لكن role = "${role}" وليس "service_role".`,
       };
     }
-    return { label, status: "ok", detail: `JWT صالح الشكل (alg ${header?.alg ?? "?"}, role service_role).` };
+    return { label, status: "ok", detail: "JWT قديم صالح الشكل، role = service_role." };
   } catch {
     return { label, status: "fail", detail: "المقاطع ليست base64url/JSON صالحاً — المفتاح تالف." };
+  }
+}
+
+/**
+ * Actually uses the service-role key, which is the only real answer.
+ *
+ * listBuckets() is privileged and read-only: the anon key cannot call it, so a
+ * success proves the key works for the writes that uploads need, and a failure
+ * reports Supabase's own error text rather than a guess from the key's shape.
+ */
+async function probeServiceKey(): Promise<CheckRow> {
+  const label = "اختبار حي لمفتاح الخدمة";
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin.storage.listBuckets();
+    if (error) {
+      return { label, status: "fail", detail: `المفتاح مرفوض: ${error.message} — الرفع سيفشل.` };
+    }
+    return {
+      label,
+      status: "ok",
+      detail: `المفتاح يعمل: قرأ ${data?.length ?? 0} حاوية بصلاحيات الخدمة.`,
+    };
+  } catch (err) {
+    return {
+      label,
+      status: "fail",
+      detail: err instanceof Error ? err.message : "تعذر استخدام مفتاح الخدمة.",
+    };
   }
 }
 
@@ -144,13 +185,25 @@ async function checkEnv(): Promise<CheckRow[]> {
     presence("NEXT_PUBLIC_SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL, true),
     presence("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, true),
     presence("NEXT_PUBLIC_SUPABASE_STORAGE_URL", process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL, false),
-    describeJwt(process.env.SUPABASE_SERVICE_ROLE_KEY),
+    describeServiceKey(process.env.SUPABASE_SERVICE_ROLE_KEY),
   ];
+
+  const override = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL?.trim();
+  if (override && !isStorageBaseUrl(override)) {
+    rows.push({
+      label: "NEXT_PUBLIC_SUPABASE_STORAGE_URL",
+      status: "fail",
+      detail:
+        `القيمة "${override}" ليست نقطة تخزين Supabase — يجب أن تنتهي بـ ` +
+        "/storage/v1/object/public أو تُترك فارغة ليُشتق العنوان من NEXT_PUBLIC_SUPABASE_URL. " +
+        "طالما كانت خاطئة، كل رفع كان يحفظ رابطاً مبنيّاً على هذا النطاق، والروابط المحفوظة تبقى مكسورة حتى تُصلَح.",
+    });
+  }
 
   const base = storageBaseUrl();
   if (!base) {
     rows.push({
-      label: "عنوان التخزين العام",
+      label: "عنوان التخزين الفعلي",
       status: "fail",
       detail: "تعذر اشتقاقه — كل روابط الوسائط ستُعرض كمسارات نسبية مكسورة.",
     });
@@ -166,7 +219,7 @@ async function checkEnv(): Promise<CheckRow[]> {
     })();
     const allowed = host ? /^[^.]+\.supabase\.co$/.test(host) : false;
     rows.push({
-      label: "عنوان التخزين العام",
+      label: "عنوان التخزين الفعلي",
       status: allowed ? "ok" : "warn",
       detail: allowed
         ? `${base} — مسموح به في next.config.ts.`
@@ -174,17 +227,7 @@ async function checkEnv(): Promise<CheckRow[]> {
     });
   }
 
-  // The admin client is what uploads use; construct it to surface its own error.
-  try {
-    createAdminClient();
-    rows.push({ label: "عميل الخدمة (الرفع)", status: "ok", detail: "تم إنشاؤه بنجاح." });
-  } catch (err) {
-    rows.push({
-      label: "عميل الخدمة (الرفع)",
-      status: "fail",
-      detail: err instanceof Error ? err.message : "تعذر إنشاء عميل الخدمة.",
-    });
-  }
+  rows.push(await probeServiceKey());
 
   return rows;
 }
@@ -338,6 +381,95 @@ async function checkYouTube(): Promise<MediaProbe[]> {
 
   out.sort((a, b) => (a.status === b.status ? 0 : a.status === "fail" ? -1 : 1));
   return out;
+}
+
+export interface RepairResult {
+  table: string;
+  column: string;
+  before: string;
+  after: string;
+  applied: boolean;
+  error?: string;
+}
+
+/**
+ * Rewrites media URLs that were persisted against the wrong host.
+ *
+ * The read path already repairs these on the fly, but that is a safety net, not
+ * a fix: the rows stay wrong, every future reader depends on the net, and the
+ * orphan-cleanup view still cannot match them against real objects. This writes
+ * the corrected URL back.
+ *
+ * `dryRun` (the default) changes nothing and returns exactly what WOULD change,
+ * so the list can be reviewed before anything is written.
+ */
+export async function repairMediaUrlsAction(
+  dryRun = true,
+): Promise<{ success: true; results: RepairResult[] } | { success: false; error: string }> {
+  try {
+    await requireAdminSession();
+
+    const base = storageBaseUrl();
+    if (!base || !isStorageBaseUrl(base)) {
+      return {
+        success: false,
+        error: "لا يمكن الإصلاح قبل ضبط عنوان تخزين صحيح — صحّح NEXT_PUBLIC_SUPABASE_STORAGE_URL أولاً.",
+      };
+    }
+
+    // Reads go through the RLS client, writes through the service-role client:
+    // site_settings and the content tables are admin-write only.
+    const reader = (await createClient()) as unknown as LooseQuery;
+    const writer = createAdminClient();
+    const results: RepairResult[] = [];
+
+    for (const ref of MEDIA_REFERENCES) {
+      const { data, error } = await reader
+        .from(ref.table)
+        .select(`id,${ref.column}`)
+        .not(ref.column, "is", null)
+        .limit(500);
+
+      if (error || !data) continue;
+
+      for (const row of data) {
+        const before = row[ref.column];
+        const id = row.id;
+        if (typeof before !== "string" || !before.trim()) continue;
+        if (!/^https?:\/\//.test(before.trim())) continue;
+
+        const after = repairLegacyMediaUrl(before.trim());
+        if (after === before.trim()) continue;
+
+        if (dryRun) {
+          results.push({ table: ref.table, column: ref.column, before, after, applied: false });
+          continue;
+        }
+
+        const { error: writeError } = await writer
+          .from(ref.table as never)
+          .update({ [ref.column]: after } as never)
+          .eq("id", id as never);
+
+        results.push({
+          table: ref.table,
+          column: ref.column,
+          before,
+          after,
+          applied: !writeError,
+          error: writeError?.message,
+        });
+      }
+    }
+
+    return { success: true, results };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "فشل الإصلاح";
+    if (message === "UNAUTHORIZED_ADMIN_ACTION") {
+      return { success: false, error: "غير مصرح: مطلوب جلسة مسؤول" };
+    }
+    return { success: false, error: message };
+  }
 }
 
 export async function runDiagnosticsAction(): Promise<

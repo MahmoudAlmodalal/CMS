@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { resolveMediaUrl, type StorageBucket } from "@/lib/storage";
+import { repairLegacyMediaUrl, resolveMediaUrl, type StorageBucket } from "@/lib/storage";
 
 export interface SafeImageProps {
   src?: string | null;
@@ -52,9 +52,9 @@ export function normalizeMediaUrl(
     return `https:${trimmed}`;
   }
 
-  // Absolute URLs
+  // Absolute URLs — repaired if they carry the wrong host (see storage.ts).
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
-    return trimmed;
+    return repairLegacyMediaUrl(trimmed);
   }
 
   // If relative path starts with /, keep it if in public or prefix storage base

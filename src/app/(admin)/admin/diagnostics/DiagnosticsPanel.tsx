@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { runDiagnosticsAction, type CheckRow, type CheckStatus, type DiagnosticsReport, type MediaProbe } from "@/actions/diagnostics";
+import {
+  repairMediaUrlsAction,
+  runDiagnosticsAction,
+  type CheckRow,
+  type CheckStatus,
+  type DiagnosticsReport,
+  type MediaProbe,
+  type RepairResult,
+} from "@/actions/diagnostics";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 
@@ -92,6 +100,103 @@ function Section({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
+    </Card>
+  );
+}
+
+/**
+ * Preview-then-apply repair for URLs stored against the wrong host.
+ *
+ * Previews first, always: this writes to content tables, and an editor deserves
+ * to see the exact before/after list before anything changes.
+ */
+function RepairCard({ onRepaired }: { onRepaired: () => void }) {
+  const [results, setResults] = useState<RepairResult[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [applied, setApplied] = useState(false);
+
+  const run = (dryRun: boolean) => {
+    setBusy(true);
+    setError(null);
+    repairMediaUrlsAction(dryRun)
+      .then((res) => {
+        if (!res.success) {
+          setError(res.error);
+          return;
+        }
+        setResults(res.results);
+        setApplied(!dryRun);
+        if (!dryRun) onRepaired();
+      })
+      .catch((err) => setError(err instanceof Error ? err.message : "فشل الإصلاح"))
+      .finally(() => setBusy(false));
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>إصلاح الروابط المحفوظة بنطاق خاطئ</CardTitle>
+        <CardDescription>
+          يعيد كتابة الروابط التي حُفظت مبنيّة على نطاق التطبيق بدل نطاق التخزين. اعرض القائمة أولاً،
+          ثم طبّقها. لا يعمل قبل ضبط عنوان تخزين صحيح.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button type="button" variant="outline" onClick={() => run(true)} disabled={busy}>
+            عرض ما سيتغيّر
+          </Button>
+          <Button
+            type="button"
+            onClick={() => run(false)}
+            disabled={busy || !results || results.length === 0 || applied}
+          >
+            تطبيق الإصلاح
+          </Button>
+        </div>
+
+        {error && (
+          <p role="alert" className="text-sm font-bold text-red-700">
+            {error}
+          </p>
+        )}
+
+        {results && results.length === 0 && (
+          <p role="status" className="text-sm font-bold text-alert-success">
+            لا توجد روابط تحتاج إصلاحاً.
+          </p>
+        )}
+
+        {results && results.length > 0 && (
+          <>
+            <p role="status" className="text-sm font-bold text-brand-espresso">
+              {applied
+                ? `تم إصلاح ${results.filter((r) => r.applied).length} من ${results.length} رابطاً.`
+                : `${results.length} رابطاً سيتغيّر:`}
+            </p>
+            <ul className="space-y-2">
+              {results.map((row, index) => (
+                <li
+                  key={`${row.table}-${row.column}-${index}`}
+                  className="rounded-xl border border-brand-espresso-subtle/50 bg-white p-3"
+                >
+                  <p className="text-sm font-bold text-brand-espresso">
+                    {row.table}.{row.column}
+                  </p>
+                  <p dir="ltr" className="mt-1 truncate text-start font-mono text-xs text-red-700">
+                    − {row.before}
+                  </p>
+                  <p dir="ltr" className="truncate text-start font-mono text-xs text-alert-success">
+                    + {row.after}
+                  </p>
+                  {row.error && <p className="mt-1 text-xs text-red-700">{row.error}</p>}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </CardContent>
     </Card>
   );
 }
@@ -208,6 +313,8 @@ export function DiagnosticsPanel() {
               empty="لا توجد روابط تخزين محفوظة لفحصها (الصور المحلية تحت ‎/assets‎ لا تُفحص)."
             />
           </Section>
+
+          {report.media.some((p) => p.status === "fail") && <RepairCard onRepaired={run} />}
 
           <Section
             title="روابط يوتيوب المحفوظة"

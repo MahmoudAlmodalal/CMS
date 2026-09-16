@@ -230,6 +230,25 @@ function isHttpUrl(val: string): boolean {
  * "/assets/figma/hero.png" (the seeded defaults). Protocol-relative ("//host"),
  * backslash and traversal paths are rejected.
  */
+/**
+ * Video-page hosts that are not images.
+ *
+ * A production row had a youtu.be link saved in site_settings.hero_image_url.
+ * It passes every URL check — it is a perfectly valid https URL that returns
+ * 200 — but it serves an HTML page, so the band rendered a background that
+ * simply never painted, with nothing anywhere saying why.
+ */
+const VIDEO_PAGE_HOSTS = ["youtube.com", "youtu.be", "youtube-nocookie.com", "vimeo.com"];
+
+function isVideoPageUrl(val: string): boolean {
+  try {
+    const host = new URL(val).hostname.toLowerCase().replace(/^(www|m|music)\./, "");
+    return VIDEO_PAGE_HOSTS.includes(host);
+  } catch {
+    return false;
+  }
+}
+
 export function imageUrlSchema(max: number = 500) {
   return z
     .string({ message: "رابط الصورة مطلوب" })
@@ -242,7 +261,10 @@ export function imageUrlSchema(max: number = 500) {
         isHttpUrl(val) ||
         (val.startsWith("/") && !val.startsWith("//") && !val.includes("\\") && !val.includes("..")),
       { message: "يجب أن يكون رابط الصورة عنواناً يبدأ بـ http(s):// أو مساراً يبدأ بـ /" }
-    );
+    )
+    .refine((val) => !isVideoPageUrl(val), {
+      message: "هذا رابط صفحة فيديو وليس صورة. ضع رابط الفيديو في حقل الفيديو، واختر صورة هنا.",
+    });
 }
 
 /** Optional image: forms post "" for "no image", which is stored as null. */
