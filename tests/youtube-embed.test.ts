@@ -79,3 +79,68 @@ test("no component interpolates a CMS URL into url() unquoted", () => {
     }
   }
 });
+
+test("a misconfigured storage override is ignored, not trusted", async () => {
+  const { storageBaseUrl, isStorageBaseUrl, repairLegacyMediaUrl, resolveMediaUrl } = await import(
+    "../src/lib/storage.ts"
+  );
+
+  assert.equal(isStorageBaseUrl("https://x.supabase.co/storage/v1/object/public"), true);
+  assert.equal(isStorageBaseUrl("https://cms-drab-eight.vercel.app"), false);
+  assert.equal(isStorageBaseUrl("not a url"), false);
+
+  const savedOverride = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL;
+  const savedProject = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  try {
+    // The exact production misconfiguration: the override pointed at the app's
+    // own domain, so uploads persisted URLs there and every one 404'd.
+    process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL = "https://cms-drab-eight.vercel.app";
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://proj.supabase.co";
+
+    assert.equal(
+      storageBaseUrl(),
+      "https://proj.supabase.co/storage/v1/object/public",
+      "a base that cannot serve an object must lose to the derivable project URL",
+    );
+
+    // Rows already written against the bad host are repaired on read.
+    assert.equal(
+      repairLegacyMediaUrl("https://cms-drab-eight.vercel.app/artists/portraits/a/1_x.png"),
+      "https://proj.supabase.co/storage/v1/object/public/artists/portraits/a/1_x.png",
+    );
+    assert.equal(
+      resolveMediaUrl("artists", "https://cms-drab-eight.vercel.app/artists/portraits/a/1_x.png"),
+      "https://proj.supabase.co/storage/v1/object/public/artists/portraits/a/1_x.png",
+    );
+
+    // A correct URL, a real public route and an unrelated host are left alone.
+    const good = "https://proj.supabase.co/storage/v1/object/public/artists/artist-1.png";
+    assert.equal(repairLegacyMediaUrl(good), good);
+    assert.equal(
+      repairLegacyMediaUrl("https://cms-drab-eight.vercel.app/artists/sara-alsawt"),
+      "https://cms-drab-eight.vercel.app/artists/sara-alsawt",
+      "a public route has no file extension and must never be rewritten",
+    );
+    assert.equal(
+      repairLegacyMediaUrl("https://youtu.be/60g72d4Nqss"),
+      "https://youtu.be/60g72d4Nqss",
+    );
+  } finally {
+    process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL = savedOverride;
+    process.env.NEXT_PUBLIC_SUPABASE_URL = savedProject;
+  }
+});
+
+test("an image field rejects a video-page URL", async () => {
+  const { imageUrlSchema } = await import("../src/lib/validations/primitives.ts");
+  const schema = imageUrlSchema();
+
+  // Production had a youtu.be link in site_settings.hero_image_url: a valid
+  // https URL returning 200 that serves HTML, so the band never painted.
+  assert.equal(schema.safeParse("https://youtu.be/60g72d4Nqss?si=x").success, false);
+  assert.equal(schema.safeParse("https://www.youtube.com/watch?v=aqz-KE-bpKQ").success, false);
+  assert.equal(schema.safeParse("https://vimeo.com/12345").success, false);
+
+  assert.equal(schema.safeParse("https://proj.supabase.co/storage/v1/object/public/site/a.png").success, true);
+  assert.equal(schema.safeParse("/assets/figma/hero-stage.png").success, true);
+});

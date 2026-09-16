@@ -222,14 +222,38 @@ export function buildStoragePath(input: BuildPathInput): string {
 // URL helpers (§7.2): DB stores a path or full URL; resolve to absolute CDN URL.
 // ---------------------------------------------------------------------------
 
+/**
+ * True when a URL actually looks like a Supabase public-storage endpoint.
+ *
+ * A deployment once had NEXT_PUBLIC_SUPABASE_STORAGE_URL set to the app's OWN
+ * domain. Nothing checked it, so every upload built its public URL against that
+ * host and PERSISTED it, and every bare storage key resolved to the Next app
+ * instead of the CDN — a 404 and a broken image for each one. A base that does
+ * not carry the /storage/v1/object/public path cannot serve an object, so it is
+ * treated as unset rather than trusted.
+ */
+export function isStorageBaseUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return false;
+    return url.pathname.replace(/\/+$/, "").endsWith("/storage/v1/object/public");
+  } catch {
+    return false;
+  }
+}
+
 /** CDN base for public reads. Returns null when unconfigured (build/preview
  *  without Supabase env) — read-path callers must degrade, never crash. */
 export function storageBaseUrl(): string | null {
-  const direct = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL;
-  if (direct) return direct.replace(/\/+$/, "");
+  const direct = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL?.replace(/\/+$/, "");
+  // Only honoured when it is a real storage endpoint; a misconfigured override
+  // must not win over the project URL we can derive correctly.
+  if (direct && isStorageBaseUrl(direct)) return direct;
   const project = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (project) return `${project.replace(/\/+$/, "")}/storage/v1/object/public`;
-  return null;
+  // Last resort: an override that does not look like storage is still better
+  // than nothing when there is no project URL at all to fall back to.
+  return direct || null;
 }
 
 /** Strict variant for write paths (upload/replace/delete/orphan cleanup):
@@ -240,20 +264,43 @@ export function requireStorageBaseUrl(): string {
   return base;
 }
 
-/** Absolute URLs pass through; relative paths resolve against the CDN base.
- *  Without a configured base (e.g. static build with no env), the stored
- *  path is returned unchanged so prerendering never crashes. */
-export function resolveMediaUrl(
-  bucket: StorageBucket,
-  pathOrUrl: string | null | undefined,
-): string | null {
-  if (!pathOrUrl) return null;
-  const v = pathOrUrl.trim();
-  if (!v) return null;
-  if (v.startsWith("http://") || v.startsWith("https://")) return v;
+/**
+ * Rewrites a media URL that was persisted against the wrong host.
+ *
+ * While NEXT_PUBLIC_SUPABASE_STORAGE_URL pointed at the app's own domain, every
+ * upload stored an absolute URL shaped like `https://<app-host>/<bucket>/<key>`.
+ * Those rows are already in the database; fixing the env var does not rewrite
+ * them, so each one stays a 404 until it does. This recognises exactly that
+ * shape — a non-storage host whose first path segment is one of our buckets and
+ * whose last segment has a file extension — and points it back at the real CDN.
+ *
+ * Deliberately narrow: a real public route (`/artists/sara-alsawt`) has no file
+ * extension and is never stored in a media column, so it cannot match. Anything
+ * unrecognised is returned unchanged.
+ *
+ * This is a read-path safety net for known-bad rows, not a substitute for
+ * repairing them — /admin/diagnostics reports and rewrites them for good.
+ */
+export function repairLegacyMediaUrl(url: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+  if (parsed.pathname.includes("/storage/v1/object/public/")) return url;
+
+  const segments = parsed.pathname.split("/").filter(Boolean);
+  if (segments.length < 2) return url;
+
+  const [bucket, ...rest] = segments;
+  if (!(STORAGE_BUCKETS as readonly string[]).includes(bucket)) return url;
+  if (!/\.[A-Za-z0-9]{2,5}$/.test(rest[rest.length - 1] ?? "")) return url;
+
   const base = storageBaseUrl();
-  if (!base) return v;
-  return `${base}/${bucket}/${v.replace(/^\/+/, "")}`;
+  if (!base || !isStorageBaseUrl(base)) return url;
+
+  return `${base}/${bucket}/${rest.join("/")}`;
 }
 
 /**
@@ -268,11 +315,31 @@ export function cssUrl(
   url: string | null | undefined,
   fallback?: string,
 ): string | undefined {
-  const v = url?.trim() || fallback?.trim();
+  const raw = url?.trim();
+  // CSS backgrounds bypass SafeImage, so the same host repair has to happen here
+  // or a band keeps painting a 404 that every <Image /> on the page recovered from.
+  const repaired = raw && /^https?:\/\//.test(raw) ? repairLegacyMediaUrl(raw) : raw;
+  const v = repaired || fallback?.trim();
   // No value and no fallback: omit the declaration entirely rather than emit
   // `url("")`, which resolves against the current page and re-requests it.
   if (!v) return undefined;
   return `url(${JSON.stringify(v)})`;
+}
+
+/** Absolute URLs pass through; relative paths resolve against the CDN base.
+ *  Without a configured base (e.g. static build with no env), the stored
+ *  path is returned unchanged so prerendering never crashes. */
+export function resolveMediaUrl(
+  bucket: StorageBucket,
+  pathOrUrl: string | null | undefined,
+): string | null {
+  if (!pathOrUrl) return null;
+  const v = pathOrUrl.trim();
+  if (!v) return null;
+  if (v.startsWith("http://") || v.startsWith("https://")) return repairLegacyMediaUrl(v);
+  const base = storageBaseUrl();
+  if (!base) return v;
+  return `${base}/${bucket}/${v.replace(/^\/+/, "")}`;
 }
 
 const PUBLIC_URL_RE =
