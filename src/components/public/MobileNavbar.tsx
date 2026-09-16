@@ -79,7 +79,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               transparent margin the logo asset no longer has. */}
           <Link
             href="/"
-            className="flex h-9 min-w-0 shrink items-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-11"
+            className="flex h-7.5 min-w-0 shrink items-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-9"
             aria-label={a11y("brandHome")}
           >
             <Image
@@ -88,7 +88,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               width={628}
               height={226}
               loading="eager"
-              className="h-full w-auto max-w-[140px] object-contain sm:max-w-[168px]"
+              className="h-full w-auto max-w-[115px] object-contain sm:max-w-[140px]"
               style={{ aspectRatio: "628 / 226" }}
             />
           </Link>
