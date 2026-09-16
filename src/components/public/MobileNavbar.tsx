@@ -89,6 +89,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
               height={226}
               loading="eager"
               className="h-full w-auto max-w-[140px] object-contain sm:max-w-[168px]"
+              style={{ aspectRatio: "628 / 226" }}
             />
           </Link>
         </header>

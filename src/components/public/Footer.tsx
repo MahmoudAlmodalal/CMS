@@ -50,7 +50,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
             stays inside the page below it, in both directions. */}
         <div className="flex flex-col items-center gap-8 lg:mx-auto lg:w-full lg:max-w-[1132px] lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           <div className="flex w-full max-w-[345px] min-w-0 flex-col items-center text-center lg:items-start lg:text-start">
-            <Image src="/assets/branding/logo-footer.png" alt={a11y("brandHome")} width={211} height={86} sizes="211px" className="h-auto w-[min(211px,70vw)] object-contain" />
+            <Image src="/assets/branding/logo-footer.png" alt={a11y("brandHome")} width={211} height={86} sizes="211px" className="h-auto w-[min(211px,70vw)] object-contain" style={{ aspectRatio: "211 / 86" }} />
             <p className="max-w-[260px] pt-4 text-sm leading-relaxed text-primary-50">{mission}</p>
             <p className="pt-4 text-sm font-bold text-brand-primary">{t("motto")}</p>
           </div>

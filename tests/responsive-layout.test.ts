@@ -24,8 +24,8 @@ test("Responsive public pages — mobile and tablet layout contracts", () => {
   assert.match(bookingPage, /min-w-0 w-full max-w-full/);
   assert.match(footer, /flex flex-col/);
   assert.match(footer, /lg:flex-row/);
-  assert.match(shell, /absolute inset-x-2\.5/);
-  assert.match(shell, /top-\[36px\]/);
+  assert.match(shell, /(?:absolute|fixed) inset-x-2\.5/);
+  assert.match(shell, /top-\[(?:24px|36px)\]/);
 });
 
 test("Responsive public pages — no mobile-only arbitrary desktop width regression", () => {

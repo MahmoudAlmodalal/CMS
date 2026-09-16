@@ -131,6 +131,7 @@ export function Navbar() {
             // the logo sat flush with the pill's own edges. It is capped to the slot's
             // width and given room to breathe inside it instead.
             className="h-9 w-auto max-w-[196px] object-contain xl:h-14"
+            style={{ aspectRatio: "628 / 226" }}
           />
         </Link>
 

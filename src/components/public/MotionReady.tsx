@@ -1,6 +1,7 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 /**
  * Progressive scroll motion coordinator.
@@ -8,17 +9,23 @@ import { useLayoutEffect } from "react";
  * state to elements that are confirmed to be below the fold.
  */
 export function MotionReady() {
-  useLayoutEffect(() => {
+  const pathname = usePathname();
+
+  useEffect(() => {
     const root = document.documentElement;
     root.dataset.motionReady = "true";
 
+    const reduced = typeof window !== "undefined" && window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reduced || typeof IntersectionObserver === "undefined") return;
+
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>(
-        ".public-motion-shell main > *, .motion-stagger",
+        ".motion-stagger, .motion-reveal",
       ),
     );
-
-    if (typeof IntersectionObserver === "undefined") return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -31,28 +38,24 @@ export function MotionReady() {
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
     );
 
     targets.forEach((target) => {
-      const reduced = window.matchMedia?.(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
       const alreadyVisible = target.getBoundingClientRect().top < window.innerHeight;
 
-      target.dataset.scrollReveal = alreadyVisible || reduced ? "true" : "false";
+      target.dataset.scrollReveal = alreadyVisible ? "true" : "false";
       if (target.classList.contains("motion-stagger")) {
-        target.dataset.staggerRevealed = alreadyVisible || reduced ? "true" : "false";
+        target.dataset.staggerRevealed = alreadyVisible ? "true" : "false";
       }
 
-      if (!alreadyVisible && !reduced) observer.observe(target);
+      if (!alreadyVisible) observer.observe(target);
     });
 
     return () => {
       observer.disconnect();
-      delete root.dataset.motionReady;
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

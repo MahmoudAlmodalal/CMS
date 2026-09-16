@@ -31,6 +31,7 @@ export { PageHero } from "./PageHero";
 export { PageSkeleton } from "./PageSkeleton";
 export { ScrollReveal } from "./ScrollReveal";
 export { MotionReady } from "./MotionReady";
+export { TemplateWrapper } from "./TemplateWrapper";
 export { NewsHero, type NewsHeroProps } from "./NewsHero";
 export { NewsGrid, type NewsGridProps } from "./NewsGrid";
 export { NewsFilterTabs, type NewsFilterTabsProps } from "./NewsFilterTabs";

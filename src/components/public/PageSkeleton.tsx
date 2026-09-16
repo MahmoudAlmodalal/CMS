@@ -20,7 +20,13 @@ export function PageSkeleton() {
   const t = useTranslations("a11y");
 
   return (
-    <div className="py-16 lg:py-24 animate-pulse" role="status" aria-busy="true" aria-label={t("loadingPage")}>
+    <div
+      style={{ minHeight: "var(--page-min-height, 100dvh)" }}
+      className="py-16 lg:py-24 animate-pulse flex flex-col justify-start"
+      role="status"
+      aria-busy="true"
+      aria-label={t("loadingPage")}
+    >
       <Container>
         {/* Page header */}
         <div className="flex flex-col items-center gap-4 text-center">

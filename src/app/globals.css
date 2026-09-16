@@ -163,11 +163,14 @@
      Mobile: 36px + 56px + 16px. Desktop: the deepest NAVBAR_TOP (57px) + 85px + 16px.
      Heroes pad by this so the bar never lands on their headline. */
   --header-offset: 108px;
+  /* Minimum block size for page content wrapper to eliminate Cumulative Layout Shift (CLS) */
+  --page-min-height: calc(100dvh - var(--header-offset));
 }
 
 @media (min-width: 1024px) {
   :root {
     --header-offset: 158px;
+    --page-min-height: calc(100dvh - var(--header-offset));
   }
 }
 
@@ -185,6 +188,15 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
+    line-height: 1.6;
+  }
+
+  /* Explicit font line heights to eliminate font-swap reflow / layout shifts */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.25;
+  }
+
+  p {
     line-height: 1.6;
   }
 
@@ -265,19 +277,19 @@ bdi, .bdi-isolate {
 /* Public motion language                                                     */
 /* -------------------------------------------------------------------------- */
 :root {
-  --motion-fast: 220ms;
-  --motion-normal: 420ms;
-  --motion-slow: 900ms;
+  --motion-fast: 180ms;
+  --motion-normal: 220ms;
+  --motion-slow: 300ms;
   --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-interaction: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 @media (max-width: 767px) {
-  :root { --motion-slow: 650ms; }
+  :root { --motion-slow: 240ms; }
 }
 
 @keyframes motion-fade-up {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -292,22 +304,22 @@ bdi, .bdi-isolate {
 }
 
 @keyframes motion-reveal-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes motion-reveal-soft-in {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes motion-reveal-soft-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes motion-reveal-image-in {
-  from { opacity: 0; transform: scale(0.96); }
+  from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes testimonial-slide-in {
-  from { opacity: 0; transform: translateX(var(--testimonial-entry-x, 18px)) scale(0.992); }
+  from { opacity: 0; transform: translateX(var(--testimonial-entry-x, 14px)) scale(0.995); }
   to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
@@ -320,10 +332,6 @@ bdi, .bdi-isolate {
   .public-motion-shell :where(input, select, textarea):focus-visible {
     outline: 2px solid var(--color-brand-primary);
     outline-offset: 3px;
-  }
-
-  .public-motion-shell main > * {
-    animation: motion-fade-up var(--motion-slow) var(--motion-ease) both;
   }
 
   .motion-card {
@@ -360,51 +368,38 @@ bdi, .bdi-isolate {
 
   .motion-no-wrap { white-space: nowrap; }
 
-  /* Sections fade up as they scroll into view.
-     Visible is the DEFAULT and the only server-rendered state: without JS, with
-     no IntersectionObserver, or under reduced motion the section just shows. It
-     is hidden only once ScrollReveal has decided it is below the fold, so no
-     failure mode can leave content permanently invisible. (A CSS-only
-     `animation-timeline: view()` was rejected for exactly that reason — the
-     artist page's root is `overflow-hidden`, which is a scroll container, so
-     the view timeline would never progress and the bands would stay at
-     opacity 0.) */
+  /* Sections reveal with subtle, GPU-accelerated micro-lift */
   .motion-reveal[data-revealed="false"] {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(10px);
   }
 
   .motion-reveal[data-revealed="true"] {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) var(--reveal-delay, 0ms) both;
   }
 
-  .motion-reveal-soft[data-revealed="false"] { transform: translateY(10px); }
+  .motion-reveal-soft[data-revealed="false"] { transform: translateY(6px); }
   .motion-reveal-soft[data-revealed="true"] { animation-name: motion-reveal-soft-in; }
-  .motion-reveal-image[data-revealed="false"] { transform: scale(0.96); }
+  .motion-reveal-image[data-revealed="false"] { transform: scale(0.98); }
   .motion-reveal-image[data-revealed="true"] { animation-name: motion-reveal-image-in; }
 
   [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="true"] > * {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) var(--stagger-delay, 0ms) both;
   }
 
-  [data-motion-ready="true"] .public-motion-shell main > *[data-scroll-reveal="false"],
   [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="false"] {
     opacity: 0;
-    transform: translateY(24px);
-  }
-
-  [data-motion-ready="true"] .public-motion-shell main > *[data-scroll-reveal="true"] {
-    animation: motion-reveal-in var(--motion-slow) var(--motion-ease) both;
+    transform: translateY(10px);
   }
 
   .testimonial-slide {
-    --testimonial-entry-x: 18px;
-    animation: testimonial-slide-in 900ms var(--motion-ease) both;
+    --testimonial-entry-x: 14px;
+    animation: testimonial-slide-in var(--motion-normal) var(--motion-ease) both;
   }
 
-  .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: -18px; }
-  [dir="rtl"] .testimonial-slide[data-direction="next"] { --testimonial-entry-x: -18px; }
-  [dir="rtl"] .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: 18px; }
+  .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: -14px; }
+  [dir="rtl"] .testimonial-slide[data-direction="next"] { --testimonial-entry-x: -14px; }
+  [dir="rtl"] .testimonial-slide[data-direction="prev"] { --testimonial-entry-x: 14px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -433,10 +428,9 @@ bdi, .bdi-isolate {
 .public-motion-shell :where(button, a):disabled { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .public-motion-shell main > *, .motion-drawer, .motion-drawer-backdrop { animation: none !important; }
+  .public-motion-shell main > *, .page-transition-wrapper, .motion-drawer, .motion-drawer-backdrop { animation: none !important; }
   .motion-reveal, .testimonial-slide { animation: none !important; opacity: 1 !important; transform: none !important; }
   .motion-stagger > * { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .public-motion-shell main > *[data-scroll-reveal="false"],
   .motion-stagger[data-stagger-revealed="false"] { opacity: 1 !important; transform: none !important; }
   .public-motion-shell .motion-card:hover,
   .public-motion-shell .motion-card:hover .motion-image,
