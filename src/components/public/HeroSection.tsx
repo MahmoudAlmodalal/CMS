@@ -4,7 +4,6 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
-import { TextReveal } from "./motion/TextReveal";
 import { FloatParticles } from "./motion/FloatParticles";
 import { CursorGlow } from "./motion/CursorGlow";
 import { MagneticButton } from "./motion/MagneticButton";
@@ -96,15 +95,11 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       <Container className="relative z-10 w-full">
         <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill)
-              Desktop: word-by-word wipe via TextReveal.
-              Mobile: plain ScrollReveal fade — the wipe is illegible at 390px. */}
+              ScrollReveal handles the entrance animation.
+              Highlight renders the *word* terracotta colour markup from the CMS. */}
           <ScrollReveal variant="up" className="w-full">
             <h1 className="font-display text-3xl font-normal leading-relaxed text-[#EFEBD9] sm:text-4xl md:text-5xl lg:text-6xl lg:leading-snug">
-              <TextReveal
-                text={settings.hero_headline || ""}
-                wordsPerLine={3}
-                className="font-display text-3xl font-normal leading-relaxed text-[#EFEBD9] sm:text-4xl md:text-5xl lg:text-6xl lg:leading-snug"
-              />
+              <Highlight text={settings.hero_headline} />
             </h1>
           </ScrollReveal>
 
