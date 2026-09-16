@@ -26,7 +26,7 @@ export default async function PublicLayout({
   };
 
   return (
-    <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
+    <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream pb-[calc(68px+env(safe-area-inset-bottom))] text-brand-espresso relative selection:bg-brand-primary selection:text-white lg:pb-0">
       <MotionReady />
       {/* 1. Accessible Skip Link */}
       <SkipToContent />

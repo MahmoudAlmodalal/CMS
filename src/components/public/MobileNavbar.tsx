@@ -1,102 +1,108 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import Image from "next/image";
+import React from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { MenuIcon } from "@/components/ui/Icons";
-import { MobileDrawer, type DrawerContact } from "./MobileDrawer";
-import { LocaleSwitcher } from "./LocaleSwitcher";
+import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-/**
- * Mobile Top Bar Navigation
- * Verified against Figma `Component 17/Navigation` (Node 139:12348), 369.73x56,
- * and measured 1:1 off docs/figma-reference/home-mobile.png:
- * - Floating white pill, NOT a full-bleed bar: box x=10..378, y=44..99 on the
- *   390px canvas — i.e. inset 10px inline, offset 44px from the top, h=56, r=20.
- * - Fill #FFFFFF, and no shadow: the row directly under the pill (y=100) is the
- *   untouched hero, with no darkening ramp.
- * - Inline start: `basil:menu-outline` hamburger, 24x24 box.
- * - Inline end: the raster brand logo, mirrored automatically by the document
- *   direction (`dir=ltr` for English, `dir=rtl` for Arabic).
- *
- * Figma carries NO booking CTA, NO wordmark text and NO icon tile in this bar —
- * the component has exactly two children. The booking CTA lives in the drawer
- * (`drawer.bookingCta`), and so does the locale switcher.
- *
- * The 44px top offset is measured from the home frame. The desktop bar shifts per
- * screen (33/40/50/57), so the other six mobile frames may differ; they are
- * confirmed when their specs are extracted (plan phase E).
- */
-export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const a11y = useTranslations("a11y");
-  const site = useTranslations("site");
-
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 30);
-  });
+function BottomNavIcon({ type, active }: { type: NavIconType; active: boolean }) {
+  const common = {
+    width: 22,
+    height: 22,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
 
   return (
-    <>
-      {/* Wrapper is inert so the hero underneath stays clickable either side of
-          the pill, while keeping the bar anchored to the top of the page. */}
-      <div className="pointer-events-none fixed inset-x-2.5 top-[24px] z-40 lg:hidden">
-        <header
-          className={cn(
-            "pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] px-4 shadow-subtle transition-all duration-300 sm:px-5",
-            isScrolled
-              ? "bg-white/85 backdrop-blur-md border border-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
-              : "bg-white shadow-subtle"
-          )}
-          role="banner"
-        >
-          {/* Inline Start: language and menu controls stay together. */}
-          <div className="flex shrink-0 items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="motion-press flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-espresso/[0.04] p-1.5 text-gradscale-500 transition-colors hover:bg-primary-50 hover:text-brand-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-11 sm:p-2"
-              aria-label={a11y("openMenu")}
-              aria-expanded={drawerOpen}
-              aria-controls="mobile-navigation-drawer"
-              data-node-id="I142:17048;134:8254"
+    <svg {...common} className={cn("transition-colors duration-300", active ? "text-brand-primary" : "text-gradscale-300")}>
+      {type === "news" && (
+        <>
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 7h8M8 11h8M8 15h5M8 18h3" />
+        </>
+      )}
+      {type === "artists" && (
+        <>
+          <circle cx="9" cy="8" r="3" />
+          <path d="M3.5 20c.5-3.3 2.3-5 5.5-5s5 1.7 5.5 5M17 4.5a3 3 0 0 1 0 6M17 14c2.2.3 3.5 2.2 3.8 4.8" />
+        </>
+      )}
+      {type === "events" && (
+        <>
+          <rect x="4" y="5" width="16" height="15" rx="2" />
+          <path d="M8 3v4M16 3v4M4 10h16M8 14h.01M12 14h.01M16 14h.01" />
+        </>
+      )}
+      {type === "academy" && (
+        <>
+          <path d="m3 9 9-5 9 5-9 5-9-5Z" />
+          <path d="M6 11v5c3.3 2.7 8.7 2.7 12 0v-5M21 9v6" />
+        </>
+      )}
+      {type === "home" && (
+        <>
+          <path d="m3.5 10 8.5-7 8.5 7v9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-9Z" />
+          <path d="M9 21v-6h6v6" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+type NavIconType = "news" | "artists" | "events" | "academy" | "home";
+
+type BottomNavItem = {
+  key: NavIconType;
+  href: string;
+};
+
+const BOTTOM_NAV_ITEMS: readonly BottomNavItem[] = [
+  { key: "news", href: "/news" },
+  { key: "artists", href: "/artists" },
+  { key: "events", href: "/events" },
+  { key: "academy", href: "/academy" },
+  { key: "home", href: "/" },
+];
+
+/** Mobile bottom navigation based on the supplied Figma reference. */
+export function MobileNavbar({ contact: _contact }: { contact?: unknown }) {
+  const pathname = usePathname();
+  const t = useTranslations("nav");
+  const a11y = useTranslations("a11y");
+
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
+  return (
+    <nav
+      aria-label={a11y("primaryNav")}
+      className="fixed inset-x-0 bottom-0 z-50 flex h-[68px] items-stretch justify-center border-t border-[#ECECEC] bg-white pb-[env(safe-area-inset-bottom)] lg:hidden"
+    >
+      <div className="flex h-[68px] w-full max-w-[430px] items-stretch justify-center gap-1 px-2">
+        {BOTTOM_NAV_ITEMS.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.key}
+              href={item.href}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "flex min-w-0 flex-1 flex-col items-center justify-center gap-[3px] px-1 pt-1 text-center font-sans transition-colors duration-300 focus-visible:z-10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-inset",
+                active ? "text-brand-primary" : "text-gradscale-300",
+              )}
             >
-              <MenuIcon size={24} className="size-6" />
-            </button>
-            <LocaleSwitcher mobile />
-          </div>
-
-          {/* Inline End: brand logo, kept outside the controls group so it has a
-              clear visual anchor in both directions. It sits inside the pill's own
-              padding — the fixed width and overflow-hidden this used to carry cropped
-              the wordmark, and the translate nudges only existed to compensate for
-              transparent margin the logo asset no longer has. */}
-          <Link
-            href="/"
-            className="flex h-7.5 min-w-0 shrink items-center rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-9"
-            aria-label={a11y("brandHome")}
-          >
-            <Image
-              src="/assets/branding/logo-navbar.png"
-              alt={site("brand")}
-              width={628}
-              height={226}
-              loading="eager"
-              className="h-full w-auto max-w-[115px] object-contain sm:max-w-[140px]"
-              style={{ aspectRatio: "628 / 226" }}
-            />
-          </Link>
-        </header>
+              <BottomNavIcon type={item.key} active={active} />
+              <span className={cn("whitespace-nowrap text-[10px] leading-[10px] tracking-[0.192px]", active ? "font-bold" : "font-medium")}>
+                {t(item.key)}
+              </span>
+            </Link>
+          );
+        })}
       </div>
-
-      {/* Slide-out Mobile Drawer */}
-      <MobileDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} contact={contact} />
-    </>
+    </nav>
   );
 }
