@@ -8,7 +8,7 @@ import { FloatParticles } from "./motion/FloatParticles";
 import { CursorGlow } from "./motion/CursorGlow";
 import { MagneticButton } from "./motion/MagneticButton";
 import { PublicButton } from "./PublicButton";
-import { parseYouTubeId, youTubeBackdropEmbedUrl } from "@/lib/youtube";
+import { parseYouTubeId, youTubeBackdropEmbedUrl, youTubeEmbedUrl } from "@/lib/youtube";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
 export interface HeroSectionProps {
@@ -134,6 +134,24 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             </p>
           </ScrollReveal>
 
+          {backdropVideoId ? (
+            <ScrollReveal variant="soft" delay={0.12} className="w-full max-w-[720px]">
+              <div className="overflow-hidden rounded-2xl border border-white/20 bg-black/50 shadow-2xl">
+                <div className="relative aspect-video w-full">
+                  <iframe
+                    src={youTubeEmbedUrl(backdropVideoId)}
+                    title="Andalusia creative talent video"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                </div>
+              </div>
+            </ScrollReveal>
+          ) : null}
+
           {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap)
               MagneticButton gives desktop cursors a subtle pull toward each button. */}
           <ScrollReveal variant="soft" delay={0.16} className="w-full">
@@ -163,4 +181,3 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
     </section>
   );
 }
-
