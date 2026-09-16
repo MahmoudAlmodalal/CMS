@@ -27,7 +27,7 @@ export interface ActivePillProps {
  * plain static background.
  */
 export function ActivePill({ layoutId, className = "" }: ActivePillProps) {
-  const { reduced } = useMotionPrefs();
+  const { reduced, isMobile } = useMotionPrefs();
   const classes = `absolute inset-0 -z-10 ${className}`.trim();
 
   if (reduced) {
@@ -39,7 +39,11 @@ export function ActivePill({ layoutId, className = "" }: ActivePillProps) {
       aria-hidden="true"
       layoutId={layoutId}
       className={classes}
-      transition={{ type: "spring", stiffness: 420, damping: 36 }}
+      transition={
+        isMobile
+          ? { type: "spring", stiffness: 620, damping: 44 }
+          : { type: "spring", stiffness: 420, damping: 36 }
+      }
     />
   );
 }

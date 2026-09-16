@@ -4,6 +4,14 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useMotionPrefs } from "./motion/useMotionPrefs";
 
+/**
+ * The entrance reveal every public section is wrapped in.
+ *
+ * It replays: `viewport.once` is false, so framer-motion returns the element to
+ * its `initial` state whenever it leaves the viewport and animates it back in on
+ * the next pass. Scrolling up and back down re-runs the reveal rather than
+ * landing on a page that has already spent all its motion.
+ */
 export function ScrollReveal({
   children,
   className = "",
@@ -16,7 +24,7 @@ export function ScrollReveal({
   variant?: "up" | "soft" | "image" | "fade";
 }) {
   const { reduced, isMobile } = useMotionPrefs();
-  const [hasEntered, setHasEntered] = useState(false);
+  const [inView, setInView] = useState(false);
 
   // On mobile: strictly zero vertical translation (y: 0) and no scaling.
   // Content fades in calmly and smoothly without throwing elements around the screen.
@@ -44,11 +52,19 @@ export function ScrollReveal({
   // stamp a competing `data-scroll-reveal` state onto the same node.
   return (
     <motion.div
-      className={`mobile-blur-reveal motion-reveal-${variant} ${hasEntered ? "is-revealed" : ""} ${className}`.trim()}
+      className={`mobile-blur-reveal motion-reveal-${variant} ${inView ? "is-revealed" : ""} ${className}`.trim()}
       initial={initial}
       whileInView={animate}
-      onViewportEnter={() => setHasEntered(true)}
-      viewport={{ once: true, amount: isMobile ? 0.05 : 0.12 }}
+      onViewportEnter={() => setInView(true)}
+      onViewportLeave={() => setInView(false)}
+      // `once: false` is what makes the reveal replay. The bottom margin holds
+      // the reveal a little past the fold so an element is not reset while a
+      // sliver of it is still on screen.
+      viewport={{
+        once: false,
+        amount: isMobile ? 0.05 : 0.12,
+        margin: "0px 0px -8% 0px",
+      }}
       transition={{
         duration: isMobile ? 0.35 : 0.5,
         delay: isMobile ? 0 : Math.min(Math.max(delay, 0), 0.25),

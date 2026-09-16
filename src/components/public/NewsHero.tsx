@@ -2,6 +2,8 @@ import { Link } from "@/i18n/navigation";
 import type { Article } from "@/lib/articles";
 import { getArticleCategoryLabel } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
+import { ScrollReveal } from "./ScrollReveal";
+import { Parallax } from "./motion/Parallax";
 
 /**
  * Featured news band — Figma node 91:17298 inside frame 91:17296.
@@ -42,14 +44,18 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
   return (
     <section className="relative w-full" aria-labelledby="featured-news-heading">
       <div className="relative h-[430px] w-full overflow-hidden sm:h-[540px] lg:h-[668px]">
-        <SafeImage
-          src={primaryArticle.cover_image_url || "/assets/articles/default-hero.png"}
-          alt={primaryArticle.title}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        {/* The photograph rides its own absolutely-positioned layer so the
+            drift never touches the band's measured 668px height. */}
+        <Parallax className="absolute inset-0" rate={0.16}>
+          <SafeImage
+            src={primaryArticle.cover_image_url || "/assets/articles/default-hero.png"}
+            alt={primaryArticle.title}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </Parallax>
         {/* Gradient scrim, node 91:17302. It is not the full band: the design insets
             it from the headline block by -374/-103/-116/-684, which puts it at y=101
             and runs it 668px down, so the last 101px are clipped by the band. The
@@ -60,6 +66,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
           className="absolute inset-x-0 top-0 h-full bg-linear-to-t from-brand-espresso/95 via-brand-espresso/45 to-transparent lg:top-[101px] lg:h-[668px]"
         />
 
+        <ScrollReveal variant="up">
         <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 min-[1440px]:h-[178px] min-[1440px]:w-[660px] min-[1440px]:px-0 min-[1440px]:left-[677px]">
           <h1
             id="featured-news-heading"
@@ -73,9 +80,11 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
             {primaryArticle.excerpt}
           </p>
         </div>
+        </ScrollReveal>
       </div>
 
       {secondaryArticles.length > 0 && (
+        <ScrollReveal variant="image" delay={0.12}>
         <div className="relative mx-auto mt-4 w-[calc(100%-2rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-4 shadow-card sm:p-5 min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px]">
           <div className="flex flex-col gap-6">
             {secondaryArticles.map((article) => (
@@ -106,6 +115,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
             ))}
           </div>
         </div>
+        </ScrollReveal>
       )}
     </section>
   );

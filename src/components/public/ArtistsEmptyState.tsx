@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { MusicIcon } from "@/components/ui/Icons";
+import { ScrollReveal } from "./ScrollReveal";
 
 export interface ArtistsEmptyStateProps {
   category?: string;
@@ -21,6 +22,7 @@ export function ArtistsEmptyState({
   const isFiltered = category !== "all";
 
   return (
+    <ScrollReveal variant="soft">
     <div
       data-testid="artists-empty-state"
       className={`w-full py-16 px-6 rounded-2xl bg-white border border-brand-espresso-subtle text-center flex flex-col items-center justify-center space-y-4 max-w-lg mx-auto my-8 ${className}`}
@@ -48,5 +50,6 @@ export function ArtistsEmptyState({
         </button>
       )}
     </div>
+    </ScrollReveal>
   );
 }

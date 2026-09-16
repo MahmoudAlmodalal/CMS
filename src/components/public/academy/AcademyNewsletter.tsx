@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { subscribeNewsletter } from "@/actions/newsletter";
+import { ScrollReveal } from "../ScrollReveal";
 
 /**
  * Academy newsletter band — Figma node 91:16420 in frame 91:16119.
@@ -66,17 +67,22 @@ export function AcademyNewsletter({
       className="w-full px-6 py-24"
     >
       <div className="mx-auto flex w-full max-w-[1393px] flex-col items-center">
+        <ScrollReveal variant="up" className="w-full">
         <h2
           id="academy-newsletter-heading"
           className="text-center font-display text-[32px] leading-[36px] text-brand-espresso lg:whitespace-nowrap"
         >
           {heading || t("newsletterHeading")}
         </h2>
+        </ScrollReveal>
 
-        <p className="pt-2 text-center text-[16.8px] leading-[26px] text-brand-primary">
-          {tagline || t("newsletterTagline")}
-        </p>
+        <ScrollReveal variant="soft" delay={0.1} className="w-full">
+          <p className="pt-2 text-center text-[16.8px] leading-[26px] text-brand-primary">
+            {tagline || t("newsletterTagline")}
+          </p>
+        </ScrollReveal>
 
+        <ScrollReveal variant="up" delay={0.2} className="w-full">
         <form onSubmit={handleSubmit} className="w-full pt-10">
           {/* Honeypot: hidden from readers, caught on bots. */}
           <div className="sr-only" aria-hidden="true">
@@ -124,6 +130,7 @@ export function AcademyNewsletter({
             </div>
           )}
         </form>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { ScrollReveal } from "../ScrollReveal";
 
 interface ArtistGalleryProps {
   /** Name the pull quote is attributed to. */
@@ -48,12 +49,15 @@ export function ArtistGallery({ artistName, quote }: ArtistGalleryProps) {
       aria-label={t("galleryRegion")}
       className="mx-auto w-full max-w-[1280px] px-5 lg:px-[40px] lg:py-[24px]"
     >
+      <ScrollReveal variant="up">
       <h2 className="h-[43px] text-center font-display text-[32px] leading-[43px] tracking-[-0.5636px] text-black lg:h-[59px] lg:text-[48px] lg:leading-[42.27px]">
         {t.rich("galleryTitle", {
           em: (chunks) => <span className="text-primary-500">{chunks}</span>,
         })}
       </h2>
+      </ScrollReveal>
 
+      <ScrollReveal variant="image" delay={0.12}>
       <div className="pt-[55px] lg:pt-[48px]">
         <div className="mx-auto grid w-[266px] max-w-full grid-cols-1 gap-[16px] lg:w-[859.333px] lg:grid-cols-[265.677px_295.979px_265.677px] lg:grid-rows-[295.979px]">
           {/* Right-hand plate — 134:4649 */}
@@ -101,6 +105,7 @@ export function ArtistGallery({ artistName, quote }: ArtistGalleryProps) {
           </div>
         </div>
       </div>
+      </ScrollReveal>
     </section>
   );
 }

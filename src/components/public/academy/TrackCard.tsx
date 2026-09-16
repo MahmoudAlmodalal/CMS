@@ -58,7 +58,7 @@ export function TrackCard({ course, index }: TrackCardProps) {
       <Link
         href={`/academy/${encodeURIComponent(course.slug)}`}
         aria-label={t("learnMoreLabel", { title: course.title })}
-        className="mt-auto self-end inline-flex min-h-11 items-center gap-1.5 px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-all hover:text-brand-primary-hover group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+        className="motion-press mt-auto self-end inline-flex min-h-11 items-center gap-1.5 px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-all hover:text-brand-primary-hover group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
       >
         <span>{t("learnMore")}</span>
         <span aria-hidden="true" className="transition-transform group-hover:scale-110">{arrowGlyph}</span>

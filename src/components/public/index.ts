@@ -58,7 +58,6 @@ export {
 export {
   TextReveal,
   Parallax,
-  CountUp,
   StrokeUnderline,
   Marquee,
   ReadingProgress,

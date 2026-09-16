@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { CATEGORY_TABS, type CategoryFilterId } from "@/lib/types/events";
+import { ActivePill } from "../motion/ActivePill";
 
 const EVENT_CATEGORY_MESSAGE_KEYS: Record<CategoryFilterId, string> = {
   all: "eventAll",
@@ -79,13 +80,20 @@ export function EventsFilterTabs({
             aria-controls="events-catalog-grid"
             onClick={() => onSelectCategory(tab.id)}
             className={cn(
-              "snap-start inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
+              // `isolate` is load-bearing: the pill sits at -z-10 and needs a
+              // stacking context of its own or it paints behind the whole bar.
+              "relative isolate snap-start inline-flex min-w-max shrink-0 cursor-pointer whitespace-nowrap rounded-badge px-3 py-1 text-center text-[14.08px] font-bold leading-[21.12px]",
               "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary",
               isActive
-                ? "bg-primary-500 text-white/80 lg:min-w-[75px]"
+                ? "text-white/80 lg:min-w-[75px]"
                 : "text-gradscale-900 lg:min-w-[62px]"
             )}
           >
+            {/* One pill for the bar, so filtering slides it across. Its own
+                layoutId — a shared one would fly it between filter bars. */}
+            {isActive ? (
+              <ActivePill layoutId="events-filter-pill" className="rounded-badge bg-primary-500" />
+            ) : null}
             <span className="block py-1">{label}</span>
           </button>
         );

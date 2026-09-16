@@ -730,3 +730,33 @@ bdi, .bdi-isolate {
     animation: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Calm phones.
+ *
+ * Everything below is decorative at desktop size and noise at phone size: a
+ * cascade reads as lag on a 390px column, and the ambient loops (Ken Burns,
+ * drift, ripple) run forever on the device least able to afford them. The
+ * entrance fades stay — only the ornament is dropped.
+ *
+ * This block sits at the end of the file deliberately: the expressive duration
+ * tokens are declared further up on `:root`, so an earlier override would lose
+ * to them.
+ * ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  :root {
+    --motion-expressive: 320ms;
+    --motion-hero: 420ms;
+  }
+
+  /* Cards land together instead of trickling down the screen. */
+  [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="true"] > * {
+    animation-delay: 0ms;
+  }
+
+  .motion-kenburns,
+  .motion-drift,
+  .motion-ripple {
+    animation: none;
+  }
+}

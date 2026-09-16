@@ -3,6 +3,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { ARTICLE_CATEGORIES, ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
+import { ActivePill } from "./motion/ActivePill";
 
 export interface NewsFilterTabsProps {
   activeCategory: string;
@@ -48,12 +49,21 @@ export function NewsFilterTabs({
               aria-selected={isActive}
               aria-controls="news-grid-panel"
               onClick={() => onSelectCategory(cat.id)}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 ${
+              // `isolate` is load-bearing: the pill sits at -z-10 and without a
+              // stacking context here it would paint behind the tablist instead
+              // of behind just this label.
+              className={`relative isolate whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 ${
                 isActive
-                  ? "bg-brand-primary text-white shadow-subtle border border-brand-primary"
+                  ? "text-white shadow-subtle border border-brand-primary"
                   : "bg-white text-brand-espresso border border-brand-espresso/15 hover:border-brand-primary/40 hover:bg-brand-surface/30"
               }`}
             >
+              {/* One pill shared by the whole bar, so changing category slides it
+                  across rather than blinking it from one label to the next. Its
+                  own layoutId — a shared one would fly the pill between bars. */}
+              {isActive ? (
+                <ActivePill layoutId="news-filter-pill" className="rounded-full bg-brand-primary" />
+              ) : null}
               <span>{c(ARTICLE_CATEGORY_MESSAGE_KEYS[cat.id])}</span>
               {typeof count === "number" && (
                 <span

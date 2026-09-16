@@ -7,6 +7,7 @@ import type { EventItem, CategoryFilterId } from "@/lib/types/events";
 import { EventsFilterTabs } from "./EventsFilterTabs";
 import { FeaturedEventBanner } from "./FeaturedEventBanner";
 import { EventCard } from "./EventCard";
+import { ScrollReveal } from "../ScrollReveal";
 
 export interface EventsCatalogViewProps {
   initialEvents: EventItem[];
@@ -133,7 +134,9 @@ export function EventsCatalogView({
             aria-label={t("featuredRegion")}
             className="mx-auto h-auto w-[calc(100%-32px)] max-w-[349px] lg:mx-0 lg:h-auto lg:w-[503px] lg:max-w-none"
           >
-            <FeaturedEventBanner event={featuredEvent} />
+            <ScrollReveal variant="image">
+              <FeaturedEventBanner event={featuredEvent} />
+            </ScrollReveal>
           </section>
         )}
       </div>

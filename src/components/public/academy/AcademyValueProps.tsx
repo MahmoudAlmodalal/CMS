@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { ScrollReveal } from "../ScrollReveal";
 
 export interface ValuePropItem {
   id: string;
@@ -58,16 +59,23 @@ export function AcademyValueProps({
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center lg:w-[916px]">
+        <ScrollReveal variant="up" className="w-full">
         <h2
           id="academy-values-heading"
           className="text-center font-display text-[32px] leading-[1.2] text-brand-tint sm:text-[40px] lg:whitespace-nowrap lg:leading-[48px]"
         >
           {heading || t("valuesHeading")}
         </h2>
+        </ScrollReveal>
 
         <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3 lg:mt-14 lg:w-[888px] lg:grid-cols-[270.44px_270.45px_270.44px]">
           {CANONICAL_VALUE_PROPS.map((prop, index) => (
-            <div key={prop.id} className="flex flex-col items-center text-center">
+            <ScrollReveal
+              key={prop.id}
+              variant="up"
+              delay={0.08 + index * 0.12}
+              className="flex flex-col items-center text-center"
+            >
               <span aria-hidden="true" className="text-[28px] leading-[42px] text-brand-primary">
                 ♪
               </span>
@@ -82,7 +90,7 @@ export function AcademyValueProps({
               >
                 {items?.[index]?.body || t(prop.descriptionKey)}
               </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

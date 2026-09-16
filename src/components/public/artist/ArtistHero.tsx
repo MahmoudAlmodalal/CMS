@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { morphName } from "@/lib/morph";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/artists";
+import { Parallax } from "../motion/Parallax";
 
 interface ArtistHeroProps {
   artist: Artist;
@@ -49,13 +50,22 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
       // one. The 500 that sat at sm: was invented — Figma has no tablet artboard —
       // so the band holds its measured mobile height until the 1440 one takes over.
       className="relative isolate h-[678px] w-full overflow-hidden bg-brand-espresso text-white lg:h-[611px]"
-      style={{
-        backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        viewTransitionName: portraitMorph,
-      }}
+      // The morph name stays on the band, not on the parallax layer: the view
+      // transition snapshots the element with its descendants, so the drifting
+      // photograph still rides into the capture, and the box the portrait flies
+      // into keeps the band's measured geometry.
+      style={{ viewTransitionName: portraitMorph }}
     >
+      <Parallax className="absolute inset-0 -z-10" rate={0.18}>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
+          }}
+        />
+      </Parallax>
+
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"

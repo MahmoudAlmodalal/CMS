@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { ScrollReveal } from "./ScrollReveal";
 
 export interface ArtistsHeaderProps {
   title?: string;
@@ -30,25 +31,32 @@ export function ArtistsHeader({
   return (
     <header className={`text-center space-y-4 max-w-3xl mx-auto px-4 ${className}`}>
       {/* Kicker badge */}
+      <ScrollReveal variant="soft">
       <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary-50 border border-primary-100 text-brand-primary text-xs font-bold tracking-wider">
         <span>{t("kicker")}</span>
         <span aria-hidden="true">♪</span>
       </div>
+      </ScrollReveal>
 
       {/* Primary Display Title */}
+      <ScrollReveal variant="up" delay={0.08}>
       <h1 className="font-display text-4xl sm:text-5xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25]">
         {title ?? t("title")}
       </h1>
+      </ScrollReveal>
 
       {/* Subtitle / Lead Paragraph */}
       {(subtitle ?? t("subtitle")) && (
+        <ScrollReveal variant="up" delay={0.16}>
         <p className="text-base sm:text-lg text-brand-espresso/80 leading-relaxed max-w-2xl mx-auto">
           {subtitle ?? t("subtitle")}
         </p>
+        </ScrollReveal>
       )}
 
       {/* Approved Platform Social Links */}
       {socialLinks && (socialLinks.instagram || socialLinks.tiktok) && (
+        <ScrollReveal variant="soft" delay={0.24}>
         <div className="pt-2 flex items-center justify-center gap-4 text-xs font-medium text-brand-espresso/70">
           <span>{t("followPrompt")}</span>
           <div className="flex items-center gap-3">
@@ -79,6 +87,7 @@ export function ArtistsHeader({
             )}
           </div>
         </div>
+        </ScrollReveal>
       )}
     </header>
   );

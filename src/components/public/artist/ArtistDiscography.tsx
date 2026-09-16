@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import type { Release } from "@/lib/releases";
+import { ScrollReveal } from "../ScrollReveal";
 
 interface ArtistDiscographyProps {
   releases: Release[];
@@ -61,12 +62,15 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
   // gutter would give — the tab row lands at 99.67..359 and the album row at 30..359.
   return (
     <section className="w-full bg-gradscale-900 py-24 lg:py-[96px]">
+      <ScrollReveal variant="up">
       <h2 className="pt-[12px] text-center font-display text-[32px] leading-[40px] text-brand-tint lg:h-[52px] lg:text-[48px]">
         {t("careerTitle")}
       </h2>
+      </ScrollReveal>
 
       <div className="mx-auto w-full max-w-[1200px] px-[31px] lg:px-[32px]">
         {/* Filter row — 134:4687 */}
+        <ScrollReveal variant="soft" delay={0.1}>
         <ul
           aria-label={t("careerFilters")}
           // 259.33 wide on the 390 frame, which is exactly 74.67 + 79.67 + 89 and
@@ -92,11 +96,13 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
             )
           )}
         </ul>
+        </ScrollReveal>
 
         {/* Grid — 134:4696. On the 390 frame the four releases are one horizontal
             RTL row instead: 269 wide on a 289 step, so 20 between them, the first
             flush to the row's inline start at 359 and the rest scrolled off to the
             left. Same idiom as the artists carousel and both filter bars. */}
+        <ScrollReveal variant="up" delay={0.2}>
         <div className="flex gap-[20px] overflow-x-auto overscroll-x-contain pt-10 [scrollbar-width:none] lg:grid lg:grid-cols-4 lg:overflow-visible lg:pt-[40px] [&::-webkit-scrollbar]:hidden">
           {releases.map((release) => (
             <article
@@ -138,6 +144,7 @@ export function ArtistDiscography({ releases }: ArtistDiscographyProps) {
             </article>
           ))}
         </div>
+        </ScrollReveal>
       </div>
     </section>
   );

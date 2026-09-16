@@ -1,6 +1,5 @@
 export { TextReveal } from "./TextReveal";
 export { Parallax } from "./Parallax";
-export { CountUp } from "./CountUp";
 export { StrokeUnderline } from "./StrokeUnderline";
 export { Marquee } from "./Marquee";
 export { ReadingProgress } from "./ReadingProgress";
