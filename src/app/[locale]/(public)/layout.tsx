@@ -26,7 +26,7 @@ export default async function PublicLayout({
   };
 
   return (
-    <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream pb-[calc(68px+env(safe-area-inset-bottom))] text-brand-espresso relative selection:bg-brand-primary selection:text-white lg:pb-0">
+    <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream text-brand-espresso relative selection:bg-brand-primary selection:text-white">
       <MotionReady />
       {/* 1. Accessible Skip Link */}
       <SkipToContent />
@@ -35,7 +35,7 @@ export default async function PublicLayout({
       <Navbar />
 
       {/* 3. Mobile Top Bar + Drawer (Figma Component 17: 56px) */}
-      <MobileNavbar contact={contact} />
+      <MobileNavbar />
 
       {/* 4. Primary Page Viewport
           No top padding: in Figma every page opens on a full-bleed hero at y=0 with

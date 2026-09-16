@@ -286,6 +286,14 @@ bdi, .bdi-isolate {
 
 @media (max-width: 767px) {
   :root { --motion-slow: 240ms; }
+
+  .mobile-blur-reveal {
+    filter: blur(4px);
+    transition: filter 420ms var(--motion-ease);
+    will-change: filter;
+  }
+
+  .mobile-blur-reveal.is-revealed { filter: blur(0); }
 }
 
 @keyframes motion-fade-up {
@@ -438,4 +446,5 @@ bdi, .bdi-isolate {
   .public-motion-shell .motion-press:not(:disabled):hover,
   .public-motion-shell :where(button, a):active { transform: none !important; }
   .public-motion-shell .motion-card:hover { box-shadow: none; }
+  .mobile-blur-reveal { filter: none !important; }
 }

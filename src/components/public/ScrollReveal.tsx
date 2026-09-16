@@ -16,6 +16,7 @@ export function ScrollReveal({
 }) {
   const reducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -49,9 +50,10 @@ export function ScrollReveal({
 
   return (
     <motion.div
-      className={`motion-reveal motion-reveal-${variant} ${className}`.trim()}
+      className={`motion-reveal mobile-blur-reveal motion-reveal-${variant} ${hasEntered ? "is-revealed" : ""} ${className}`.trim()}
       initial={initial}
       whileInView={animate}
+      onViewportEnter={() => setHasEntered(true)}
       viewport={{ once: true, amount: isMobile ? 0.05 : 0.12 }}
       transition={{
         duration: isMobile ? 0.35 : 0.5,
