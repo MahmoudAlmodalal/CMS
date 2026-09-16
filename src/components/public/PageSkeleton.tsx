@@ -22,14 +22,14 @@ export function PageSkeleton() {
   return (
     <div
       style={{ minHeight: "var(--page-min-height, 100dvh)" }}
-      className="py-16 lg:py-24 animate-pulse flex flex-col justify-start"
+      className="py-16 lg:py-24 flex flex-col justify-start"
       role="status"
       aria-busy="true"
       aria-label={t("loadingPage")}
     >
       <Container>
         {/* Page header */}
-        <div className="flex flex-col items-center gap-4 text-center">
+        <div className="motion-shimmer flex flex-col items-center gap-4 rounded-card text-center">
           <div className="h-4 w-40 rounded bg-brand-espresso/10" />
           <div className="h-10 w-72 max-w-full rounded-lg bg-brand-espresso/15 sm:h-12 sm:w-96" />
           <div className="h-4 w-full max-w-xl rounded bg-brand-espresso/10" />
@@ -41,7 +41,7 @@ export function PageSkeleton() {
           {[1, 2, 3, 4, 5, 6].map((card) => (
             <div
               key={card}
-              className="flex flex-col overflow-hidden rounded-card border border-brand-espresso-subtle bg-white"
+              className="motion-shimmer flex flex-col overflow-hidden rounded-card border border-brand-espresso-subtle bg-white"
             >
               <div className="h-44 w-full bg-brand-surface" />
               <div className="flex flex-col gap-3 p-6">

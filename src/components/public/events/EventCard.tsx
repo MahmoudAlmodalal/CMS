@@ -135,7 +135,7 @@ export function EventCard({ event, priority = false, className = "", style }: Ev
           priority={priority}
           fallbackTestId="event-card-fallback-image"
           fallbackText={event.title}
-          className="object-cover object-center"
+          className="motion-image motion-kenburns object-cover object-center"
         />
       </div>
     </article>

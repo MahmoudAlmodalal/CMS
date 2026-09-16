@@ -5,6 +5,7 @@ import { Highlight } from "@/components/ui/Highlight";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
+import { StrokeUnderline } from "./motion/StrokeUnderline";
 
 interface AboutSectionProps {
   settings: SiteSettings;
@@ -24,6 +25,7 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               highlightClassName="text-primary-500"
             />
           </h2>
+          <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
           <div className="order-1 min-w-0 md:order-2">

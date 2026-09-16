@@ -4,9 +4,19 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /**
- * Progressive scroll motion coordinator.
+ * Progressive scroll motion coordinator for the CSS-driven half of the motion
+ * system.
+ *
+ * Ownership split, so the two engines never fight over the same node:
+ * - framer-motion (`ScrollReveal`, `TextReveal`, `Parallax`) owns entrance
+ *   reveals it animates itself via inline styles.
+ * - This observer owns everything animated purely in CSS: `.motion-stagger`
+ *   grids, and any element that opts in with `data-reveal-on-scroll`
+ *   (stroke-draw underlines, clip-path wipes, the reading drop-cap).
+ *
  * Content stays visible by default; JavaScript only adds the hidden pre-reveal
- * state to elements that are confirmed to be below the fold.
+ * state to elements confirmed to be below the fold, so a JS failure or a
+ * crawler still sees a fully rendered page.
  */
 export function MotionReady() {
   const pathname = usePathname();
@@ -23,19 +33,23 @@ export function MotionReady() {
 
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>(
-        ".motion-stagger, .motion-reveal",
+        ".motion-stagger, [data-reveal-on-scroll]",
       ),
     );
+
+    const reveal = (target: HTMLElement) => {
+      target.dataset.scrollReveal = "true";
+      if (target.classList.contains("motion-stagger")) {
+        target.dataset.staggerRevealed = "true";
+      }
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const target = entry.target as HTMLElement;
-          if (entry.isIntersecting) {
-            target.dataset.scrollReveal = "true";
-            target.dataset.staggerRevealed = "true";
-            observer.unobserve(target);
-          }
+          if (!entry.isIntersecting) return;
+          reveal(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
         });
       },
       { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
@@ -44,12 +58,16 @@ export function MotionReady() {
     targets.forEach((target) => {
       const alreadyVisible = target.getBoundingClientRect().top < window.innerHeight;
 
-      target.dataset.scrollReveal = alreadyVisible ? "true" : "false";
-      if (target.classList.contains("motion-stagger")) {
-        target.dataset.staggerRevealed = alreadyVisible ? "true" : "false";
+      if (alreadyVisible) {
+        reveal(target);
+        return;
       }
 
-      if (!alreadyVisible) observer.observe(target);
+      target.dataset.scrollReveal = "false";
+      if (target.classList.contains("motion-stagger")) {
+        target.dataset.staggerRevealed = "false";
+      }
+      observer.observe(target);
     });
 
     return () => {

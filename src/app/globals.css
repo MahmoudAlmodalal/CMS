@@ -377,19 +377,19 @@ bdi, .bdi-isolate {
   .motion-no-wrap { white-space: nowrap; }
 
   /* Sections reveal with subtle, GPU-accelerated micro-lift */
-  .motion-reveal[data-revealed="false"] {
+  .motion-reveal[data-scroll-reveal="false"] {
     opacity: 0;
     transform: translateY(10px);
   }
 
-  .motion-reveal[data-revealed="true"] {
+  .motion-reveal[data-scroll-reveal="true"] {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) var(--reveal-delay, 0ms) both;
   }
 
-  .motion-reveal-soft[data-revealed="false"] { transform: translateY(6px); }
-  .motion-reveal-soft[data-revealed="true"] { animation-name: motion-reveal-soft-in; }
-  .motion-reveal-image[data-revealed="false"] { transform: scale(0.98); }
-  .motion-reveal-image[data-revealed="true"] { animation-name: motion-reveal-image-in; }
+  .motion-reveal-soft[data-scroll-reveal="false"] { transform: translateY(6px); }
+  .motion-reveal-soft[data-scroll-reveal="true"] { animation-name: motion-reveal-soft-in; }
+  .motion-reveal-image[data-scroll-reveal="false"] { transform: scale(0.98); }
+  .motion-reveal-image[data-scroll-reveal="true"] { animation-name: motion-reveal-image-in; }
 
   [data-motion-ready="true"] .motion-stagger[data-stagger-revealed="true"] > * {
     animation: motion-reveal-in var(--motion-slow) var(--motion-ease) var(--stagger-delay, 0ms) both;
@@ -447,4 +447,312 @@ bdi, .bdi-isolate {
   .public-motion-shell :where(button, a):active { transform: none !important; }
   .public-motion-shell .motion-card:hover { box-shadow: none; }
   .mobile-blur-reveal { filter: none !important; }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Expressive motion layer                                                    */
+/*                                                                            */
+/* Everything below animates transform, opacity, filter or clip-path only.    */
+/* The public pages are pixel-locked to Figma frames, so no rule here may      */
+/* touch a property that triggers layout.                                     */
+/* -------------------------------------------------------------------------- */
+:root {
+  --motion-expressive: 520ms;
+  --motion-hero: 900ms;
+  --motion-ambient: 18s;
+  --motion-marquee-duration: 48s;
+}
+
+/* --- Clip-path text wipe -------------------------------------------------- */
+
+.motion-text-reveal > .motion-text-line {
+  display: block;
+  overflow: hidden;
+}
+
+.motion-text-reveal > .motion-text-line > span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+[data-motion-ready="true"] .motion-text-reveal[data-scroll-reveal="false"] > .motion-text-line > span {
+  opacity: 0;
+  transform: translateY(0.9em);
+}
+
+.motion-text-reveal[data-scroll-reveal="true"] > .motion-text-line > span {
+  animation: motion-text-wipe-in var(--motion-hero) var(--motion-ease) var(--line-delay, 0ms) both;
+}
+
+@keyframes motion-text-wipe-in {
+  from { opacity: 0; transform: translateY(0.9em); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Inline-start anchored underline -------------------------------------- */
+
+.motion-underline {
+  position: relative;
+}
+
+.motion-underline::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-end: -0.25rem;
+  inline-size: 100%;
+  block-size: 2px;
+  background: var(--color-brand-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-normal) var(--motion-ease);
+}
+
+[dir="rtl"] .motion-underline::after { transform-origin: right center; }
+
+.motion-underline[data-active="true"]::after,
+.public-motion-shell .motion-underline:hover::after,
+.public-motion-shell .motion-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* --- Calligraphic stroke draw --------------------------------------------- */
+
+.motion-stroke path {
+  stroke-dasharray: var(--stroke-length, 300);
+  stroke-dashoffset: var(--stroke-length, 300);
+}
+
+.motion-stroke[data-scroll-reveal="true"] path {
+  animation: motion-stroke-draw var(--motion-hero) var(--motion-ease) 120ms forwards;
+}
+
+@keyframes motion-stroke-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* --- Marquee -------------------------------------------------------------- */
+/* The track holds the content twice, so translating by exactly -50% lands on  */
+/* the duplicate and the loop is seamless. RTL runs the same track backwards.  */
+
+.motion-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 64px, black calc(100% - 64px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 64px, black calc(100% - 64px), transparent 100%);
+}
+
+.motion-marquee-track {
+  display: flex;
+  inline-size: max-content;
+  animation: motion-marquee-scroll var(--motion-marquee-duration) linear infinite;
+  will-change: transform;
+}
+
+[dir="rtl"] .motion-marquee-track { animation-direction: reverse; }
+
+.motion-marquee[data-paused="true"] .motion-marquee-track { animation-play-state: paused; }
+
+@keyframes motion-marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* --- Ambient grain -------------------------------------------------------- */
+
+.motion-grain {
+  position: absolute;
+  inset: -100%;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: var(--grain-image);
+  background-size: 180px 180px;
+  animation: motion-grain-drift var(--motion-ambient) steps(8, end) infinite;
+  will-change: transform;
+}
+
+.motion-grain[data-paused="true"] { animation-play-state: paused; }
+
+@keyframes motion-grain-drift {
+  0%   { transform: translate3d(0, 0, 0); }
+  25%  { transform: translate3d(-2%, 1.5%, 0); }
+  50%  { transform: translate3d(1.5%, -2%, 0); }
+  75%  { transform: translate3d(-1%, -1%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* --- Skeleton shimmer ----------------------------------------------------- */
+
+.motion-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.motion-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  animation: motion-shimmer-sweep 1.6s var(--motion-interaction) infinite;
+}
+
+[dir="rtl"] .motion-shimmer::after { animation-direction: reverse; }
+
+@keyframes motion-shimmer-sweep {
+  to { transform: translateX(100%); }
+}
+
+/* --- Ken Burns drift on card imagery -------------------------------------- */
+/* Replaces the flat scale(1.04) snap: the photo keeps breathing while hovered. */
+
+@media (hover: hover) and (pointer: fine) {
+  .public-motion-shell .motion-card:hover .motion-image.motion-kenburns,
+  .public-motion-shell .motion-image.motion-kenburns:hover {
+    animation: motion-kenburns-drift 6s var(--motion-ease) infinite alternate;
+  }
+}
+
+@keyframes motion-kenburns-drift {
+  from { transform: scale(1.04) translate3d(0, 0, 0); }
+  to   { transform: scale(1.09) translate3d(-1.5%, -1.5%, 0); }
+}
+
+/* --- Equalizer bars ------------------------------------------------------- */
+
+.motion-equalizer-bar {
+  transform-origin: bottom center;
+  transform: scaleY(0.25);
+  animation: motion-equalizer-pulse 900ms var(--motion-ease) var(--bar-delay, 0ms) infinite alternate;
+}
+
+.motion-equalizer[data-playing="false"] .motion-equalizer-bar {
+  animation-play-state: paused;
+}
+
+@keyframes motion-equalizer-pulse {
+  from { transform: scaleY(0.25); }
+  to   { transform: scaleY(1); }
+}
+
+/* --- Terracotta ripple behind the play control ---------------------------- */
+
+.motion-ripple::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-brand-primary);
+  opacity: 0;
+  z-index: -1;
+}
+
+.motion-ripple[data-playing="true"]::before {
+  animation: motion-ripple-out 2s var(--motion-ease) infinite;
+}
+
+@keyframes motion-ripple-out {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+
+/* --- Drawn checkmark ------------------------------------------------------ */
+
+.motion-check path {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: motion-stroke-draw var(--motion-expressive) var(--motion-ease) forwards;
+}
+
+/* --- Focus glow on form fields -------------------------------------------- */
+
+.public-motion-shell .motion-field:focus-within {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand-primary) 22%, transparent);
+  transition: box-shadow var(--motion-normal) var(--motion-interaction);
+}
+
+/* --- Scroll progress rail ------------------------------------------------- */
+
+.motion-progress-bar {
+  transform-origin: left center;
+  will-change: transform;
+}
+
+[dir="rtl"] .motion-progress-bar { transform-origin: right center; }
+
+/* --- Curtain page transition ---------------------------------------------- */
+
+.motion-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: var(--color-brand-primary);
+  will-change: transform;
+}
+
+/* --- Drifting 404 type ---------------------------------------------------- */
+
+.motion-drift {
+  animation: motion-drift-float 9s var(--motion-ease) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes motion-drift-float {
+  from { transform: translate3d(0, -6px, 0) rotate(-1deg); }
+  to   { transform: translate3d(0, 6px, 0) rotate(1deg); }
+}
+
+/* --- Reduced motion neutralises the entire expressive layer ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-text-reveal > .motion-text-line > span,
+  .motion-stroke path,
+  .motion-marquee-track,
+  .motion-grain,
+  .motion-shimmer::after,
+  .motion-image.motion-kenburns,
+  .motion-equalizer-bar,
+  .motion-ripple::before,
+  .motion-check path,
+  .motion-curtain,
+  .motion-drift {
+    animation: none !important;
+  }
+
+  .motion-text-reveal > .motion-text-line > span,
+  .motion-stroke path,
+  .motion-check path {
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .motion-equalizer-bar { transform: scaleY(0.6) !important; }
+  .motion-grain, .motion-shimmer::after, .motion-ripple::before { opacity: 0 !important; }
+  .motion-curtain { display: none !important; }
+  .motion-underline::after { transition: none !important; }
+}
+
+/* --- Shared-element route morphs ------------------------------------------ */
+/* Driven by ViewTransitionProvider; paired elements carry matching            */
+/* view-transition-name values from morphName().                              */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

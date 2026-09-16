@@ -49,7 +49,7 @@ export function ArtistWorkCard({ work, videoId }: { work: ArtistWork; videoId: s
               loading="lazy"
               quality={90}
               fallbackText={work.title}
-              className="object-cover"
+              className="motion-image motion-kenburns object-cover"
             />
             <span aria-hidden="true" className="absolute inset-0 bg-gradscale-900/20" />
             <span

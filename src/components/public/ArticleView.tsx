@@ -4,6 +4,9 @@ import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatLocalizedDate } from "@/lib/formatters";
 import { ARTICLE_CATEGORY_MESSAGE_KEYS, type Article } from "@/lib/articles";
+import { ReadingProgress } from "./motion/ReadingProgress";
+import { ScrollReveal } from "./ScrollReveal";
+import { morphName } from "@/lib/morph";
 import { ArticleCard } from "./ArticleCard";
 
 export interface ArticleViewProps {
@@ -176,8 +179,15 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
         </div>
       </header>
 
+      {/* A reader's own position in a long piece is the one thing the page
+          cannot show statically, so the rail tracks it. */}
+      <ReadingProgress />
+
       {/* 2. Featured Cover Image */}
-      <div className="max-w-5xl mx-auto rounded-card overflow-hidden shadow-card border border-brand-espresso/10 bg-brand-surface aspect-[16/9] sm:aspect-[21/9] relative">
+      <div
+        className="max-w-5xl mx-auto rounded-card overflow-hidden shadow-card border border-brand-espresso/10 bg-brand-surface aspect-[16/9] sm:aspect-[21/9] relative"
+        style={{ viewTransitionName: morphName("article", article.slug) }}
+      >
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -191,9 +201,9 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
       </div>
 
       {/* 3. Main Reading Body */}
-      <div className="max-w-3xl mx-auto prose prose-lg prose-amber">
+      <ScrollReveal variant="soft" className="max-w-3xl mx-auto prose prose-lg prose-amber">
         <div className="space-y-4">{renderContent(article.content)}</div>
-      </div>
+      </ScrollReveal>
 
       {/* 4. Article Footer & Share/Tag Info */}
       <footer className="max-w-3xl mx-auto pt-8 border-t border-brand-espresso/10 flex flex-col sm:flex-row items-center justify-between gap-4">

@@ -85,7 +85,13 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         className="motion-stagger flex h-[442px] w-full min-w-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
       >
         {artists.map((artist, index) => (
-          <div key={artist.id || artist.slug} className="h-full">
+          <div
+            key={artist.id || artist.slug}
+            className="h-full"
+            // Capped so a long row never leaves the last card waiting half a
+            // second after the first has settled.
+            style={{ "--stagger-delay": `${Math.min(index * 70, 350)}ms` } as React.CSSProperties}
+          >
             <ArtistCard
               artist={artist}
               priority={rowIndex === 0 && index < 4}

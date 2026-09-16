@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { MorphLink } from "./motion/ViewTransitions";
+import { morphName } from "@/lib/morph";
 import { ArrowEndIcon } from "@/components/ui/Icons";
 import { formatLocalizedDate } from "@/lib/formatters";
 import { type Article } from "@/lib/dal/articles";
@@ -44,8 +45,11 @@ export function ArticleCard({ article, style }: ArticleCardProps) {
   // since the 390px frame stacks the cards and sets its own height.
   return (
     <article style={style} className="motion-card group flex h-[422.5px] min-w-0 flex-1 flex-col self-stretch overflow-hidden rounded-[16px] border border-border-card bg-white text-start transition-shadow duration-300 hover:shadow-card lg:h-[423.5px]">
-      <Link href={`/news/${article.slug}`} className="flex flex-1 flex-col">
-        <div className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface">
+      <MorphLink href={`/news/${article.slug}`} className="flex flex-1 flex-col">
+        <div
+          className="relative h-[192px] w-full shrink-0 overflow-hidden bg-brand-surface"
+          style={{ viewTransitionName: morphName("article", article.slug) }}
+        >
           <SafeImage
             src={article.cover_image_url || "/assets/articles/default-article.png"}
             alt={article.title}
@@ -53,7 +57,7 @@ export function ArticleCard({ article, style }: ArticleCardProps) {
             sizes="(min-width: 1024px) 387px, (min-width: 640px) 50vw, 100vw"
             quality={90}
             fallbackText={article.title}
-            className="object-cover"
+            className="motion-image motion-kenburns object-cover"
           />
           <span className="absolute start-4 top-4 z-10 rounded-[2px] bg-[rgba(255,248,246,0.9)] px-2 py-1 text-[12px] leading-[16px] tracking-[0.6px] text-ink-heading backdrop-blur-[4px]">
             {dateFormatted}
@@ -89,7 +93,7 @@ export function ArticleCard({ article, style }: ArticleCardProps) {
             <ArrowEndIcon size={10.667} className="shrink-0" />
           </span>
         </div>
-      </Link>
+      </MorphLink>
     </article>
   );
 }

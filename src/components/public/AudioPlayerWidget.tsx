@@ -4,6 +4,7 @@ import React, { useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { PlayIcon, PauseIcon, MusicIcon } from "@/components/ui/Icons";
 import { formatDuration } from "@/lib/formatters";
+import { Equalizer } from "./motion/Equalizer";
 
 export interface PlayerTrack {
   title: string;
@@ -85,12 +86,18 @@ export function AudioPlayerWidget({ track, artistName }: AudioPlayerWidgetProps)
           disabled={isLoading}
           aria-label={isPlaying ? t("pause") : t("play")}
           aria-pressed={isPlaying}
-          className="grid size-12 shrink-0 place-items-center rounded-full bg-brand-primary text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold disabled:opacity-60"
+          data-playing={isPlaying ? "true" : "false"}
+          className="motion-ripple relative isolate grid size-12 shrink-0 place-items-center rounded-full bg-brand-primary text-white transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold disabled:opacity-60"
         >
           {isPlaying ? <PauseIcon size={22} /> : <PlayIcon size={22} />}
         </button>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-bold">{track.title}</p>
+          <div className="flex items-center gap-2">
+            <p className="truncate text-sm font-bold">{track.title}</p>
+            {/* Purely decorative: the bars say "sound is happening" without
+                claiming to represent the waveform. */}
+            <Equalizer playing={isPlaying} className="shrink-0 text-brand-gold" />
+          </div>
           {artistName ? (
             <p className="truncate text-xs opacity-70">{artistName}</p>
           ) : null}

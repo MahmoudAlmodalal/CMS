@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { MorphLink } from "./motion/ViewTransitions";
+import { morphName } from "@/lib/morph";
 import { type Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
 import { SafeImage } from "@/components/ui/SafeImage";
@@ -30,8 +33,12 @@ export interface ArtistCardProps {
  * removed as unverified inventions; the whole card is the link to the profile.
  *
  * `motion-card` is the shared hover language from globals.css: it lifts the card
- * and drives the photo's zoom (SafeImage already carries `motion-image`). It is
- * transform and box-shadow only, so none of the pixel geometry above moves.
+ * and drives the photo's zoom. It is transform and box-shadow only, so none of
+ * the pixel geometry above moves.
+ *
+ * The portrait carries a `view-transition-name` that the artist profile's hero
+ * repeats, so clicking through flies this photo into the detail hero instead of
+ * cross-fading the page. `MorphLink` is the locale-aware link that drives it.
  */
 export function ArtistCard({ artist, priority = false, className = "", style }: ArtistCardProps) {
   const a = useTranslations("artist");
@@ -43,12 +50,15 @@ export function ArtistCard({ artist, priority = false, className = "", style }: 
       style={style}
       className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start lg:w-full ${className}`}
     >
-      <Link
+      <MorphLink
         href={`/artists/${artist.slug}`}
         aria-label={a("viewProfile", { name: artist.name })}
         className="flex h-full w-full flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
-        <div className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-espresso">
+        <div
+          className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-espresso"
+          style={{ viewTransitionName: morphName("artist", artist.slug) }}
+        >
           <SafeImage
             src={portrait}
             alt={a("portraitAlt", { name: artist.name })}
@@ -58,7 +68,7 @@ export function ArtistCard({ artist, priority = false, className = "", style }: 
             quality={90}
             fallbackTestId="artist-card-fallback-image"
             fallbackText={artist.name}
-            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            className="motion-image motion-kenburns object-cover object-center"
           />
         </div>
 
@@ -75,7 +85,7 @@ export function ArtistCard({ artist, priority = false, className = "", style }: 
             {artist.city}
           </p>
         </div>
-      </Link>
+      </MorphLink>
     </article>
   );
 }

@@ -46,7 +46,7 @@ export function EventCard({ event, style }: EventCardProps) {
       {/* Visual Header with Date Badge */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-brand-surface">
         <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+          className="motion-image motion-kenburns absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${event.image_url || "/assets/events/default-event.png"})`,
           }}

@@ -3,6 +3,8 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { ScrollReveal } from "./ScrollReveal";
+import { Parallax } from "./motion/Parallax";
+import { GrainOverlay } from "./motion/GrainOverlay";
 import { PublicButton } from "./PublicButton";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
@@ -48,6 +50,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
 
   return (
     <section
+      data-band="dark"
       // The band reserves the navbar's clearance up top rather than letting the
       // centred block ride underneath the floating pill, and 740 is a floor rather
       // than a fixed height so a longer headline lengthens the band instead of
@@ -55,7 +58,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       className="relative flex min-h-[min(70svh,42rem)] w-full items-center justify-center overflow-hidden bg-brand-espresso pt-[var(--header-offset)] pb-24 text-brand-tint sm:min-h-[min(72svh,46rem)] sm:pb-28 lg:min-h-[740px]"
     >
       {/* Background Stage Video/Image & Gradient Overlay (Figma 148:3663 / 148:3664) */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <Parallax className="absolute inset-0 z-0 pointer-events-none" rate={0.22}>
         {isVideo ? (
           <video
             src={heroUrl}
@@ -80,23 +83,30 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
         <div className="absolute inset-0 bg-black/20" />
         {/* Figma Rectangle 1: linear-gradient(151.78deg, #000 12.8%, rgba(0,0,0,.1) 66.88%) */}
         <div className="absolute inset-0 bg-[linear-gradient(151.78deg,rgba(0,0,0,1)_12.8%,rgba(0,0,0,0.1)_66.88%)]" />
-      </div>
+      </Parallax>
+
+      {/* Ambient grain over the espresso band, per the textured Figma fill. */}
+      <GrainOverlay />
 
       <Container className="relative z-10 w-full">
-        <ScrollReveal variant="up" className="w-full">
-          <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
+        <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
+          <ScrollReveal variant="up" className="w-full">
             {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
             <h1 className="font-display text-3xl font-normal leading-relaxed text-[#EFEBD9] sm:text-4xl md:text-5xl lg:text-6xl lg:leading-snug">
               <Highlight text={settings.hero_headline} />
             </h1>
+          </ScrollReveal>
 
-            {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
-            <p className="max-w-[693px] text-base font-medium leading-relaxed text-[#EFEBD9] sm:text-lg md:text-xl lg:text-[25px] lg:leading-[37.5px]">
+          {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
+          <ScrollReveal variant="soft" delay={0.08} className="w-full">
+            <p className="mx-auto max-w-[693px] text-base font-medium leading-relaxed text-[#EFEBD9] sm:text-lg md:text-xl lg:text-[25px] lg:leading-[37.5px]">
               {settings.hero_subheadline}
             </p>
+          </ScrollReveal>
 
-            {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
-            <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:w-auto sm:flex-row sm:gap-6">
+          {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
+          <ScrollReveal variant="soft" delay={0.16} className="w-full">
+            <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:flex-row sm:gap-6">
               {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
               <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
                 {primaryCtaLabel || t("heroPrimaryCta")}
@@ -112,8 +122,8 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
                 {secondaryCtaLabel || t("heroSecondaryCta")}
               </PublicButton>
             </div>
-          </div>
-        </ScrollReveal>
+          </ScrollReveal>
+        </div>
       </Container>
     </section>
   );

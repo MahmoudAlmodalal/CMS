@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { useBandTone } from "./motion/useBandTone";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +43,7 @@ export const ENGLISH_NAV_ITEMS: readonly NavItem[] = [
  * - Inline end: `Book Now` / `أحجز الآن` CTA 149x44 radius 16, plus 24x24 language glyph
  */
 export function Navbar() {
+
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("nav");
@@ -49,6 +51,9 @@ export function Navbar() {
 
   const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  // The pill crosses cream and espresso bands alike; this is what lets it
+  // acknowledge the one it is currently over instead of staying cream throughout.
+  const bandTone = useBandTone();
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
 
@@ -105,9 +110,19 @@ export function Navbar() {
       <header
         className={cn(
           "pointer-events-auto flex h-16 w-full max-w-[1123px] items-center justify-between rounded-[24px] px-4 shadow-[0px_4px_15px_rgba(0,0,0,0.25)] transition-all duration-300 lg:gap-4 xl:h-[85px] xl:rounded-[32px] xl:px-[42.5px]",
-          isScrolled
-            ? "bg-[#F2EEE0]/85 backdrop-blur-md border border-[#ECE6D0]/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
-            : "bg-[#F2EEE0]"
+          // Over an espresso band the pill lifts: a warmer tint, a heavier
+          // shadow and a terracotta hairline, so it reads as floating above the
+          // dark rather than sitting flat on it.
+          //
+          // Deliberately NOT a full colour inversion. The pill's fill is a
+          // Figma-locked #F2EEE0, the nav links are dark ink, and the logo is a
+          // raster drawn for a cream ground — inverting the pill would make the
+          // logo and every link disappear into it.
+          bandTone === "dark"
+            ? "border border-brand-primary/30 bg-[#F7F3E6]/92 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.55)]"
+            : isScrolled
+              ? "bg-[#F2EEE0]/85 backdrop-blur-md border border-[#ECE6D0]/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+              : "bg-[#F2EEE0]"
         )}
         role="banner"
         data-node-id={isEn ? "142:17048" : "94:18677"}

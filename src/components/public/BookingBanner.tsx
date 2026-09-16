@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "./ScrollReveal";
+import { GrainOverlay } from "./motion/GrainOverlay";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
 /**
@@ -88,9 +89,12 @@ export function BookingBanner({
 
   return (
     <section
+      data-band="dark"
       className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-12 md:py-16 lg:block lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
+      <GrainOverlay />
+
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { useViewTransition } from "./motion/ViewTransitions";
 
 // Module-level flag tracks whether the very first SSR/client mount has occurred
 let hasMountedOnce = false;
@@ -13,47 +14,61 @@ interface TemplateWrapperProps {
 
 /**
  * Client Component page transition wrapper.
- * - Wraps children with AnimatePresence and mode="wait" so exiting page finishes
- *   animating before the new page enters.
- * - Uses usePathname() from next/navigation as the key for AnimatePresence/motion.
- * - Sets initial={false} on the very first page load to prevent initial flash and layout shifts.
- * - Snappy, GPU-only compositor animations (opacity + translateY) with 0.18–0.22s duration
- *   and easeInOut easing.
- * - Reserves minimum viewport height (var(--page-min-height, 100dvh)) to eliminate Cumulative Layout Shift (CLS).
- * - Respects prefers-reduced-motion by substituting transforms with opacity-only transitions.
+ *
+ * Three tiers, best available wins:
+ * 1. Shared-element morph — `ViewTransitionProvider` is driving a
+ *    `document.startViewTransition`, so an artist portrait is growing out of its
+ *    grid card into the detail hero. We stand down for the duration.
+ * 2. Curtain wipe — a terracotta panel sweeps across on exit and retracts on
+ *    enter. `scaleY` on a fixed overlay, so it costs no layout.
+ * 3. Opacity-only cross-fade — reduced motion.
+ *
+ * In every tier the wrapper reserves `var(--page-min-height, 100dvh)` so the
+ * transition cannot introduce cumulative layout shift.
  */
 export function TemplateWrapper({ children }: TemplateWrapperProps) {
   const pathname = usePathname();
   const reducedMotion = useReducedMotion();
   const [isInitialLoad, setIsInitialLoad] = useState(!hasMountedOnce);
+  const { transitioning } = useViewTransition();
 
   useEffect(() => {
     hasMountedOnce = true;
     setIsInitialLoad(false);
   }, []);
 
+  // Tier 1: a shared-element morph is in flight. Running our own exit on top of
+  // it double-animates the page and makes the morph read as a stutter, so the
+  // wrapper stands down and lets the browser own the frame.
+  if (transitioning && !reducedMotion) {
+    return (
+      <div
+        className="page-transition-wrapper flex-1 w-full flex flex-col"
+        style={{ minHeight: "var(--page-min-height, 100dvh)" }}
+      >
+        {children}
+      </div>
+    );
+  }
+
   const variants: Variants = {
-    initial: reducedMotion
-      ? { opacity: 0, y: 0 }
-      : { opacity: 0, y: 10 },
+    initial: reducedMotion ? { opacity: 0, y: 0 } : { opacity: 0, y: 10 },
     animate: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: reducedMotion ? 0.05 : 0.22,
-        ease: "easeInOut",
-      },
+      transition: { duration: reducedMotion ? 0.05 : 0.22, ease: "easeInOut" },
     },
     exit: reducedMotion
       ? { opacity: 0, y: 0 }
-      : {
-          opacity: 0,
-          y: -10,
-          transition: {
-            duration: 0.18,
-            ease: "easeInOut",
-          },
-        },
+      : { opacity: 0, y: -10, transition: { duration: 0.18, ease: "easeInOut" } },
+  };
+
+  // Tier 2: the curtain sweeps down over the outgoing page and lifts away from
+  // the incoming one, so the two pages are never visible at the same time.
+  const curtain: Variants = {
+    initial: { scaleY: 1, originY: 0 },
+    animate: { scaleY: 0, originY: 0, transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] } },
+    exit: { scaleY: 1, originY: 1, transition: { duration: 0.32, ease: [0.7, 0, 0.84, 0] } },
   };
 
   return (
@@ -67,6 +82,9 @@ export function TemplateWrapper({ children }: TemplateWrapperProps) {
         style={{ minHeight: "var(--page-min-height, 100dvh)" }}
         className="page-transition-wrapper flex-1 w-full flex flex-col will-change-[opacity,transform]"
       >
+        {!reducedMotion && !isInitialLoad ? (
+          <motion.div className="motion-curtain" variants={curtain} aria-hidden="true" />
+        ) : null}
         {children}
       </motion.div>
     </AnimatePresence>

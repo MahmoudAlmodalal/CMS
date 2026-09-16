@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { morphName } from "@/lib/morph";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/artists";
 
@@ -36,11 +37,15 @@ interface ArtistHeroProps {
  * recorded in docs/figma/asset-map.json.
  */
 export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andalusia.art" }: ArtistHeroProps) {
+  // Pairs with the portrait box in ArtistCard, so arriving from the grid flies
+  // the photo into this band instead of cross-fading the whole page.
+  const portraitMorph = morphName("artist", artist.slug);
   const t = useTranslations("artist");
   const quote = artist.quote?.trim();
 
   return (
     <section
+      data-band="dark"
       // 678 on the 390 frame (141:16220 is 390x688 hung at y=-10), 611 on the 1440
       // one. The 500 that sat at sm: was invented — Figma has no tablet artboard —
       // so the band holds its measured mobile height until the 1440 one takes over.
@@ -49,6 +54,7 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
         backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        viewTransitionName: portraitMorph,
       }}
     >
       <div
