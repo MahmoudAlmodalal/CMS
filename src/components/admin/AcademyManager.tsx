@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
-import type { AcademyCourseInput } from "@/lib/validations/cms";
+import type { AcademyCourseInput, CurriculumItemInput } from "@/lib/validations/cms";
 import type { AdminAcademyCourse } from "@/lib/dal/admin-academy";
 import type { Artist } from "@/lib/types/artists";
 
@@ -43,6 +43,26 @@ function emptyCourse(): CourseFormValues {
     image_url: "",
     display_order: 1,
     is_published: false,
+    // Detail page fields
+    price: null,
+    price_en: null,
+    duration: null,
+    duration_en: null,
+    group_size: null,
+    group_size_en: null,
+    certificate: null,
+    certificate_en: null,
+    language: null,
+    language_en: null,
+    offer_text: null,
+    offer_text_en: null,
+    philosophy_text: null,
+    philosophy_text_en: null,
+    practice_text: null,
+    practice_text_en: null,
+    curriculum_title: null,
+    curriculum_title_en: null,
+    curriculum_items: null,
   };
 }
 
@@ -61,6 +81,26 @@ function courseToForm(course: AdminAcademyCourse): CourseFormValues {
     image_url: course.image_url ?? "",
     display_order: course.display_order,
     is_published: course.is_published,
+    // Detail page fields
+    price: (course as Record<string, unknown>).price as string | null ?? null,
+    price_en: (course as Record<string, unknown>).price_en as string | null ?? null,
+    duration: (course as Record<string, unknown>).duration as string | null ?? null,
+    duration_en: (course as Record<string, unknown>).duration_en as string | null ?? null,
+    group_size: (course as Record<string, unknown>).group_size as string | null ?? null,
+    group_size_en: (course as Record<string, unknown>).group_size_en as string | null ?? null,
+    certificate: (course as Record<string, unknown>).certificate as string | null ?? null,
+    certificate_en: (course as Record<string, unknown>).certificate_en as string | null ?? null,
+    language: (course as Record<string, unknown>).language as string | null ?? null,
+    language_en: (course as Record<string, unknown>).language_en as string | null ?? null,
+    offer_text: (course as Record<string, unknown>).offer_text as string | null ?? null,
+    offer_text_en: (course as Record<string, unknown>).offer_text_en as string | null ?? null,
+    philosophy_text: (course as Record<string, unknown>).philosophy_text as string | null ?? null,
+    philosophy_text_en: (course as Record<string, unknown>).philosophy_text_en as string | null ?? null,
+    practice_text: (course as Record<string, unknown>).practice_text as string | null ?? null,
+    practice_text_en: (course as Record<string, unknown>).practice_text_en as string | null ?? null,
+    curriculum_title: (course as Record<string, unknown>).curriculum_title as string | null ?? null,
+    curriculum_title_en: (course as Record<string, unknown>).curriculum_title_en as string | null ?? null,
+    curriculum_items: ((course as Record<string, unknown>).curriculum_items as CurriculumItemInput[] | null) ?? null,
   };
 }
 
@@ -371,6 +411,96 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
               <Textarea id="course-description" rows={5} className="min-h-[140px]" value={values.description} onChange={(event) => setField("description", event.target.value)} required />
             </Field>
             <TranslationField id="course-description-en" label="وصف المسار" multiline rows={5} className="min-h-[140px]" value={values.description_en} onChange={(value) => setField("description_en", value)} />
+
+            {/* ── تفاصيل صفحة المسار ───────────────────────────────── */}
+            <div className="md:col-span-2">
+              <p className="mb-3 text-sm font-bold text-brand-primary border-b border-brand-primary/20 pb-2">تفاصيل صفحة المسار (اختياري)</p>
+            </div>
+
+            {/* Sidebar: price */}
+            <Field id="course-price" label="السعر" required={false} help="مثال: ٤٥٠ دولار">
+              <Input id="course-price" value={values.price ?? ""} onChange={(event) => setField("price", event.target.value || null)} />
+            </Field>
+            <Field id="course-price-en" label="Price — English" required={false} help="Optional English price label">
+              <Input id="course-price-en" dir="ltr" lang="en" value={values.price_en ?? ""} onChange={(event) => setField("price_en", event.target.value || null)} />
+            </Field>
+
+            {/* Sidebar: duration */}
+            <Field id="course-duration" label="مدة المسار" required={false} help="مثال: ٢٤ يوماً مكثفاً">
+              <Input id="course-duration" value={values.duration ?? ""} onChange={(event) => setField("duration", event.target.value || null)} />
+            </Field>
+            <Field id="course-duration-en" label="Duration — English" required={false}>
+              <Input id="course-duration-en" dir="ltr" lang="en" value={values.duration_en ?? ""} onChange={(event) => setField("duration_en", event.target.value || null)} />
+            </Field>
+
+            {/* Sidebar: group_size */}
+            <Field id="course-group-size" label="حجم المجموعة" required={false} help="مثال: ٨ مشاركين كحد أقصى">
+              <Input id="course-group-size" value={values.group_size ?? ""} onChange={(event) => setField("group_size", event.target.value || null)} />
+            </Field>
+            <Field id="course-group-size-en" label="Group Size — English" required={false}>
+              <Input id="course-group-size-en" dir="ltr" lang="en" value={values.group_size_en ?? ""} onChange={(event) => setField("group_size_en", event.target.value || null)} />
+            </Field>
+
+            {/* Sidebar: certificate */}
+            <Field id="course-certificate" label="الشهادة" required={false} help="مثال: شهادة إتمام رسمية ✓">
+              <Input id="course-certificate" value={values.certificate ?? ""} onChange={(event) => setField("certificate", event.target.value || null)} />
+            </Field>
+            <Field id="course-certificate-en" label="Certificate — English" required={false}>
+              <Input id="course-certificate-en" dir="ltr" lang="en" value={values.certificate_en ?? ""} onChange={(event) => setField("certificate_en", event.target.value || null)} />
+            </Field>
+
+            {/* Sidebar: language */}
+            <Field id="course-language" label="لغة المسار" required={false} help="مثال: العربية">
+              <Input id="course-language" value={values.language ?? ""} onChange={(event) => setField("language", event.target.value || null)} />
+            </Field>
+            <Field id="course-language-en" label="Language — English" required={false}>
+              <Input id="course-language-en" dir="ltr" lang="en" value={values.language_en ?? ""} onChange={(event) => setField("language_en", event.target.value || null)} />
+            </Field>
+
+            {/* Body: offer_text */}
+            <div className="md:col-span-2">
+              <Field id="course-offer-text" label="نص العرض (البانر الداكن)" required={false} help="النص الذي يظهر داخل البانر الداكن أعلى تفاصيل المسار.">
+                <Textarea id="course-offer-text" rows={3} className="min-h-[80px]" value={values.offer_text ?? ""} onChange={(event) => setField("offer_text", event.target.value || null)} />
+              </Field>
+            </div>
+            <div className="md:col-span-2">
+              <Field id="course-offer-text-en" label="Offer Text — English" required={false}>
+                <Textarea id="course-offer-text-en" dir="ltr" lang="en" rows={3} className="min-h-[80px]" value={values.offer_text_en ?? ""} onChange={(event) => setField("offer_text_en", event.target.value || null)} />
+              </Field>
+            </div>
+
+            {/* Body: philosophy_text */}
+            <div className="md:col-span-2">
+              <Field id="course-philosophy" label="نص الفلسفة" required={false}>
+                <Textarea id="course-philosophy" rows={3} className="min-h-[80px]" value={values.philosophy_text ?? ""} onChange={(event) => setField("philosophy_text", event.target.value || null)} />
+              </Field>
+            </div>
+            <div className="md:col-span-2">
+              <Field id="course-philosophy-en" label="Philosophy — English" required={false}>
+                <Textarea id="course-philosophy-en" dir="ltr" lang="en" rows={3} className="min-h-[80px]" value={values.philosophy_text_en ?? ""} onChange={(event) => setField("philosophy_text_en", event.target.value || null)} />
+              </Field>
+            </div>
+
+            {/* Body: practice_text */}
+            <div className="md:col-span-2">
+              <Field id="course-practice" label="نص المتطلبات" required={false}>
+                <Textarea id="course-practice" rows={3} className="min-h-[80px]" value={values.practice_text ?? ""} onChange={(event) => setField("practice_text", event.target.value || null)} />
+              </Field>
+            </div>
+            <div className="md:col-span-2">
+              <Field id="course-practice-en" label="Practice / Requirements — English" required={false}>
+                <Textarea id="course-practice-en" dir="ltr" lang="en" rows={3} className="min-h-[80px]" value={values.practice_text_en ?? ""} onChange={(event) => setField("practice_text_en", event.target.value || null)} />
+              </Field>
+            </div>
+
+            {/* Curriculum title */}
+            <Field id="course-curriculum-title" label="عنوان المنهج" required={false} help="العنوان الذي يظهر فوق جدول المنهج. مثال: تقسيمة المساق">
+              <Input id="course-curriculum-title" value={values.curriculum_title ?? ""} onChange={(event) => setField("curriculum_title", event.target.value || null)} />
+            </Field>
+            <Field id="course-curriculum-title-en" label="Curriculum Title — English" required={false}>
+              <Input id="course-curriculum-title-en" dir="ltr" lang="en" value={values.curriculum_title_en ?? ""} onChange={(event) => setField("curriculum_title_en", event.target.value || null)} />
+            </Field>
+
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

@@ -181,6 +181,23 @@ export const siteSettingsSchema = z
     // --- Booking page + site-wide default SEO ---
     booking_title: optionalTrimmedString(255).optional().nullable(),
     booking_title_en: translationString(255).optional().nullable(),
+    booking_hero_image_url: siteImageUrlSchema.optional().nullable(),
+    booking_group_personal: optionalTrimmedString(255).optional().nullable(),
+    booking_group_personal_en: translationString(255).optional().nullable(),
+    booking_group_occasion: optionalTrimmedString(255).optional().nullable(),
+    booking_group_occasion_en: translationString(255).optional().nullable(),
+    booking_consent_text: optionalTrimmedString(1000).optional().nullable(),
+    booking_consent_text_en: translationString(1000).optional().nullable(),
+    booking_submit_label: optionalTrimmedString(100).optional().nullable(),
+    booking_submit_label_en: translationString(100).optional().nullable(),
+    booking_loading_label: optionalTrimmedString(100).optional().nullable(),
+    booking_loading_label_en: translationString(100).optional().nullable(),
+    booking_success_title: optionalTrimmedString(255).optional().nullable(),
+    booking_success_title_en: translationString(255).optional().nullable(),
+    booking_success_body: optionalTrimmedString(2000).optional().nullable(),
+    booking_success_body_en: translationString(2000).optional().nullable(),
+    booking_success_note: optionalTrimmedString(2000).optional().nullable(),
+    booking_success_note_en: translationString(2000).optional().nullable(),
     seo_booking_title: optionalTrimmedString(120).optional().nullable(),
     seo_booking_title_en: translationString(120).optional().nullable(),
     seo_booking_description: optionalTrimmedString(320).optional().nullable(),
@@ -333,6 +350,18 @@ export type EventInput = z.infer<typeof eventSchema>;
 // 6. Academy Course Track Schema
 // ============================================================================
 
+export const curriculumItemSchema = z
+  .object({
+    number: trimmedString(1, 50, "رقم الدرس أو الأسبوع"),
+    title: trimmedString(1, 200, "عنوان الدرس"),
+    title_en: translationString(200),
+    body: trimmedString(1, 2000, "محتوى الدرس"),
+    body_en: translationString(2000),
+  })
+  .strict();
+
+export type CurriculumItemInput = z.infer<typeof curriculumItemSchema>;
+
 export const academyCourseSchema = z
   .object({
     id: uuidSchema.optional(),
@@ -354,6 +383,49 @@ export const academyCourseSchema = z
       .max(10, { message: "الترتيب يجب أن يكون بين 1 و 10" })
       .default(1),
     is_published: z.boolean().default(true),
+    // Sidebar fields
+    price: optionalTrimmedString(100).optional().nullable(),
+    price_en: translationString(100),
+    duration: optionalTrimmedString(100).optional().nullable(),
+    duration_en: translationString(100),
+    group_size: optionalTrimmedString(100).optional().nullable(),
+    group_size_en: translationString(100),
+    certificate: optionalTrimmedString(255).optional().nullable(),
+    certificate_en: translationString(255),
+    language: optionalTrimmedString(100).optional().nullable(),
+    language_en: translationString(100),
+    // Body fields
+    offer_text: optionalTrimmedString(2000).optional().nullable(),
+    offer_text_en: translationString(2000),
+    philosophy_text: optionalTrimmedString(5000).optional().nullable(),
+    philosophy_text_en: translationString(5000),
+    practice_text: optionalTrimmedString(5000).optional().nullable(),
+    practice_text_en: translationString(5000),
+    curriculum_title: optionalTrimmedString(255).optional().nullable(),
+    curriculum_title_en: translationString(255),
+    // Structured repeatable curriculum
+    curriculum_items: z
+      .union([
+        z.array(curriculumItemSchema),
+        z.string().transform((val, ctx) => {
+          if (!val || !val.trim()) return [];
+          try {
+            const parsed = JSON.parse(val);
+            const res = z.array(curriculumItemSchema).safeParse(parsed);
+            if (!res.success) {
+              ctx.addIssue({ code: z.ZodIssueCode.custom, message: "صيغة عناصر المنهج غير مطابقة للمواصفات" });
+              return z.NEVER;
+            }
+            return res.data;
+          } catch {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "صيغة JSON غير صحيحة" });
+            return z.NEVER;
+          }
+        }),
+      ])
+      .optional()
+      .nullable()
+      .default([]),
   })
   .strict();
 

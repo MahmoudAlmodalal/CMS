@@ -541,6 +541,8 @@ export async function updateAcademyCourseAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
+  // Purge individual course detail pages so updated content is served immediately.
+  try { revalidatePath("/[locale]/(public)/academy/[slug]", "page"); } catch { /* ignore */ }
   return { ok: true };
 }
 

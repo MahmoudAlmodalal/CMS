@@ -157,6 +157,24 @@ export interface SiteSettingsFormValues {
   seo_default_description: string;
   seo_default_description_en: string;
   seo_og_image_url: string;
+  // Booking page hero + form copy overrides
+  booking_hero_image_url: string;
+  booking_group_personal: string;
+  booking_group_personal_en: string;
+  booking_group_occasion: string;
+  booking_group_occasion_en: string;
+  booking_consent_text: string;
+  booking_consent_text_en: string;
+  booking_submit_label: string;
+  booking_submit_label_en: string;
+  booking_loading_label: string;
+  booking_loading_label_en: string;
+  booking_success_title: string;
+  booking_success_title_en: string;
+  booking_success_body: string;
+  booking_success_body_en: string;
+  booking_success_note: string;
+  booking_success_note_en: string;
 }
 
 export type BooleanFieldName =
@@ -327,6 +345,24 @@ export function getInitialValues(settings: SiteSettings): SiteSettingsFormValues
     seo_default_description: settings.seo_default_description ?? "",
     seo_default_description_en: settings.seo_default_description_en ?? "",
     seo_og_image_url: settings.seo_og_image_url ?? "",
+    // Booking page hero + form copy overrides
+    booking_hero_image_url: settings.booking_hero_image_url ?? "",
+    booking_group_personal: settings.booking_group_personal ?? "",
+    booking_group_personal_en: settings.booking_group_personal_en ?? "",
+    booking_group_occasion: settings.booking_group_occasion ?? "",
+    booking_group_occasion_en: settings.booking_group_occasion_en ?? "",
+    booking_consent_text: settings.booking_consent_text ?? "",
+    booking_consent_text_en: settings.booking_consent_text_en ?? "",
+    booking_submit_label: settings.booking_submit_label ?? "",
+    booking_submit_label_en: settings.booking_submit_label_en ?? "",
+    booking_loading_label: settings.booking_loading_label ?? "",
+    booking_loading_label_en: settings.booking_loading_label_en ?? "",
+    booking_success_title: settings.booking_success_title ?? "",
+    booking_success_title_en: settings.booking_success_title_en ?? "",
+    booking_success_body: settings.booking_success_body ?? "",
+    booking_success_body_en: settings.booking_success_body_en ?? "",
+    booking_success_note: settings.booking_success_note ?? "",
+    booking_success_note_en: settings.booking_success_note_en ?? "",
   };
 }
 
@@ -478,6 +514,24 @@ export function buildSiteSettingsInput(values: SiteSettingsFormValues): SiteSett
     seo_default_description: values.seo_default_description.trim() || null,
     seo_default_description_en: values.seo_default_description_en.trim() || null,
     seo_og_image_url: values.seo_og_image_url.trim() || null,
+    // Booking page hero + form copy overrides
+    booking_hero_image_url: values.booking_hero_image_url.trim() || null,
+    booking_group_personal: values.booking_group_personal.trim() || null,
+    booking_group_personal_en: values.booking_group_personal_en.trim() || null,
+    booking_group_occasion: values.booking_group_occasion.trim() || null,
+    booking_group_occasion_en: values.booking_group_occasion_en.trim() || null,
+    booking_consent_text: values.booking_consent_text.trim() || null,
+    booking_consent_text_en: values.booking_consent_text_en.trim() || null,
+    booking_submit_label: values.booking_submit_label.trim() || null,
+    booking_submit_label_en: values.booking_submit_label_en.trim() || null,
+    booking_loading_label: values.booking_loading_label.trim() || null,
+    booking_loading_label_en: values.booking_loading_label_en.trim() || null,
+    booking_success_title: values.booking_success_title.trim() || null,
+    booking_success_title_en: values.booking_success_title_en.trim() || null,
+    booking_success_body: values.booking_success_body.trim() || null,
+    booking_success_body_en: values.booking_success_body_en.trim() || null,
+    booking_success_note: values.booking_success_note.trim() || null,
+    booking_success_note_en: values.booking_success_note_en.trim() || null,
   };
 }
 

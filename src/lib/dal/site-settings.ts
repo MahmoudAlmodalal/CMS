@@ -164,6 +164,24 @@ export interface SiteSettings {
   seo_default_description: string | null;
   seo_default_description_en?: string | null;
   seo_og_image_url: string | null;
+  // Booking page hero + form copy overrides (null = fall back to built-in copy/translations).
+  booking_hero_image_url: string | null;
+  booking_group_personal: string | null;
+  booking_group_personal_en?: string | null;
+  booking_group_occasion: string | null;
+  booking_group_occasion_en?: string | null;
+  booking_consent_text: string | null;
+  booking_consent_text_en?: string | null;
+  booking_submit_label: string | null;
+  booking_submit_label_en?: string | null;
+  booking_loading_label: string | null;
+  booking_loading_label_en?: string | null;
+  booking_success_title: string | null;
+  booking_success_title_en?: string | null;
+  booking_success_body: string | null;
+  booking_success_body_en?: string | null;
+  booking_success_note: string | null;
+  booking_success_note_en?: string | null;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -325,6 +343,24 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   seo_default_description: null,
   seo_default_description_en: null,
   seo_og_image_url: null,
+  // Booking page hero + form copy overrides
+  booking_hero_image_url: null,
+  booking_group_personal: null,
+  booking_group_personal_en: null,
+  booking_group_occasion: null,
+  booking_group_occasion_en: null,
+  booking_consent_text: null,
+  booking_consent_text_en: null,
+  booking_submit_label: null,
+  booking_submit_label_en: null,
+  booking_loading_label: null,
+  booking_loading_label_en: null,
+  booking_success_title: null,
+  booking_success_title_en: null,
+  booking_success_body: null,
+  booking_success_body_en: null,
+  booking_success_note: null,
+  booking_success_note_en: null,
   home_featured_artists_count: 6,
   home_featured_articles_count: 4,
   home_upcoming_events_count: 3,

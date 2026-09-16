@@ -25,7 +25,7 @@ export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
     const { data, error } = await supabase
       .from("academy_courses")
       .select(
-        "id, title, title_en, slug, track_category, track_category_en, description, description_en, instructor_name, instructor_name_en, instructor_id, image_url, display_order, is_published, created_at, updated_at"
+        "id, title, title_en, slug, track_category, track_category_en, description, description_en, instructor_name, instructor_name_en, instructor_id, image_url, display_order, is_published, created_at, updated_at, price, price_en, duration, duration_en, group_size, group_size_en, certificate, certificate_en, language, language_en, offer_text, offer_text_en, philosophy_text, philosophy_text_en, practice_text, practice_text_en, curriculum_title, curriculum_title_en, curriculum_items"
       )
       .eq("is_published", true)
       .order("display_order", { ascending: true });

@@ -25,7 +25,7 @@ export async function getContentLocale(): Promise<AppLocale> {
 export const LOCALIZED_FIELDS = {
   artists: ["name", "genre_tag", "city", "quote", "spotlight_quote", "short_bio", "full_bio", "specialties"],
   events: ["title", "location", "city", "performer_name", "description"],
-  academy_courses: ["title", "track_category", "description", "instructor_name"],
+  academy_courses: ["title", "track_category", "description", "instructor_name", "price", "duration", "group_size", "certificate", "language", "offer_text", "philosophy_text", "practice_text", "curriculum_title"],
   articles: ["title", "excerpt", "content", "author_name"],
   testimonials: ["quote", "author_name", "author_role"],
   releases: ["title"],
@@ -90,6 +90,14 @@ export const LOCALIZED_FIELDS = {
     "seo_booking_description",
     "seo_default_title",
     "seo_default_description",
+    "booking_group_personal",
+    "booking_group_occasion",
+    "booking_consent_text",
+    "booking_submit_label",
+    "booking_loading_label",
+    "booking_success_title",
+    "booking_success_body",
+    "booking_success_note",
   ],
 } as const;
 
