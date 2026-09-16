@@ -40,17 +40,13 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
             </ScrollReveal>
           </div>
           <div className="order-2 flex min-w-0 w-full max-w-[324px] flex-col items-start gap-6 text-start md:order-1 md:w-auto md:max-w-none md:gap-7 lg:gap-8">
-            <ScrollReveal variant="up" delay={0.1}>
+            <ScrollReveal variant="up" className="w-full flex flex-col items-start gap-6 md:gap-7 lg:gap-8">
               <h3 className="font-display text-2xl font-normal leading-snug text-primary-500 sm:text-3xl lg:text-[48px] lg:leading-tight">
                 {settings.about_headline}
               </h3>
-            </ScrollReveal>
-            <ScrollReveal variant="up" delay={0.2}>
               <p className="max-w-prose text-base font-medium leading-relaxed text-[#1b1b1b] sm:text-lg lg:text-[25px] lg:leading-relaxed">
                 {settings.about_body}
               </p>
-            </ScrollReveal>
-            <ScrollReveal variant="up" delay={0.3}>
               <Link
                 href={settings.home_about_href || "/artists"}
                 className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl bg-primary-500 px-5 text-center font-system text-base font-bold text-primary-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-md active:translate-y-0 active:scale-[0.98] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"

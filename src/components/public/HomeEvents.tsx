@@ -121,52 +121,51 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
             {/* Rows 87:14483 */}
             <div className="order-3 mx-auto flex w-[326.489px] flex-col gap-[8px] pt-8 lg:mx-0 lg:w-auto lg:pt-[48px]">
               {/* Already limited by the admin "home_upcoming_events_count" setting. */}
-              {events.map((event, idx) => {
+              {events.map((event) => {
                 const eventDate = new Date(event.event_date);
                 const categoryKey = CATEGORY_KEY_MAP[event.category];
                 const categoryLabel = categoryKey ? c(categoryKey) : event.category;
 
                 return (
-                  <ScrollReveal key={event.id} variant="up" delay={Math.min(idx * 0.1, 0.3)}>
-                    <Link
-                      href={`/booking?event_id=${event.id}`}
-                      aria-label={ev("bookTicket", { title: event.title })}
-                      className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
+                  <Link
+                    key={event.id}
+                    href={`/booking?event_id=${event.id}`}
+                    aria-label={ev("bookTicket", { title: event.title })}
+                    className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
+                  >
+                    {/* Date badge 87:14485 */}
+                    <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] transition-transform duration-300 group-hover:scale-105 lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
+                      <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
+                        {day.format(eventDate)}
+                      </span>
+                      <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
+                        {month.format(eventDate)}
+                      </span>
+                    </span>
+
+                    {/* Title and place 87:14490 */}
+                    <span className="block min-w-0 flex-1 lg:absolute lg:start-[142.33px] lg:top-[31.4px] lg:h-[47px] lg:w-[629px]">
+                      <span className="block truncate text-[16.8px] font-bold leading-[25.2px] text-black transition-colors group-hover:text-brand-primary">
+                        {event.title}
+                      </span>
+                      <span className="block truncate pt-[3.2px] text-[12.48px] leading-[18.72px] text-black/70">
+                        {event.city || event.location}
+                      </span>
+                    </span>
+
+                    {/* Type pill 87:14496 */}
+                    <span className="inline-block shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
+                      {categoryLabel}
+                    </span>
+
+                    {/* Trailing glyph 87:14498 */}
+                    <span
+                      aria-hidden="true"
+                      className="hidden shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px] lg:block"
                     >
-                      {/* Date badge 87:14485 */}
-                      <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] transition-transform duration-300 group-hover:scale-105 lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
-                        <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
-                          {day.format(eventDate)}
-                        </span>
-                        <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
-                          {month.format(eventDate)}
-                        </span>
-                      </span>
-
-                      {/* Title and place 87:14490 */}
-                      <span className="block min-w-0 flex-1 lg:absolute lg:start-[142.33px] lg:top-[31.4px] lg:h-[47px] lg:w-[629px]">
-                        <span className="block truncate text-[16.8px] font-bold leading-[25.2px] text-black transition-colors group-hover:text-brand-primary">
-                          {event.title}
-                        </span>
-                        <span className="block truncate pt-[3.2px] text-[12.48px] leading-[18.72px] text-black/70">
-                          {event.city || event.location}
-                        </span>
-                      </span>
-
-                      {/* Type pill 87:14496 */}
-                      <span className="inline-block shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
-                        {categoryLabel}
-                      </span>
-
-                      {/* Trailing glyph 87:14498 */}
-                      <span
-                        aria-hidden="true"
-                        className="hidden shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px] lg:block"
-                      >
-                        {arrowGlyph}
-                      </span>
-                    </Link>
-                  </ScrollReveal>
+                      {arrowGlyph}
+                    </span>
+                  </Link>
                 );
               })}
             </div>

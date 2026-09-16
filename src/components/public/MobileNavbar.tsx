@@ -35,37 +35,18 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
   const a11y = useTranslations("a11y");
   const site = useTranslations("site");
 
-  const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
-  const lastScrollY = useRef(0);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = lastScrollY.current;
-    lastScrollY.current = latest;
-
-    setIsScrolled(latest > 40);
-
-    if (latest > 90 && latest > previous + 5) {
-      setHidden(true);
-    } else if (latest < previous - 5 || latest <= 40) {
-      setHidden(false);
-    }
+    setIsScrolled(latest > 30);
   });
 
   return (
     <>
       {/* Wrapper is inert so the hero underneath stays clickable either side of
           the pill, while keeping the bar anchored to the top of the page. */}
-      <motion.div
-        variants={{
-          visible: { y: 0, opacity: 1 },
-          hidden: { y: -80, opacity: 0 },
-        }}
-        animate={hidden ? "hidden" : "visible"}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="pointer-events-none fixed inset-x-2.5 top-[24px] z-40 lg:hidden"
-      >
+      <div className="pointer-events-none fixed inset-x-2.5 top-[24px] z-40 lg:hidden">
         <header
           className={cn(
             "pointer-events-auto flex h-14 min-w-0 items-center justify-between gap-2 rounded-[20px] px-4 shadow-subtle transition-all duration-300 sm:px-5",
@@ -111,7 +92,7 @@ export function MobileNavbar({ contact }: { contact?: DrawerContact }) {
             />
           </Link>
         </header>
-      </motion.div>
+      </div>
 
       {/* Slide-out Mobile Drawer */}
       <MobileDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} contact={contact} />

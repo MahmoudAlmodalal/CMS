@@ -65,16 +65,16 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
 
       {/* Cards 115:2436…115:2439 */}
       <div className="mx-auto mt-8 grid grid-cols-1 justify-items-center gap-6 w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
-        {articles.slice(0, 4).map((article, idx) => {
+        {articles.slice(0, 4).map((article) => {
           return (
-            <ScrollReveal key={article.id} variant="up" delay={Math.min(idx * 0.1, 0.3)} className="w-full h-full">
-              <article
-                className="group w-full h-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            <article
+              key={article.id}
+              className="group w-full h-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            >
+              <Link
+                href={`/news/${article.slug}`}
+                className="flex h-full min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
               >
-                <Link
-                  href={`/news/${article.slug}`}
-                  className="flex h-full min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
-                >
                 {/* Cover I115:2439;87:14439 */}
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
                   <SafeImage
@@ -119,10 +119,9 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
                 </div>
               </Link>
             </article>
-          </ScrollReveal>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
   </section>
 );
 }

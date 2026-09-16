@@ -146,10 +146,10 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
               <motion.div
                 key={`${current.id ?? current.author_name}-${currentIndex}`}
                 custom={slideDirection}
-                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 40 : -40 }}
+                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 16 : -16 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -40 : 40 }}
-                transition={{ duration: reducedMotion ? 0 : 0.55, ease: [0.25, 1, 0.5, 1] }}
+                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -16 : 16 }}
+                transition={{ duration: reducedMotion ? 0 : 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                 onPointerDown={handleSwipeStart}
                 onPointerUp={handleSwipeEnd}
                 onPointerCancel={() => { swipeStartX.current = null; }}
