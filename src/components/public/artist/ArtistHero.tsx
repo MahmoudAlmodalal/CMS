@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
+import { morphName } from "@/lib/morph";
 import { Link } from "@/i18n/navigation";
 import type { Artist } from "@/lib/artists";
 
@@ -36,6 +37,9 @@ interface ArtistHeroProps {
  * recorded in docs/figma/asset-map.json.
  */
 export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andalusia.art" }: ArtistHeroProps) {
+  // Pairs with the portrait box in ArtistCard, so arriving from the grid flies
+  // the photo into this band instead of cross-fading the whole page.
+  const portraitMorph = morphName("artist", artist.slug);
   const t = useTranslations("artist");
   const quote = artist.quote?.trim();
 
@@ -49,6 +53,7 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
         backgroundImage: `url(${JSON.stringify(imageUrl || "/assets/figma/hero-stage-landscape.png")})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        viewTransitionName: portraitMorph,
       }}
     >
       <div

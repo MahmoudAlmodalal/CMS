@@ -6,6 +6,8 @@ import { type Article } from "@/lib/dal/articles";
 import { ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
+import { StrokeUnderline } from "./motion/StrokeUnderline";
+import { TextReveal } from "./motion/TextReveal";
 
 interface EditorialFeatureProps {
   articles: Article[];
@@ -54,12 +56,19 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
 
   return (
     <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] py-12 md:py-16 lg:h-[709px] lg:py-0">
+
       {/* Heading 87:14401 */}
       <div className="w-full px-5 text-center lg:px-0">
-        <ScrollReveal variant="up">
-          <h2 className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:whitespace-nowrap lg:text-[64px]">
-            {heading || t("editorialHeading")}
-          </h2>
+        {/* One line only: the frame sets lg:whitespace-nowrap on this heading,
+            so splitting it into stacked lines would break the band's geometry. */}
+        <TextReveal
+          as="h2"
+          text={heading || t("editorialHeading")}
+          wordsPerLine={99}
+          className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:whitespace-nowrap lg:text-[64px]"
+        />
+        <ScrollReveal variant="soft" delay={0.12}>
+          <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
       </div>
 

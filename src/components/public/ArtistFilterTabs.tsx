@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ARTIST_CATEGORIES } from "@/lib/types/artists";
+import { ActivePill } from "./motion/ActivePill";
 
 /**
  * The frame lays the row out left to right as غناء · عود وموسيقى · إيقاع · معاصر ·
@@ -78,12 +79,20 @@ export function ArtistFilterTabs({
               aria-selected={isActive}
               aria-controls={`panel-${cat.id}`}
               onClick={() => onSelectCategory(cat.id)}
-              className={`snap-start inline-flex min-h-11 min-w-max shrink-0 cursor-pointer items-center justify-center whitespace-nowrap px-5 text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
+              // `isolate` is load-bearing: the pill sits at -z-10, and without a
+              // stacking context here it would paint behind the tablist's own
+              // white background instead of behind just this label.
+              className={`relative isolate snap-start inline-flex min-h-11 min-w-max shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[16px] px-5 text-center text-[14.08px] font-bold leading-[21.12px] transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary ${
                 isActive
-                  ? "rounded-[16px] bg-brand-primary text-white/80"
-                  : "rounded-[16px] border-b-2 border-transparent text-gradscale-900 hover:border-brand-primary hover:text-brand-primary"
+                  ? "text-white/80"
+                  : "motion-underline text-gradscale-900 hover:text-brand-primary"
               }`}
             >
+              {/* The filled pill is one element shared by the whole bar, so
+                  changing category slides it rather than blinking it across. */}
+              {isActive ? (
+                <ActivePill layoutId="artist-filter-pill" className="rounded-[16px] bg-brand-primary" />
+              ) : null}
               {label}
             </button>
           );

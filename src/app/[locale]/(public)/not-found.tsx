@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { localeDirection, routing, type AppLocale } from "@/i18n/routing";
+import { MagneticButton } from "@/components/public/motion/MagneticButton";
 
 /** The sections worth offering someone who landed on a dead link. */
 const SECTIONS = [
@@ -47,7 +48,7 @@ export default function PublicNotFound() {
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
           <p
             aria-hidden="true"
-            className="font-calligraphic text-[88px] font-bold leading-none text-brand-primary/25 sm:text-[120px]"
+            className="motion-drift font-calligraphic text-[88px] font-bold leading-none text-brand-primary/25 sm:text-[120px]"
           >
             {t("code")}
           </p>
@@ -60,12 +61,16 @@ export default function PublicNotFound() {
             {t("body")}
           </p>
 
-          <Link
-            href={prefix || "/"}
-            className="mt-8 inline-flex items-center justify-center rounded-button bg-brand-primary px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
-          >
-            {t("home")}
-          </Link>
+          {/* The one page where playfulness costs nothing: the way back leans
+              toward the cursor. Falls back to a plain button on touch. */}
+          <MagneticButton className="mt-8">
+            <Link
+              href={prefix || "/"}
+              className="inline-flex items-center justify-center rounded-button bg-brand-primary px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+            >
+              {t("home")}
+            </Link>
+          </MagneticButton>
 
           <div className="mt-12 w-full border-t border-brand-espresso-subtle pt-8">
             <h2 className="text-xs font-bold uppercase tracking-[0.09em] text-gradscale-300">

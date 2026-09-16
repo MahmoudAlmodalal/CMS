@@ -7,6 +7,10 @@ import { ArtistTile } from "./ArtistTile";
 import type { Artist } from "@/lib/types/artists";
 import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
 import { ScrollReveal } from "./ScrollReveal";
+import { TextReveal } from "./motion/TextReveal";
+import { Marquee } from "./motion/Marquee";
+import { StrokeUnderline } from "./motion/StrokeUnderline";
+import { useMotionPrefs } from "./motion/useMotionPrefs";
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -20,6 +24,16 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const featuredArtists = artists.slice(0, 6);
+  const { allowAmbient, isMobile } = useMotionPrefs();
+
+  /**
+   * The black band is a static 6-up grid at lg and a swipe carousel below it.
+   * The grid is the half that reads as dead, so only that half becomes a rail;
+   * the carousel keeps its arrows, dots and snap points untouched. Both render
+   * the same tiles, and the rail is skipped entirely on touch and under reduced
+   * motion, where `Marquee` degrades to a plain scroller anyway.
+   */
+  const useRail = allowAmbient && !isMobile;
 
   const updateActiveIndex = useCallback(() => {
     const carousel = carouselRef.current;
@@ -52,18 +66,31 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
 
   if (!artists || artists.length === 0) return null;
   return (
-    <section className="w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
-        <ScrollReveal variant="up">
-          <h2 className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:text-[64px] lg:leading-tight">
-            {heading || t("artistsHeading")}
-          </h2>
+    <section className="relative w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
+        <TextReveal
+          as="h2"
+          text={heading || t("artistsHeading")}
+          className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:text-[64px] lg:leading-tight"
+        />
+        <ScrollReveal variant="soft" delay={0.12}>
+          <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
         <div className="relative mt-6 sm:mt-8">
+          {useRail ? (
+            <Marquee className="hidden lg:block" durationSeconds={56}>
+              {featuredArtists.map((artist, i) => (
+                <div key={artist.id} className="px-2.5">
+                  <ArtistTile artist={artist} priority={i < 2} />
+                </div>
+              ))}
+            </Marquee>
+          ) : null}
+
           <div
             ref={carouselRef}
             onScroll={updateActiveIndex}
-            className="no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6"
+            className={`${useRail ? "lg:hidden " : ""}no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6`}
             aria-label={t("artistsHeading")}
           >
             {featuredArtists.map((artist, i) => (

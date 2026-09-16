@@ -7,6 +7,7 @@ import {
   SkipToContent,
 } from "@/components/public";
 import { MotionReady } from "@/components/public/MotionReady";
+import { ViewTransitionProvider } from "@/components/public/motion/ViewTransitions";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export default async function PublicLayout({
@@ -26,6 +27,7 @@ export default async function PublicLayout({
   };
 
   return (
+    <ViewTransitionProvider>
     <div className="public-motion-shell min-h-screen flex flex-col bg-brand-cream pb-[calc(68px+env(safe-area-inset-bottom))] text-brand-espresso relative selection:bg-brand-primary selection:text-white lg:pb-0">
       <MotionReady />
       {/* 1. Accessible Skip Link */}
@@ -53,5 +55,6 @@ export default async function PublicLayout({
       {/* 5. Global Footer (Figma Node 94:18289) */}
       <Footer settings={settings} />
     </div>
+    </ViewTransitionProvider>
   );
 }

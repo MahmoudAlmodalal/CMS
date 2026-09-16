@@ -53,3 +53,17 @@ export {
   ArtistDiscography,
   ArtistWorks,
 } from "./artist";
+
+// Expressive motion primitives
+export {
+  TextReveal,
+  Parallax,
+  CountUp,
+  StrokeUnderline,
+  Marquee,
+  ReadingProgress,
+  Equalizer,
+  MagneticButton,
+  useMotionPrefs,
+  usePageVisible,
+} from "./motion";

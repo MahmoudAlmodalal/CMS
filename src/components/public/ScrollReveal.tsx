@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useMotionPrefs } from "./motion/useMotionPrefs";
 
 export function ScrollReveal({
   children,
@@ -14,24 +15,14 @@ export function ScrollReveal({
   delay?: number;
   variant?: "up" | "soft" | "image" | "fade";
 }) {
-  const reducedMotion = useReducedMotion();
-  const [isMobile, setIsMobile] = useState(false);
+  const { reduced, isMobile } = useMotionPrefs();
   const [hasEntered, setHasEntered] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // On mobile: strictly zero vertical translation (y: 0) and no scaling.
   // Content fades in calmly and smoothly without throwing elements around the screen.
   // On desktop: subtle, elegant micro-lift (max 12px).
   const initial = (() => {
-    if (reducedMotion) return false;
+    if (reduced) return false;
     if (isMobile) return { opacity: 0, y: 0 };
     switch (variant) {
       case "soft":
@@ -48,9 +39,12 @@ export function ScrollReveal({
 
   const animate = { opacity: 1, y: 0, scale: 1 };
 
+  // No `.motion-reveal` class here: framer-motion drives this element through
+  // inline styles, and carrying the class too would let MotionReady's observer
+  // stamp a competing `data-scroll-reveal` state onto the same node.
   return (
     <motion.div
-      className={`motion-reveal mobile-blur-reveal motion-reveal-${variant} ${hasEntered ? "is-revealed" : ""} ${className}`.trim()}
+      className={`mobile-blur-reveal motion-reveal-${variant} ${hasEntered ? "is-revealed" : ""} ${className}`.trim()}
       initial={initial}
       whileInView={animate}
       onViewportEnter={() => setHasEntered(true)}

@@ -91,6 +91,7 @@ export function BookingBanner({
       className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-12 md:py-16 lg:block lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
+
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"

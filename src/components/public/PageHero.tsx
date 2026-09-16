@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ScrollReveal } from "./ScrollReveal";
+import { Parallax } from "./motion/Parallax";
 
 interface PageHeroProps {
   /** Centred headline. Pass rich content to colour a phrase, as the design does. */
@@ -80,22 +81,32 @@ export function PageHero({
           "--hero-title-leading": `${titleLeading}px`,
           // The band never starts its content above the navbar, whatever the frame said.
           paddingTop: "max(var(--header-offset), var(--hero-content-top))",
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
         } as React.CSSProperties
       }
     >
+      {/* The photograph rides its own layer rather than the section's
+          background, so parallax can drift it without touching the band's
+          measured height or padding. Parallax overscales the layer by the same
+          proportion it travels, so drifting never uncovers the band's edge. */}
+      <Parallax className="absolute inset-0 -z-10" rate={0.18}>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${image})` }}
+        />
+      </Parallax>
+
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
 
+
       {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at
           x=376 on a 390 artboard), so the mobile offset of this block is not
           measurable from them; it rides the band's padding like the desktop one. */}
       <Container className="relative z-10 flex w-full flex-col items-center text-center">
-        <ScrollReveal variant="up" className="w-full flex flex-col items-center">
+        <ScrollReveal variant="soft" className="w-full flex flex-col items-center">
           {eyebrow ? (
             <span className="inline-flex items-center gap-2 rounded-full border-[0.833px] border-white/20 bg-white/10 px-5 py-2 backdrop-blur-[8px]">
               <span aria-hidden="true" className="text-[16px] leading-[24px] text-brand-primary">
@@ -106,7 +117,13 @@ export function PageHero({
               </span>
             </span>
           ) : null}
+        </ScrollReveal>
 
+        <ScrollReveal
+          variant="up"
+          delay={0.08}
+          className="w-full flex flex-col items-center"
+        >
           <h1
             // The frame's px size is the ceiling, not a floor: at 1024-1280 a raw 72px
             // headline wrapped to three lines and its 90px line box opened gaps the band
@@ -118,13 +135,19 @@ export function PageHero({
           >
             {title}
           </h1>
+        </ScrollReveal>
 
-          {subtitle ? (
+        {subtitle ? (
+          <ScrollReveal
+            variant="soft"
+            delay={0.16}
+            className="w-full flex flex-col items-center"
+          >
             <p className="mt-6 max-w-[693px] text-base leading-relaxed text-secondary-400 sm:text-lg lg:text-[25px] lg:leading-[37.5px]">
               {subtitle}
             </p>
-          ) : null}
-        </ScrollReveal>
+          </ScrollReveal>
+        ) : null}
       </Container>
     </section>
   );
