@@ -65,10 +65,13 @@ test("English content — 1. Every migrated _en column is wired into LOCALIZED_F
         `LOCALIZED_FIELDS.${table} must list "${base}" so ${column} is actually read`
       );
     }
-    assert.equal(
-      declared.length,
-      columns.length,
-      `LOCALIZED_FIELDS.${table} lists ${declared.length} fields but the migration adds ${columns.length} columns`
+    // Later migrations may add more localized fields to a table than the
+    // original English-content migration. The important invariant is that
+    // every migrated column is wired into LOCALIZED_FIELDS; extra declarations
+    // are valid and keep newer CMS controls localized as well.
+    assert.ok(
+      declared.length >= columns.length,
+      `LOCALIZED_FIELDS.${table} lists ${declared.length} fields but the migrations add ${columns.length} columns`
     );
   }
 });
