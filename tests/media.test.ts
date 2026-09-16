@@ -143,18 +143,26 @@ test("Media Picker — MediaPickerField client component & form integrations", (
   const uploadZonePath = path.join(root, "src/components/admin/media/MediaUploadZone.tsx");
   assert.ok(fs.existsSync(uploadZonePath), "MediaUploadZone.tsx must exist");
   const uploadZone = fs.readFileSync(uploadZonePath, "utf-8");
-  assert.match(uploadZone, /export const MEDIA_LIBRARY_ENTITY_ID = ["']media-library["']/, "MediaUploadZone must export MEDIA_LIBRARY_ENTITY_ID");
+  assert.match(uploadZone, /export const MEDIA_LIBRARY_ENTITY_ID =/, "MediaUploadZone must export MEDIA_LIBRARY_ENTITY_ID");
+  // The literal itself lives in the universal storage module so the server
+  // actions share it without importing from a "use client" component.
+  assert.match(
+    fs.readFileSync(path.join(root, "src/lib/storage.ts"), "utf-8"),
+    /export const MEDIA_LIBRARY_ENTITY_ID = ["']media-library["']/,
+    "the media-library entity id must be defined once, in @/lib/storage"
+  );
   assert.doesNotMatch(uploadZone, /uploadMediaAction\(\{[\s\S]*entityId:\s*["']media-library["']/, "uploadMediaAction call must not hardcode 'media-library' literal");
   assert.match(uploadZone, /uploadMediaAction\(\{[\s\S]*entityId:\s*MEDIA_LIBRARY_ENTITY_ID/, "uploadMediaAction call must use MEDIA_LIBRARY_ENTITY_ID");
 
-  // SiteSettingsForm integrations (site/hero, site/about)
-  const siteSettings = fs.readFileSync(
-    path.join(root, "src/components/admin/SiteSettingsForm.tsx"),
+  // Home page media (site/hero, site/about) — edited in the /admin/pages home
+  // tab, which owns page copy since the duplicate editors were collapsed.
+  const homeTab = fs.readFileSync(
+    path.join(root, "src/components/admin/pages/HomeTab.tsx"),
     "utf-8"
   );
-  assert.match(siteSettings, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
-  assert.match(siteSettings, /bucket=["']site["'][^>]*folder=["']hero["']|folder=["']hero["'][^>]*bucket=["']site["']/);
-  assert.match(siteSettings, /bucket=["']site["'][^>]*folder=["']about["']|folder=["']about["'][^>]*bucket=["']site["']/);
+  assert.match(homeTab, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
+  assert.match(homeTab, /bucket=["']site["'][\s\S]{0,120}?folder=["']hero["']|folder=["']hero["'][\s\S]{0,120}?bucket=["']site["']/);
+  assert.match(homeTab, /bucket=["']site["'][\s\S]{0,120}?folder=["']about["']|folder=["']about["'][\s\S]{0,120}?bucket=["']site["']/);
 
   // ArtistsManager integration (artists/portraits)
   const artistsManager = fs.readFileSync(
@@ -239,10 +247,19 @@ test("Admin Media Library — page, MediaLibrary client component & listFolderMe
     "MediaLibrary must render MediaFileGrid only when !loading && !error"
   );
 
-  // listFolderMedia references MEDIA_LIBRARY_ENTITY_ID and listMediaAction
+  // listFolderMedia must always settle: exactly one action call, under a timeout.
   const listPath = path.join(root, "src/components/admin/media/listFolderMedia.ts");
   assert.ok(fs.existsSync(listPath), "listFolderMedia.ts must exist");
   const listSrc = fs.readFileSync(listPath, "utf-8");
-  assert.match(listSrc, /MEDIA_LIBRARY_ENTITY_ID/, "listFolderMedia must reference MEDIA_LIBRARY_ENTITY_ID");
   assert.match(listSrc, /listMediaAction/, "listFolderMedia must reference listMediaAction");
+  assert.equal(
+    listSrc.match(/listMediaAction\(/g)?.length,
+    1,
+    "one listing call: listBucketFiles already descends into every sub-prefix"
+  );
+  assert.match(
+    listSrc,
+    /withTimeout\(listMediaAction\(/,
+    "the action must be raced against a timeout so a hung POST can never leave the UI spinning"
+  );
 });

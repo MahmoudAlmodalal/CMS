@@ -2,9 +2,17 @@
 
 import React, { useRef, useState, useCallback } from "react";
 import { uploadMediaAction } from "@/actions/storage";
-import { BUCKET_ALLOWED_MIMES, BUCKET_BYTE_LIMITS, RECOMMENDED_DIMENSIONS, type StorageBucket } from "@/lib/storage";
+import {
+  BUCKET_ALLOWED_MIMES,
+  BUCKET_BYTE_LIMITS,
+  RECOMMENDED_DIMENSIONS,
+  MEDIA_LIBRARY_ENTITY_ID as STORAGE_MEDIA_LIBRARY_ENTITY_ID,
+  type StorageBucket,
+} from "@/lib/storage";
 
-export const MEDIA_LIBRARY_ENTITY_ID = "media-library";
+// Re-exported from @/lib/storage so client and server share one literal; the
+// local name is kept because the whole media UI imports it from here.
+export const MEDIA_LIBRARY_ENTITY_ID = STORAGE_MEDIA_LIBRARY_ENTITY_ID;
 
 interface MediaUploadZoneProps {
   bucket: StorageBucket;

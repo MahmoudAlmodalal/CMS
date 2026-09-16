@@ -98,17 +98,22 @@ test("أعمال — update action validates partial input behind requireAdminSe
 test("أعمال — the public band is a facade: no iframe until the visitor clicks", () => {
   const section = read("src/components/public/artist/ArtistWorks.tsx");
   const card = read("src/components/public/artist/ArtistWorkCard.tsx");
+  const embed = read("src/components/ui/YouTubeEmbed.tsx");
 
   assert.doesNotMatch(section, /"use client"/, "the list stays a server component");
-  assert.match(card, /^"use client";/, "only the play toggle is client-side");
+  assert.match(embed, /^"use client";/, "only the play toggle is client-side");
+
+  // The card delegates the whole facade to the one shared embed component.
+  assert.match(card, /<YouTubeEmbed/);
+  assert.doesNotMatch(card, /<iframe/, "the card must not hand-roll an iframe");
 
   // One iframe per *clicked* card. An unconditional iframe would fire a
   // third-party request and set a cookie for every work on the page.
-  assert.match(card, /\{playing \?/);
-  assert.match(card, /youTubeEmbedUrl/);
-  // The card must not hand-build an embed URL; the no-cookie host is the
+  assert.match(embed, /\{playing \?/);
+  assert.match(embed, /youTubeEmbedUrl/);
+  // The embed must not hand-build an embed URL; the no-cookie host is the
   // helper's job, so that is where it is asserted.
-  assert.doesNotMatch(card, /https:\/\/www\.youtube/, "embed URL comes from the shared helper");
+  assert.doesNotMatch(embed, /https:\/\/www\.youtube/, "embed URL comes from the shared helper");
   assert.match(read("src/lib/youtube.ts"), /youtube-nocookie\.com\/embed/);
 
   assert.match(section, /parseYouTubeId/, "unparseable rows are skipped, not rendered dead");

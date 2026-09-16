@@ -8,7 +8,9 @@ import { FloatParticles } from "./motion/FloatParticles";
 import { CursorGlow } from "./motion/CursorGlow";
 import { MagneticButton } from "./motion/MagneticButton";
 import { PublicButton } from "./PublicButton";
-import { parseYouTubeId, youTubeBackdropEmbedUrl, youTubeEmbedUrl } from "@/lib/youtube";
+import { parseYouTubeId } from "@/lib/youtube";
+import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
+import { cssUrl } from "@/lib/storage";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
 export interface HeroSectionProps {
@@ -79,7 +81,9 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url(${heroUrl || "/assets/figma/hero-stage-landscape.png"})`,
+              // cssUrl quotes the value: an unquoted url() containing a space or
+              // a parenthesis is invalid CSS and the whole background is dropped.
+              backgroundImage: cssUrl(heroUrl, "/assets/figma/hero-stage-landscape.png"),
             }}
             aria-hidden="true"
           />
@@ -90,19 +94,12 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             fall outside this overflow-hidden box: what is left reads as footage,
             not as an embed. pointer-events-none and tabIndex=-1 keep the player
             unreachable, so no interaction can summon its chrome back. */}
-        {backdropVideoId ? (
-          <div className="hero-youtube-backdrop absolute inset-0 overflow-hidden" aria-hidden="true">
-            <iframe
-              src={youTubeBackdropEmbedUrl(backdropVideoId)}
-              title="Hero backdrop"
-              tabIndex={-1}
-              loading="eager"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-[1.35] border-0"
-            />
-          </div>
-        ) : null}
+        <YouTubeEmbed
+          url={settings.hero_video_url}
+          title="Hero backdrop"
+          variant="backdrop"
+          className="hero-youtube-backdrop"
+        />
         {/* Two flat 20% black washes, as stacked in the Figma rectangle fill */}
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute inset-0 bg-black/20" />
@@ -133,24 +130,6 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
               {settings.hero_subheadline}
             </p>
           </ScrollReveal>
-
-          {backdropVideoId ? (
-            <ScrollReveal variant="soft" delay={0.12} className="w-full max-w-[720px]">
-              <div className="overflow-hidden rounded-2xl border border-white/20 bg-black/50 shadow-2xl">
-                <div className="relative aspect-video w-full">
-                  <iframe
-                    src={youTubeEmbedUrl(backdropVideoId)}
-                    title="Andalusia creative talent video"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    className="absolute inset-0 h-full w-full border-0"
-                  />
-                </div>
-              </div>
-            </ScrollReveal>
-          ) : null}
 
           {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap)
               MagneticButton gives desktop cursors a subtle pull toward each button. */}

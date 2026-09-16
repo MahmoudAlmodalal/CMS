@@ -3,7 +3,6 @@
 import React, { useRef, useState, useCallback } from "react";
 import { ImageUploadField } from "@/components/admin/media/ImageUploadField";
 import { VideoUploadField } from "@/components/admin/media/VideoUploadField";
-import { listMediaAction } from "@/actions/admin-media";
 import { listFolderMedia } from "./listFolderMedia";
 import {
   STORAGE_BUCKETS,
@@ -87,18 +86,15 @@ export function MediaPickerField({
       setLoading(true);
       setError(null);
       try {
-        const res = folder
-          ? await listFolderMedia(bucketToLoad, folder)
-          : await listMediaAction(bucketToLoad, undefined);
+        // One path for both cases: listFolderMedia takes an optional folder and
+        // carries the timeout, so the picker can no longer hang the way the
+        // library did. Calling listMediaAction directly skipped that, and the
+        // old `"error" in res && res.error` test let a {success:false} result
+        // with no message through as an empty, error-free picker.
+        const res = await listFolderMedia(bucketToLoad, folder);
 
-        if ("error" in res && res.error) {
-          setError(res.error);
-          setFiles([]);
-        } else if ("files" in res && res.files) {
-          setFiles(res.files);
-        } else {
-          setFiles([]);
-        }
+        setFiles(res.files);
+        setError(res.error);
       } catch (err) {
         setError(err instanceof Error ? err.message : "فشل تحميل الوسائط من التخزين");
       } finally {

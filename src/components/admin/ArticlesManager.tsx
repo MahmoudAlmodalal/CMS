@@ -15,8 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice, TranslationField } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
@@ -430,10 +429,14 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
           notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مقال" : "نموذج إضافة مقال"} className="contents">
-            <Field id="article-title" label="عنوان المقال">
-              <Input id="article-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-            </Field>
-            <TranslationField id="article-title-en" label="عنوان المقال" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <BilingualField
+              id="article-title"
+              label="عنوان المقال"
+              value={values.title}
+              onChange={(value) => setField("title", value)}
+              valueEn={values.title_en}
+              onChangeEn={(value) => setField("title_en", value)}
+            />
             <Field id="article-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
               <Input id="article-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
@@ -446,10 +449,14 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                 required
               />
             </Field>
-            <Field id="article-author" label="اسم الكاتب أو هيئة التحرير">
-              <Input id="article-author" value={values.author_name} onChange={(event) => setField("author_name", event.target.value)} required />
-            </Field>
-            <TranslationField id="article-author-en" label="اسم الكاتب" value={values.author_name_en} onChange={(value) => setField("author_name_en", value)} />
+            <BilingualField
+              id="article-author"
+              label="اسم الكاتب أو هيئة التحرير"
+              value={values.author_name}
+              onChange={(value) => setField("author_name", value)}
+              valueEn={values.author_name_en}
+              onChangeEn={(value) => setField("author_name_en", value)}
+            />
             <Field id="article-cover" label="رابط صورة الغلاف">
               <MediaPickerField
                 id="article-cover"
@@ -470,14 +477,26 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                 required
               />
             </Field>
-            <Field id="article-excerpt" label="المقتطف الصحفي">
-              <Textarea id="article-excerpt" rows={3} value={values.excerpt} onChange={(event) => setField("excerpt", event.target.value)} required />
-            </Field>
-            <TranslationField id="article-excerpt-en" label="المقتطف الصحفي" multiline rows={3} value={values.excerpt_en} onChange={(value) => setField("excerpt_en", value)} />
-            <Field id="article-content" label="محتوى المقال الكامل">
-              <Textarea id="article-content" rows={8} value={values.content} onChange={(event) => setField("content", event.target.value)} required />
-            </Field>
-            <TranslationField id="article-content-en" label="محتوى المقال الكامل" multiline rows={8} value={values.content_en} onChange={(value) => setField("content_en", value)} />
+            <BilingualField
+              id="article-excerpt"
+              label="المقتطف الصحفي"
+              multiline
+              rows={3}
+              value={values.excerpt}
+              onChange={(value) => setField("excerpt", value)}
+              valueEn={values.excerpt_en}
+              onChangeEn={(value) => setField("excerpt_en", value)}
+            />
+            <BilingualField
+              id="article-content"
+              label="محتوى المقال الكامل"
+              multiline
+              rows={8}
+              value={values.content}
+              onChange={(value) => setField("content", value)}
+              valueEn={values.content_en}
+              onChangeEn={(value) => setField("content_en", value)}
+            />
             <div className="flex flex-wrap items-center gap-5 md:col-span-2">
               <label className="inline-flex items-center gap-2 text-sm font-bold text-brand-espresso">
                 <input type="checkbox" checked={values.is_published} onChange={(event) => setField("is_published", event.target.checked)} className="h-4 w-4 accent-brand-primary" />

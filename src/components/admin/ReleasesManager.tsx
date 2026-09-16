@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AdminRelease, ArtistOption } from "@/lib/types/admin-tracks";
 import type { ReleaseInput } from "@/lib/validations";
@@ -289,10 +289,14 @@ export function ReleasesManager({ initialReleases, artists }: ReleasesManagerPro
                 ))}
               </select>
             </Field>
-            <Field id="release-title" label="عنوان الإصدار">
-              <Input id="release-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-            </Field>
-            <TranslationField id="release-title-en" label="عنوان الإصدار" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <BilingualField
+              id="release-title"
+              label="عنوان الإصدار"
+              value={values.title}
+              onChange={(value) => setField("title", value)}
+              valueEn={values.title_en}
+              onChangeEn={(value) => setField("title_en", value)}
+            />
             <Field id="release-type" label="نوع الإصدار">
               <select
                 id="release-type"

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { AudioUploadField } from "@/components/admin/media/AudioUploadField";
 import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
@@ -279,10 +279,14 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
                 ))}
               </select>
             </Field>
-            <Field id="track-title" label="عنوان المقطع">
-              <Input id="track-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-            </Field>
-            <TranslationField id="track-title-en" label="عنوان المقطع" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <BilingualField
+              id="track-title"
+              label="عنوان المقطع"
+              value={values.title}
+              onChange={(value) => setField("title", value)}
+              valueEn={values.title_en}
+              onChangeEn={(value) => setField("title_en", value)}
+            />
             <Field
               id="track-audio-url"
               label="الملف الصوتي"

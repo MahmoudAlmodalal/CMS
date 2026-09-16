@@ -21,12 +21,7 @@ interface ArtistWorksProps {
 export async function ArtistWorks({ works }: ArtistWorksProps) {
   // A row whose link no longer parses (hand-edited in the DB) is skipped rather
   // than rendered as a dead card.
-  const playable = works
-    .map((work) => ({ work, videoId: parseYouTubeId(work.youtube_url) }))
-    .filter(
-      (entry): entry is { work: ArtistWork; videoId: string } =>
-        entry.videoId !== null,
-    );
+  const playable = works.filter((work) => parseYouTubeId(work.youtube_url) !== null);
 
   if (playable.length === 0) return null;
 
@@ -48,8 +43,8 @@ export async function ArtistWorks({ works }: ArtistWorksProps) {
         </h2>
 
         <div className="grid grid-cols-1 gap-[16px] pt-[40px] sm:grid-cols-2 lg:grid-cols-3">
-          {playable.map(({ work, videoId }) => (
-            <ArtistWorkCard key={work.id} work={work} videoId={videoId} />
+          {playable.map((work) => (
+            <ArtistWorkCard key={work.id} work={work} />
           ))}
         </div>
       </section>

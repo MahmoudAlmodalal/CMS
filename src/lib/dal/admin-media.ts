@@ -10,15 +10,26 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { storageBaseUrl } from "@/lib/storage";
 import type { StorageBucket, StorageFile } from "@/lib/types/admin-media";
 
+/** Uploads live at <folder>/<entityId>/<file>, so two levels below a folder
+ *  prefix reaches every real object. A third level only costs round trips. */
+const MAX_LIST_DEPTH = 2;
+
 /**
  * Lists files in a storage bucket, optionally scoped to a folder prefix.
  * Uses the read-only server client (RLS-enforced).
+ *
+ * Errors are RETURNED, not swallowed. This used to `return []` on any storage
+ * failure, so a misconfigured bucket, a bad key or an RLS change was
+ * indistinguishable from an empty library and the panel simply said "no files".
+ *
+ * Each level fans out in parallel; a serial walk of a bucket with many entity
+ * folders was slow enough on Vercel to hit the function timeout.
  */
 export async function listBucketFiles(
   bucket: StorageBucket,
   folder?: string,
   depth = 0,
-): Promise<StorageFile[]> {
+): Promise<{ files: StorageFile[]; error: string | null }> {
   const supabase = await createClient();
   const prefix = folder ? `${folder}/` : "";
 
@@ -29,21 +40,23 @@ export async function listBucketFiles(
 
   if (error) {
     console.error(`DAL Error [listBucketFiles(${bucket}/${prefix})]:`, error.message);
-    return [];
+    return { files: [], error: error.message };
   }
 
-  if (!data) return [];
+  if (!data) return { files: [], error: null };
 
   const base = storageBaseUrl();
 
   const files: StorageFile[] = [];
+  const descend: Array<Promise<{ files: StorageFile[]; error: string | null }>> = [];
+
   for (const item of data) {
     if (item.name === ".emptyFolderPlaceholder") continue;
     const filePath = folder ? `${folder}/${item.name}` : item.name;
     // Storage lists one level; folders come back without an id. Uploads live at
     // <folder>/<entity>/<file>, so descend (bounded) to reach the actual files.
     if (!item.id) {
-      if (depth < 3) files.push(...(await listBucketFiles(bucket, filePath, depth + 1)));
+      if (depth < MAX_LIST_DEPTH) descend.push(listBucketFiles(bucket, filePath, depth + 1));
       continue;
     }
     const metadata = item.metadata as Record<string, unknown> | null;
@@ -57,7 +70,16 @@ export async function listBucketFiles(
       mimeType: metadata?.mimetype as string | undefined,
     });
   }
-  return files;
+
+  // One sub-listing failing must not lose the files that did come back, so the
+  // first error is reported alongside whatever was listed successfully.
+  let firstError: string | null = null;
+  for (const result of await Promise.all(descend)) {
+    files.push(...result.files);
+    firstError ??= result.error;
+  }
+
+  return { files, error: firstError };
 }
 
 /**

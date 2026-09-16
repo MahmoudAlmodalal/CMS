@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { Field, ModalShell, Notice, StatusBadge, TranslationField } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AcademyCourseInput, CurriculumItemInput } from "@/lib/validations/cms";
@@ -360,17 +360,25 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
           notice={<Notice notice={notice} />}
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل مسار" : "نموذج إضافة مسار"} className="contents">
-            <Field id="course-title" label="عنوان المسار">
-              <Input id="course-title" value={values.title} onChange={(event) => setField("title", event.target.value)} required />
-            </Field>
-            <TranslationField id="course-title-en" label="عنوان المسار" value={values.title_en} onChange={(value) => setField("title_en", value)} />
+            <BilingualField
+              id="course-title"
+              label="عنوان المسار"
+              value={values.title}
+              onChange={(value) => setField("title", value)}
+              valueEn={values.title_en}
+              onChangeEn={(value) => setField("title_en", value)}
+            />
             <Field id="course-slug" label="المعرّف المختصر" help="أحرف لاتينية صغيرة وأرقام وشرطات فقط.">
               <Input id="course-slug" dir="ltr" value={values.slug} onChange={(event) => setField("slug", event.target.value)} required />
             </Field>
-            <Field id="course-track-category" label="تصنيف المسار">
-              <Input id="course-track-category" value={values.track_category} onChange={(event) => setField("track_category", event.target.value)} required />
-            </Field>
-            <TranslationField id="course-track-category-en" label="تصنيف المسار" value={values.track_category_en} onChange={(value) => setField("track_category_en", value)} />
+            <BilingualField
+              id="course-track-category"
+              label="تصنيف المسار"
+              value={values.track_category}
+              onChange={(value) => setField("track_category", value)}
+              valueEn={values.track_category_en}
+              onChangeEn={(value) => setField("track_category_en", value)}
+            />
             <Field id="course-order" label="ترتيب الظهور" help="رقم بين 1 و10.">
               <Input
                 id="course-order"
@@ -394,10 +402,16 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
                 ]}
               />
             </Field>
-            <Field id="course-instructor-name" label="اسم المدرب (نص حر)" required={false} help="يُستخدم عند عدم اختيار مدرب من القائمة.">
-              <Input id="course-instructor-name" value={values.instructor_name ?? ""} onChange={(event) => setField("instructor_name", event.target.value)} />
-            </Field>
-            <TranslationField id="course-instructor-name-en" label="اسم المدرب" value={values.instructor_name_en} onChange={(value) => setField("instructor_name_en", value)} />
+            <BilingualField
+              id="course-instructor-name"
+              label="اسم المدرب (نص حر)"
+              required={false}
+              help="يُستخدم عند عدم اختيار مدرب من القائمة."
+              value={values.instructor_name ?? ""}
+              onChange={(value) => setField("instructor_name", value)}
+              valueEn={values.instructor_name_en}
+              onChangeEn={(value) => setField("instructor_name_en", value)}
+            />
             <Field id="course-image" label="رابط صورة المسار" required={false}>
               <MediaPickerField
                 id="course-image"
@@ -407,10 +421,17 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
                 folder="tracks"
               />
             </Field>
-            <Field id="course-description" label="وصف المسار">
-              <Textarea id="course-description" rows={5} className="min-h-[140px]" value={values.description} onChange={(event) => setField("description", event.target.value)} required />
-            </Field>
-            <TranslationField id="course-description-en" label="وصف المسار" multiline rows={5} className="min-h-[140px]" value={values.description_en} onChange={(value) => setField("description_en", value)} />
+            <BilingualField
+              id="course-description"
+              label="وصف المسار"
+              multiline
+              rows={5}
+              className="min-h-[140px]"
+              value={values.description}
+              onChange={(value) => setField("description", value)}
+              valueEn={values.description_en}
+              onChangeEn={(value) => setField("description_en", value)}
+            />
 
             {/* ── تفاصيل صفحة المسار ───────────────────────────────── */}
             <div className="md:col-span-2">

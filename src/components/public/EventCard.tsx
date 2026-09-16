@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowEndIcon, CalendarIcon } from "@/components/ui/Icons";
 import type { Event } from "@/lib/dal/events";
+import { cssUrl } from "@/lib/storage";
 
 interface EventCardProps {
   event: Event;
@@ -48,7 +49,7 @@ export function EventCard({ event, style }: EventCardProps) {
         <div
           className="motion-image motion-kenburns absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${event.image_url || "/assets/events/default-event.png"})`,
+            backgroundImage: cssUrl(event.image_url, "/assets/events/default-event.png"),
           }}
           aria-label={event.title}
           role="img"
