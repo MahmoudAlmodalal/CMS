@@ -4,7 +4,6 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
-import { GrainOverlay } from "./motion/GrainOverlay";
 import { PublicButton } from "./PublicButton";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
@@ -50,7 +49,6 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
 
   return (
     <section
-      data-band="dark"
       // The band reserves the navbar's clearance up top rather than letting the
       // centred block ride underneath the floating pill, and 740 is a floor rather
       // than a fixed height so a longer headline lengthens the band instead of
@@ -85,8 +83,6 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
         <div className="absolute inset-0 bg-[linear-gradient(151.78deg,rgba(0,0,0,1)_12.8%,rgba(0,0,0,0.1)_66.88%)]" />
       </Parallax>
 
-      {/* Ambient grain over the espresso band, per the textured Figma fill. */}
-      <GrainOverlay />
 
       <Container className="relative z-10 w-full">
         <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">

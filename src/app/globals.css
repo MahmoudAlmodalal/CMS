@@ -459,7 +459,6 @@ bdi, .bdi-isolate {
 :root {
   --motion-expressive: 520ms;
   --motion-hero: 900ms;
-  --motion-ambient: 18s;
   --motion-marquee-duration: 48s;
 }
 
@@ -555,30 +554,6 @@ bdi, .bdi-isolate {
 @keyframes motion-marquee-scroll {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
-}
-
-/* --- Ambient grain -------------------------------------------------------- */
-
-.motion-grain {
-  position: absolute;
-  inset: -100%;
-  pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: var(--grain-image);
-  background-size: 180px 180px;
-  animation: motion-grain-drift var(--motion-ambient) steps(8, end) infinite;
-  will-change: transform;
-}
-
-.motion-grain[data-paused="true"] { animation-play-state: paused; }
-
-@keyframes motion-grain-drift {
-  0%   { transform: translate3d(0, 0, 0); }
-  25%  { transform: translate3d(-2%, 1.5%, 0); }
-  50%  { transform: translate3d(1.5%, -2%, 0); }
-  75%  { transform: translate3d(-1%, -1%, 0); }
-  100% { transform: translate3d(0, 0, 0); }
 }
 
 /* --- Skeleton shimmer ----------------------------------------------------- */
@@ -714,7 +689,6 @@ bdi, .bdi-isolate {
   .motion-text-reveal > .motion-text-line > span,
   .motion-stroke path,
   .motion-marquee-track,
-  .motion-grain,
   .motion-shimmer::after,
   .motion-image.motion-kenburns,
   .motion-equalizer-bar,
@@ -734,7 +708,7 @@ bdi, .bdi-isolate {
   }
 
   .motion-equalizer-bar { transform: scaleY(0.6) !important; }
-  .motion-grain, .motion-shimmer::after, .motion-ripple::before { opacity: 0 !important; }
+  .motion-shimmer::after, .motion-ripple::before { opacity: 0 !important; }
   .motion-curtain { display: none !important; }
   .motion-underline::after { transition: none !important; }
 }

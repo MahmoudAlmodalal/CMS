@@ -2,7 +2,6 @@ export { TextReveal } from "./TextReveal";
 export { Parallax } from "./Parallax";
 export { CountUp } from "./CountUp";
 export { StrokeUnderline } from "./StrokeUnderline";
-export { GrainOverlay } from "./GrainOverlay";
 export { Marquee } from "./Marquee";
 export { ReadingProgress } from "./ReadingProgress";
 export { Equalizer } from "./Equalizer";

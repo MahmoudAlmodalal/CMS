@@ -8,7 +8,6 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 import { TextReveal } from "./motion/TextReveal";
-import { GrainOverlay } from "./motion/GrainOverlay";
 
 interface EditorialFeatureProps {
   articles: Article[];
@@ -56,8 +55,7 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   }
 
   return (
-    <section data-band="dark" className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] py-12 md:py-16 lg:h-[709px] lg:py-0">
-      <GrainOverlay />
+    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] py-12 md:py-16 lg:h-[709px] lg:py-0">
 
       {/* Heading 87:14401 */}
       <div className="w-full px-5 text-center lg:px-0">

@@ -9,7 +9,6 @@ import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
 import { ScrollReveal } from "./ScrollReveal";
 import { TextReveal } from "./motion/TextReveal";
 import { Marquee } from "./motion/Marquee";
-import { GrainOverlay } from "./motion/GrainOverlay";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 import { useMotionPrefs } from "./motion/useMotionPrefs";
 
@@ -67,8 +66,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
 
   if (!artists || artists.length === 0) return null;
   return (
-    <section data-band="dark" className="relative w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
-      <GrainOverlay />
+    <section className="relative w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
         <TextReveal
           as="h2"

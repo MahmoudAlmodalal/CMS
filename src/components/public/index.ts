@@ -60,7 +60,6 @@ export {
   Parallax,
   CountUp,
   StrokeUnderline,
-  GrainOverlay,
   Marquee,
   ReadingProgress,
   Equalizer,

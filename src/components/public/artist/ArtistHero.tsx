@@ -45,7 +45,6 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
 
   return (
     <section
-      data-band="dark"
       // 678 on the 390 frame (141:16220 is 390x688 hung at y=-10), 611 on the 1440
       // one. The 500 that sat at sm: was invented — Figma has no tablet artboard —
       // so the band holds its measured mobile height until the 1440 one takes over.

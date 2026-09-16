@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
-import { GrainOverlay } from "./motion/GrainOverlay";
 
 interface PageHeroProps {
   /** Centred headline. Pass rich content to colour a phrase, as the design does. */
@@ -68,7 +67,6 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <section
-      data-band="dark"
       // The 500 that used to sit at sm: was invented — Figma has no tablet frame —
       // so the band holds its measured 390 height until the 1440 one takes over,
       // rather than passing through a figure no frame declares. Both are floors now,
@@ -103,7 +101,6 @@ export function PageHero({
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
 
-      <GrainOverlay />
 
       {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at
           x=376 on a 390 artboard), so the mobile offset of this block is not
