@@ -12,12 +12,24 @@ import { usePathname } from "next/navigation";
  *   reveals it animates itself via inline styles.
  * - This observer owns everything animated purely in CSS: `.motion-stagger`
  *   grids, and any element that opts in with `data-reveal-on-scroll`
- *   (stroke-draw underlines, clip-path wipes, the reading drop-cap).
+ *   (`StrokeUnderline`, the text-reveal wipes, the reading drop-cap).
+ *
+ * Two behaviours matter here:
+ *
+ * 1. **Reveals replay.** The observer never unobserves. It flips
+ *    `data-scroll-reveal` back to `"false"` when an element leaves the
+ *    viewport, which resets the CSS keyframes so the next pass animates again.
+ * 2. **Late nodes are picked up.** Filter tabs on /artists, /news, /events and
+ *    /academy swap their card grids without navigating, so a pathname-scoped
+ *    query would miss every card rendered after first paint. A MutationObserver
+ *    re-scans on the next frame whenever the tree changes.
  *
  * Content stays visible by default; JavaScript only adds the hidden pre-reveal
  * state to elements confirmed to be below the fold, so a JS failure or a
  * crawler still sees a fully rendered page.
  */
+const SELECTOR = ".motion-stagger, [data-reveal-on-scroll]";
+
 export function MotionReady() {
   const pathname = usePathname();
 
@@ -31,47 +43,64 @@ export function MotionReady() {
 
     if (reduced || typeof IntersectionObserver === "undefined") return;
 
-    const targets = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        ".motion-stagger, [data-reveal-on-scroll]",
-      ),
-    );
-
-    const reveal = (target: HTMLElement) => {
-      target.dataset.scrollReveal = "true";
+    const setState = (target: HTMLElement, revealed: boolean) => {
+      const value = revealed ? "true" : "false";
+      // Only touch the DOM on an actual change: the observer fires on every
+      // threshold crossing and a redundant write would restart the animation
+      // mid-flight.
+      if (target.dataset.scrollReveal === value) return;
+      target.dataset.scrollReveal = value;
       if (target.classList.contains("motion-stagger")) {
-        target.dataset.staggerRevealed = "true";
+        target.dataset.staggerRevealed = value;
       }
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          reveal(entry.target as HTMLElement);
-          observer.unobserve(entry.target);
+          setState(entry.target as HTMLElement, entry.isIntersecting);
         });
       },
       { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
     );
 
-    targets.forEach((target) => {
+    // Elements already on screen at first paint reveal immediately rather than
+    // waiting for a scroll that may never come — but they stay observed, so
+    // scrolling past and back still replays them.
+    const register = (target: HTMLElement) => {
+      if (target.dataset.motionObserved === "true") return;
+      target.dataset.motionObserved = "true";
+
       const alreadyVisible = target.getBoundingClientRect().top < window.innerHeight;
-
-      if (alreadyVisible) {
-        reveal(target);
-        return;
-      }
-
-      target.dataset.scrollReveal = "false";
-      if (target.classList.contains("motion-stagger")) {
-        target.dataset.staggerRevealed = "false";
-      }
+      setState(target, alreadyVisible);
       observer.observe(target);
+    };
+
+    const scan = () => {
+      document.querySelectorAll<HTMLElement>(SELECTOR).forEach(register);
+    };
+
+    scan();
+
+    let frame = 0;
+    const mutations = new MutationObserver(() => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        scan();
+      });
     });
+    mutations.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      if (frame) cancelAnimationFrame(frame);
+      mutations.disconnect();
       observer.disconnect();
+      // The flag is per-observer; leaving it set would make the next mount
+      // skip every existing node.
+      document.querySelectorAll<HTMLElement>(SELECTOR).forEach((target) => {
+        delete target.dataset.motionObserved;
+      });
     };
   }, [pathname]);
 

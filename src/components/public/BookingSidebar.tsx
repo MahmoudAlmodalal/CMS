@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Bdi } from "@/components/ui/Bidi";
 import { toArabicDigits } from "@/lib/formatters";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface BookingSidebarProps {
   contactEmail: string;
@@ -68,6 +69,7 @@ export function BookingSidebar({
 
   return (
     <aside className="ms-8 flex w-[288px] min-w-0 flex-col gap-5 text-start lg:ms-0 lg:w-[412px] lg:shrink">
+      <ScrollReveal variant="up">
       <div className="relative isolate overflow-hidden rounded-[12px] bg-brand-espresso p-5 sm:p-8">
         <div
           aria-hidden="true"
@@ -94,7 +96,9 @@ export function BookingSidebar({
           </div>
         ))}
       </div>
+      </ScrollReveal>
 
+      <ScrollReveal variant="up" delay={0.12}>
       <div className="rounded-[12px] bg-brand-primary p-5 sm:p-8">
         <h2 className="text-[16px] font-bold leading-[24px] text-brand-tint">
           {t("stepsHeading")}
@@ -119,6 +123,7 @@ export function BookingSidebar({
           ))}
         </ol>
       </div>
+      </ScrollReveal>
     </aside>
   );
 }

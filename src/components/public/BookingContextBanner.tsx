@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CalendarIcon, MusicIcon, CloseIcon } from "@/components/ui/Icons";
 import type { BookingEventContext } from "@/lib/dal/booking";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface BookingContextBannerProps {
   eventContext?: BookingEventContext | null;
@@ -28,7 +29,8 @@ export function BookingContextBanner({
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-brand-primary/20 bg-brand-primary/5 p-4 text-start">
+    <ScrollReveal variant="soft" className="mb-6">
+      <div className="rounded-xl border border-brand-primary/20 bg-brand-primary/5 p-4 text-start">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 mt-0.5">
@@ -69,7 +71,8 @@ export function BookingContextBanner({
           <CloseIcon size={14} />
           <span>{t("contextClear")}</span>
         </Link>
+        </div>
       </div>
-    </div>
+    </ScrollReveal>
   );
 }

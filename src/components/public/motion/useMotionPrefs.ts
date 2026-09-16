@@ -42,6 +42,12 @@ export function useMotionPrefs() {
     isTouch: !isFinePointer,
     /** Rich, scroll-linked or looping motion is only worth its cost here. */
     allowAmbient: !reduced && isFinePointer,
+    /**
+     * Decorative per-element effects — word-by-word wipes, stroke draws, the
+     * grid cascade. At phone size they are too small to read as craft and cost
+     * a paint per piece, so phones get the plain fade instead.
+     */
+    allowDecorative: !reduced && !isMobile,
   };
 }
 

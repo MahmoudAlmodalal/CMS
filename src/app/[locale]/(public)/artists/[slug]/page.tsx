@@ -9,7 +9,6 @@ import {
   ArtistWorks,
   ArtistDiscography,
   BookingBanner,
-  ScrollReveal,
 } from "@/components/public";
 import { getArtistBySlug, getPublishedArtistSlugs } from "@/lib/dal/artists";
 import { getPublishedReleasesByArtist } from "@/lib/dal/releases";
@@ -105,12 +104,10 @@ export default async function ArtistDetailPage({
 
       {/* 84 from `Frame 44`'s close at 1133 to the band heading `141:16466` at 1217. */}
       <div className="mt-[84px] lg:mt-[31.17px]">
-        <ScrollReveal>
-          <ArtistGallery
-            artistName={artist.name}
-            quote={artist.spotlight_quote?.trim() || artist.quote}
-          />
-        </ScrollReveal>
+        <ArtistGallery
+          artistName={artist.name}
+          quote={artist.spotlight_quote?.trim() || artist.quote}
+        />
       </div>
 
       {/* الأعمال — not a Figma band: the frame draws no works section because the
@@ -123,9 +120,7 @@ export default async function ArtistDetailPage({
 
       {/* 66 from the quote column's close at 2050 to `Section` 141:16468 at 2116. */}
       <div className="mt-[66px] lg:mt-[80.02px]">
-        <ScrollReveal>
-          <ArtistDiscography releases={releases} />
-        </ScrollReveal>
+        <ArtistDiscography releases={releases} />
       </div>
 
       <div className="lg:-mt-[4.16px]">

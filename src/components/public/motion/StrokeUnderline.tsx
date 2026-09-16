@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useMotionPrefs } from "./useMotionPrefs";
 
 export interface StrokeUnderlineProps {
   className?: string;
@@ -18,10 +19,14 @@ export interface StrokeUnderlineProps {
  * layout cost, and it mirrors cleanly under RTL because the curve is symmetric.
  */
 export function StrokeUnderline({ className = "", width = 180 }: StrokeUnderlineProps) {
+  const { allowDecorative } = useMotionPrefs();
+
+  // Without the draw the flourish is still part of the type system, so it
+  // renders at full length rather than disappearing on phones.
   return (
     <svg
-      className={`motion-stroke pointer-events-none block ${className}`.trim()}
-      data-reveal-on-scroll=""
+      className={`${allowDecorative ? "motion-stroke" : ""} pointer-events-none block ${className}`.trim()}
+      {...(allowDecorative ? { "data-reveal-on-scroll": "" } : {})}
       width={width}
       height={12}
       viewBox="0 0 180 12"

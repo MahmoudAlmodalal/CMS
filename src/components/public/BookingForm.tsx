@@ -7,6 +7,7 @@ import { INITIAL_BOOKING_ACTION_STATE } from "@/lib/validations/booking";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/Icons";
 import type { BookingArtistOption } from "@/lib/dal/booking";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface BookingFormProps {
   artists: BookingArtistOption[];
@@ -156,6 +157,7 @@ export function BookingForm({
       {/* ================================================================== */}
       {/* Group 1: Personal Information (Figma Node 91:17174)                 */}
       {/* ================================================================== */}
+      <ScrollReveal variant="up" className="w-full">
       <fieldset className="m-0 flex flex-col border-0 p-0">
         <legend className={LEGEND_CLASS}>
           <span>♪</span>
@@ -256,10 +258,12 @@ export function BookingForm({
           </div>
         </div>
       </fieldset>
+      </ScrollReveal>
 
       {/* ================================================================== */}
       {/* Group 2: Event Details (Figma Node 91:17207)                       */}
       {/* ================================================================== */}
+      <ScrollReveal variant="up" delay={0.1} className="w-full">
       <fieldset className="m-0 mt-8 md:mt-12 flex flex-col border-0 pt-6 md:pt-8">
         <legend className={LEGEND_CLASS}>
           <span>♪</span>
@@ -384,10 +388,12 @@ export function BookingForm({
           ) : null}
         </div>
       </fieldset>
+      </ScrollReveal>
 
       {/* ================================================================== */}
       {/* Legal Disclaimer Notice (Figma Node 91:17246)                      */}
       {/* ================================================================== */}
+      <ScrollReveal variant="soft" delay={0.2} className="w-full">
       <div className="flex w-full flex-col items-start gap-4 pb-6 text-start">
         <p className="text-[12px] leading-[15px] text-gradscale-400">{t("consent")}</p>
 
@@ -409,6 +415,7 @@ export function BookingForm({
           )}
         </Button>
       </div>
+      </ScrollReveal>
     </form>
   );
 }

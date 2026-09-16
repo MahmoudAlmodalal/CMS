@@ -55,7 +55,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
         className="absolute left-0 top-0 -z-10 h-[12.68%] w-[16.67%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat"
       />
 
-      <div className="relative h-[240px] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
+      <div className="group relative h-[240px] w-full shrink-0 overflow-hidden lg:aspect-auto lg:h-[397px]">
         <SafeImage
           src={event.image_url}
           alt={event.title}
@@ -64,7 +64,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
           quality={90}
           fallbackText={event.title}
           sizes="(min-width: 1024px) 503px, 100vw"
-          className="object-cover object-center"
+          className="motion-image motion-kenburns object-cover object-center"
         />
       </div>
 

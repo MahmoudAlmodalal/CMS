@@ -38,10 +38,12 @@ export function TextReveal({
   wordsPerLine = 4,
   delay = 0,
 }: TextRevealProps) {
-  const { reduced } = useMotionPrefs();
+  const { allowDecorative } = useMotionPrefs();
   const id = useId();
 
-  if (reduced || !text) {
+  // Phones render the heading as one plain string: the per-word wipe is
+  // illegible at that measure and the section still fades in around it.
+  if (!allowDecorative || !text) {
     return <Tag className={className}>{text}</Tag>;
   }
 
