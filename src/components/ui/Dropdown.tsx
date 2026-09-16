@@ -249,7 +249,13 @@ export function Dropdown<T extends string>({
           value={value}
           onChange={() => {}}
           className="pointer-events-none absolute h-px w-px opacity-0"
-        />
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value} disabled={option.disabled}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       )}
 
       {mounted &&
