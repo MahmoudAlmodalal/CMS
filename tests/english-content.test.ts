@@ -186,6 +186,48 @@ test("English content — 5. Every CMS schema declares an _en twin for each tran
   }
 });
 
+test("English content — a reader that narrows its columns must still fetch the _en siblings", () => {
+  // localizeContentList can only translate a column it was handed. An explicit
+  // select list that left the _en columns out made /en/artists render Arabic
+  // while the detail page (select *) rendered English.
+  const source = read("src/lib/dal/artists.ts");
+  for (const reader of ["getFeaturedArtists", "getPublishedArtists", "getArtistBySlug"]) {
+    const body = source.match(new RegExp(`export async function ${reader}\\b[\\s\\S]*?\\n\\}`));
+    assert.ok(body, `artists.ts must export ${reader}`);
+    const select = body[0].match(/\.select\(\s*("[^"]*"|`[^`]*`)/);
+    assert.ok(select, `${reader} must name its columns`);
+    if (!select[1].includes("*")) {
+      for (const column of migrationColumnsByTable().get("artists") ?? []) {
+        assert.ok(
+          select[1].includes(column),
+          `${reader} narrows its columns but drops ${column}, so /en falls back to Arabic`
+        );
+      }
+    }
+  }
+});
+
+test("English content — the fallback roster carries English for every localized field", () => {
+  // Without Supabase the public site renders CANONICAL_FEATURED_ARTISTS. Rows
+  // with no _en values make the whole English demo site Arabic.
+  const source = read("src/lib/artists.ts");
+  const roster = source.slice(source.indexOf("CANONICAL_FEATURED_ARTISTS"));
+  const records = roster.split(/(?=\n  \{\n    id: "a1000000-)/).slice(1);
+  assert.equal(records.length, 8, "the roster is the eight artists the directory draws");
+  for (const record of records) {
+    const slug = record.match(/slug: "([a-z0-9-]+)"/);
+    assert.ok(slug, "every roster record carries a slug");
+    for (const column of migrationColumnsByTable().get("artists") ?? []) {
+      assert.match(record, new RegExp(`\\n    ${column}: "`), `${slug[1]} is missing ${column}`);
+    }
+    assert.doesNotMatch(
+      record,
+      /spotlight_quote: null/,
+      `${slug[1]} leaves the gallery quote empty`
+    );
+  }
+});
+
 test("English content — 6. Public DAL readers resolve content into the request locale", () => {
   // Each public reader is a thin wrapper over a private *Raw fetcher; the
   // wrapper is what pages import, so localization cannot be bypassed.

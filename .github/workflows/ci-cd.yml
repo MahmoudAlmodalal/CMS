@@ -49,9 +49,39 @@ jobs:
       - name: Production build
         run: npm run build
 
+  migrate:
+    name: Apply database migrations
+    needs: validate
+    # Runs before the deploy on purpose: new code must never reach a database
+    # that is missing the columns it reads. A failure here fails the job and
+    # blocks the deploy rather than shipping against a half-migrated schema.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      # Two runs applying migrations at once would race on the ledger.
+      group: supabase-migrate-production
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure psql is available
+        run: psql --version || (sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-client)
+
+      - name: Apply migrations when configured
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "Migrations skipped: configure the SUPABASE_DB_URL repository secret."
+            exit 0
+          fi
+          ./scripts/apply-migrations.sh
+
   deploy:
     name: Deploy production to Vercel
-    needs: validate
+    needs: [validate, migrate]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15

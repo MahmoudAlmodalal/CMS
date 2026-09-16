@@ -100,9 +100,7 @@ export async function getPublishedArtists(options?: { category?: string }): Prom
     const supabase = await createClient();
     let query = supabase
       .from("artists")
-      .select(
-        "id, name, slug, category, genre_tag, city, quote, spotlight_quote, short_bio, full_bio, specialties, portrait_image_url, is_featured, is_published, display_order, created_at, updated_at"
-      )
+      .select("*")
       .eq("is_published", true)
       .order("display_order", { ascending: true })
       .order("name", { ascending: true });

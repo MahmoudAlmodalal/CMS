@@ -14,6 +14,7 @@ export interface SiteSettingsFormValues {
   hero_subheadline: string;
   hero_subheadline_en: string;
   hero_image_url: string;
+  hero_video_url: string;
   about_headline: string;
   about_headline_en: string;
   about_body: string;
@@ -202,6 +203,7 @@ export function getInitialValues(settings: SiteSettings): SiteSettingsFormValues
     hero_subheadline: settings.hero_subheadline,
     hero_subheadline_en: settings.hero_subheadline_en ?? "",
     hero_image_url: settings.hero_image_url,
+    hero_video_url: settings.hero_video_url ?? "",
     about_headline: settings.about_headline,
     about_headline_en: settings.about_headline_en ?? "",
     about_body: settings.about_body,
@@ -374,6 +376,7 @@ export function buildSiteSettingsInput(values: SiteSettingsFormValues): SiteSett
     hero_subheadline: values.hero_subheadline,
     hero_subheadline_en: values.hero_subheadline_en.trim() || null,
     hero_image_url: values.hero_image_url,
+    hero_video_url: values.hero_video_url.trim() || null,
     about_headline: values.about_headline,
     about_headline_en: values.about_headline_en.trim() || null,
     about_body: values.about_body,

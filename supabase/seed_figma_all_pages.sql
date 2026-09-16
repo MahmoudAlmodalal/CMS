@@ -257,13 +257,19 @@ ON CONFLICT (id) DO UPDATE SET
   is_published = EXCLUDED.is_published;
 
 -- 3. FEATURED ARTIST (Sara Alsawt)
+-- category, full_bio, specialties and portrait_image_url are NOT NULL with no
+-- default, so they are supplied here: without them this statement cannot run
+-- against the migrated schema at all.
 INSERT INTO public.artists (
-  id, slug, name, name_en, genre_tag, genre_tag_en, city, city_en, quote, quote_en, short_bio, short_bio_en, is_published, is_featured, display_order
+  id, slug, name, name_en, category, genre_tag, genre_tag_en, city, city_en, quote, quote_en,
+  short_bio, short_bio_en, full_bio, full_bio_en, specialties, specialties_en,
+  portrait_image_url, is_published, is_featured, display_order
 ) VALUES (
   'b1111111-1111-1111-1111-111111111111',
   'sara-alsawt',
   'سارة الصوت',
   'Sara Alsawt',
+  'singing',
   'غناء أصيل وموشحات أندلسية',
   'Classical Tarab & Andalusian Vocals',
   'بيروت — لبنان',
@@ -272,6 +278,11 @@ INSERT INTO public.artists (
   'The voice is the truest mirror of the soul — never lie to your audience.',
   'مغنية متخصصة في الطرب الأصيل والغناء العاطفي. صوتها يحمل دفء الأرض وعمق التراث مع لمسة معاصرة تلامس الأجيال.',
   'A singer specializing in authentic tarab and emotive vocals. Her voice carries the warmth of the earth and the depth of heritage with a contemporary touch.',
+  'سارة الصوت فنانة مخضرمة متخصصة في الطرب الأصيل والغناء الأندلسي، صوتها يجمع بين الأصالة والمعاصرة، تجوب المسارح العربية والدولية منذ أكثر من عقد من الزمن.',
+  'Sara Alsawt is a seasoned artist specialising in authentic tarab and Andalusian song. Her voice joins the classical and the contemporary, and she has toured Arab and international stages for more than a decade.',
+  'الصوت • الغناء الأندلسي • الطرب الأصيل',
+  'Voice • Andalusian song • Classical tarab',
+  '/assets/artists/artist-1.png',
   true,
   true,
   1
@@ -279,6 +290,7 @@ INSERT INTO public.artists (
 ON CONFLICT (slug) DO UPDATE SET
   name = EXCLUDED.name,
   name_en = EXCLUDED.name_en,
+  category = EXCLUDED.category,
   genre_tag = EXCLUDED.genre_tag,
   genre_tag_en = EXCLUDED.genre_tag_en,
   city = EXCLUDED.city,
@@ -287,6 +299,11 @@ ON CONFLICT (slug) DO UPDATE SET
   quote_en = EXCLUDED.quote_en,
   short_bio = EXCLUDED.short_bio,
   short_bio_en = EXCLUDED.short_bio_en,
+  full_bio = EXCLUDED.full_bio,
+  full_bio_en = EXCLUDED.full_bio_en,
+  specialties = EXCLUDED.specialties,
+  specialties_en = EXCLUDED.specialties_en,
+  portrait_image_url = EXCLUDED.portrait_image_url,
   is_published = EXCLUDED.is_published,
   is_featured = EXCLUDED.is_featured,
   display_order = EXCLUDED.display_order;

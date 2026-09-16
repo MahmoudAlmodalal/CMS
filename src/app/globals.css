@@ -711,6 +711,9 @@ bdi, .bdi-isolate {
   .motion-shimmer::after, .motion-ripple::before { opacity: 0 !important; }
   .motion-curtain { display: none !important; }
   .motion-underline::after { transition: none !important; }
+  /* The hero's YouTube backdrop is motion with no still frame of its own:
+     dropping it uncovers hero_image_url, which is drawn underneath. */
+  .hero-youtube-backdrop { display: none !important; }
 }
 
 /* --- Shared-element route morphs ------------------------------------------ */

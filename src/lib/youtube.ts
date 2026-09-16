@@ -88,6 +88,36 @@ export function youTubeEmbedUrl(id: string, opts: { autoplay?: boolean } = {}): 
   return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
 }
 
+/**
+ * Embed URL for a decorative, non-interactive backdrop: muted, autoplaying and
+ * looping, with every piece of player furniture the API can switch off already
+ * off (controls, keyboard, fullscreen, annotations, captions, end-screen
+ * suggestions). `loop` only loops when `playlist` names the same id, which is
+ * why the id is passed twice.
+ *
+ * What the parameters cannot remove — the hover title card and the corner
+ * watermark — the caller crops away by overscaling the frame inside an
+ * `overflow-hidden` box, so the band does not read as an embed.
+ */
+export function youTubeBackdropEmbedUrl(id: string): string {
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    loop: "1",
+    playlist: id,
+    controls: "0",
+    modestbranding: "1",
+    rel: "0",
+    showinfo: "0",
+    disablekb: "1",
+    fs: "0",
+    iv_load_policy: "3",
+    cc_load_policy: "0",
+    playsinline: "1",
+  });
+  return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
+}
+
 /** Canonical watch link, for a "open on YouTube" affordance. */
 export function youTubeWatchUrl(id: string): string {
   return `https://www.youtube.com/watch?v=${id}`;
