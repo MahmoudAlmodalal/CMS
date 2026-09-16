@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Event } from "@/lib/dal/events";
 import { SafeImage } from "@/components/ui/SafeImage";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface HomeEventsProps {
   events: Event[];
@@ -89,8 +90,11 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
   const day = new Intl.DateTimeFormat(dateLocale, { day: "numeric", timeZone: "UTC" });
   const month = new Intl.DateTimeFormat(dateLocale, { month: "long", timeZone: "UTC" });
 
+  const isRtl = locale === "ar";
+  const arrowGlyph = isRtl ? "←" : "→";
+
   return (
-    <section className="relative flex w-full flex-col overflow-hidden bg-brand-cream pb-[54px] pt-[48px] lg:block lg:h-[678px] lg:py-0">
+    <section className="relative flex w-full flex-col overflow-hidden bg-brand-cream py-12 md:py-16 lg:block lg:h-[678px] lg:py-0">
       {/* Centering wrapper: keeps the 1440px artboard centered on ultra-wide screens */}
       <div className="relative mx-auto flex w-full max-w-[1440px] flex-col lg:block lg:h-[678px]">
         {/* Panel 87:14468 — 939 wide, hanging 4px off the inline start. */}
@@ -108,58 +112,61 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
           {/* Content column 87:14472 */}
           <div className="contents text-start lg:absolute lg:start-[31.67px] lg:top-[96px] lg:block lg:w-[875.333px]">
             {/* Heading 87:14480 */}
-            <h2 className="order-1 mx-auto mb-4 h-auto min-h-[64px] w-[326px] max-w-full pt-[8px] text-start font-display text-[32px] font-normal leading-[32px] text-brand-espresso lg:mx-0 lg:mb-0 lg:h-[55.6px] lg:w-auto lg:min-h-0 lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
-              {heading || t("eventsHeading")}
-            </h2>
+            <ScrollReveal variant="up">
+              <h2 className="order-1 mx-auto mb-4 h-auto min-h-[64px] w-[326px] max-w-full pt-[8px] text-start font-display text-3xl font-normal leading-relaxed text-brand-espresso sm:text-4xl md:text-5xl lg:mx-0 lg:mb-0 lg:h-[55.6px] lg:w-auto lg:min-h-0 lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
+                {heading || t("eventsHeading")}
+              </h2>
+            </ScrollReveal>
 
             {/* Rows 87:14483 */}
             <div className="order-3 mx-auto flex w-[326.489px] flex-col gap-[8px] pt-8 lg:mx-0 lg:w-auto lg:pt-[48px]">
               {/* Already limited by the admin "home_upcoming_events_count" setting. */}
-              {events.map((event) => {
+              {events.map((event, idx) => {
                 const eventDate = new Date(event.event_date);
                 const categoryKey = CATEGORY_KEY_MAP[event.category];
                 const categoryLabel = categoryKey ? c(categoryKey) : event.category;
 
                 return (
-                  <Link
-                    key={event.id}
-                    href={`/booking?event_id=${event.id}`}
-                    aria-label={ev("bookTicket", { title: event.title })}
-                    className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 transition-shadow duration-200 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
-                  >
-                    {/* Date badge 87:14485 */}
-                    <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
-                      <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
-                        {day.format(eventDate)}
-                      </span>
-                      <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
-                        {month.format(eventDate)}
-                      </span>
-                    </span>
-
-                    {/* Title and place 87:14490 */}
-                    <span className="block min-w-0 flex-1 lg:absolute lg:start-[142.33px] lg:top-[31.4px] lg:h-[47px] lg:w-[629px]">
-                      <span className="block truncate text-[16.8px] font-bold leading-[25.2px] text-black">
-                        {event.title}
-                      </span>
-                      <span className="block truncate pt-[3.2px] text-[12.48px] leading-[18.72px] text-black">
-                        {event.city || event.location}
-                      </span>
-                    </span>
-
-                    {/* Type pill 87:14496 */}
-                    <span className="inline-block shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
-                      {categoryLabel}
-                    </span>
-
-                    {/* Trailing glyph 87:14498 */}
-                    <span
-                      aria-hidden="true"
-                      className="hidden shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px] lg:block"
+                  <ScrollReveal key={event.id} variant="up" delay={Math.min(idx * 0.1, 0.3)}>
+                    <Link
+                      href={`/booking?event_id=${event.id}`}
+                      aria-label={ev("bookTicket", { title: event.title })}
+                      className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
                     >
-                      ←
-                    </span>
-                  </Link>
+                      {/* Date badge 87:14485 */}
+                      <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] transition-transform duration-300 group-hover:scale-105 lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
+                        <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
+                          {day.format(eventDate)}
+                        </span>
+                        <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
+                          {month.format(eventDate)}
+                        </span>
+                      </span>
+
+                      {/* Title and place 87:14490 */}
+                      <span className="block min-w-0 flex-1 lg:absolute lg:start-[142.33px] lg:top-[31.4px] lg:h-[47px] lg:w-[629px]">
+                        <span className="block truncate text-[16.8px] font-bold leading-[25.2px] text-black transition-colors group-hover:text-brand-primary">
+                          {event.title}
+                        </span>
+                        <span className="block truncate pt-[3.2px] text-[12.48px] leading-[18.72px] text-black/70">
+                          {event.city || event.location}
+                        </span>
+                      </span>
+
+                      {/* Type pill 87:14496 */}
+                      <span className="inline-block shrink-0 rounded-[4px] border-[0.667px] border-[rgba(198,72,23,0.4)] px-[9.6px] py-[3.2px] text-[9.28px] font-bold uppercase leading-[13.92px] tracking-[0.928px] text-primary-500 lg:absolute lg:start-[68.33px] lg:top-[44.17px]">
+                        {categoryLabel}
+                      </span>
+
+                      {/* Trailing glyph 87:14498 */}
+                      <span
+                        aria-hidden="true"
+                        className="hidden shrink-0 text-[19.2px] leading-[28.8px] text-primary-500 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 lg:absolute lg:start-[11.33px] lg:top-[41.4px] lg:block"
+                      >
+                        {arrowGlyph}
+                      </span>
+                    </Link>
+                  </ScrollReveal>
                 );
               })}
             </div>
@@ -184,7 +191,7 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
             fill
             sizes="(max-width: 1023px) 370px, 505px"
             quality={90}
-            className="object-cover"
+            className="object-cover object-center"
           />
         </div>
       </div>

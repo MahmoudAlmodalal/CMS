@@ -64,7 +64,7 @@ export function FeaturedEventBanner({ event, className = "" }: FeaturedEventBann
           quality={90}
           fallbackText={event.title}
           sizes="(min-width: 1024px) 503px, 100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
       </div>
 

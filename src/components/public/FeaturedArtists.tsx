@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { ArtistTile } from "./ArtistTile";
 import type { Artist } from "@/lib/types/artists";
 import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -51,16 +52,18 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
 
   if (!artists || artists.length === 0) return null;
   return (
-    <section className="w-full overflow-x-hidden bg-black py-12 sm:py-16 md:py-20 lg:min-h-[615px] lg:py-24">
+    <section className="w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
-        <h2 className="text-center font-display text-4xl font-normal leading-tight text-[#F9EDE8] lg:text-[64px] lg:leading-tight">
-          {heading || t("artistsHeading")}
-        </h2>
-        <div className="relative mt-4 sm:mt-7">
+        <ScrollReveal variant="up">
+          <h2 className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:text-[64px] lg:leading-tight">
+            {heading || t("artistsHeading")}
+          </h2>
+        </ScrollReveal>
+        <div className="relative mt-6 sm:mt-8">
           <div
             ref={carouselRef}
             onScroll={updateActiveIndex}
-            className="no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain scroll-smooth px-1 pb-2 sm:gap-3 md:gap-4 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6"
+            className="no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6"
             aria-label={t("artistsHeading")}
           >
             {featuredArtists.map((artist, i) => (
@@ -69,45 +72,50 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
               </div>
             ))}
           </div>
-          <div className="pointer-events-none absolute inset-y-0 start-0 w-8 bg-gradient-to-r from-black via-black/50 to-transparent lg:hidden" />
-          <div className="pointer-events-none absolute inset-y-0 end-0 w-12 bg-gradient-to-l from-black via-black/50 to-transparent lg:hidden" />
-          <div className="absolute inset-x-1 top-1/2 flex -translate-y-1/2 justify-between lg:hidden">
-            <button
-              type="button"
-              onClick={() => moveArtist(-1)}
-              disabled={activeIndex === 0}
-              className="pointer-events-auto flex size-9 items-center justify-center rounded-full bg-white/90 text-brand-espresso shadow-subtle transition-opacity disabled:opacity-30"
-              aria-label="Previous artist"
-            >
-              <ChevronStartIcon size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => moveArtist(1)}
-              disabled={activeIndex === featuredArtists.length - 1}
-              className="pointer-events-auto flex size-9 items-center justify-center rounded-full bg-white/90 text-brand-espresso shadow-subtle transition-opacity disabled:opacity-30"
-              aria-label="Next artist"
-            >
-              <ChevronEndIcon size={18} />
-            </button>
+          <div className="pointer-events-none absolute inset-y-0 start-0 w-6 bg-gradient-to-r from-black/80 to-transparent lg:hidden" />
+          <div className="pointer-events-none absolute inset-y-0 end-0 w-8 bg-gradient-to-l from-black/80 to-transparent lg:hidden" />
+        </div>
+
+        {/* Mobile controls outside of image container: arrows + indicators */}
+        <div className="mt-4 flex items-center justify-between px-4 lg:hidden" aria-label="Artist carousel controls">
+          <button
+            type="button"
+            onClick={() => moveArtist(-1)}
+            disabled={activeIndex === 0}
+            className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-white/20 active:scale-95 disabled:opacity-20"
+            aria-label="Previous artist"
+          >
+            <ChevronStartIcon size={18} />
+          </button>
+
+          <div className="flex items-center justify-center gap-1.5" aria-label="Artist carousel pagination">
+            {featuredArtists.map((artist, index) => (
+              <button
+                key={artist.id}
+                type="button"
+                onClick={() => scrollToArtist(index)}
+                aria-label={`Go to artist ${index + 1}`}
+                aria-current={activeIndex === index ? "true" : undefined}
+                className={`h-1.5 rounded-full transition-all duration-300 ${activeIndex === index ? "w-5 bg-brand-primary" : "w-1.5 bg-white/40"}`}
+              />
+            ))}
           </div>
+
+          <button
+            type="button"
+            onClick={() => moveArtist(1)}
+            disabled={activeIndex === featuredArtists.length - 1}
+            className="flex size-9 items-center justify-center rounded-full bg-white/10 text-white transition-all hover:bg-white/20 active:scale-95 disabled:opacity-20"
+            aria-label="Next artist"
+          >
+            <ChevronEndIcon size={18} />
+          </button>
         </div>
-        <div className="mt-2 flex items-center justify-center gap-1.5 lg:hidden" aria-label="Artist carousel pagination">
-          {featuredArtists.map((artist, index) => (
-            <button
-              key={artist.id}
-              type="button"
-              onClick={() => scrollToArtist(index)}
-              aria-label={`Go to artist ${index + 1}`}
-              aria-current={activeIndex === index ? "true" : undefined}
-              className={`h-1.5 rounded-full transition-all ${activeIndex === index ? "w-5 bg-brand-primary" : "w-1.5 bg-white/50"}`}
-            />
-          ))}
-        </div>
-        <div className="mt-5 flex justify-center sm:mt-7">
+
+        <div className="mt-6 flex justify-center sm:mt-8">
           <Link
             href={ctaHref || "/artists"}
-            className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl border border-[#F9EDE8] px-5 text-center font-system text-base font-bold text-[#F9EDE8] transition-colors hover:bg-[#F9EDE8]/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl border border-[#F9EDE8] px-5 text-center font-system text-base font-bold text-[#F9EDE8] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#F9EDE8]/10 hover:shadow-md active:translate-y-0 active:scale-[0.98] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             {ctaLabel || t("artistsCta")}
           </Link>

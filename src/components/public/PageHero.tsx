@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "@/components/ui/LayoutPrimitives";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface PageHeroProps {
   /** Centred headline. Pass rich content to colour a phrase, as the design does. */
@@ -94,34 +95,36 @@ export function PageHero({
           x=376 on a 390 artboard), so the mobile offset of this block is not
           measurable from them; it rides the band's padding like the desktop one. */}
       <Container className="relative z-10 flex w-full flex-col items-center text-center">
-        {eyebrow ? (
-          <span className="inline-flex items-center gap-2 rounded-full border-[0.833px] border-white/20 bg-white/10 px-5 py-2 backdrop-blur-[8px]">
-            <span aria-hidden="true" className="text-[16px] leading-[24px] text-brand-primary">
-              ♪
+        <ScrollReveal variant="up" className="w-full flex flex-col items-center">
+          {eyebrow ? (
+            <span className="inline-flex items-center gap-2 rounded-full border-[0.833px] border-white/20 bg-white/10 px-5 py-2 backdrop-blur-[8px]">
+              <span aria-hidden="true" className="text-[16px] leading-[24px] text-brand-primary">
+                ♪
+              </span>
+              <span className="text-[14px] font-medium leading-[20px] text-secondary-400">
+                {eyebrow}
+              </span>
             </span>
-            <span className="text-[14px] font-medium leading-[20px] text-secondary-400">
-              {eyebrow}
-            </span>
-          </span>
-        ) : null}
+          ) : null}
 
-        <h1
-          // The frame's px size is the ceiling, not a floor: at 1024-1280 a raw 72px
-          // headline wrapped to three lines and its 90px line box opened gaps the band
-          // could not hold. min() lets both shrink: the frame's figures cap a headline
-          // that fits, and a narrower viewport scales the glyph and its line box together.
-          className={`w-full max-w-full min-w-0 font-display text-[clamp(28px,8vw,56px)] leading-tight ${titleTone} lg:max-w-[924px] lg:text-[length:min(var(--hero-title-size),6vw)] lg:leading-[min(var(--hero-title-leading),1.3em)] ${
-            eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
-          }`}
-        >
-          {title}
-        </h1>
+          <h1
+            // The frame's px size is the ceiling, not a floor: at 1024-1280 a raw 72px
+            // headline wrapped to three lines and its 90px line box opened gaps the band
+            // could not hold. min() lets both shrink: the frame's figures cap a headline
+            // that fits, and a narrower viewport scales the glyph and its line box together.
+            className={`w-full max-w-full min-w-0 font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-snug sm:leading-relaxed ${titleTone} lg:max-w-[924px] lg:text-[length:min(var(--hero-title-size),6vw)] lg:leading-[min(var(--hero-title-leading),1.3em)] ${
+              eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
+            }`}
+          >
+            {title}
+          </h1>
 
-        {subtitle ? (
-          <p className="mt-6 max-w-[693px] text-base leading-[28px] text-secondary-400 sm:text-lg lg:text-[25px] lg:leading-[37.5px]">
-            {subtitle}
-          </p>
-        ) : null}
+          {subtitle ? (
+            <p className="mt-6 max-w-[693px] text-base leading-relaxed text-secondary-400 sm:text-lg lg:text-[25px] lg:leading-[37.5px]">
+              {subtitle}
+            </p>
+          ) : null}
+        </ScrollReveal>
       </Container>
     </section>
   );

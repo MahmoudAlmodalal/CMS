@@ -5,6 +5,7 @@ import { formatLocalizedDate } from "@/lib/formatters";
 import { type Article } from "@/lib/dal/articles";
 import { ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface EditorialFeatureProps {
   articles: Article[];
@@ -52,26 +53,28 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
   }
 
   return (
-    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] pb-[89.37px] pt-[52px] lg:h-[709px] lg:py-0">
+    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#1F0900] py-12 md:py-16 lg:h-[709px] lg:py-0">
       {/* Heading 87:14401 */}
       <div className="w-full px-5 text-center lg:px-0">
-        <h2 className="text-center font-display text-[32px] font-normal leading-[48px] text-[#F9EDE8] lg:whitespace-nowrap lg:text-[64px]">
-          {heading || t("editorialHeading")}
-        </h2>
+        <ScrollReveal variant="up">
+          <h2 className="text-center font-display text-3xl font-normal leading-relaxed text-[#F9EDE8] sm:text-4xl md:text-5xl lg:whitespace-nowrap lg:text-[64px]">
+            {heading || t("editorialHeading")}
+          </h2>
+        </ScrollReveal>
       </div>
 
       {/* Cards 115:2436…115:2439 */}
-      <div className="mx-auto mt-[56px] grid grid-cols-1 justify-items-center gap-[24px] w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
-        {articles.slice(0, 4).map((article) => {
+      <div className="mx-auto mt-8 grid grid-cols-1 justify-items-center gap-6 w-full max-w-7xl px-4 sm:mt-10 md:px-6 lg:grid-cols-4 xl:mt-12 xl:gap-7">
+        {articles.slice(0, 4).map((article, idx) => {
           return (
-            <article
-              key={article.id}
-              className="group w-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-            >
-              <Link
-                href={`/news/${article.slug}`}
-                className="flex h-auto min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+            <ScrollReveal key={article.id} variant="up" delay={Math.min(idx * 0.1, 0.3)} className="w-full h-full">
+              <article
+                className="group w-full h-full min-w-0 rounded-[16px] bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
+                <Link
+                  href={`/news/${article.slug}`}
+                  className="flex h-full min-h-[19rem] w-full flex-col overflow-hidden rounded-[14px] bg-white"
+                >
                 {/* Cover I115:2439;87:14439 */}
                 <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-surface">
                   <SafeImage
@@ -81,7 +84,7 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
                     sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
                     quality={90}
                     fallbackText={article.title}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
 
@@ -116,9 +119,10 @@ export function EditorialFeature({ articles, heading }: EditorialFeatureProps) {
                 </div>
               </Link>
             </article>
-          );
-        })}
-      </div>
-    </section>
-  );
+          </ScrollReveal>
+        );
+      })}
+    </div>
+  </section>
+);
 }

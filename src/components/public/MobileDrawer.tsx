@@ -158,7 +158,7 @@ export function MobileDrawer({ isOpen, onClose, contact }: MobileDrawerProps) {
         </div>
 
         {/* Navigation Items */}
-        <div className="flex-1 overflow-y-auto px-6 py-7 sm:px-7">
+        <div className="flex-1 overflow-y-auto px-6 py-7 pb-[calc(1.75rem+env(safe-area-inset-bottom,0px))] sm:px-7">
           <nav className="flex flex-col gap-2.5" aria-label={t("nav")}>
             {navItems.map((item) => {
               const active = isLinkActive(item.href);

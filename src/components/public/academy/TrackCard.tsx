@@ -33,18 +33,21 @@ export function TrackCard({ course, index }: TrackCardProps) {
   const position = course.display_order ?? (index !== undefined ? index + 1 : 1);
   const displayNum = locale === "ar" ? toArabicDigits(position) : String(position);
 
+  const isRtl = locale === "ar";
+  const arrowGlyph = isRtl ? "←" : "→";
+
   return (
-    <article className="flex min-w-0 flex-col self-stretch overflow-hidden rounded-[20px] border-[0.833px] border-secondary-400 bg-white p-5 text-start sm:p-8">
+    <article className="group flex min-w-0 flex-col self-stretch overflow-hidden rounded-[20px] border-[0.833px] border-secondary-400 bg-white p-5 text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-brand-primary/40 sm:p-8">
       <div className="flex items-start justify-between gap-4">
         <span className="text-[14px] font-bold uppercase leading-[20px] tracking-[1.4px] text-brand-primary">
           {course.track_category}
         </span>
-        <span aria-hidden="true" className="shrink-0 text-[60px] font-black leading-[60px] text-secondary-400">
+        <span aria-hidden="true" className="shrink-0 text-[60px] font-black leading-[60px] text-secondary-400 transition-colors group-hover:text-brand-primary/30">
           {displayNum}
         </span>
       </div>
 
-      <h3 className="pt-5 text-[25px] font-bold leading-[37.5px] text-brand-espresso">
+      <h3 className="pt-5 text-[25px] font-bold leading-[37.5px] text-brand-espresso transition-colors group-hover:text-brand-primary">
         {course.title}
       </h3>
 
@@ -55,9 +58,10 @@ export function TrackCard({ course, index }: TrackCardProps) {
       <Link
         href={`/booking?course=${encodeURIComponent(course.slug)}`}
         aria-label={t("enrollLabel", { title: course.title })}
-        className="mt-auto self-end inline-flex min-h-11 items-center px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-colors hover:text-brand-primary-hover"
+        className="mt-auto self-end inline-flex min-h-11 items-center gap-1.5 px-4 text-[13px] font-bold leading-[19.5px] text-brand-primary transition-all hover:text-brand-primary-hover group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
       >
-        {t("enroll")} <span aria-hidden="true">←</span>
+        <span>{t("enroll")}</span>
+        <span aria-hidden="true" className="transition-transform group-hover:scale-110">{arrowGlyph}</span>
       </Link>
     </article>
   );

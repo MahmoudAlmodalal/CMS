@@ -48,7 +48,7 @@ export function ArtistTile({ artist, priority = false }: ArtistTileProps) {
         priority={priority}
         fallbackTestId="artist-tile-fallback"
         fallbackText={artist.name}
-        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
       />
 
       {/* Scrim: linear-gradient(0deg, rgba(23,16,10,.92) 0%, transparent 55%) */}

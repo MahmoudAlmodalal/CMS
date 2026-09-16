@@ -97,14 +97,14 @@ export function AcademyNewsletter({
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("newsletterPlaceholder")}
               disabled={isPending}
-              className="h-[51px] min-w-0 flex-1 rounded-[16px] border-[1.333px] border-[rgba(43,29,20,0.15)] bg-brand-surface px-4 py-[13.6px] text-start text-[14.4px] leading-normal text-brand-espresso transition-colors placeholder:text-[rgba(43,29,20,0.5)] focus:border-brand-primary focus:outline-hidden"
+              className="h-[51px] w-full min-w-0 flex-1 rounded-[16px] border-[1.333px] border-[rgba(43,29,20,0.15)] bg-brand-surface px-4 py-[13.6px] text-start text-[14.4px] leading-normal text-brand-espresso transition-colors placeholder:text-[rgba(43,29,20,0.5)] focus:border-brand-primary focus:outline-hidden sm:w-auto"
             />
 
             <button
               type="submit"
               disabled={isPending}
               aria-label={t("newsletterSubmitLabel")}
-              className="h-11 w-full shrink-0 rounded-[16px] bg-brand-primary px-4 text-[16px] font-bold leading-[24px] text-brand-tint transition-colors hover:bg-brand-primary-hover disabled:opacity-70 sm:w-[149px]"
+              className="h-11 w-full shrink-0 rounded-[16px] bg-brand-primary px-4 text-[16px] font-bold leading-[24px] text-brand-tint shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-md active:translate-y-0 active:scale-[0.98] disabled:opacity-70 sm:w-[149px]"
             >
               {t("newsletterSubmit")}
             </button>

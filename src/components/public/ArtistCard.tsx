@@ -58,7 +58,7 @@ export function ArtistCard({ artist, priority = false, className = "", style }: 
             quality={90}
             fallbackTestId="artist-card-fallback-image"
             fallbackText={artist.name}
-            className="object-cover"
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
         </div>
 

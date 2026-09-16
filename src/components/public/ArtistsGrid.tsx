@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import { motion } from "framer-motion";
 import { type Artist } from "@/lib/types/artists";
 import { ArtistCard } from "./ArtistCard";
 import { ArtistsEmptyState } from "./ArtistsEmptyState";
@@ -85,12 +86,23 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         className="motion-stagger flex h-[442px] w-full min-w-0 snap-x snap-mandatory gap-[10px] overflow-x-auto overscroll-x-contain scroll-smooth p-[10px] [scrollbar-width:none] lg:contents [&::-webkit-scrollbar]:hidden"
       >
         {artists.map((artist, index) => (
-          <ArtistCard
+          <motion.div
             key={artist.id || artist.slug}
-            artist={artist}
-            priority={rowIndex === 0 && index < 4}
-            style={{ "--stagger-delay": `${Math.min((rowIndex * 4 + index) * 80, 400)}ms` } as React.CSSProperties}
-          />
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{
+              duration: 0.6,
+              delay: (rowIndex * 4 + index) * 0.1,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className="h-full"
+          >
+            <ArtistCard
+              artist={artist}
+              priority={rowIndex === 0 && index < 4}
+            />
+          </motion.div>
         ))}
       </div>
       <div className="pointer-events-none absolute inset-0 z-20 lg:hidden">

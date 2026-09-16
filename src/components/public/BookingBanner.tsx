@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { ScrollReveal } from "./ScrollReveal";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
 /**
@@ -87,7 +88,7 @@ export function BookingBanner({
 
   return (
     <section
-      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-16 text-brand-tint sm:py-20 lg:block lg:h-[498px] lg:py-0"
+      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-12 md:py-16 lg:block lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
       <div
@@ -109,9 +110,11 @@ export function BookingBanner({
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
           style={{ top: `${v.glyphTop}px` }}
         >
-          <p aria-hidden="true" className="text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
-            ♪
-          </p>
+          <ScrollReveal variant="soft">
+            <p aria-hidden="true" className="text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
+              ♪
+            </p>
+          </ScrollReveal>
         </div>
 
         {/* Headline — 87:14539 / 134:4665 */}
@@ -119,12 +122,14 @@ export function BookingBanner({
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
           style={{ top: `${v.headingTop}px` }}
         >
-          <h2
-            className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
-            style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
-          >
-            {title}
-          </h2>
+          <ScrollReveal variant="up" delay={0.1}>
+            <h2
+              className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
+              style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
+            >
+              {title}
+            </h2>
+          </ScrollReveal>
         </div>
 
         {/* Body — 87:14541 / 134:4667 */}
@@ -132,11 +137,13 @@ export function BookingBanner({
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
           style={{ top: `${v.bodyTop}px` }}
         >
-          <p
-            className={`max-w-[636px] text-[15px] leading-[26px] lg:ms-[17px] lg:max-w-none lg:text-[16px] lg:leading-[30.4px] ${v.body}`}
-          >
-            {copy}
-          </p>
+          <ScrollReveal variant="up" delay={0.2}>
+            <p
+              className={`max-w-[636px] text-[15px] leading-[26px] lg:ms-[17px] lg:max-w-none lg:text-[16px] lg:leading-[30.4px] ${v.body}`}
+            >
+              {copy}
+            </p>
+          </ScrollReveal>
         </div>
 
         {/* CTA — 89:15225 / 134:4669 */}
@@ -144,13 +151,15 @@ export function BookingBanner({
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
           style={{ top: `${v.ctaTop}px` }}
         >
-          <Link
-            href={bookingHref}
-            className={`inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface lg:ms-[var(--shift)] ${v.cta}`}
-            style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
-          >
-            {cta}
-          </Link>
+          <ScrollReveal variant="up" delay={0.3}>
+            <Link
+              href={bookingHref}
+              className={`inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-lg active:translate-y-0 active:scale-[0.98] lg:ms-[var(--shift)] ${v.cta}`}
+              style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
+            >
+              {cta}
+            </Link>
+          </ScrollReveal>
         </div>
       </div>
     </section>

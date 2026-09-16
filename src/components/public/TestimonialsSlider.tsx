@@ -39,6 +39,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   const home = useTranslations("home");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
+  const [isPaused, setIsPaused] = useState(false);
   const reducedMotion = useReducedMotion();
   const swipeStartX = useRef<number | null>(null);
 
@@ -55,6 +56,15 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
     setSlideDirection("next");
     setCurrentIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
   }, [total]);
+
+  // Auto-play / Timer: rotates testimonials every 5 seconds if not paused
+  useEffect(() => {
+    if (total <= 1 || isPaused || reducedMotion) return;
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [total, isPaused, reducedMotion, handleNext]);
 
   const handleIndicatorChange = (index: number) => {
     setSlideDirection(index >= currentIndex ? "next" : "prev");
@@ -102,27 +112,29 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
   return (
     <section
-      className="relative flex min-h-0 flex-col overflow-hidden bg-[#F9F7F0] py-12 lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:py-0"
+      className="relative flex min-h-0 flex-col overflow-hidden bg-[#F9F7F0] py-12 md:py-16 lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:py-0"
       aria-roledescription="carousel"
       aria-label={t("region")}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:space-y-10">
           {/* Section Header (Figma 87:14314 — Qahwa Arabic Regular 64px/48, 2-fill) */}
           <ScrollReveal>
-            <h2 className="font-display text-[32px] font-normal leading-[48px] text-black lg:text-[64px] lg:leading-[1.4296875]">
+            <h2 className="font-display text-3xl font-normal leading-relaxed text-black sm:text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.4296875]">
               <Highlight text={heading || home("testimonialsHeading")} />
             </h2>
           </ScrollReveal>
 
           {/* Quote Card (Figma Frame 176:6169 — 805x161px, 78px gap) */}
-          <div className="mx-auto mt-6 flex h-auto min-h-0 w-full min-w-0 items-center justify-center gap-2 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
+          <div className="relative mx-auto mt-6 flex h-auto min-h-0 w-full min-w-0 items-center justify-center gap-3 sm:gap-4 lg:mt-0 lg:min-h-[161px] lg:max-w-[805px] lg:justify-between lg:gap-6">
             {/* Previous Arrow (Logical RTL: right arrow moves back) */}
             {total > 1 && (
               <button
                 type="button"
                 onClick={handlePrev}
-                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-sm transition-all hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:h-12 lg:w-auto lg:px-3"
+                className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-md transition-all hover:scale-105 hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-10 lg:h-12 lg:w-auto lg:px-3"
                 aria-label={t("previous")}
               >
                 <ChevronStartIcon size={20} />
@@ -134,18 +146,16 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
               <motion.div
                 key={`${current.id ?? current.author_name}-${currentIndex}`}
                 custom={slideDirection}
-                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 24 : -24 }}
+                initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? 40 : -40 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -24 : 24 }}
-                transition={{ duration: reducedMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] }}
+                exit={reducedMotion ? { opacity: 1 } : { opacity: 0, x: slideDirection === "next" ? -40 : 40 }}
+                transition={{ duration: reducedMotion ? 0 : 0.55, ease: [0.25, 1, 0.5, 1] }}
                 onPointerDown={handleSwipeStart}
                 onPointerUp={handleSwipeEnd}
                 onPointerCancel={() => { swipeStartX.current = null; }}
                 onPointerLeave={() => { swipeStartX.current = null; }}
                 style={{ touchAction: "pan-y", userSelect: "none" }}
-                className={`flex h-auto min-h-[167px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start ${
-                  total > 1 ? "w-[min(305px,calc(100%_-_80px))]" : "w-full max-w-[305px]"
-                } lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center`}
+                className="flex h-full min-h-[180px] w-[280px] sm:w-[320px] md:w-[380px] min-w-0 shrink flex-col-reverse items-start rounded-[16px] bg-white p-6 text-start shadow-sm lg:h-auto lg:min-h-[167px] lg:w-auto lg:max-w-[553px] lg:flex-1 lg:items-center lg:rounded-none lg:bg-transparent lg:p-0 lg:text-center lg:shadow-none"
                 aria-live="polite"
               >
               {/* Quote Body (176:2351 — Cairo Medium 20px/30.4, 540px) */}

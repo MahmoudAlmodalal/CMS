@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +47,27 @@ export function Navbar() {
   const t = useTranslations("nav");
   const a11y = useTranslations("a11y");
 
+  const [hidden, setHidden] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const lastScrollY = useRef(0);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = lastScrollY.current;
+    lastScrollY.current = latest;
+
+    setIsScrolled(latest > 50);
+
+    // Only trigger hide/reveal after passing threshold
+    if (latest > 120 && latest > previous + 5) {
+      // Scrolling DOWN
+      setHidden(true);
+    } else if (latest < previous - 5 || latest <= 50) {
+      // Scrolling UP
+      setHidden(false);
+    }
+  });
+
   const isEn = locale === "en";
   const navItems = isEn ? ENGLISH_NAV_ITEMS : CONFIRMED_NAV_ITEMS;
 
@@ -56,11 +78,6 @@ export function Navbar() {
     return pathname.startsWith(href);
   };
 
-  // The floating bar sits at a slightly different offset on each frame. These are
-  // measured off the 1:1 reference renders in docs/figma-reference (the first row
-  // of the #F2EEE0 band), not read from get_metadata: the bar is wrapped in a
-  // double rotate-180 for RTL mirroring, so its reported node coordinates are not
-  // frame-relative and put it ~85px too low.
   const NAVBAR_TOP: Record<string, string> = {
     "/": "top-[33px]",
     "/events": "top-[40px]",
@@ -72,7 +89,13 @@ export function Navbar() {
     (/^\/artists\/.+/.test(pathname) ? "top-[40px]" : "top-[50px]");
 
   return (
-    <div
+    <motion.div
+      variants={{
+        visible: { y: 0, opacity: 1 },
+        hidden: { y: -100, opacity: 0 },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         "hidden lg:flex fixed start-0 end-0 z-50 justify-center px-4 pointer-events-none transition-all sm:px-6 lg:px-12 xl:px-20",
         offset,
@@ -80,7 +103,12 @@ export function Navbar() {
       data-node-id={isEn ? "144:19176" : undefined}
     >
       <header
-        className="pointer-events-auto flex h-16 w-full max-w-[1123px] items-center justify-between rounded-[24px] bg-[#F2EEE0] px-4 shadow-[0px_4px_15px_rgba(0,0,0,0.25)] lg:gap-4 xl:h-[85px] xl:rounded-[32px] xl:px-[42.5px]"
+        className={cn(
+          "pointer-events-auto flex h-16 w-full max-w-[1123px] items-center justify-between rounded-[24px] px-4 shadow-[0px_4px_15px_rgba(0,0,0,0.25)] transition-all duration-300 lg:gap-4 xl:h-[85px] xl:rounded-[32px] xl:px-[42.5px]",
+          isScrolled
+            ? "bg-[#F2EEE0]/85 backdrop-blur-md border border-[#ECE6D0]/50 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+            : "bg-[#F2EEE0]"
+        )}
         role="banner"
         data-node-id={isEn ? "142:17048" : "94:18677"}
       >
@@ -150,6 +178,6 @@ export function Navbar() {
           </Link>
         </div>
       </header>
-    </div>
+    </motion.div>
   );
 }

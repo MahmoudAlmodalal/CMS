@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import type { EventItem, CategoryFilterId } from "@/lib/types/events";
 import { EventsFilterTabs } from "./EventsFilterTabs";
 import { FeaturedEventBanner } from "./FeaturedEventBanner";
@@ -91,7 +92,19 @@ export function EventsCatalogView({
             className="motion-stagger flex w-full max-w-[600px] flex-col gap-6 px-4 lg:mt-[13px] lg:w-[713px] lg:max-w-none lg:gap-4 lg:p-0"
           >
             {filteredEvents.map((event, index) => (
-              <EventCard key={event.id} event={event} style={{ "--stagger-delay": `${Math.min(index * 80, 400)}ms` } as React.CSSProperties} />
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  delay: Math.min(index * 0.1, 0.4),
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <EventCard event={event} />
+              </motion.div>
             ))}
           </div>
         ) : (

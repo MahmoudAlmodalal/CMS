@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
+import { ScrollReveal } from "./ScrollReveal";
 import { PublicButton } from "./PublicButton";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 
@@ -62,7 +63,7 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             loop
             muted
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover object-center"
             aria-hidden="true"
           />
         ) : (
@@ -82,35 +83,37 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
       </div>
 
       <Container className="relative z-10 w-full">
-        <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
-          {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
-          <h1 className="font-display text-3xl font-normal leading-relaxed text-[#EFEBD9] sm:text-4xl md:text-5xl lg:text-6xl lg:leading-[1.45]">
-            <Highlight text={settings.hero_headline} />
-          </h1>
+        <ScrollReveal variant="up" className="w-full">
+          <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
+            {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill) */}
+            <h1 className="font-display text-3xl font-normal leading-relaxed text-[#EFEBD9] sm:text-4xl md:text-5xl lg:text-6xl lg:leading-snug">
+              <Highlight text={settings.hero_headline} />
+            </h1>
 
-          {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
-          <p className="max-w-[693px] text-[16px] font-medium leading-[37.5px] text-[#EFEBD9] lg:text-[25px]">
-            {settings.hero_subheadline}
-          </p>
+            {/* Subheadline (Figma Node 148:3670 — Cairo Medium 25px, max 693px) */}
+            <p className="max-w-[693px] text-base font-medium leading-relaxed text-[#EFEBD9] sm:text-lg md:text-xl lg:text-[25px] lg:leading-[37.5px]">
+              {settings.hero_subheadline}
+            </p>
 
-          {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
-          <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:w-auto sm:flex-row sm:gap-6">
-            {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
-            <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
-              {primaryCtaLabel || t("heroPrimaryCta")}
-            </PublicButton>
+            {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
+            <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:w-auto sm:flex-row sm:gap-6">
+              {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
+              <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
+                {primaryCtaLabel || t("heroPrimaryCta")}
+              </PublicButton>
 
-            {/* Outline secondary (Figma component 115:1091, fixed 207x48) */}
-            <PublicButton
-              href={secondaryHref}
-              variant="secondary"
-              size="md"
-              expandOnHover={false}
-            >
-              {secondaryCtaLabel || t("heroSecondaryCta")}
-            </PublicButton>
+              {/* Outline secondary (Figma component 115:1091, fixed 207x48) */}
+              <PublicButton
+                href={secondaryHref}
+                variant="secondary"
+                size="md"
+                expandOnHover={false}
+              >
+                {secondaryCtaLabel || t("heroSecondaryCta")}
+              </PublicButton>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </Container>
     </section>
   );

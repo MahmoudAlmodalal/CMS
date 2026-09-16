@@ -57,21 +57,21 @@ export function EventCard({ event, style }: EventCardProps) {
         {/* Gradient Scrim */}
         <div className="absolute inset-0 bg-gradient-to-t from-brand-espresso/70 via-transparent to-transparent pointer-events-none" />
 
-        {/* Date Badge: Top Start */}
-        <div className="absolute top-3 start-3">
-          <div className="flex flex-col items-center justify-center min-w-[56px] px-2.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-xs text-brand-espresso shadow-xs border border-white/40">
-            <span className="font-mono text-xl font-bold leading-none text-brand-primary">
+        {/* Date Badge: Floating on top-right corner overlapping image */}
+        <div className="absolute top-3 right-3 z-10">
+          <div className="flex flex-col items-center justify-center min-w-[58px] px-3 py-2 rounded-2xl bg-white/95 backdrop-blur-md text-brand-espresso shadow-lg border border-white/60 transition-transform duration-300 group-hover:scale-105">
+            <span className="font-mono text-2xl font-black leading-none text-brand-primary">
               {day}
             </span>
-            <span className="font-sans text-[11px] font-bold mt-0.5 text-brand-espresso">
+            <span className="font-sans text-[11px] font-bold uppercase tracking-wider mt-1 text-brand-espresso">
               {month}
             </span>
           </div>
         </div>
 
-        {/* Category Badge: Top End */}
-        <div className="absolute top-3 end-3">
-          <span className="inline-flex items-center px-3 py-1 rounded-full bg-brand-espresso/80 backdrop-blur-xs text-brand-tint text-xs font-semibold border border-white/10">
+        {/* Category Badge: Top Start */}
+        <div className="absolute top-3 start-3 z-10">
+          <span className="inline-flex items-center px-3 py-1 rounded-full bg-brand-espresso/80 backdrop-blur-md text-brand-tint text-xs font-semibold border border-white/15 shadow-sm">
             {categoryLabel}
           </span>
         </div>
