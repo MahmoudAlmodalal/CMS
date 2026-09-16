@@ -130,7 +130,7 @@ export function Navbar() {
             // 196x85 is the slot the frame reserves, not the artwork: sized to the slot
             // the logo sat flush with the pill's own edges. It is capped to the slot's
             // width and given room to breathe inside it instead.
-            className="h-7.5 w-auto max-w-[165px] object-contain xl:h-11"
+            className="h-6 w-auto max-w-[130px] object-contain xl:h-8.5 xl:max-w-[140px]"
             style={{ aspectRatio: "628 / 226" }}
           />
         </Link>

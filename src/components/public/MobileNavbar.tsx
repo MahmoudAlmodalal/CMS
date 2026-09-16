@@ -117,7 +117,7 @@ export function MobileNavbar() {
           <LocaleSwitcher mobile />
           <Link
             href="/"
-            className="flex h-9 min-w-0 flex-1 items-center justify-end rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-11"
+            className="flex h-7.5 min-w-0 flex-1 items-center justify-end rounded-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:h-9"
             aria-label={a11y("brandHome")}
           >
             <Image
@@ -126,7 +126,7 @@ export function MobileNavbar() {
               width={628}
               height={226}
               loading="eager"
-              className="h-full w-auto max-w-[168px] object-contain"
+              className="h-full w-auto max-w-[130px] object-contain sm:max-w-[145px]"
             />
           </Link>
         </header>
