@@ -8,6 +8,7 @@ import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 import { Tilt3D } from "./motion/Tilt3D";
 import { NumberCounter } from "./motion/NumberCounter";
+import { parseYouTubeId, youTubeEmbedUrl } from "@/lib/youtube";
 
 interface AboutSectionProps {
   settings: SiteSettings;
@@ -16,6 +17,7 @@ interface AboutSectionProps {
 
 export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
   const t = useTranslations("home");
+  const aboutVideoId = parseYouTubeId(settings.hero_video_url);
   return (
     <section className="relative w-full bg-[#F9F7F0] py-12 md:py-16 lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -77,6 +79,21 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               <p className="max-w-prose text-base font-medium leading-relaxed text-[#1b1b1b] sm:text-lg lg:text-[25px] lg:leading-relaxed">
                 {settings.about_body}
               </p>
+              {aboutVideoId ? (
+                <div className="w-full overflow-hidden rounded-2xl bg-black shadow-lg">
+                  <div className="relative aspect-video w-full">
+                    <iframe
+                      src={youTubeEmbedUrl(aboutVideoId)}
+                      title="Andalusia creative talent video"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full border-0"
+                    />
+                  </div>
+                </div>
+              ) : null}
               <Link
                 href={settings.home_about_href || "/artists"}
                 className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl bg-primary-500 px-5 text-center font-system text-base font-bold text-primary-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-md active:translate-y-0 active:scale-[0.98] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
@@ -90,4 +107,3 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
     </section>
   );
 }
-
