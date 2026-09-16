@@ -263,19 +263,19 @@ test("Task 36 — 4. Academy Component Files & Figma Node Verification", () => {
 });
 
 // ============================================================================
-// 5. Booking Routing & Zero Speculative Routes Verification
+// 5. Academy Course Detail Routing & Zero Speculative Routes Verification
 // ============================================================================
-test("Task 36 — 5. Track Card Action Link directs to /booking?course=[slug]", () => {
+test("Task 36 — 5. Track Card Action Link directs to /academy/[slug]", () => {
   const trackCardCode = fs.readFileSync(
     path.join(root, "src/components/public/academy/TrackCard.tsx"),
     "utf-8"
   );
 
-  // Must link to /booking?course=...
+  // Must link to /academy/...
   assert.match(
     trackCardCode,
-    /\/booking\?course=/,
-    "Track card CTA must link to /booking?course=[slug]"
+    /\/academy\/\$\{encodeURIComponent\(course\.slug\)\}/,
+    "Track card CTA must link to /academy/[slug]"
   );
 
   // Must NOT create speculative routes
