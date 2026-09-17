@@ -4,13 +4,17 @@ export const ADMIN_STATE = "e2e/.auth/admin.json";
 export const TAG = `E2E-TEST ${Date.now()}`;
 
 /** Start collecting console errors, page crashes and failed same-origin requests. Call before goto. */
-export function watch(page: Page) {
+export function watch(page: Page, baseURL = process.env.E2E_BASE_URL ?? "http://localhost:3000") {
   const problems: string[] = [];
+  // watch() is called before the first goto, when page.url() is "about:blank" —
+  // deriving the origin from it there classified every early request against the
+  // wrong origin, so failures during initial load were dropped.
+  const origin = new URL(baseURL).origin;
   page.on("console", (m) => { if (m.type() === "error") problems.push(`console: ${m.text()}`); });
   page.on("pageerror", (e) => problems.push(`pageerror: ${e.message}`));
   page.on("response", (r) => {
     const url = new URL(r.url());
-    if (r.status() >= 400 && url.origin === new URL(page.url() || r.url()).origin && !url.pathname.startsWith("/_next/webpack-hmr")) {
+    if (r.status() >= 400 && url.origin === origin && !url.pathname.startsWith("/_next/webpack-hmr")) {
       problems.push(`http ${r.status()}: ${url.pathname}${url.search}`);
     }
   });

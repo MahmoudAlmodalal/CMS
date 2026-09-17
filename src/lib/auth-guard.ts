@@ -9,11 +9,6 @@ export interface UserClaim {
   [key: string]: unknown;
 }
 
-export interface AuthContext {
-  supabase?: SupabaseClient;
-  user?: UserClaim | null;
-}
-
 export const ADMIN_AUTH_ERROR = "UNAUTHORIZED_ADMIN_ACTION";
 
 /**
@@ -42,29 +37,29 @@ export function assertAdminRole(user: UserClaim | null | undefined): asserts use
  */
 export function isAdminUser(user: UserClaim | null | undefined): boolean {
   if (!user) return false;
-  return user.app_metadata?.role === "admin";
+  const role = user.app_metadata?.role;
+  return role === "admin" || role === "service_role";
 }
 
 /**
  * Layer 3 Authorization Guard for Server Actions and Data Access Layer.
  *
- * In production:
- * - Reads cookie session via cookie-aware createClient()
- * - Calls supabase.auth.getUser() to verify JWT signature against GoTrue
- * - Asserts app_metadata.role === 'admin'
+ * Reads the cookie session via the cookie-aware createClient(), calls
+ * supabase.auth.getUser() to verify the JWT signature against GoTrue, and
+ * asserts app_metadata.role === 'admin'.
  *
- * Supports test-context injection via optional AuthContext parameter.
+ * This takes no arguments on purpose. It used to accept an AuthContext so a
+ * test could inject a user, but its callers are `"use server"` actions, whose
+ * arguments are supplied by the client: anyone could POST a forged
+ * `{user:{app_metadata:{role:"admin"}}}` and skip getUser() entirely. A seam
+ * that is reachable over the wire is not a seam. Tests exercise the real
+ * guard, or the schema layer beneath it.
  */
-export async function requireAdminSession(ctx?: AuthContext) {
-  if (ctx?.user !== undefined) {
-    assertAdminRole(ctx.user);
-    return { supabase: ctx.supabase, user: ctx.user };
-  }
-
-  let supabase = ctx?.supabase;
-  if (!supabase) {
-    supabase = await createClient();
-  }
+export async function requireAdminSession(): Promise<{
+  supabase: SupabaseClient;
+  user: UserClaim;
+}> {
+  const supabase = await createClient();
 
   const {
     data: { user },
@@ -79,5 +74,5 @@ export async function requireAdminSession(ctx?: AuthContext) {
   // although its runtime shape contains the same app_metadata fields.
   assertAdminRole(user as unknown as UserClaim);
 
-  return { supabase, user };
+  return { supabase, user: user as unknown as UserClaim };
 }

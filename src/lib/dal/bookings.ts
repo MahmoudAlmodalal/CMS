@@ -1,4 +1,4 @@
-import { requireAdminSession, type AuthContext } from "@/lib/auth-guard";
+import { requireAdminSession } from "@/lib/auth-guard";
 import type { Database } from "@/lib/supabase/types";
 
 export type BookingRequestRow = Database["public"]["Tables"]["booking_requests"]["Row"];
@@ -25,11 +25,9 @@ export interface SubscriberFilters {
  * - Layer 4 Defense: PostgREST RLS blocks anonymous access (booking_requests_select_anon_block).
  */
 export async function getAdminBookingRequests(
-  filters?: BookingFilters,
-  ctx?: AuthContext
+  filters?: BookingFilters
 ): Promise<BookingRequestRow[]> {
-  const { supabase } = await requireAdminSession(ctx);
-  if (!supabase) return [];
+  const { supabase } = await requireAdminSession();
 
   let query = supabase
     .from("booking_requests")
@@ -58,11 +56,10 @@ export async function getAdminBookingRequests(
  * Administrative retrieval of a single booking request by UUID.
  */
 export async function getAdminBookingRequestById(
-  id: string,
-  ctx?: AuthContext
+  id: string
 ): Promise<BookingRequestRow | null> {
-  const { supabase } = await requireAdminSession(ctx);
-  if (!id || !supabase) return null;
+  const { supabase } = await requireAdminSession();
+  if (!id) return null;
 
   const { data, error } = await supabase
     .from("booking_requests")
@@ -81,11 +78,9 @@ export async function getAdminBookingRequestById(
  * Administrative retrieval of newsletter subscribers.
  */
 export async function getAdminNewsletterSubscribers(
-  filters?: SubscriberFilters,
-  ctx?: AuthContext
+  filters?: SubscriberFilters
 ): Promise<NewsletterSubscriberRow[]> {
-  const { supabase } = await requireAdminSession(ctx);
-  if (!supabase) return [];
+  const { supabase } = await requireAdminSession();
 
   let query = supabase
     .from("newsletter_subscribers")

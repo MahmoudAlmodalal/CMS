@@ -78,11 +78,21 @@ test("the media-library entity id has exactly one definition", () => {
 });
 
 test("Media Library uploads land inside an approved bucket folder", () => {
-  const action = read("src/actions/admin-media.ts");
+  // The live upload path is @/actions/storage — the copy in @/actions/admin-media
+  // was an unreachable duplicate and is gone.
+  const action = read("src/actions/storage.ts");
 
   // `uploads/<ts>_<name>` is not in BUCKET_FOLDERS, so objects written there sit
   // outside every folder the pickers list and inside the orphan-cleanup reap set.
   assert.doesNotMatch(action, /`uploads\/\$\{ts\}/, "no ad-hoc uploads/ prefix");
   assert.match(action, /buildStoragePath\(\{/, "paths come from the shared builder");
-  assert.match(action, /BUCKET_FOLDERS\[bucket as StorageBucket\]\.includes\(folder\)/);
+
+  // The folder allowlist is enforced by validateUploadFile, which every upload
+  // runs before it builds a path.
+  assert.match(action, /validateUploadFile\(\{/, "uploads are validated before they are written");
+  assert.match(
+    read("src/lib/storage.ts"),
+    /const folders = BUCKET_FOLDERS\[input\.bucket\]/,
+    "validateUploadFile must check the folder against BUCKET_FOLDERS",
+  );
 });
