@@ -1,18 +1,21 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
+import { youTubeEmbedUrl } from "@/lib/youtube";
 
 export interface TrackItem {
   title: string;
   artist: string;
   coverUrl: string;
   audioUrl?: string | null;
+  youtubeUrl?: string | null;
   synthMode: "vivalavida" | "andalusia";
 }
 
 export interface TurntablePlayerProps {
   initialTrack?: Partial<TrackItem>;
   audioUrl?: string | null;
+  youtubeUrl?: string | null;
   className?: string;
 }
 
@@ -34,6 +37,7 @@ const PLAYLIST: TrackItem[] = [
 export function TurntablePlayer({
   initialTrack,
   audioUrl,
+  youtubeUrl,
   className = "",
 }: TurntablePlayerProps) {
   const [trackIndex, setTrackIndex] = useState(0);
@@ -47,6 +51,7 @@ export function TurntablePlayer({
     ...PLAYLIST[trackIndex],
     ...(initialTrack || {}),
     ...(audioUrl ? { audioUrl } : {}),
+    ...(youtubeUrl ? { youtubeUrl } : {}),
   };
 
   const stopSynth = useCallback(() => {
@@ -182,7 +187,11 @@ export function TurntablePlayer({
 
   // Autoplay on mount — short delay to pass browser autoplay policy
   useEffect(() => {
+    if (!currentTrack.audioUrl && !currentTrack.youtubeUrl) return;
     const timer = setTimeout(() => {
+      if (currentTrack.youtubeUrl) {
+        return;
+      }
       if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
           .play()
@@ -201,6 +210,7 @@ export function TurntablePlayer({
   }, []);
 
   const togglePlayback = useCallback(() => {
+    if (!currentTrack.audioUrl && !currentTrack.youtubeUrl) return;
     if (isPlaying) {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -208,7 +218,9 @@ export function TurntablePlayer({
       stopSynth();
       setIsPlaying(false);
     } else {
-      if (currentTrack.audioUrl && audioRef.current) {
+      if (currentTrack.youtubeUrl) {
+        setIsPlaying(true);
+      } else if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
           .play()
           .then(() => setIsPlaying(true))
@@ -260,6 +272,15 @@ export function TurntablePlayer({
           preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
+        />
+      ) : null}
+      {currentTrack.youtubeUrl && isPlaying ? (
+        <iframe
+          src={youTubeEmbedUrl(currentTrack.youtubeUrl, { autoplay: true })}
+          title={currentTrack.title}
+          allow="autoplay; encrypted-media; picture-in-picture"
+          className="absolute h-px w-px opacity-0"
+          aria-hidden="true"
         />
       ) : null}
 

@@ -15,6 +15,7 @@ import { getFeaturedArtists } from "@/lib/dal/artists";
 import { getPublishedTestimonials } from "@/lib/dal/testimonials";
 import { getFeaturedArticles } from "@/lib/dal/articles";
 import { getUpcomingEvents } from "@/lib/dal/events";
+import { getFeaturedPublishedTrack } from "@/lib/dal/tracks";
 
 export const revalidate = 3600; // 1 hour ISR as locked in APPLICATION_ARCHITECTURE.md
 
@@ -77,7 +78,7 @@ export default async function HomePage({
 
   const settings = await getSiteSettings();
 
-  const [artists, testimonials, articles, events] = await Promise.all([
+  const [artists, testimonials, articles, events, featuredTrack] = await Promise.all([
     settings.show_featured_artists !== false
       ? getFeaturedArtists(settings.home_featured_artists_count)
       : Promise.resolve([]),
@@ -88,6 +89,7 @@ export default async function HomePage({
     settings.show_events !== false
       ? getUpcomingEvents(settings.home_upcoming_events_count)
       : Promise.resolve([]),
+    getFeaturedPublishedTrack(),
   ]);
 
   return (
@@ -104,7 +106,7 @@ export default async function HomePage({
       {/* Stage 2: About / Manifesto Section (Figma Component 9, 879px, #F9F7F0) */}
       {settings.show_about && (
         <div className="lg:-mt-[22px]">
-          <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} />
+          <AboutSection settings={settings} ctaLabel={settings.home_about_cta || undefined} featuredTrack={featuredTrack} />
         </div>
       )}
 

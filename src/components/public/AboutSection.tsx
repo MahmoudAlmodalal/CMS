@@ -8,15 +8,19 @@ import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 
 import { TurntablePlayer } from "@/components/ui/TurntablePlayer";
+import type { Track } from "@/lib/dal/tracks";
+import { parseYouTubeId, youTubeThumbnailUrl } from "@/lib/youtube";
 
 interface AboutSectionProps {
   settings: SiteSettings;
   ctaLabel?: string;
   audioUrl?: string;
+  featuredTrack?: (Track & { artist_name?: string | null }) | null;
 }
 
-export function AboutSection({ settings, ctaLabel, audioUrl }: AboutSectionProps) {
+export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack }: AboutSectionProps) {
   const t = useTranslations("home");
+  const videoId = parseYouTubeId(featuredTrack?.youtube_url);
   return (
     <section className="relative w-full bg-[#F9F7F0] py-12 md:py-16 lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -35,7 +39,14 @@ export function AboutSection({ settings, ctaLabel, audioUrl }: AboutSectionProps
             <ScrollReveal variant="image">
               <div className="relative mx-auto aspect-square w-full max-w-[335px] overflow-hidden rounded-full border-4 border-white/80 shadow-xl md:max-w-[480px]">
                 <TurntablePlayer
-                  audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
+                  initialTrack={{
+                    title: featuredTrack?.title || t("aboutMusicEmpty"),
+                    artist: featuredTrack?.artist_name || t("aboutMusicArtist"),
+                    coverUrl: featuredTrack?.cover_image_url || (videoId ? youTubeThumbnailUrl(videoId) : "/assets/figma/about-musician.png"),
+                    synthMode: "andalusia",
+                  }}
+                  audioUrl={featuredTrack ? undefined : audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
+                  youtubeUrl={featuredTrack?.youtube_url}
                   className="absolute inset-0"
                 />
               </div>
