@@ -95,6 +95,14 @@
       "concerts": "Concerts",
       "songs": "Songs"
     },
+    "careerPrev": "Previous",
+    "careerNext": "Next",
+    "careerEmpty": {
+      "albums": "No albums published yet.",
+      "concerts": "No concerts available yet.",
+      "songs": "No songs or recordings available yet."
+    },
+    "modalClose": "Close",
     "releaseStudio": "Studio album",
     "releaseLive": "Live album",
     "coverAlt": "Cover of the album {title}",

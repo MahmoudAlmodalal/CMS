@@ -13,6 +13,7 @@ import {
 import { getArtistBySlug, getPublishedArtistSlugs } from "@/lib/dal/artists";
 import { getPublishedReleasesByArtist } from "@/lib/dal/releases";
 import { getPublishedWorksByArtist } from "@/lib/dal/artist-works";
+import { getPublishedTracksByArtist } from "@/lib/dal/tracks";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
 /**
@@ -75,9 +76,10 @@ export default async function ArtistDetailPage({
     notFound();
   }
 
-  const [releases, works, t, settings] = await Promise.all([
+  const [releases, works, tracks, t, settings] = await Promise.all([
     getPublishedReleasesByArtist(artist.id),
     getPublishedWorksByArtist(artist.id),
+    getPublishedTracksByArtist(artist.id),
     getTranslations("artist"),
     getSiteSettings(),
   ]);
@@ -120,7 +122,7 @@ export default async function ArtistDetailPage({
 
       {/* 66 from the quote column's close at 2050 to `Section` 141:16468 at 2116. */}
       <div className="mt-[66px] lg:mt-[80.02px]">
-        <ArtistDiscography releases={releases} />
+        <ArtistDiscography releases={releases} works={works} tracks={tracks} />
       </div>
 
       <div className="lg:-mt-[4.16px]">

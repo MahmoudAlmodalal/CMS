@@ -95,6 +95,14 @@
       "concerts": "حفلات",
       "songs": "أغاني"
     },
+    "careerPrev": "السابق",
+    "careerNext": "التالي",
+    "careerEmpty": {
+      "albums": "لا توجد ألبومات منشورة حالياً.",
+      "concerts": "لا توجد حفلات مسجلة حالياً.",
+      "songs": "لا توجد أغاني أو مقطوعات مسجلة حالياً."
+    },
+    "modalClose": "إغلاق",
     "releaseStudio": "ألبوم استوديو",
     "releaseLive": "ألبوم حي",
     "coverAlt": "غلاف ألبوم {title}",
