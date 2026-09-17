@@ -41,7 +41,7 @@ export const ENGLISH_NAV_ITEMS: readonly NavItem[] = [
  * - English link sequence: Home -> Events -> Academy -> Artists -> News
  * - Inline end: `Book Now` / `أحجز الآن` CTA 149x44 radius 16, plus 24x24 language glyph
  */
-export function Navbar() {
+export function Navbar({ bookingHref = "/booking" }: { bookingHref?: string }) {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("nav");
