@@ -104,6 +104,7 @@ export function TurntablePlayer({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const synthRef = useRef<{ stop: () => void; resume?: () => void } | null>(null);
   const playRequestedRef = useRef(false);
+  const ytMutedRef = useRef(false);
   // React-owned wrapper with no JSX children of its own, so React never tries
   // to diff or remove whatever ends up inside it. The YouTube Player API
   // physically replaces its mount element with an <iframe>, which crashes
@@ -284,6 +285,7 @@ export function TurntablePlayer({
       if (ytPlayerRef.current) {
         ytPlayerRef.current.loadVideoById(youtubeVideoId);
         ytPlayerRef.current.mute();
+        ytMutedRef.current = true;
         ytPlayerRef.current.playVideo();
         setIsPlaying(true);
         return;
@@ -297,6 +299,7 @@ export function TurntablePlayer({
         events: {
           onReady: (event) => {
             event.target.mute();
+            ytMutedRef.current = true;
             event.target.playVideo();
             setIsPlaying(true);
             if (playRequestedRef.current) {
@@ -331,6 +334,7 @@ export function TurntablePlayer({
       if (ytPlayerRef.current) {
         ytPlayerRef.current.unMute();
         ytPlayerRef.current.playVideo();
+        ytMutedRef.current = false;
         document.removeEventListener("pointerdown", unlock);
         document.removeEventListener("keydown", unlock);
       }
@@ -375,12 +379,20 @@ export function TurntablePlayer({
         playRequestedRef.current = true;
         return;
       }
+      if (ytMutedRef.current) {
+        ytPlayerRef.current.unMute();
+        ytPlayerRef.current.playVideo();
+        ytMutedRef.current = false;
+        setIsPlaying(true);
+        return;
+      }
       if (isPlaying) {
         ytPlayerRef.current?.pauseVideo();
       } else {
         playRequestedRef.current = false;
         ytPlayerRef.current?.unMute();
         ytPlayerRef.current?.playVideo();
+        ytMutedRef.current = false;
       }
       return;
     }
