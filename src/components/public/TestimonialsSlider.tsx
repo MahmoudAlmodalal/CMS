@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/LayoutPrimitives";
+import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { Highlight } from "@/components/ui/Highlight";
 import type { Testimonial } from "@/lib/dal/testimonials";
 import { ScrollReveal } from "@/components/public/ScrollReveal";
-import { Marquee } from "./motion/Marquee";
+import { Marquee, type MarqueeHandle } from "./motion/Marquee";
+import { useMotionPrefs } from "./motion/useMotionPrefs";
 
 interface TestimonialsSliderProps {
   testimonials: Testimonial[];
@@ -30,6 +32,8 @@ interface TestimonialsSliderProps {
 export function TestimonialsSlider({ testimonials, heading }: TestimonialsSliderProps) {
   const t = useTranslations("testimonials");
   const home = useTranslations("home");
+  const { reduced } = useMotionPrefs();
+  const railRef = useRef<MarqueeHandle>(null);
 
   if (!testimonials || testimonials.length === 0) {
     return null;
@@ -103,14 +107,38 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
         </div>
       </Container>
 
-      <div className="mt-8 w-full sm:mt-10 lg:mt-12">
-        <Marquee durationSeconds={45}>
-          {testimonials.map((item) => (
-            <div key={item.id ?? item.author_name} className="shrink-0 px-3">
-              {renderCard(item)}
-            </div>
-          ))}
-        </Marquee>
+      <div className="mx-auto mt-8 w-full max-w-5xl px-4 sm:mt-10 lg:mt-12">
+        <div className="flex items-center gap-3 sm:gap-4">
+          {!reduced && (
+            <button
+              type="button"
+              onClick={() => railRef.current?.prev()}
+              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-md transition-all hover:scale-105 hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-10"
+              aria-label={t("previous")}
+            >
+              <ChevronStartIcon size={20} />
+            </button>
+          )}
+          <div className="min-w-0 flex-1">
+            <Marquee ref={railRef} durationSeconds={45}>
+              {testimonials.map((item) => (
+                <div key={item.id ?? item.author_name} className="shrink-0 px-3">
+                  {renderCard(item)}
+                </div>
+              ))}
+            </Marquee>
+          </div>
+          {!reduced && (
+            <button
+              type="button"
+              onClick={() => railRef.current?.next()}
+              className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-brand-espresso shadow-md transition-all hover:scale-105 hover:text-brand-primary active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary sm:size-10"
+              aria-label={t("next")}
+            >
+              <ChevronEndIcon size={20} />
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );
