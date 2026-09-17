@@ -30,6 +30,17 @@ export interface SafeImageProps {
   fallbackTestId?: string;
 }
 
+const VIDEO_PAGE_HOSTS = ["youtube.com", "youtu.be", "youtube-nocookie.com", "vimeo.com"];
+
+function isVideoPageUrl(val: string): boolean {
+  try {
+    const host = new URL(val).hostname.toLowerCase().replace(/^(www|m|music)\./, "");
+    return VIDEO_PAGE_HOSTS.includes(host);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Normalizes media URLs: absolute https/http, protocol-relative (//),
  * storage CDN paths, and relative /uploads/... or /assets/...
@@ -41,6 +52,7 @@ export function normalizeMediaUrl(
   if (!url) return null;
   const trimmed = url.trim();
   if (!trimmed) return null;
+  if (isVideoPageUrl(trimmed)) return null;
 
   // Blob URLs that may have expired or data URLs
   if (trimmed.startsWith("blob:") || trimmed.startsWith("data:")) {

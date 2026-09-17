@@ -175,7 +175,7 @@ export function Navbar({ bookingHref = "/booking", bookingLabel }: { bookingHref
             className="inline-flex h-11 shrink-0 items-center justify-center rounded-2xl bg-brand-primary px-4 text-sm font-bold leading-6 text-primary-50 transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary xl:w-[149px] xl:px-0 xl:text-[16px]"
             data-node-id={isEn ? "I142:17048;134:8255" : "I94:18677;20:4405"}
           >
-            {bookingLabel ?? t("bookNow")}
+            {bookingLabel?.trim() || t("bookNow")}
           </Link>
         </div>
       </header>

@@ -80,7 +80,7 @@ export function Footer({ settings }: { settings?: SiteSettings }) {
           <div className="w-full max-w-[345px] border-t border-white/10 pt-6 text-center lg:w-[321px] lg:max-w-none lg:shrink-0 lg:border-0 lg:pt-0 lg:text-start">
             <h4 className="max-w-[240px] text-base font-bold text-[#ECE6D0]">{t("bookingHeading")}</h4>
             <p className="max-w-[280px] pt-2.5 pb-5 text-sm leading-relaxed text-primary-50">{t("bookingBody")}</p>
-            <Link href={settings?.booking_cta_href || "/booking"} className="mx-auto inline-flex min-h-12 w-full max-w-[300px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:mx-0 lg:max-w-[180px]">{settings?.booking_cta_label ?? t("bookingCta")}</Link>
+            <Link href={settings?.booking_cta_href || "/booking"} className="mx-auto inline-flex min-h-12 w-full max-w-[300px] items-center justify-center rounded-xl bg-brand-primary px-5 text-base font-bold text-[#ECE6D0] transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:mx-0 lg:max-w-[180px]">{settings?.booking_cta_label?.trim() || t("bookingCta")}</Link>
           </div>
         </div>
         {/* Bottom bar: strapline at the inline start, copyright at the inline end —
