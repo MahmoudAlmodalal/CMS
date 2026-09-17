@@ -260,7 +260,13 @@ export const trackSchemaBase = z
     title: trimmedString(1, 200, "عنوان المقطع الصوتي"),
     title_en: translationString(200),
     // Legacy direct-audio URL; new music entries use youtube_url instead.
-    audio_file_url: z.union([z.literal(""), safeUrlSchema(500)]),
+    // Older/legacy rows can carry SQL NULL here rather than "", so normalize
+    // null/undefined to "" before the union check — otherwise a track saved
+    // before youtube_url existed can never be edited again.
+    audio_file_url: z.preprocess(
+      (val) => (val === null || val === undefined ? "" : val),
+      z.union([z.literal(""), safeUrlSchema(500)])
+    ),
     youtube_url: z.union([z.literal(""), youtubeUrlSchema(500)]).optional().nullable(),
     duration_seconds: positiveInt(7200),
     cover_image_url: optionalImageUrlSchema(500),

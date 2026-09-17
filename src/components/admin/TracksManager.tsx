@@ -44,7 +44,7 @@ function trackToForm(track: AdminTrack): TrackFormValues {
     artist_id: track.artist_id,
     title: track.title,
     title_en: track.title_en ?? null,
-    audio_file_url: track.audio_file_url,
+    audio_file_url: track.audio_file_url ?? "",
     youtube_url: track.youtube_url ?? "",
     duration_seconds: track.duration_seconds,
     cover_image_url: track.cover_image_url ?? "",
