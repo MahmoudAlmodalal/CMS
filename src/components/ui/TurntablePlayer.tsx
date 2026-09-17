@@ -1,7 +1,61 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import { youTubeEmbedUrl } from "@/lib/youtube";
+import { parseYouTubeId } from "@/lib/youtube";
+
+/** Minimal shape of the bits of the YouTube IFrame Player API this file calls. */
+interface YTPlayerInstance {
+  playVideo(): void;
+  pauseVideo(): void;
+  unMute(): void;
+  loadVideoById(videoId: string): void;
+  destroy(): void;
+}
+interface YTPlayerOptions {
+  videoId?: string;
+  host?: string;
+  playerVars?: Record<string, string | number>;
+  events?: {
+    onReady?: (event: { target: YTPlayerInstance }) => void;
+    onStateChange?: (event: { target: YTPlayerInstance; data: number }) => void;
+  };
+}
+declare global {
+  interface Window {
+    YT?: {
+      Player: new (el: HTMLElement, options: YTPlayerOptions) => YTPlayerInstance;
+    };
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
+/**
+ * Loads the YouTube IFrame Player API script once per page and resolves once
+ * `window.YT.Player` is ready to construct.
+ *
+ * Used instead of a raw `<iframe src="...&autoplay=1">` because that only
+ * ever produces sound after a fresh, direct user gesture — it cannot autoplay
+ * with sound on page load. The Player API lets us start muted immediately
+ * (always allowed) and call `.unMute()` from a real click, or from the
+ * visitor's very first tap anywhere on the page, which browsers also honor.
+ */
+let ytApiPromise: Promise<void> | null = null;
+function loadYouTubeIframeApi(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.YT?.Player) return Promise.resolve();
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise((resolve) => {
+    const previous = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      previous?.();
+      resolve();
+    };
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  });
+  return ytApiPromise;
+}
 
 export interface TrackItem {
   title: string;
@@ -48,6 +102,14 @@ export function TurntablePlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const synthRef = useRef<{ stop: () => void } | null>(null);
+  // React-owned wrapper with no JSX children of its own, so React never tries
+  // to diff or remove whatever ends up inside it. The YouTube Player API
+  // physically replaces its mount element with an <iframe>, which crashes
+  // React's reconciliation if that element is one React itself manages —
+  // so the actual mount point is a plain DOM node created imperatively
+  // below, entirely outside React's tree.
+  const ytHostRef = useRef<HTMLDivElement | null>(null);
+  const ytPlayerRef = useRef<YTPlayerInstance | null>(null);
 
   const activePlaylist = playlist?.length ? playlist : PLAYLIST;
   const playlistTrack = activePlaylist[trackIndex % activePlaylist.length] || PLAYLIST[0];
@@ -60,6 +122,10 @@ export function TurntablePlayer({
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
   };
+  // youtubeUrl is the full link an editor pasted (e.g. "https://youtu.be/xyz");
+  // the embed endpoint needs the bare 11-char video id, or it 404s and never
+  // makes a sound no matter how it was triggered.
+  const youtubeVideoId = parseYouTubeId(currentTrack.youtubeUrl);
 
   const stopSynth = useCallback(() => {
     if (synthRef.current) {
@@ -192,14 +258,70 @@ export function TurntablePlayer({
     };
   }, [stopSynth]);
 
-  // Autoplay on mount — short delay to pass browser autoplay policy.
-  // YouTube tracks are excluded: browsers block unmuted iframe autoplay
-  // without a real user gesture, so marking isPlaying true here would show a
-  // spinning, "playing" vinyl with no actual sound. Those tracks wait for the
-  // visitor's own tap on the play button, which is a genuine gesture and does
-  // get sound.
+  // Create (or redirect) the YouTube player whenever the current track's
+  // video id changes. Starts muted so it can autoplay immediately — every
+  // browser allows muted autoplay — and unmutes on the first real gesture
+  // via the effect below, or immediately on an explicit play-button click.
   useEffect(() => {
-    if (!currentTrack.audioUrl || currentTrack.youtubeUrl) return;
+    if (!youtubeVideoId) {
+      ytPlayerRef.current?.destroy();
+      ytPlayerRef.current = null;
+      return;
+    }
+    let cancelled = false;
+    loadYouTubeIframeApi().then(() => {
+      if (cancelled || !ytHostRef.current || !window.YT) return;
+      if (ytPlayerRef.current) {
+        ytPlayerRef.current.loadVideoById(youtubeVideoId);
+        return;
+      }
+      const mount = document.createElement("div");
+      ytHostRef.current.appendChild(mount);
+      ytPlayerRef.current = new window.YT.Player(mount, {
+        videoId: youtubeVideoId,
+        host: "https://www.youtube-nocookie.com",
+        playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, modestbranding: 1, playsinline: 1 },
+        events: {
+          onReady: (event) => event.target.playVideo(),
+          // 1 is YT.PlayerState.PLAYING — a stable, documented API constant.
+          onStateChange: (event) => setIsPlaying(event.data === 1),
+        },
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [youtubeVideoId]);
+
+  // Destroy the player on unmount only (not on every id change above).
+  useEffect(() => {
+    return () => {
+      ytPlayerRef.current?.destroy();
+      ytPlayerRef.current = null;
+    };
+  }, []);
+
+  // The visitor's very first tap/click/keypress anywhere on the page unmutes
+  // whichever track is currently loaded — the closest a browser allows to
+  // "just plays itself" while still respecting autoplay-with-sound rules.
+  useEffect(() => {
+    const unlock = () => {
+      ytPlayerRef.current?.unMute();
+      ytPlayerRef.current?.playVideo();
+    };
+    document.addEventListener("pointerdown", unlock, { once: true });
+    document.addEventListener("keydown", unlock, { once: true });
+    return () => {
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+    };
+  }, []);
+
+  // Autoplay on mount — short delay to pass browser autoplay policy.
+  // (YouTube tracks are handled by the player effect above instead: they
+  // autoplay muted immediately, then unmute on first interaction.)
+  useEffect(() => {
+    if (!currentTrack.audioUrl || youtubeVideoId) return;
     const timer = setTimeout(() => {
       if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
@@ -219,37 +341,44 @@ export function TurntablePlayer({
   }, []);
 
   const togglePlayback = useCallback(() => {
-    if (!currentTrack.audioUrl && !currentTrack.youtubeUrl) return;
+    if (!currentTrack.audioUrl && !youtubeVideoId) return;
+    if (youtubeVideoId) {
+      // A direct click is a real user gesture — unmuting here always works,
+      // even before the page-wide first-interaction listener has fired.
+      if (isPlaying) {
+        ytPlayerRef.current?.pauseVideo();
+      } else {
+        ytPlayerRef.current?.unMute();
+        ytPlayerRef.current?.playVideo();
+      }
+      return;
+    }
     if (isPlaying) {
       if (audioRef.current) {
         audioRef.current.pause();
       }
       stopSynth();
       setIsPlaying(false);
+    } else if (currentTrack.audioUrl && audioRef.current) {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          startSynth(currentTrack.synthMode);
+          setIsPlaying(true);
+        });
     } else {
-      if (currentTrack.youtubeUrl) {
-        setIsPlaying(true);
-      } else if (currentTrack.audioUrl && audioRef.current) {
-        audioRef.current
-          .play()
-          .then(() => setIsPlaying(true))
-          .catch(() => {
-            startSynth(currentTrack.synthMode);
-            setIsPlaying(true);
-          });
-      } else {
-        startSynth(currentTrack.synthMode);
-        setIsPlaying(true);
-      }
+      startSynth(currentTrack.synthMode);
+      setIsPlaying(true);
     }
-  }, [isPlaying, currentTrack, startSynth, stopSynth]);
+  }, [isPlaying, currentTrack, youtubeVideoId, startSynth, stopSynth]);
 
   const handleNext = () => {
     stopSynth();
     if (audioRef.current) audioRef.current.pause();
     const nextIdx = (trackIndex + 1) % activePlaylist.length;
     setTrackIndex(nextIdx);
-    if (isPlaying && !currentTrack.youtubeUrl) {
+    if (isPlaying && !youtubeVideoId) {
       setTimeout(() => {
         if (activePlaylist[nextIdx]?.audioUrl && audioRef.current) {
           void audioRef.current.play().catch(() => setIsPlaying(false));
@@ -265,7 +394,7 @@ export function TurntablePlayer({
     if (audioRef.current) audioRef.current.pause();
     const prevIdx = (trackIndex - 1 + activePlaylist.length) % activePlaylist.length;
     setTrackIndex(prevIdx);
-    if (isPlaying && !currentTrack.youtubeUrl) {
+    if (isPlaying && !youtubeVideoId) {
       setTimeout(() => {
         if (activePlaylist[prevIdx]?.audioUrl && audioRef.current) {
           void audioRef.current.play().catch(() => setIsPlaying(false));
@@ -291,16 +420,11 @@ export function TurntablePlayer({
           onPause={() => setIsPlaying(false)}
         />
       ) : null}
-      {currentTrack.youtubeUrl && isPlaying ? (
-        <iframe
-          key={currentTrack.youtubeUrl}
-          src={youTubeEmbedUrl(currentTrack.youtubeUrl, { autoplay: true })}
-          title={currentTrack.title}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          className="absolute h-px w-px opacity-0"
-          aria-hidden="true"
-        />
-      ) : null}
+      {/* YouTube Player API mounts its iframe inside this node (into a plain
+          DOM child it creates itself, not this div); it persists across
+          track switches so loadVideoById() can swap videos in place instead
+          of tearing down and losing the mute/gesture state. */}
+      <div ref={ytHostRef} className="absolute h-px w-px opacity-0" aria-hidden="true" />
 
       {/* Vinyl Record — top half */}
       <div className="relative flex shrink-0 items-center justify-center mt-2">
