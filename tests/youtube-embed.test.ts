@@ -34,17 +34,13 @@ test("YouTubeEmbed is the only place the site builds a YouTube iframe", () => {
   }
 });
 
-test("the home page offers the hero video once, not three times", () => {
+test("the home page hero video is rendered as backdrop and not in about band", () => {
   const hero = read("src/components/public/HeroSection.tsx");
   const about = read("src/components/public/AboutSection.tsx");
 
-  // The hero paints hero_video_url as a muted backdrop; the about band carries
-  // the one playable copy. A second playable embed in the hero body meant the
-  // same video was offered twice on one screen.
   assert.equal(hero.match(/<YouTubeEmbed/g)?.length, 1, "the hero embeds the video once");
   assert.match(hero, /variant="backdrop"/);
-  assert.equal(about.match(/<YouTubeEmbed/g)?.length, 1, "the about band embeds the video once");
-  assert.doesNotMatch(about, /variant="backdrop"/, "the about copy is the playable one");
+  assert.equal(about.match(/<YouTubeEmbed/g)?.length ?? 0, 0, "the about band does not embed the video");
 });
 
 test("cssUrl quotes CMS URLs so a filename with a space cannot break a background", () => {

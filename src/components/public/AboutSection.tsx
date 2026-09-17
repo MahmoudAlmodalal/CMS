@@ -6,7 +6,6 @@ import type { SiteSettings } from "@/lib/dal/site-settings";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
-import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
 
 interface AboutSectionProps {
   settings: SiteSettings;
@@ -51,14 +50,6 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               <p className="max-w-prose text-base font-medium leading-relaxed text-[#1b1b1b] sm:text-lg lg:text-[25px] lg:leading-relaxed">
                 {settings.about_body}
               </p>
-              {/* The one playable copy of the hero video on this page: the band
-                  above it now paints the same link only as a muted backdrop, so
-                  the visitor is not offered the same video twice on one screen. */}
-              <YouTubeEmbed
-                url={settings.hero_video_url}
-                title={t("videoTitle")}
-                className="w-full rounded-2xl shadow-lg"
-              />
               <Link
                 href={settings.home_about_href || "/artists"}
                 className="inline-flex min-h-11 w-full max-w-[207px] items-center justify-center rounded-xl bg-primary-500 px-5 text-center font-system text-base font-bold text-primary-50 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-md active:translate-y-0 active:scale-[0.98] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
