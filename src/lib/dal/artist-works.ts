@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import type { ArtistWork } from "@/lib/types/artist-works";
 import { localizeContentList } from "./localize";
 
@@ -18,7 +18,7 @@ export async function getPublishedWorksByArtist(artistId: string): Promise<Artis
       return [];
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("artist_works")
       .select("*")
