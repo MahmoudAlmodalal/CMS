@@ -188,13 +188,14 @@ test("Media Picker — MediaPickerField client component & form integrations", (
   assert.match(eventForm, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
   assert.match(eventForm, /bucket=["']events["'][^>]*folder=["']posters["']|folder=["']posters["'][^>]*bucket=["']events["']/);
 
-  // TracksManager integration (releases/covers)
+  // TracksManager no longer picks a cover: a track is a YouTube link, and its
+  // artwork is the video thumbnail derived from the id (youTubeThumbnailUrl).
   const tracksManager = fs.readFileSync(
     path.join(root, "src/components/admin/TracksManager.tsx"),
     "utf-8"
   );
-  assert.match(tracksManager, /import \{[^}]*MediaPickerField[^}]*\} from ["']@\/components\/admin\/media\/MediaPickerField["']/);
-  assert.match(tracksManager, /bucket=["']releases["'][^>]*folder=["']covers["']|folder=["']covers["'][^>]*bucket=["']releases["']/);
+  assert.match(tracksManager, /youTubeThumbnailUrl/);
+  assert.doesNotMatch(tracksManager, /MediaPickerField/);
 
   // ReleasesManager integration (releases/covers)
   const releasesManager = fs.readFileSync(

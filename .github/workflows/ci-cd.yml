@@ -80,9 +80,9 @@ jobs:
 
   deploy:
     name: Deploy production to Vercel
-    # Keep validation visible as a quality signal, but do not let legacy
-    # contract tests prevent the migration and production deploy jobs.
-    needs: migrate
+    # Validation gates the deploy again: the contract tests it was bypassing
+    # are green, and a red suite must not reach production.
+    needs: [validate, migrate]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
