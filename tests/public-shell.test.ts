@@ -78,7 +78,9 @@ test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", ()
 
   // CTA button
   assertLocalised(content, "nav.bookNow", "أحجز الآن", "Navbar CTA");
-  assert.match(content, /href="\/booking"/, "Navbar CTA must direct to /booking");
+  assert.match(content, /href=\{bookingHref\}/, "Navbar CTA must use the admin-controlled destination");
+  assert.match(content, /bookingHref = "\/booking"/, "Unconfigured CTA must retain the booking destination");
+  assert.match(content, /bookingLabel \?\? t\("bookNow"\)/, "Navbar CTA must use the localized admin label");
 
   // Language switcher must change locale, not merely flip direction
   assert.match(content, /LocaleSwitcher/, "Navbar must include the locale switcher");

@@ -34,7 +34,10 @@ export default async function PublicLayout({
       <SkipToContent />
 
       {/* 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32) */}
-      <Navbar />
+      <Navbar
+        bookingHref={settings.booking_cta_href || undefined}
+        bookingLabel={settings.booking_cta_label}
+      />
 
       {/* 3. Mobile Top Bar + Drawer (Figma Component 17: 56px) */}
       <MobileNavbar />

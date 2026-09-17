@@ -459,7 +459,6 @@ bdi, .bdi-isolate {
 :root {
   --motion-expressive: 520ms;
   --motion-hero: 900ms;
-  --motion-marquee-duration: 48s;
 }
 
 /* --- Clip-path text wipe -------------------------------------------------- */
@@ -531,8 +530,9 @@ bdi, .bdi-isolate {
 }
 
 /* --- Marquee -------------------------------------------------------------- */
-/* The track holds the content twice, so translating by exactly -50% lands on  */
-/* the duplicate and the loop is seamless. RTL runs the same track backwards.  */
+/* The track holds ONE copy of the content; a rAF loop in Marquee.tsx          */
+/* translates it pixel by pixel and rotates the exited leading tile to the    */
+/* end, so the loop is seamless with no duplicated images. RTL runs mirrored. */
 
 .motion-marquee {
   overflow: hidden;
@@ -543,17 +543,7 @@ bdi, .bdi-isolate {
 .motion-marquee-track {
   display: flex;
   inline-size: max-content;
-  animation: motion-marquee-scroll var(--motion-marquee-duration) linear infinite;
   will-change: transform;
-}
-
-[dir="rtl"] .motion-marquee-track { animation-direction: reverse; }
-
-.motion-marquee[data-paused="true"] .motion-marquee-track { animation-play-state: paused; }
-
-@keyframes motion-marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
 }
 
 /* --- Skeleton shimmer ----------------------------------------------------- */

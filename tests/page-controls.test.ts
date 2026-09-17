@@ -50,6 +50,20 @@ test("Page controls — public pages read the new settings", () => {
   assert.match(read("src/app/[locale]/layout.tsx"), /seo_default_title\?\.trim\(\) \|\| t\("title"\)/);
 });
 
+test("Shared booking CTA uses the localized admin settings throughout the public shell", () => {
+  const layout = read("src/app/[locale]/(public)/layout.tsx");
+  assert.match(layout, /bookingHref=\{settings\.booking_cta_href \|\| undefined\}/);
+  assert.match(layout, /bookingLabel=\{settings\.booking_cta_label\}/);
+  const footer = read("src/components/public/Footer.tsx");
+  assert.match(footer, /href=\{settings\?\.booking_cta_href \|\| "\/booking"\}/);
+  assert.match(footer, /settings\?\.booking_cta_label/);
+  for (const label of ["ابدأ الحجز", "Reserve your performance"]) {
+    const parsed = partial.parse({ booking_cta_label: label, booking_cta_href: "/booking?source=site" });
+    assert.equal(parsed.booking_cta_label, label);
+    assert.equal(parsed.booking_cta_href, "/booking?source=site");
+  }
+});
+
 test("Hero video — the YouTube column is admin-editable, validated and not storage", () => {
   // Only a real YouTube link saves: the schema defers to the same parseYouTubeId
   // the hero renders with, so a link that saves always plays.

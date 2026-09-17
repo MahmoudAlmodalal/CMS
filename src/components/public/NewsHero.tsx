@@ -67,7 +67,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
         />
 
         <ScrollReveal variant="up">
-        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 min-[1440px]:h-[178px] min-[1440px]:w-[660px] min-[1440px]:px-0 min-[1440px]:left-[677px]">
+        <div className="absolute bottom-[15px] end-5 start-5 px-4 sm:end-12 sm:start-12 min-[1440px]:h-[178px] min-[1440px]:w-[660px] min-[1440px]:px-0 min-[1440px]:left-[677px] ltr:min-[1440px]:left-[103px]">
           <h1
             id="featured-news-heading"
             className="pt-2 text-start font-display text-[32px] leading-[1.1] text-white sm:text-[40px] min-[1440px]:absolute min-[1440px]:left-8 min-[1440px]:top-[66px] min-[1440px]:w-[660px] min-[1440px]:whitespace-nowrap min-[1440px]:text-[48px] min-[1440px]:leading-[40px]"
@@ -85,7 +85,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
 
       {secondaryArticles.length > 0 && (
         <ScrollReveal variant="image" delay={0.12}>
-        <div className="relative mx-auto mt-4 w-[calc(100%-2rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-4 shadow-card sm:p-5 min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px]">
+        <div className="relative mx-auto mt-4 w-[calc(100%-2rem)] max-w-[392px] rounded-[16px] bg-secondary-50 p-4 shadow-card sm:p-5 min-[1440px]:absolute min-[1440px]:left-[130px] min-[1440px]:top-[229px] min-[1440px]:mt-0 min-[1440px]:w-[392px] ltr:min-[1440px]:left-auto ltr:min-[1440px]:right-[130px]">
           <div className="flex flex-col gap-6">
             {secondaryArticles.map((article) => (
               <Link
@@ -103,7 +103,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
                     className="object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-1 pb-1 pt-1 text-end lg:pt-2">
+                <div className="flex flex-col gap-1 pb-1 pt-1 text-end ltr:text-start lg:pt-2">
                   <span className="text-[13px] font-bold leading-[19.5px] text-eyebrow">
                     {getArticleCategoryLabel(article.category)}
                   </span>
