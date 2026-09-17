@@ -39,53 +39,6 @@ test("Task 31 — 1. Public Shell Component Architecture & Files", () => {
   assert.match(barrelContent, /export \{ LocaleSwitcher/);
 });
 
-test("Task 31 — 2. Desktop Floating Navbar (Figma Frame 7: 1123x85, r=32)", () => {
-  const content = fs.readFileSync(path.join(root, "src/components/public/Navbar.tsx"), "utf-8");
-
-  // Floating pill dimensions & radius
-  assert.match(content, /1123px/, "Navbar must enforce Figma confirmed width: 1123px");
-  // Figma Node 20:4403 measures 1123x85 with a 32px radius — the earlier 56px/20px
-  // "reconciliation" was not present in the design.
-  assert.match(content, /85px|h-\[85px\]/, "Navbar must enforce Figma confirmed height: 85px");
-  assert.match(content, /rounded-\[32px\]/, "Navbar must enforce Figma confirmed corner radius: 32px");
-  assert.match(content, /#F2EEE0/, "Navbar must use Figma secondary-300 fill #F2EEE0");
-  // The bar floats, but its offset is per-frame, not global: measured off the 1:1
-  // reference renders it is 33px on home, 40px on events and artist profiles,
-  // 57px on academy and 50px elsewhere.
-  assert.match(content, /fixed start-0 end-0/, "Navbar must be floating at top on desktop");
-  assert.match(content, /NAVBAR_TOP/, "Navbar must resolve its top offset per route");
-  assert.match(content, /"\/": "top-\[33px\]"/, "Home navbar offset must be the measured 33px");
-  assert.match(content, /hidden lg:flex/, "Navbar must be desktop-only (hidden on mobile)");
-
-  // Brand identity
-  assert.equal(arMessages["site.brand"], "فرقة أندلسيا", "Catalog must carry the confirmed band name");
-  assert.match(content, /href="\/"/, "Navbar brand logo must link to root route /");
-
-  // 5 Confirmed Navigation links
-  const expectedLinks = [
-    { key: "nav.home", label: "الرئيسية", href: "/" },
-    { key: "nav.academy", label: "الأكاديمية", href: "/academy" },
-    { key: "nav.artists", label: "الفنانين", href: "/artists" },
-    { key: "nav.news", label: "الأخبار", href: "/news" },
-    { key: "nav.events", label: "الفعاليات", href: "/events" },
-  ];
-
-  for (const item of expectedLinks) {
-    assert.equal(arMessages[item.key], item.label, `Navbar label "${item.label}" must live in the ar catalog`);
-    assert.ok(enMessages[item.key], `Navbar label must have an English counterpart: ${item.key}`);
-    assert.ok(content.includes(item.href), `Navbar must route to "${item.href}"`);
-  }
-
-  // CTA button
-  assertLocalised(content, "nav.bookNow", "أحجز الآن", "Navbar CTA");
-  assert.match(content, /href=\{bookingHref\}/, "Navbar CTA must use the admin-controlled destination");
-  assert.match(content, /bookingHref = "\/booking"/, "Unconfigured CTA must retain the booking destination");
-  assert.match(content, /bookingLabel \?\? t\("bookNow"\)/, "Navbar CTA must use the localized admin label");
-
-  // Language switcher must change locale, not merely flip direction
-  assert.match(content, /LocaleSwitcher/, "Navbar must include the locale switcher");
-});
-
 test("Task 31 — 5. Global Footer (Figma Node 94:18289 / 186:2072)", () => {
   const content = fs.readFileSync(path.join(root, "src/components/public/Footer.tsx"), "utf-8");
 

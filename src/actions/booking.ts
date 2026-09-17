@@ -42,6 +42,18 @@ async function serverMessages() {
   return (key: string, arabic: string) => (locale === "ar" ? arabic : t(key as never));
 }
 
+/** Arabic source copy for an accepted submission; the honeypot reply must match it exactly. */
+const BOOKING_SUCCESS_AR =
+  "تم استلام طلبك بنجاح! سنتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الحجز.";
+
+/** The booking_requests rate-limit trigger raises P0001 with this hint. */
+function isRateLimitRejection(error: { code?: string; message?: string; hint?: string | null }): boolean {
+  return (
+    error.hint === "BOOKING_RATE_LIMIT" ||
+    (error.code === "P0001" && (error.message ?? "").includes("booking rate limit"))
+  );
+}
+
 /**
  * Server Action: Ingests public booking inquiries.
  * 
@@ -55,9 +67,18 @@ export async function submitBookingAction(
   _prevState: BookingActionState,
   formData: FormData
 ): Promise<BookingActionState> {
+  const msg = await serverMessages();
+
+  // Honeypot, same convention as the newsletter's _hp field: a hidden input no
+  // person can see or tab into. Answer a bot with the success it expects rather
+  // than an error that tells it what to change.
+  const honeypot = formData.get("_hp");
+  if (typeof honeypot === "string" && honeypot.trim().length > 0) {
+    return { success: true, message: msg("success", BOOKING_SUCCESS_AR) };
+  }
+
   const sanitized = sanitizeFormData(formData);
   const validated = publicBookingSubmissionSchema.safeParse(sanitized);
-  const msg = await serverMessages();
 
   if (!validated.success) {
     const flattened = validated.error.flatten();
@@ -92,6 +113,20 @@ export async function submitBookingAction(
     const { error } = await supabase.from("booking_requests").insert(bookingRequest);
 
     if (error) {
+      // The rate-limit trigger (20260922000000) refuses a fourth submission from
+      // one email inside ten minutes. That is a refusal, not a failure, so say
+      // so rather than telling a visitor to "try again later" — which is the one
+      // thing that would make it worse.
+      if (isRateLimitRejection(error)) {
+        return {
+          success: false,
+          error: msg(
+            "rateLimited",
+            "لقد أرسلت عدة طلبات حجز خلال دقائق قليلة. سنتواصل معك قريباً — يرجى الانتظار قبل إرسال طلب جديد.",
+          ),
+        };
+      }
+
       console.error("[Booking Submission DB Error]:", error.message);
       return {
         success: false,
@@ -108,7 +143,7 @@ export async function submitBookingAction(
 
     return {
       success: true,
-      message: msg("success", "تم استلام طلبك بنجاح! سنتواصل معك خلال ٤٨ ساعة لمناقشة التفاصيل وتأكيد الحجز."),
+      message: msg("success", BOOKING_SUCCESS_AR),
     };
   } catch (err: unknown) {
     console.error("[Booking Submission Exception]:", err instanceof Error ? err.message : String(err));

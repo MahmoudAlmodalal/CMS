@@ -29,6 +29,12 @@ export interface HighlightProps {
  * 2. If no asterisks, highlights word(s) by index (`highlightIndex`, default: index 1 / second word).
  *
  * No static word lists or hardcoded dictionaries are used.
+ *
+ * `text` must be a plain string. When it comes from a message catalog, read it
+ * with `t.raw(key)`: `t(key)` runs the value through next-intl's ICU formatter,
+ * which treats `<em>` as a rich-text tag and throws FORMATTING_ERROR unless an
+ * `em` handler is passed. (`t.rich` is the right call where the consumer wants
+ * React nodes instead — see the events page hero.)
  */
 export function Highlight({
   text,

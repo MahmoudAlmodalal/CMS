@@ -2,7 +2,7 @@
 
 import "server-only";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { requireAdminSession, type AuthContext } from "@/lib/auth-guard";
+import { requireAdminSession } from "@/lib/auth-guard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   artistSchema,
@@ -40,9 +40,10 @@ export interface ActionResult<T = unknown> {
   error?: string;
 }
 
-function insertedId(data: unknown, fallback = "mock-record-id"): string {
+/** The id of the row that was just inserted, or null if the insert returned none. */
+function insertedId(data: unknown): string | null {
   const row = data as { id?: unknown } | null;
-  return typeof row?.id === "string" ? row.id : fallback;
+  return typeof row?.id === "string" ? row.id : null;
 }
 
 function revalidateSite(): void {
@@ -87,16 +88,14 @@ const PUBLISHABLE_TABLES: readonly PublishableTable[] = [
 // ============================================================================
 
 export async function createArtistAction(
-  input: ArtistInput,
-  ctx?: AuthContext
+  input: ArtistInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = artistSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-artist-id" } };
 
   const { data, error } = await supabase
     .from("artists")
@@ -106,20 +105,20 @@ export async function createArtistAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createTrackAction(
-  input: TrackInput,
-  ctx?: AuthContext
+  input: TrackInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = trackSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-track-id" } };
 
   const { data, error } = await supabase
     .from("tracks")
@@ -137,20 +136,20 @@ export async function createTrackAction(
     };
   }
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createReleaseAction(
-  input: ReleaseInput,
-  ctx?: AuthContext
+  input: ReleaseInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = releaseSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-release-id" } };
 
   const { data, error } = await supabase
     .from("releases")
@@ -160,20 +159,20 @@ export async function createReleaseAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createArtistWorkAction(
-  input: ArtistWorkInput,
-  ctx?: AuthContext
+  input: ArtistWorkInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = artistWorkSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-artist-work-id" } };
 
   const { data, error } = await supabase
     .from("artist_works")
@@ -183,20 +182,20 @@ export async function createArtistWorkAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createEventAction(
-  input: EventInput,
-  ctx?: AuthContext
+  input: EventInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = eventSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-event-id" } };
 
   const { data, error } = await supabase
     .from("events")
@@ -206,20 +205,20 @@ export async function createEventAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createAcademyCourseAction(
-  input: AcademyCourseInput,
-  ctx?: AuthContext
+  input: AcademyCourseInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = academyCourseSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-course-id" } };
 
   const { data, error } = await supabase
     .from("academy_courses")
@@ -229,20 +228,20 @@ export async function createAcademyCourseAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createArticleAction(
-  input: ArticleInput,
-  ctx?: AuthContext
+  input: ArticleInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = articleSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-article-id" } };
 
   const { data, error } = await supabase
     .from("articles")
@@ -252,20 +251,20 @@ export async function createArticleAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 export async function createTestimonialAction(
-  input: TestimonialInput,
-  ctx?: AuthContext
+  input: TestimonialInput
 ): Promise<ActionResult<{ id: string }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   const parsed = testimonialSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-testimonial-id" } };
 
   const { data, error } = await supabase
     .from("testimonials")
@@ -275,7 +274,9 @@ export async function createTestimonialAction(
 
   if (error) return { ok: false, error: error.message };
   revalidateSite();
-  return { ok: true, data: { id: insertedId(data) } };
+  const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
 }
 
 /**
@@ -297,20 +298,10 @@ export async function createPrivilegedBookingAction(
     message: string;
     status?: "pending" | "contacted" | "confirmed" | "archived";
     admin_notes?: string | null;
-  },
-  ctx?: AuthContext
-): Promise<ActionResult<{ id: string }>> {
-  await requireAdminSession(ctx);
-
-  if (ctx?.supabase) {
-    const { data, error } = await ctx.supabase
-      .from("booking_requests")
-      .insert(input as never)
-      .select("id")
-      .single();
-    if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: insertedId(data) || "mock-booking-id" } };
   }
+): Promise<ActionResult<{ id: string }>> {
+  await requireAdminSession();
+
 
   try {
     const admin = createAdminClient();
@@ -320,7 +311,9 @@ export async function createPrivilegedBookingAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: insertedId(data) } };
+    const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء طلب الحجز" };
   }
@@ -332,20 +325,10 @@ export async function createPrivilegedBookingAction(
  * Guarded by requireAdminSession.
  */
 export async function createPrivilegedSubscriberAction(
-  input: { email: string; status?: "subscribed" | "unsubscribed" },
-  ctx?: AuthContext
+  input: { email: string; status?: "subscribed" | "unsubscribed" }
 ): Promise<ActionResult<{ id: string }>> {
-  await requireAdminSession(ctx);
+  await requireAdminSession();
 
-  if (ctx?.supabase) {
-    const { data, error } = await ctx.supabase
-      .from("newsletter_subscribers")
-      .insert({ email: input.email, status: input.status ?? "subscribed" } as never)
-      .select("id")
-      .single();
-    if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: insertedId(data) || "mock-subscriber-id" } };
-  }
 
   try {
     const admin = createAdminClient();
@@ -355,7 +338,9 @@ export async function createPrivilegedSubscriberAction(
       .select("id")
       .single();
     if (error) return { ok: false, error: error.message };
-    return { ok: true, data: { id: insertedId(data) } };
+    const id = insertedId(data);
+  if (!id) return { ok: false, error: "لم تُرجع قاعدة البيانات معرف السجل بعد الإضافة" };
+  return { ok: true, data: { id } };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "تعذر إنشاء المشترك" };
   }
@@ -366,10 +351,9 @@ export async function createPrivilegedSubscriberAction(
 // ============================================================================
 
 export async function updateSiteSettingsAction(
-  input: Partial<SiteSettingsInput>,
-  ctx?: AuthContext
+  input: Partial<SiteSettingsInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   // Partial: /admin/settings and /admin/pages send only the fields they changed,
   // so saving one screen never overwrites edits made on the other.
   const parsed = siteSettingsSchema.partial().safeParse(input);
@@ -393,10 +377,9 @@ export async function updateSiteSettingsAction(
 
 export async function updateArtistAction(
   id: string,
-  input: Partial<ArtistInput>,
-  ctx?: AuthContext
+  input: Partial<ArtistInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الفنان مطلوب" };
 
   const parsed = artistSchema.omit({ id: true }).partial().safeParse(input);
@@ -407,7 +390,6 @@ export async function updateArtistAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("artists")
@@ -421,10 +403,9 @@ export async function updateArtistAction(
 
 export async function updateTrackAction(
   id: string,
-  input: Partial<TrackInput>,
-  ctx?: AuthContext
+  input: Partial<TrackInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المقطع الصوتي مطلوب" };
 
   const parsed = trackSchemaBase.omit({ id: true }).partial().safeParse(input);
@@ -435,7 +416,6 @@ export async function updateTrackAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("tracks")
@@ -457,10 +437,9 @@ export async function updateTrackAction(
 
 export async function updateReleaseAction(
   id: string,
-  input: Partial<ReleaseInput>,
-  ctx?: AuthContext
+  input: Partial<ReleaseInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الإصدار مطلوب" };
 
   const parsed = releaseSchema.omit({ id: true }).partial().safeParse(input);
@@ -471,7 +450,6 @@ export async function updateReleaseAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("releases")
@@ -485,10 +463,9 @@ export async function updateReleaseAction(
 
 export async function updateArtistWorkAction(
   id: string,
-  input: Partial<ArtistWorkInput>,
-  ctx?: AuthContext
+  input: Partial<ArtistWorkInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف العمل مطلوب" };
 
   const parsed = artistWorkSchema.omit({ id: true }).partial().safeParse(input);
@@ -499,7 +476,6 @@ export async function updateArtistWorkAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("artist_works")
@@ -513,10 +489,9 @@ export async function updateArtistWorkAction(
 
 export async function updateEventAction(
   id: string,
-  input: Partial<EventInput>,
-  ctx?: AuthContext
+  input: Partial<EventInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الفعالية مطلوب" };
 
   const parsed = eventSchema.omit({ id: true }).partial().safeParse(input);
@@ -527,7 +502,6 @@ export async function updateEventAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("events")
@@ -541,10 +515,9 @@ export async function updateEventAction(
 
 export async function updateAcademyCourseAction(
   id: string,
-  input: Partial<AcademyCourseInput>,
-  ctx?: AuthContext
+  input: Partial<AcademyCourseInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المسار الأكاديمي مطلوب" };
 
   const parsed = academyCourseSchema.omit({ id: true }).partial().safeParse(input);
@@ -555,7 +528,6 @@ export async function updateAcademyCourseAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("academy_courses")
@@ -571,10 +543,9 @@ export async function updateAcademyCourseAction(
 
 export async function updateArticleAction(
   id: string,
-  input: Partial<ArticleInput>,
-  ctx?: AuthContext
+  input: Partial<ArticleInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المقال مطلوب" };
 
   const parsed = articleSchema.omit({ id: true }).partial().safeParse(input);
@@ -585,7 +556,6 @@ export async function updateArticleAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("articles")
@@ -599,10 +569,9 @@ export async function updateArticleAction(
 
 export async function updateTestimonialAction(
   id: string,
-  input: Partial<TestimonialInput>,
-  ctx?: AuthContext
+  input: Partial<TestimonialInput>
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف التوصية مطلوب" };
 
   const parsed = testimonialSchema.omit({ id: true }).partial().safeParse(input);
@@ -613,7 +582,6 @@ export async function updateTestimonialAction(
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("testimonials")
@@ -627,10 +595,9 @@ export async function updateTestimonialAction(
 
 export async function updateBookingRequestAction(
   id: string,
-  input: AdminBookingUpdate,
-  ctx?: AuthContext
+  input: AdminBookingUpdate
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف طلب الحجز مطلوب" };
 
   const parsed = adminBookingUpdateSchema.safeParse(input);
@@ -638,7 +605,6 @@ export async function updateBookingRequestAction(
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("booking_requests")
@@ -651,10 +617,9 @@ export async function updateBookingRequestAction(
 
 export async function updateSubscriberAction(
   id: string,
-  input: AdminNewsletterUpdate,
-  ctx?: AuthContext
+  input: AdminNewsletterUpdate
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المشترك مطلوب" };
 
   const parsed = adminNewsletterUpdateSchema.safeParse(input);
@@ -662,7 +627,6 @@ export async function updateSubscriberAction(
     return { ok: false, error: formatZodError(parsed.error) };
   }
 
-  if (!supabase) return { ok: true };
 
   const { error } = await supabase
     .from("newsletter_subscribers")
@@ -677,99 +641,89 @@ export async function updateSubscriberAction(
 // 3. DELETE OPERATIONS (Role-Authorized)
 // ============================================================================
 
-export async function deleteArtistAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteArtistAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الفنان مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("artists").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteTrackAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteTrackAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المقطع الصوتي مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("tracks").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteReleaseAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteReleaseAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الإصدار مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("releases").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteArtistWorkAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteArtistWorkAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف العمل مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("artist_works").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteEventAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteEventAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الفعالية مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("events").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteAcademyCourseAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteAcademyCourseAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المسار الأكاديمي مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("academy_courses").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteArticleAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteArticleAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المقال مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("articles").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteTestimonialAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteTestimonialAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف التوصية مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("testimonials").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   revalidateSite();
   return { ok: true };
 }
 
-export async function deleteBookingRequestAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteBookingRequestAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف طلب الحجز مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("booking_requests").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
 
-export async function deleteSubscriberAction(id: string, ctx?: AuthContext): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+export async function deleteSubscriberAction(id: string): Promise<ActionResult<void>> {
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف المشترك مطلوب" };
-  if (!supabase) return { ok: true };
   const { error } = await supabase.from("newsletter_subscribers").delete().eq("id" as never, id as never);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
@@ -783,16 +737,14 @@ export async function setPublishStatusAction(
   table: PublishableTable,
   id: string,
   is_published: boolean,
-  published_at?: string,
-  ctx?: AuthContext
+  published_at?: string
 ): Promise<ActionResult<void>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!PUBLISHABLE_TABLES.includes(table)) {
     return { ok: false, error: `الجدول "${table}" لا يدعم خاصية النشر` };
   }
   if (!id) return { ok: false, error: "المعرف مطلوب" };
 
-  if (!supabase) return { ok: true };
 
   const payload: Record<string, unknown> = { is_published };
   if (table === "articles" && published_at) {
@@ -814,16 +766,14 @@ export async function setPublishStatusAction(
 
 export async function togglePublishAction(
   table: PublishableTable,
-  id: string,
-  ctx?: AuthContext
+  id: string
 ): Promise<ActionResult<{ is_published: boolean }>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!PUBLISHABLE_TABLES.includes(table)) {
     return { ok: false, error: `الجدول "${table}" لا يدعم خاصية النشر` };
   }
   if (!id) return { ok: false, error: "المعرف مطلوب" };
 
-  if (!supabase) return { ok: true, data: { is_published: true } };
 
   // Fetch current state
   const { data, error: fetchErr } = await supabase
@@ -837,7 +787,7 @@ export async function togglePublishAction(
   }
 
   const nextState = !Boolean((data as { is_published?: boolean }).is_published);
-  const res = await setPublishStatusAction(table, id, nextState, undefined, ctx);
+  const res = await setPublishStatusAction(table, id, nextState);
   if (!res.ok) return { ok: false, error: res.error };
   return { ok: true, data: { is_published: nextState } };
 }
@@ -859,11 +809,9 @@ export interface SubscriberFilters {
 }
 
 export async function getBookingRequestsAction(
-  filters?: BookingFilters,
-  ctx?: AuthContext
+  filters?: BookingFilters
 ): Promise<ActionResult<unknown[]>> {
-  const { supabase } = await requireAdminSession(ctx);
-  if (!supabase) return { ok: true, data: [] };
+  const { supabase } = await requireAdminSession();
 
   let query = supabase
     .from("booking_requests")
@@ -886,12 +834,10 @@ export async function getBookingRequestsAction(
 }
 
 export async function getBookingRequestByIdAction(
-  id: string,
-  ctx?: AuthContext
+  id: string
 ): Promise<ActionResult<unknown>> {
-  const { supabase } = await requireAdminSession(ctx);
+  const { supabase } = await requireAdminSession();
   if (!id) return { ok: false, error: "معرف الطلب مطلوب" };
-  if (!supabase) return { ok: true, data: null };
 
   const { data, error } = await supabase
     .from("booking_requests")
@@ -904,11 +850,9 @@ export async function getBookingRequestByIdAction(
 }
 
 export async function getNewsletterSubscribersAction(
-  filters?: SubscriberFilters,
-  ctx?: AuthContext
+  filters?: SubscriberFilters
 ): Promise<ActionResult<unknown[]>> {
-  const { supabase } = await requireAdminSession(ctx);
-  if (!supabase) return { ok: true, data: [] };
+  const { supabase } = await requireAdminSession();
 
   let query = supabase
     .from("newsletter_subscribers")

@@ -369,44 +369,7 @@ test.describe("Public Behavior - Booking & Event Integration", () => {
     await expect(eventContextText).toBeVisible();
   });
 });
-
-test.describe("Public Behavior - Interactive Widgets", () => {
-  test("testimonials slider controls are clickable without page errors", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-
-    const testimonialsSection = page.getByRole("region", { name: /يقولون عن أندلسيا|What people say about Andalusia/i });
-    if ((await testimonialsSection.count()) > 0) {
-      // Test desktop buttons if visible
-      const nextBtn = testimonialsSection.getByRole("button", { name: /الشهادة التالية|Next testimonial/i });
-      const prevBtn = testimonialsSection.getByRole("button", { name: /الشهادة السابقة|Previous testimonial/i });
-
-      if (await nextBtn.isVisible()) {
-        await nextBtn.click();
-        await prevBtn.click();
-      }
-
-      // Test indicator tabs if present
-      const indicators = testimonialsSection.getByRole("tab");
-      if ((await indicators.count()) > 1) {
-        await indicators.nth(1).click();
-      }
-    }
-  });
-
-  test("audio player widget controls clickable without page errors if present", async ({ page }) => {
-    // Check artist profile page for audio player widget
-    await page.goto("/artists", { waitUntil: "networkidle" });
-    const firstArtistLink = page.locator('a[href*="/artists/"]').first();
-
-    if ((await firstArtistLink.count()) > 0) {
-      const href = await firstArtistLink.getAttribute("href");
-      await page.goto(href!, { waitUntil: "networkidle" });
-
-      // Audio player has play button with aria-label "تشغيل" or "Play"
-      const playBtn = page.getByRole("button", { name: /تشغيل|^Play$/i });
-      if ((await playBtn.count()) > 0 && (await playBtn.first().isVisible())) {
-        await playBtn.first().click();
-      }
-    }
-  });
-});
+// The interactive-widget tests that used to live here asserted nothing: every
+// expect sat behind an `if (count > 0)`, so they passed whether the slider and
+// the player existed or not. They are replaced by the versions in
+// public-pages.spec.ts, which fail when the widget is missing.

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { checkPage, ADMIN_STATE } from "./check";
+import { CANONICAL_ADMIN_ROUTES } from "../src/components/admin/adminNavConfig";
 import { AUTH_ERRORS } from "../src/lib/auth-utils";
 
 test.describe("Admin Authentication", () => {
@@ -8,21 +9,10 @@ test.describe("Admin Authentication", () => {
     await checkPage(page, "/login", { locale: "ar" });
   });
 
-  const adminRoutes = [
-    "/admin",
-    "/admin/academy",
-    "/admin/articles",
-    "/admin/artists",
-    "/admin/bookings",
-    "/admin/events",
-    "/admin/media",
-    "/admin/pages",
-    "/admin/releases",
-    "/admin/settings",
-    "/admin/subscribers",
-    "/admin/testimonials",
-    "/admin/tracks",
-  ];
+  // Driven from the nav config: the hardcoded copy this replaced had drifted
+  // and was missing /admin/works and /admin/diagnostics, so neither was ever
+  // checked for an auth redirect.
+  const adminRoutes = CANONICAL_ADMIN_ROUTES.map(({ href }) => href);
 
   for (const route of adminRoutes) {
     test(`unauthenticated visit to ${route} redirects to /login?next=${encodeURIComponent(route)}`, async ({ page }) => {

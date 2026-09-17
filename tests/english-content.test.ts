@@ -7,7 +7,7 @@ import { formatLocalizedDate } from "../src/lib/formatters.ts";
 import {
   siteSettingsSchema,
   artistSchema,
-  trackSchema,
+  trackSchemaBase,
   releaseSchema,
   eventSchema,
   academyCourseSchema,
@@ -174,7 +174,9 @@ test("English content — 5. Every CMS schema declares an _en twin for each tran
   const schemas: Record<string, { shape: Record<string, unknown> }> = {
     site_settings: siteSettingsSchema as never,
     artists: artistSchema as never,
-    tracks: trackSchema as never,
+    // trackSchema wraps the object in .refine() (audio_file_url OR youtube_url),
+    // and a ZodEffects has no .shape — the column check needs the base object.
+    tracks: trackSchemaBase as never,
     releases: releaseSchema as never,
     events: eventSchema as never,
     academy_courses: academyCourseSchema as never,

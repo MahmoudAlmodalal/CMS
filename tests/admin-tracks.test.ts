@@ -51,7 +51,10 @@ test("Task 45 — tracks manager covers canonical fields, guarded actions, and a
   assert.match(manager, /window\.confirm/);
   assert.match(manager, /<Notice notice=\{notice\} \/>/);
   assert.match(manager, /dir="rtl"/);
-  assert.match(manager, /AudioUploadField/);
+  // Music is sourced from YouTube now, not an uploaded audio file: the manager
+  // validates the link with parseYouTubeId before it will save.
+  assert.match(manager, /youtube_url/);
+  assert.match(manager, /parseYouTubeId/);
 
   const audioField = read("src/components/admin/media/AudioUploadField.tsx");
   assert.match(audioField, /AUDIO_MAX_BYTES/);
@@ -121,7 +124,9 @@ test("Task 45 — releaseSchema accepts a full form and rejects out-of-contract 
 test("Task 45 — update actions validate partial input and stay behind requireAdminSession", () => {
   const action = read("src/actions/cms.ts");
 
-  assert.match(action, /trackSchema\.omit\(\{ id: true \}\)\.partial\(\)\.safeParse\(input\)/);
+  // trackSchema is a ZodEffects (the audio-or-youtube refine), which has no
+  // .omit/.partial — the partial update path goes through the base object.
+  assert.match(action, /trackSchemaBase\.omit\(\{ id: true \}\)\.partial\(\)\.safeParse\(input\)/);
   assert.match(action, /releaseSchema\.omit\(\{ id: true \}\)\.partial\(\)\.safeParse\(input\)/);
   assert.match(action, /export async function createTrackAction/);
   assert.match(action, /export async function createReleaseAction/);
