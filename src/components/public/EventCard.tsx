@@ -37,10 +37,15 @@ export function EventCard({ event, style }: EventCardProps) {
   const month = new Intl.DateTimeFormat(dateLocale, { month: "short", timeZone: "UTC" }).format(eventDate);
   const categoryLabel = c(EVENT_CATEGORY_LABEL_KEYS[event.category] ?? "eventFallback");
 
-  const ticketUrl = event.ticket_url?.trim();
-  const isLegacyBookingUrl = ticketUrl?.includes("andalusia.art/booking") ?? false;
-  const bookingHref = isLegacyBookingUrl ? `/booking?event_id=${event.id}` : ticketUrl || `/booking?event_id=${event.id}`;
-  const isExternal = Boolean(ticketUrl) && !isLegacyBookingUrl;
+  const rawTicketUrl = event.ticket_url?.trim();
+  const isLegacyBookingUrl = rawTicketUrl?.includes("andalusia.art/booking") ?? false;
+  const isPlaceholder =
+    !rawTicketUrl ||
+    isLegacyBookingUrl ||
+    /^https?:\/\/[^/]*\.?example\.com/i.test(rawTicketUrl);
+  const ticketUrl = isPlaceholder ? null : rawTicketUrl;
+  const bookingHref = ticketUrl || `/booking?event_id=${event.id}`;
+  const isExternal = Boolean(ticketUrl);
 
   return (
     <div style={style} className="motion-card group flex flex-col bg-white rounded-card overflow-hidden border border-brand-espresso/10 shadow-card hover:shadow-card-hover hover:border-brand-primary/40 transition-all duration-300 text-start">

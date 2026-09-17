@@ -180,6 +180,26 @@ export function TurntablePlayer({
     };
   }, [stopSynth]);
 
+  // Autoplay on mount — short delay to pass browser autoplay policy
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (currentTrack.audioUrl && audioRef.current) {
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {
+            startSynth(currentTrack.synthMode);
+            setIsPlaying(true);
+          });
+      } else {
+        startSynth(currentTrack.synthMode);
+        setIsPlaying(true);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const togglePlayback = useCallback(() => {
     if (isPlaying) {
       if (audioRef.current) {

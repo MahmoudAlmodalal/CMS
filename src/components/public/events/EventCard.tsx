@@ -64,12 +64,17 @@ export function EventCard({ event, priority = false, className = "", style }: Ev
   const categoryLabel = CATEGORY_MAP[event.category] || event.category;
   const performerCityString = `${event.performer_name} · ${event.city}`;
 
-  // External ticket vendors win when the CMS carries a ticket_url; otherwise the
-  // card deep-links into the booking context.
-  const ticketUrl = event.ticket_url?.trim();
-  const bookingHref = ticketUrl?.includes("andalusia.art/booking")
-    ? `/booking?event_id=${event.id}`
-    : ticketUrl || `/booking?event_id=${event.id}`;
+  // External ticket vendors win when the CMS carries a real ticket_url; otherwise
+  // the card deep-links into the booking context.
+  // Placeholder / demo URLs (*.example.com or andalusia.art/booking legacy) are
+  // treated as absent and fall through to the internal booking route.
+  const rawTicketUrl = event.ticket_url?.trim();
+  const isPlaceholder =
+    !rawTicketUrl ||
+    rawTicketUrl.includes("andalusia.art/booking") ||
+    /^https?:\/\/[^/]*\.?example\.com/i.test(rawTicketUrl);
+  const ticketUrl = isPlaceholder ? null : rawTicketUrl;
+  const bookingHref = ticketUrl || `/booking?event_id=${event.id}`;
 
   return (
     <article

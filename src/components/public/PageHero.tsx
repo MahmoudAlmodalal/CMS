@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
 import { cssUrl } from "@/lib/storage";
+import { Highlight } from "@/components/ui/Highlight";
 
 interface PageHeroProps {
   /** Centred headline. Pass rich content to colour a phrase, as the design does. */
@@ -133,7 +134,11 @@ export function PageHero({
               eyebrow ? "mt-5 lg:mt-[20.33px]" : ""
             }`}
           >
-            {title}
+            {typeof title === "string" ? (
+              <Highlight text={title} highlightClassName="text-primary-500" />
+            ) : (
+              title
+            )}
           </h1>
         </ScrollReveal>
 
