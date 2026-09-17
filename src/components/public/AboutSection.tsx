@@ -52,6 +52,7 @@ export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack, feat
                       title: item.title,
                       artist: item.artist_name || t("aboutMusicArtist"),
                       coverUrl: item.cover_image_url || (id ? youTubeThumbnailUrl(id) : "/assets/figma/about-musician.png"),
+                      audioUrl: item.audio_file_url,
                       youtubeUrl: item.youtube_url,
                       synthMode: "andalusia" as const,
                     };

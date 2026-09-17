@@ -52,12 +52,11 @@ export function TurntablePlayer({
   const activePlaylist = playlist?.length ? playlist : PLAYLIST;
   const playlistTrack = activePlaylist[trackIndex % activePlaylist.length] || PLAYLIST[0];
   const currentTrack: TrackItem = {
-    title: playlistTrack.title || "",
-    artist: playlistTrack.artist || "",
-    coverUrl: playlistTrack.coverUrl || "/assets/figma/about-musician.png",
-    synthMode: playlistTrack.synthMode || "andalusia",
-    ...playlistTrack,
-    ...(initialTrack || {}),
+    title: "",
+    artist: "",
+    coverUrl: "/assets/figma/about-musician.png",
+    synthMode: "andalusia",
+    ...(playlist?.length ? playlistTrack : initialTrack || playlistTrack),
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
   };
@@ -251,6 +250,10 @@ export function TurntablePlayer({
     setTrackIndex(nextIdx);
     if (isPlaying && !currentTrack.youtubeUrl) {
       setTimeout(() => {
+        if (activePlaylist[nextIdx]?.audioUrl && audioRef.current) {
+          void audioRef.current.play().catch(() => setIsPlaying(false));
+          return;
+        }
         startSynth(activePlaylist[nextIdx].synthMode || "andalusia");
       }, 100);
     }
@@ -263,6 +266,10 @@ export function TurntablePlayer({
     setTrackIndex(prevIdx);
     if (isPlaying && !currentTrack.youtubeUrl) {
       setTimeout(() => {
+        if (activePlaylist[prevIdx]?.audioUrl && audioRef.current) {
+          void audioRef.current.play().catch(() => setIsPlaying(false));
+          return;
+        }
         startSynth(activePlaylist[prevIdx].synthMode || "andalusia");
       }, 100);
     }
