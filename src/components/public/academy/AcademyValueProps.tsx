@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "../ScrollReveal";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface ValuePropItem {
   id: string;
@@ -64,7 +65,7 @@ export function AcademyValueProps({
           id="academy-values-heading"
           className="text-center font-display text-[32px] leading-[1.2] text-brand-tint sm:text-[40px] lg:whitespace-nowrap lg:leading-[48px]"
         >
-          {heading || t("valuesHeading")}
+          <Highlight text={heading || t("valuesHeading")} highlightClassName="text-primary-500" />
         </h2>
         </ScrollReveal>
 

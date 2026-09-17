@@ -188,7 +188,11 @@
     "relatedRegion": "مقالات ذات صلة",
     "relatedKicker": "اقرأ أيضاً",
     "relatedHeading": "مقالات وقصص ذات صلة",
-    "gridHeading": "آخر الأخبار"
+    "gridHeading": "آخر الأخبار",
+    "pagination": "التنقل بين الصفحات",
+    "previousPage": "الصفحة السابقة",
+    "nextPage": "الصفحة التالية",
+    "pageNumber": "الصفحة {page}"
   },
   "academy": {
     "kicker": "أكاديمية أندلسيا الموسيقية",

@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { TrackCard } from "./TrackCard";
 import type { AcademyCourse } from "@/lib/dal/academy";
+import { Highlight } from "@/components/ui/Highlight";
 
 interface AcademyTracksProps {
   courses: AcademyCourse[];
@@ -63,9 +64,10 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
           id="academy-tracks-heading"
           className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:w-full lg:max-w-[1136px] lg:px-8 lg:text-center lg:text-[40px] hd:mx-0 hd:ms-[560px] hd:w-fit hd:max-w-none hd:text-start"
         >
-          {heading || t.rich("tracksHeading", {
-            em: (chunks) => <span className="text-brand-primary">{chunks}</span>,
-          })}
+          <Highlight
+            text={heading || t("tracksHeading")}
+            highlightClassName="text-primary-500"
+          />
         </h2>
 
         {courses.length === 0 ? (

@@ -76,11 +76,11 @@ export function ArtistHero({ artist, imageUrl, contactHref = "mailto:hello@andal
         {/* Heading 1 — 134:4634 */}
         <div className="flex w-full flex-col items-center lg:absolute lg:inset-x-0 lg:top-[241px]">
           <div className="flex flex-col items-center text-center lg:items-center lg:pb-[20px] lg:text-center">
-            <h1 className="font-display text-[32px] leading-tight text-brand-surface sm:text-[40px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[44px]">
+            <h1 className="font-display text-[32px] leading-tight text-brand-surface sm:text-[40px] lg:whitespace-nowrap lg:text-[48px] lg:leading-[44px] pb-2 lg:pb-3">
               {artist.name}
             </h1>
             {quote ? (
-              <p className="mt-3 max-w-[360px] text-[15px] leading-[26px] text-primary-500 lg:mt-0 lg:h-[52px] lg:pb-[24px] lg:text-[16.8px] lg:leading-[27.72px]">
+              <p className="mt-3 max-w-[360px] text-[15px] leading-[26px] text-primary-500 lg:mt-2 lg:h-[52px] lg:pb-[24px] lg:text-[16.8px] lg:leading-[27.72px]">
                 {`♪ "${quote}"`}
               </p>
             ) : null}

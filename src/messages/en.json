@@ -188,7 +188,11 @@
     "relatedRegion": "Related articles",
     "relatedKicker": "Read also",
     "relatedHeading": "Related articles and stories",
-    "gridHeading": "Latest news"
+    "gridHeading": "Latest news",
+    "pagination": "News pagination",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageNumber": "Page {page}"
   },
   "academy": {
     "kicker": "Andalusia Music Academy",

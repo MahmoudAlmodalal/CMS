@@ -7,6 +7,7 @@ import { getAcademyCourseBySlug } from "@/lib/dal/academy";
 import type { CurriculumItem } from "@/lib/academy";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { PageHero } from "@/components/public";
+import { Highlight } from "@/components/ui/Highlight";
 
 interface AcademyCoursePageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -152,7 +153,9 @@ export default async function AcademyCoursePage({ params }: AcademyCoursePagePro
               </div>
 
               <div className="mt-8 overflow-hidden rounded-[10px] border border-brand-espresso/10 bg-white shadow-sm">
-                <div className="bg-brand-espresso px-6 py-4 text-lg font-bold text-brand-tint">{curriculumTitle}</div>
+                <div className="bg-brand-espresso px-6 py-4 text-lg font-bold text-brand-tint">
+                  <Highlight text={curriculumTitle} highlightClassName="text-primary-500" />
+                </div>
                 <div>
                   {lessons.map((lesson) => (
                     <div key={lesson.number} className="flex min-h-[102px] items-center gap-5 border-b border-brand-espresso/10 px-6 py-5 last:border-b-0">

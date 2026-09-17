@@ -4,6 +4,7 @@ import React, { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { subscribeNewsletter } from "@/actions/newsletter";
 import { ScrollReveal } from "../ScrollReveal";
+import { Highlight } from "@/components/ui/Highlight";
 
 /**
  * Academy newsletter band — Figma node 91:16420 in frame 91:16119.
@@ -72,7 +73,7 @@ export function AcademyNewsletter({
           id="academy-newsletter-heading"
           className="text-center font-display text-[32px] leading-[36px] text-brand-espresso lg:whitespace-nowrap"
         >
-          {heading || t("newsletterHeading")}
+          <Highlight text={heading || t("newsletterHeading")} highlightClassName="text-primary-500" />
         </h2>
         </ScrollReveal>
 

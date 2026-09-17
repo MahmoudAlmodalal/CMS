@@ -9,6 +9,7 @@ import { ScrollReveal } from "./ScrollReveal";
 import { morphName } from "@/lib/morph";
 import { ArticleCard } from "./ArticleCard";
 import { cssUrl } from "@/lib/storage";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface ArticleViewProps {
   article: Article;
@@ -160,7 +161,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
 
         {/* Article Headline */}
         <h1 className="font-calligraphic text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-espresso leading-tight">
-          {article.title}
+          <Highlight text={article.title} highlightClassName="text-primary-500" />
         </h1>
 
         {/* Lead Excerpt */}
@@ -236,7 +237,7 @@ export function ArticleView({ article, relatedArticles = [] }: ArticleViewProps)
           <div className="max-w-5xl mx-auto space-y-2">
             <span className="text-xs font-bold text-brand-primary uppercase">{t("relatedKicker")}</span>
             <h2 className="font-calligraphic text-2xl sm:text-3xl font-bold text-brand-espresso">
-              {t("relatedHeading")}
+              <Highlight text={t("relatedHeading")} highlightClassName="text-primary-500" />
             </h2>
           </div>
 

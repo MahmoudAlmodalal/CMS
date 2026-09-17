@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "./ScrollReveal";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface ArtistsHeaderProps {
   title?: string;
@@ -41,7 +42,7 @@ export function ArtistsHeader({
       {/* Primary Display Title */}
       <ScrollReveal variant="up" delay={0.08}>
       <h1 className="font-display text-4xl sm:text-5xl lg:text-[64px] font-normal text-brand-espresso leading-[1.25]">
-        {title ?? t("title")}
+        <Highlight text={title ?? t("title")} highlightClassName="text-primary-500" />
       </h1>
       </ScrollReveal>
 

@@ -43,7 +43,8 @@ const client = createClient(url, key, {
   global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(15000) }) },
 });
 
-const mode = process.argv.includes("--seed") ? "seed" : process.argv.includes("--cleanup") ? "cleanup" : "inventory";
+const isNewsOnly = process.argv.includes("--news-only") || process.argv.includes("--seed-news");
+const mode = isNewsOnly ? "seed-news" : process.argv.includes("--seed") ? "seed" : process.argv.includes("--cleanup") ? "cleanup" : "inventory";
 const DEMO_PREFIX = "x-demo-1";
 
 /* ------------------------------------------------------------------ */
@@ -505,48 +506,481 @@ async function seedNewsletter() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 8. Articles (12) — 3 per category, bilingual, 2022–2026             */
+/* 8. Articles (21) — bilingual fixtures, 2022–2026                     */
 /* ------------------------------------------------------------------ */
-function articleRows(artistIds, P) {
-  const covers = [P("article-1.png"), P("article-2.png"), P("article-3.png"), P("news-side-1.png"), P("news-side-2.png")];
-  const A = [
-    ["demo-maqam-beginners-guide", "دليل المبتدئين إلى المقامات", "A Beginner's Guide to Maqams", "culture", "2022-03-10T10:00:00Z", "مدخل مبسط لعوالم المقام الشرقي وكيف تستمع إليه.", "A gentle entry into Eastern maqams and how to hear them.", "هيئة التحرير", "Editorial Team", "demo-layla-tarab", false],
-    ["demo-women-rhythm-history", "تاريخ إيقاعات النساء", "A History of Women's Rhythms", "culture", "2023-06-18T10:00:00Z", "من حلقات الذكر إلى المسارح: رحلة الدفوف النسائية.", "From dhikr circles to concert halls: the journey of women's frame drums.", "منى الباحثة", "Mona Researcher", null, true],
-    ["demo-malhan-poetry-art", "فن قصيدة الملحون", "The Art of the Malhun Poem", "culture", "2024-09-25T10:00:00Z", "كيف تُبنى القصيدة الملحونة ولماذا تعيش قروناً.", "How the malhun poem is built — and why it lives for centuries.", "هيئة التحرير", "Editorial Team", "demo-mona-turath", false],
-    ["demo-layla-tarab-story", "ليلى الطرب: من الساقية إلى المسارح", "Layla Tarab: From El Sawy to Grand Stages", "artists", "2023-02-14T10:00:00Z", "حكاية صوت حفظ التراث قبل أن يغنيه.", "The story of a voice that memorised heritage before singing it.", "كريم الصحفي", "Karim Journalist", "demo-layla-tarab", true],
-    ["demo-tariq-awtar-interview", "حوار مع طارق الأوتار", "An Interview with Tariq Awtar", "artists", "2024-05-30T10:00:00Z", "عن العود آلة فلسفية وعن مشروعه مع الجاز.", "On the oud as philosophy — and his jazz project.", "سلمى المحاورة", "Salma Interviewer", "demo-tariq-awtar", false],
-    ["demo-daqqat-ensemble", "فرقة دقات: اثنتا عشرة عازفة", "Daqqat: Twelve Women Players", "artists", "2025-08-11T10:00:00Z", "كيف بنت رانيا الدف أول فرقة دفوف نسائية.", "How Rania Daff built the first women's daf ensemble.", "هيئة التحرير", "Editorial Team", "demo-rania-daff", false],
-    ["demo-learn-oud-first-steps", "تعلم العود: خطواتك الأولى", "Learning the Oud: First Steps", "academy", "2022-11-02T10:00:00Z", "اختيار الآلة والجلوس الصحيح وأول مقام.", "Choosing the instrument, sitting right, and the first maqam.", "أستاذ الأكاديمية", "Academy Tutor", null, false],
-    ["demo-rhythm-children-play", "تعليم الإيقاع للأطفال باللعب", "Teaching Children Rhythm Through Play", "academy", "2024-01-19T10:00:00Z", "منهج يوسف الوقّاع: الحركة قبل النوتة.", "Youssef Waqqa's method: movement before notation.", "أستاذ الأكاديمية", "Academy Tutor", null, false],
-    ["demo-sound-design-basics", "أساسيات التصميم الصوتي", "Sound Design Basics", "academy", "2026-02-07T10:00:00Z", "مدخل عملي من مختبر بيروت الصوتي.", "A hands-on primer from the Beirut Sound Lab.", "نادية المدربة", "Nadia Trainer", "demo-nadia-hadatha", false],
-    ["demo-maqam-festival-recap", "حصاد مهرجان المقام الأول", "First Maqam Festival: Recap", "events", "2025-12-01T10:00:00Z", "ليالٍ بيعت تذاكرها وأصوات اكتُشفت.", "Sold-out nights and discovered voices.", "هيئة التحرير", "Editorial Team", null, false],
-    ["demo-jazz-citadel-preview", "ترقب: جاز القلعة بالإسكندرية", "Preview: Citadel Jazz in Alexandria", "events", "2026-08-20T10:00:00Z", "ما ينتظر الجمهور في أمسية قايتباي.", "What awaits audiences at the Qaitbay evening.", "كريم الصحفي", "Karim Journalist", "demo-omar-tajrib", false],
-    ["demo-ramadan-nights-review", "مراجعة: ليالي رمضان المقدسية", "Review: Jerusalem Ramadan Nights", "events", "2024-04-20T10:00:00Z", "إنشاد جمع الآلاف في البلدة القديمة.", "Chant that gathered thousands in the Old City.", "سلمى المحاورة", "Salma Interviewer", null, false],
+function allArticleFixtures(artistIds, P) {
+  const covers = [
+    P("default-hero.png") || "/assets/articles/default-hero.png",
+    P("news-side-1.png") || "/assets/articles/news-side-1.png",
+    P("news-side-2.png") || "/assets/articles/news-side-2.png",
+    P("article-1.png") || "/assets/articles/article-1.png",
+    P("article-2.png") || "/assets/articles/article-2.png",
+    P("article-3.png") || "/assets/articles/article-3.png",
   ];
-  return A.map((a, i) => {
-    const [slug, title, title_en, category, published_at, excerpt, excerpt_en, author_name, author_name_en, artistSlug, is_featured] = a;
-    assertSlug(slug);
-    const body = (t) => [
-      `${t}: الفقرة الأولى تمهد للموضوع وتضع القارئ في أجوائه العامة.`,
-      `الفقرة الثانية تتعمق في التفاصيل والأمثلة الحية من الميدان الفني.`,
-      `الفقرة الثالثة تنقل أصوات الفنانين وشهاداتهم حول التجربة.`,
-      `الفقرة الرابعة تخلص إلى ما يعنيه ذلك لمستقبل المشهد الموسيقي.`,
-    ].join("\n\n");
-    const bodyEn = (t) => [
-      `${t}: the opening paragraph sets the scene and brings the reader inside its world.`,
-      `The second paragraph dives into detail with living examples from the music field.`,
-      `The third paragraph carries the artists' own voices and testimonies.`,
-      `The fourth paragraph concludes with what this means for the scene's future.`,
-    ].join("\n\n");
-    return {
-      title, title_en, slug, category, excerpt, excerpt_en,
-      content: body(title), content_en: bodyEn(title_en),
-      cover_image_url: covers[i % covers.length],
-      author_name, author_name_en,
-      featured_artist_id: artistSlug ? artistIds.get(artistSlug) : null,
-      published_at, is_featured, is_published: true,
-    };
-  });
+
+  const bodyAr = (t) => [
+    `${t}: الفقرة الأولى تمهد للموضوع وتضع القارئ في أجوائه العامة وتوثق عمق التجربة الفنية.`,
+    `الفقرة الثانية تتعمق في التفاصيل والأمثلة الحية من الميدان الفني والجمالي لفرقة أندلسيا.`,
+    `الفقرة الثالثة تنقل أصوات الفنانين وشهاداتهم حول التجربة التراثية الفريدة.`,
+    `الفقرة الرابعة تخلص إلى ما يعنيه ذلك لمستقبل المشهد الموسيقي والثقافي في المنطقة.`,
+  ].join("\n\n");
+
+  const bodyEn = (t) => [
+    `${t}: the opening paragraph sets the scene, introducing the reader to the cultural depth and artistic experience.`,
+    `The second paragraph dives into detail with living examples from Andalusia's music and heritage practice.`,
+    `The third paragraph carries the artists' own voices and authentic testimonies from the creative process.`,
+    `The fourth paragraph concludes with what this milestone means for the future of the regional cultural scene.`,
+  ].join("\n\n");
+
+  const items = [
+    // 1. Core Hero Story
+    {
+      slug: "annual-andalusia-art-exhibition",
+      title: "افتتاح المعرض الفني السنوي في الأندلس",
+      title_en: "Annual Andalusia Art Exhibition Opening",
+      category: "culture",
+      excerpt: "يستضيف المركز هذا الأسبوع مجموعة من أبرز الفنانين المعاصرين لتقديم أعمالهم الجديدة في المعرض السنوي المرتقب.",
+      excerpt_en: "The center hosts this week a selection of prominent contemporary artists presenting new works at the annual exhibition.",
+      content: bodyAr("افتتاح المعرض الفني السنوي"),
+      content_en: bodyEn("Annual Andalusia Art Exhibition Opening"),
+      author_name: "هيئة تحرير أندلسيا",
+      author_name_en: "Andalusia Editorial Board",
+      cover_image_url: covers[0],
+      featured_artist_id: null,
+      published_at: "2026-08-30T10:00:00Z",
+      is_featured: true,
+      is_published: true,
+    },
+    // 2. Core Side Highlight 1: Interview with Sculptor Ahmed Mahmoud
+    {
+      slug: "interview-sculptor-ahmed-mahmoud",
+      title: "حوار مع النحات أحمد محمود",
+      title_en: "Interview with Sculptor Ahmed Mahmoud",
+      category: "artists",
+      excerpt: "حوار خاص يستكشف تجربة النحت الحديث وكيف تلهم الموسيقى الأندلسية حركة الأشكال والخطوط في أعماله الفنية.",
+      excerpt_en: "A special interview exploring modern sculpture and how Andalusian music inspires forms and lines in his artwork.",
+      content: bodyAr("حوار مع النحات أحمد محمود"),
+      content_en: bodyEn("Interview with Sculptor Ahmed Mahmoud"),
+      author_name: "عمر الحاج",
+      author_name_en: "Omar Al-Hajj",
+      cover_image_url: covers[1],
+      featured_artist_id: null,
+      published_at: "2026-08-25T14:00:00Z",
+      is_featured: true,
+      is_published: true,
+    },
+    // 3. Core Side Highlight 2: A New Workshop in Classical Sculpture
+    {
+      slug: "classical-sculpture-workshop",
+      title: "ورشة عمل جديدة في النحت الكلاسيكي",
+      title_en: "A New Workshop in Classical Sculpture",
+      category: "academy",
+      excerpt: "تعلن أكاديمية أندلسيا عن إطلاق دورة مكثفة لتعليم تقنيات التشكيل الفني وصناعة الآلات الوترية التراثية بإشراف نخبة من الأساتذة.",
+      excerpt_en: "Andalusia Academy announces an intensive training workshop for those interested in mastering classical sculpture and instrument craft.",
+      content: bodyAr("ورشة عمل جديدة في النحت الكلاسيكي"),
+      content_en: bodyEn("A New Workshop in Classical Sculpture"),
+      author_name: "د. ناديا القاسم",
+      author_name_en: "Dr. Nadia Al-Qasim",
+      cover_image_url: covers[2],
+      featured_artist_id: null,
+      published_at: "2026-08-20T09:00:00Z",
+      is_featured: true,
+      is_published: true,
+    },
+    // 4. Digital Art in the Arab World
+    {
+      slug: "digital-art-arab-world",
+      title: "تطور الفن الرقمي في العالم العربي",
+      title_en: "Evolution of Digital Art in the Arab World",
+      category: "culture",
+      excerpt: "نظرة عميقة على كيفية تأثير التكنولوجيا الحديثة على المشهد الفني الإقليمي وكيف يتبنى الفنانون الشباب أدوات جديدة للتعبير.",
+      excerpt_en: "An in-depth look at how modern technology is influencing the regional art scene and how young artists embrace digital tools.",
+      content: bodyAr("تطور الفن الرقمي في العالم العربي"),
+      content_en: bodyEn("Evolution of Digital Art in the Arab World"),
+      author_name: "هيئة تحرير أندلسيا",
+      author_name_en: "Andalusia Editorial Board",
+      cover_image_url: covers[3],
+      featured_artist_id: null,
+      published_at: "2024-05-24T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 5. A Photographer's Journey Through the Alleys of the Old City
+    {
+      slug: "photographer-journey-old-city-alleys",
+      title: "رحلة مصور في أزقة المدينة القديمة",
+      title_en: "A Photographer's Journey Through the Alleys of the Old City",
+      category: "artists",
+      excerpt: "يشاركنا المصور الفوتوغرافي تجربته في توثيق الحياة اليومية والتفاصيل المعمارية التي تعكس الهوية التاريخية.",
+      excerpt_en: "The photographer shares his experience in documenting daily life and architectural details reflecting historical identity.",
+      content: bodyAr("رحلة مصور في أزقة المدينة القديمة"),
+      content_en: bodyEn("A Photographer's Journey Through the Alleys of the Old City"),
+      author_name: "قصص الفنانين",
+      author_name_en: "Artists' stories",
+      cover_image_url: covers[4],
+      featured_artist_id: null,
+      published_at: "2024-05-18T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 6. Announcement of the Summer Music Events Schedule
+    {
+      slug: "summer-music-events-schedule",
+      title: "الإعلان عن جدول فعاليات الصيف الموسيقية",
+      title_en: "Announcement of the Summer Music Events Schedule",
+      category: "events",
+      excerpt: "تعرف على الحفلات الموسيقية والأمسيات الفنية المخطط لها للموسم القادم في منصة الأندلس الثقافية.",
+      excerpt_en: "Discover the planned concerts and artistic evenings for the upcoming season at the Andalus Cultural Platform.",
+      content: bodyAr("جدول فعاليات الصيف الموسيقية"),
+      content_en: bodyEn("Announcement of the Summer Music Events Schedule"),
+      author_name: "الأخبار",
+      author_name_en: "News",
+      cover_image_url: covers[5],
+      featured_artist_id: null,
+      published_at: "2024-05-10T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 7. demo-maqam-beginners-guide
+    {
+      slug: "demo-maqam-beginners-guide",
+      title: "دليل المبتدئين إلى المقامات",
+      title_en: "A Beginner's Guide to Maqams",
+      category: "culture",
+      excerpt: "مدخل مبسط لعوالم المقام الشرقي وكيف تستمع إليه.",
+      excerpt_en: "A gentle entry into Eastern maqams and how to hear them.",
+      content: bodyAr("دليل المبتدئين إلى المقامات"),
+      content_en: bodyEn("A Beginner's Guide to Maqams"),
+      author_name: "هيئة التحرير",
+      author_name_en: "Editorial Team",
+      cover_image_url: covers[0],
+      featured_artist_id: artistIds.get("demo-layla-tarab") || null,
+      published_at: "2022-03-10T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 8. demo-women-rhythm-history
+    {
+      slug: "demo-women-rhythm-history",
+      title: "تاريخ إيقاعات النساء",
+      title_en: "A History of Women's Rhythms",
+      category: "culture",
+      excerpt: "من حلقات الذكر إلى المسارح: رحلة الدفوف النسائية.",
+      excerpt_en: "From dhikr circles to concert halls: the journey of women's frame drums.",
+      content: bodyAr("تاريخ إيقاعات النساء"),
+      content_en: bodyEn("A History of Women's Rhythms"),
+      author_name: "منى الباحثة",
+      author_name_en: "Mona Researcher",
+      cover_image_url: covers[1],
+      featured_artist_id: null,
+      published_at: "2023-06-18T10:00:00Z",
+      is_featured: true,
+      is_published: true,
+    },
+    // 9. demo-malhan-poetry-art
+    {
+      slug: "demo-malhan-poetry-art",
+      title: "فن قصيدة الملحون",
+      title_en: "The Art of the Malhun Poem",
+      category: "culture",
+      excerpt: "كيف تُبنى القصيدة الملحونة ولماذا تعيش قروناً.",
+      excerpt_en: "How the malhun poem is built — and why it lives for centuries.",
+      content: bodyAr("فن قصيدة الملحون"),
+      content_en: bodyEn("The Art of the Malhun Poem"),
+      author_name: "هيئة التحرير",
+      author_name_en: "Editorial Team",
+      cover_image_url: covers[2],
+      featured_artist_id: artistIds.get("demo-mona-turath") || null,
+      published_at: "2024-09-25T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 10. demo-layla-tarab-story
+    {
+      slug: "demo-layla-tarab-story",
+      title: "ليلى الطرب: من الساقية إلى المسارح",
+      title_en: "Layla Tarab: From El Sawy to Grand Stages",
+      category: "artists",
+      excerpt: "حكاية صوت حفظ التراث قبل أن يغنيه.",
+      excerpt_en: "The story of a voice that memorised heritage before singing it.",
+      content: bodyAr("ليلى الطرب"),
+      content_en: bodyEn("Layla Tarab: From El Sawy to Grand Stages"),
+      author_name: "كريم الصحفي",
+      author_name_en: "Karim Journalist",
+      cover_image_url: covers[3],
+      featured_artist_id: artistIds.get("demo-layla-tarab") || null,
+      published_at: "2023-02-14T10:00:00Z",
+      is_featured: true,
+      is_published: true,
+    },
+    // 11. demo-tariq-awtar-interview
+    {
+      slug: "demo-tariq-awtar-interview",
+      title: "حوار مع طارق الأوتار",
+      title_en: "An Interview with Tariq Awtar",
+      category: "artists",
+      excerpt: "عن العود آلة فلسفية وعن مشروعه مع الجاز.",
+      excerpt_en: "On the oud as philosophy — and his jazz project.",
+      content: bodyAr("حوار مع طارق الأوتار"),
+      content_en: bodyEn("An Interview with Tariq Awtar"),
+      author_name: "سلمى المحاورة",
+      author_name_en: "Salma Interviewer",
+      cover_image_url: covers[4],
+      featured_artist_id: artistIds.get("demo-tariq-awtar") || null,
+      published_at: "2024-05-30T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 12. demo-daqqat-ensemble
+    {
+      slug: "demo-daqqat-ensemble",
+      title: "فرقة دقات: اثنتا عشرة عازفة",
+      title_en: "Daqqat: Twelve Women Players",
+      category: "artists",
+      excerpt: "كيف بنت رانيا الدف أول فرقة دفوف نسائية.",
+      excerpt_en: "How Rania Daff built the first women's daf ensemble.",
+      content: bodyAr("فرقة دقات"),
+      content_en: bodyEn("Daqqat: Twelve Women Players"),
+      author_name: "هيئة التحرير",
+      author_name_en: "Editorial Team",
+      cover_image_url: covers[5],
+      featured_artist_id: artistIds.get("demo-rania-daff") || null,
+      published_at: "2025-08-11T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 13. demo-learn-oud-first-steps
+    {
+      slug: "demo-learn-oud-first-steps",
+      title: "تعلم العود: خطواتك الأولى",
+      title_en: "Learning the Oud: First Steps",
+      category: "academy",
+      excerpt: "اختيار الآلة والجلوس الصحيح وأول مقام.",
+      excerpt_en: "Choosing the instrument, sitting right, and the first maqam.",
+      content: bodyAr("تعلم العود: خطواتك الأولى"),
+      content_en: bodyEn("Learning the Oud: First Steps"),
+      author_name: "أستاذ الأكاديمية",
+      author_name_en: "Academy Tutor",
+      cover_image_url: covers[0],
+      featured_artist_id: null,
+      published_at: "2022-11-02T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 14. demo-rhythm-children-play
+    {
+      slug: "demo-rhythm-children-play",
+      title: "تعليم الإيقاع للأطفال باللعب",
+      title_en: "Teaching Children Rhythm Through Play",
+      category: "academy",
+      excerpt: "منهج يوسف الوقّاع: الحركة قبل النوتة.",
+      excerpt_en: "Youssef Waqqa's method: movement before notation.",
+      content: bodyAr("تعليم الإيقاع للأطفال باللعب"),
+      content_en: bodyEn("Teaching Children Rhythm Through Play"),
+      author_name: "أستاذ الأكاديمية",
+      author_name_en: "Academy Tutor",
+      cover_image_url: covers[1],
+      featured_artist_id: null,
+      published_at: "2024-01-19T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 15. demo-sound-design-basics
+    {
+      slug: "demo-sound-design-basics",
+      title: "أساسيات التصميم الصوتي",
+      title_en: "Sound Design Basics",
+      category: "academy",
+      excerpt: "مدخل عملي من مختبر بيروت الصوتي.",
+      excerpt_en: "A hands-on primer from the Beirut Sound Lab.",
+      content: bodyAr("أساسيات التصميم الصوتي"),
+      content_en: bodyEn("Sound Design Basics"),
+      author_name: "نادية المدربة",
+      author_name_en: "Nadia Trainer",
+      cover_image_url: covers[2],
+      featured_artist_id: artistIds.get("demo-nadia-hadatha") || null,
+      published_at: "2026-02-07T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 16. demo-maqam-festival-recap
+    {
+      slug: "demo-maqam-festival-recap",
+      title: "حصاد مهرجان المقام الأول",
+      title_en: "First Maqam Festival: Recap",
+      category: "events",
+      excerpt: "ليالٍ بيعت تذاكرها وأصوات اكتُشفت.",
+      excerpt_en: "Sold-out nights and discovered voices.",
+      content: bodyAr("حصاد مهرجان المقام الأول"),
+      content_en: bodyEn("First Maqam Festival: Recap"),
+      author_name: "هيئة التحرير",
+      author_name_en: "Editorial Team",
+      cover_image_url: covers[3],
+      featured_artist_id: null,
+      published_at: "2025-12-01T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 17. demo-jazz-citadel-preview
+    {
+      slug: "demo-jazz-citadel-preview",
+      title: "ترقب: جاز القلعة بالإسكندرية",
+      title_en: "Preview: Citadel Jazz in Alexandria",
+      category: "events",
+      excerpt: "ما ينتظر الجمهور في أمسية قايتباي.",
+      excerpt_en: "What awaits audiences at the Qaitbay evening.",
+      content: bodyAr("جاز القلعة بالإسكندرية"),
+      content_en: bodyEn("Preview: Citadel Jazz in Alexandria"),
+      author_name: "كريم الصحفي",
+      author_name_en: "Karim Journalist",
+      cover_image_url: covers[4],
+      featured_artist_id: artistIds.get("demo-omar-tajrib") || null,
+      published_at: "2026-08-20T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 18. demo-ramadan-nights-review
+    {
+      slug: "demo-ramadan-nights-review",
+      title: "مراجعة: ليالي رمضان المقدسية",
+      title_en: "Review: Jerusalem Ramadan Nights",
+      category: "events",
+      excerpt: "إنشاد جمع الآلاف في البلدة القديمة.",
+      excerpt_en: "Chant that gathered thousands in the Old City.",
+      content: bodyAr("ليالي رمضان المقدسية"),
+      content_en: bodyEn("Review: Jerusalem Ramadan Nights"),
+      author_name: "سلمى المحاورة",
+      author_name_en: "Salma Interviewer",
+      cover_image_url: covers[5],
+      featured_artist_id: null,
+      published_at: "2024-04-20T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 19. music-crosses-borders
+    {
+      slug: "music-crosses-borders",
+      title: "الموسيقى تعبر الحدود: كيف تلتقي المقامات الشرقية بالألحان الأندلسية؟",
+      title_en: "Music Crosses Borders: How Eastern Maqams Meet Andalusian Melodies",
+      category: "culture",
+      excerpt: "قراءة نقدية في تاريخ التمازج الموسيقي عبر البحر المتوسط وتأثير الموشحات على تطور الهوية الثقافية العربية المعاصرة.",
+      excerpt_en: "A critical reading on Mediterranean musical synthesis and the impact of muwashahat on contemporary Arab identity.",
+      content: bodyAr("الموسيقى تعبر الحدود"),
+      content_en: bodyEn("Music Crosses Borders"),
+      author_name: "هيئة تحرير أندلسيا",
+      author_name_en: "Andalusia Editorial Board",
+      cover_image_url: covers[0],
+      featured_artist_id: null,
+      published_at: "2026-08-15T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 20. andalusian-lute-craftsmanship
+    {
+      slug: "andalusian-lute-craftsmanship",
+      title: "صناعة العود الأندلسي: أسرار الخشب والرنين",
+      title_en: "Andalusian Lute Craftsmanship: Secrets of Wood and Resonance",
+      category: "academy",
+      excerpt: "دليل عملي حول اختيار الأخشاب الطبيعية وضبط الأبعاد الصوتية في ورش صناعة العود التراثية.",
+      excerpt_en: "A practical guide on selecting natural woods and acoustic tuning in traditional oud craft workshops.",
+      content: bodyAr("صناعة العود الأندلسي"),
+      content_en: bodyEn("Andalusian Lute Craftsmanship"),
+      author_name: "د. ناديا القاسم",
+      author_name_en: "Dr. Nadia Al-Qasim",
+      cover_image_url: covers[1],
+      featured_artist_id: null,
+      published_at: "2025-10-12T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+    // 21. echoes-of-ziryab-modern-music
+    {
+      slug: "echoes-of-ziryab-modern-music",
+      title: "أصداء زرياب في الموسيقى المعاصرة",
+      title_en: "Echoes of Ziryab in Contemporary Music",
+      category: "culture",
+      excerpt: "استكشاف إرث زرياب الموسيقي وكيف لا يزال يلهم التجريب اللحني في قرطبة والقاهرة وبيروت.",
+      excerpt_en: "Exploring Ziryab's musical legacy and how it inspires melodic experimentation from Cordoba to Cairo and Beirut.",
+      content: bodyAr("أصداء زرياب في الموسيقى المعاصرة"),
+      content_en: bodyEn("Echoes of Ziryab in Contemporary Music"),
+      author_name: "هيئة تحرير أندلسيا",
+      author_name_en: "Andalusia Editorial Board",
+      cover_image_url: covers[2],
+      featured_artist_id: null,
+      published_at: "2025-04-05T10:00:00Z",
+      is_featured: false,
+      is_published: true,
+    },
+  ];
+
+  for (const item of items) {
+    assertSlug(item.slug);
+  }
+
+  return items;
+}
+
+function articleRows(artistIds, P) {
+  return allArticleFixtures(artistIds, P);
+}
+
+async function seedNewsOnly() {
+  console.log("=== News-Only Seeding Mode ===");
+  const { data: existingRows, error: fetchErr } = await client
+    .from("articles")
+    .select("*");
+  if (fetchErr) throw new Error(`Failed to fetch existing articles: ${fetchErr.message}`);
+
+  const existingBySlug = new Map((existingRows || []).map((row) => [row.slug, row]));
+  const artistIds = await demoArtistIds().catch(() => new Map());
+  const articleCover = (p) => pub("articles", p);
+  const fixtures = allArticleFixtures(artistIds, articleCover);
+
+  let insertedCount = 0;
+  let updatedCount = 0;
+  let preservedCount = 0;
+
+  for (const fixture of fixtures) {
+    const existing = existingBySlug.get(fixture.slug);
+    if (!existing) {
+      const { error: insErr } = await client.from("articles").insert([fixture]);
+      if (insErr) throw new Error(`Failed to insert article ${fixture.slug}: ${insErr.message}`);
+      insertedCount++;
+    } else {
+      const patch = {};
+      for (const [key, value] of Object.entries(fixture)) {
+        if (
+          (existing[key] === null || existing[key] === undefined || existing[key] === "") &&
+          value !== null &&
+          value !== undefined &&
+          value !== ""
+        ) {
+          patch[key] = value;
+        }
+      }
+      if (Object.keys(patch).length > 0) {
+        const { error: updErr } = await client
+          .from("articles")
+          .update(patch)
+          .eq("id", existing.id);
+        if (updErr) throw new Error(`Failed to update article ${fixture.slug}: ${updErr.message}`);
+        updatedCount++;
+      } else {
+        preservedCount++;
+      }
+    }
+  }
+
+  console.log(
+    JSON.stringify({
+      seeded: "articles",
+      mode: "news-only",
+      total: fixtures.length,
+      inserted: insertedCount,
+      filled_missing_fields: updatedCount,
+      preserved_intact: preservedCount,
+    })
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -729,8 +1163,9 @@ async function seed() {
   await seedBookings(artistIds, eventIds);
   await seedNewsletter();
 
-  await upsert("articles", articleRows(artistIds, PC), "slug");
-  console.log(JSON.stringify({ seeded: "articles", total: 12 }));
+  const artRows = articleRows(artistIds, PC);
+  await upsert("articles", artRows, "slug");
+  console.log(JSON.stringify({ seeded: "articles", total: artRows.length }));
 
   // Testimonials: idempotent on display_order marker (no slug/email column exists).
   const testi = testimonialRows();
@@ -783,5 +1218,7 @@ async function cleanup() {
 }
 
 if (mode === "inventory") await inventory();
+else if (mode === "seed-news") await seedNewsOnly();
 else if (mode === "seed") await seed();
 else await cleanup();
+

@@ -34,6 +34,7 @@ export { MotionReady } from "./MotionReady";
 export { TemplateWrapper } from "./TemplateWrapper";
 export { NewsHero, type NewsHeroProps } from "./NewsHero";
 export { NewsGrid, type NewsGridProps } from "./NewsGrid";
+export { NewsPagination, type NewsPaginationProps } from "./NewsPagination";
 export { NewsFilterTabs, type NewsFilterTabsProps } from "./NewsFilterTabs";
 export { ArticleView, type ArticleViewProps } from "./ArticleView";
 

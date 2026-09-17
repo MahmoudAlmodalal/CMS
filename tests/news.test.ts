@@ -14,6 +14,7 @@ import {
   getArticleCategoryLabel,
   CANONICAL_ARTICLES,
 } from "../src/lib/articles.ts";
+import { PAGE_SIZE, pagination } from "../src/lib/pagination.ts";
 
 const root = path.resolve(".");
 
@@ -32,6 +33,7 @@ test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
     "src/app/[locale]/(public)/news/[slug]/page.tsx",
     "src/components/public/NewsHero.tsx",
     "src/components/public/NewsGrid.tsx",
+    "src/components/public/NewsPagination.tsx",
     "src/components/public/NewsFilterTabs.tsx",
     "src/components/public/ArticleCard.tsx",
     "src/components/public/ArticleView.tsx",
@@ -50,6 +52,7 @@ test("Task 37 — 1. News Architecture & Required File Artifacts", () => {
   );
   assert.match(barrel, /export \{ NewsHero/);
   assert.match(barrel, /export \{ NewsGrid/);
+  assert.match(barrel, /export \{ NewsPagination/);
   assert.match(barrel, /export \{ NewsFilterTabs/);
   assert.match(barrel, /export \{ ArticleCard/);
   assert.match(barrel, /export \{ ArticleView/);
@@ -228,6 +231,7 @@ test("Task 37 — 6. Articles DAL Data Access Methods & RLS Predicates", () => {
     "getArticleBySlug",
     "getRelatedArticles",
     "getAllPublishedArticleSlugs",
+    "getPublishedArticlesPage",
   ]) {
     assert.match(
       dal,
@@ -236,13 +240,18 @@ test("Task 37 — 6. Articles DAL Data Access Methods & RLS Predicates", () => {
     );
   }
 
-  // RLS public view rules enforced in Supabase queries AND canonical fallback
+  // RLS public view rules enforced in Supabase queries
   assert.match(dal, /\.eq\("is_published", true\)/);
   assert.match(dal, /\.lte\("published_at", nowIso\)/);
-  assert.match(dal, /CANONICAL_ARTICLES\.filter/);
-  assert.match(dal, /return found \|\| null/);
 
-  // Runtime data-integrity: canonical fallback backing every DAL read
+  // DB-only semantics: No runtime hardcoded fallback to CANONICAL_ARTICLES
+  assert.doesNotMatch(dal, /canonicalArticles/, "DAL must not call canonicalArticles helper");
+  assert.doesNotMatch(dal, /CANONICAL_ARTICLES\.filter/, "DAL must not filter CANONICAL_ARTICLES at runtime");
+  assert.match(dal, /return \[\];/, "Errors and empty queries must return empty array, never fabricating news");
+  assert.match(dal, /return null;/, "Missing article by slug must return null, never fabricating news");
+  assert.match(dal, /excludeIds/, "getPublishedArticlesPage must support excludeIds");
+
+  // Runtime data-integrity: canonical fixture constants remain exported for static verification
   assert.ok(
     CANONICAL_ARTICLES.length >= 7,
     "Should seed at least 7 canonical articles"
@@ -346,11 +355,20 @@ test("Figma 91:17296 — News page geometry matches the frame", () => {
   assert.match(page, /lg:pt-\[240px\]/, "Grid section must start 240px below the 668px hero band");
 });
 
-test("Figma 91:17296 — grid carries the three articles the featured band does not", () => {
+test("Figma 91:17296 — DB-driven pagination with 6 grid cards per page and hero exclusion", () => {
   const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/news/page.tsx"), "utf-8");
-  // A fourth featured article must not fall through into the grid.
-  assert.match(page, /!a\.is_featured/, "Grid must exclude every featured article, not only the rendered ones");
-  assert.match(page, /\.slice\(0, 3\)/, "The design shows exactly three cards");
+
+  // DB-driven pagination: uses getPublishedArticlesPage with the shared grid size
+  assert.match(page, /getPublishedArticlesPage/, "News page must use getPublishedArticlesPage");
+  assert.match(page, /perPage:\s*NEWS_GRID_PER_PAGE/, "Grid query must use the shared NEWS_GRID_PER_PAGE constant");
+  assert.match(
+    fs.readFileSync(path.join(root, "src/lib/dal/articles.ts"), "utf-8"),
+    /export const NEWS_GRID_PER_PAGE\s*=\s*6;/,
+    "NEWS_GRID_PER_PAGE must be 6 (two balanced 3-column rows)"
+  );
+  assert.match(page, /excludeIds:\s*heroRenderedIds/, "Grid query must exclude heroRenderedIds before count and range");
+  assert.match(page, /await searchParams/, "Page must await searchParams per Next.js conventions");
+  assert.match(page, /<NewsPagination/, "News page must render NewsPagination when multi-page");
 
   for (const title of [
     "تطور الفن الرقمي في العالم العربي",
@@ -358,8 +376,8 @@ test("Figma 91:17296 — grid carries the three articles the featured band does 
     "الإعلان عن جدول فعاليات الصيف الموسيقية",
   ]) {
     assert.ok(
-      CANONICAL_ARTICLES.some((article) => article.title === title && !article.is_featured),
-      `Canonical content must carry the grid article "${title}" as unfeatured`
+      CANONICAL_ARTICLES.some((article) => article.title === title),
+      `Canonical content must carry the story "${title}"`
     );
   }
 
@@ -370,6 +388,97 @@ test("Figma 91:17296 — grid carries the three articles the featured band does 
     "يستضيف المركز هذا الأسبوع مجموعة من أبرز الفنانين المعاصرين لتقديم أعمالهم الجديدة في المعرض السنوي المرتقب.",
     "Hero standfirst must be the copy in node 91:17306"
   );
+});
+
+test("News Pagination — Bounds, Clamping, and Mathematical Invariants", () => {
+  // 6 cards per page invariant: total = 18 -> 3 pages of 6
+  assert.equal(pagination(18, 1, 6).page, 1);
+  assert.equal(pagination(18, 1, 6).perPage, 6);
+  assert.equal(pagination(18, 1, 6).totalPages, 3);
+  assert.equal(pagination(18, 1, 6).from, 0);
+  assert.equal(pagination(18, 1, 6).to, 5);
+
+  // Page 2 bounds
+  assert.equal(pagination(18, 2, 6).page, 2);
+  assert.equal(pagination(18, 2, 6).from, 6);
+  assert.equal(pagination(18, 2, 6).to, 11);
+
+  // Page 3 bounds
+  assert.equal(pagination(18, 3, 6).page, 3);
+  assert.equal(pagination(18, 3, 6).from, 12);
+  assert.equal(pagination(18, 3, 6).to, 17);
+
+  // Clamp zero, negative, and fractional inputs safely
+  assert.equal(pagination(18, 0, 6).page, 1);
+  assert.equal(pagination(18, -10, 6).page, 1);
+  assert.equal(pagination(18, 2.7, 6).page, 2);
+
+  // Clamp enormous out-of-range page to totalPages
+  assert.equal(pagination(18, 99999, 6).page, 3);
+
+  // Empty dataset stays empty (1 page, 0 items)
+  const empty = pagination(0, 1, 6);
+  assert.equal(empty.totalPages, 1);
+  assert.equal(empty.page, 1);
+
+  // Shared PAGE_SIZE constant remains 9 for other domains
+  assert.equal(PAGE_SIZE, 9);
+});
+
+test("News Pagination — Component Architecture & A11y Links", () => {
+  const paginationCode = fs.readFileSync(
+    path.join(root, "src/components/public/NewsPagination.tsx"),
+    "utf-8"
+  );
+
+  // Accessible navigation landmark & aria
+  assert.match(paginationCode, /<nav\b[^>]*aria-label/);
+  assert.match(paginationCode, /aria-current=\{isCurrent \? "page" : undefined\}/);
+  assert.match(paginationCode, /aria-disabled="true"/, "Noninteractive bounds must declare aria-disabled");
+
+  // Localized next-intl navigation
+  assert.match(paginationCode, /import\s*\{\s*Link\s*\}\s*from\s*["']@\/i18n\/navigation["']/);
+  assert.match(paginationCode, /useTranslations\("news"\)/);
+
+  // Bounded number window for large datasets
+  assert.match(paginationCode, /getPageItems/);
+  assert.match(paginationCode, /ellipsis/);
+});
+
+test("News Seeding — News-only mode and fixture inventory", () => {
+  const seedScript = fs.readFileSync(
+    path.join(root, "scripts/seed-demo-content.mjs"),
+    "utf-8"
+  );
+
+  // Script supports news-only mode
+  assert.match(seedScript, /--news-only/);
+  assert.match(seedScript, /--seed-news/);
+  assert.match(seedScript, /async function seedNewsOnly/);
+
+  // Required stories are present in the fixture definitions
+  assert.match(seedScript, /Interview with Sculptor Ahmed Mahmoud/);
+  assert.match(seedScript, /A Photographer's Journey Through the Alleys of the Old City/);
+  assert.match(seedScript, /Announcement of the Summer Music Events Schedule/);
+  assert.match(seedScript, /A New Workshop in Classical Sculpture/);
+  assert.match(seedScript, /demo-jazz-citadel-preview/);
+  assert.match(seedScript, /demo-sound-design-basics/);
+
+  // Idempotency: Narrow patch logic to avoid blanket overwrite of existing editorial rows
+  assert.match(seedScript, /existingBySlug/);
+  assert.match(seedScript, /filled_missing_fields/);
+});
+
+test("News Hero — Category Label Localization", () => {
+  const hero = fs.readFileSync(
+    path.join(root, "src/components/public/NewsHero.tsx"),
+    "utf-8"
+  );
+
+  // Must use useTranslations("categories") and message keys instead of hardcoded Arabic
+  assert.match(hero, /useTranslations\("categories"\)/);
+  assert.match(hero, /ARTICLE_CATEGORY_MESSAGE_KEYS/);
+  assert.doesNotMatch(hero, /getArticleCategoryLabel\(article\.category\)/);
 });
 
 /**

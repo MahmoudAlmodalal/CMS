@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 import type { SiteSettingsInput } from "@/lib/validations/cms";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface SiteSettingsFormValues {
   hero_headline: string;
@@ -560,6 +561,95 @@ export function Field({
   );
 }
 
+/**
+ * Interactive Word Index Highlight Selector.
+ * Allows the admin to click words or word indices to toggle brand terracotta highlighting.
+ * Updates the text with asterisks around highlighted words (e.g. "أصوات *تصنع* التاريخ").
+ */
+export function WordHighlightPicker({
+  value,
+  onChange,
+  lang = "ar",
+}: {
+  value: string;
+  onChange: (newValue: string) => void;
+  lang?: "ar" | "en";
+}) {
+  if (!value || !value.trim()) return null;
+
+  const raw = value.trim();
+  const tokens = raw.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return null;
+
+  const words = tokens.map((token, index) => {
+    const isHighlighted = token.startsWith("*") && token.endsWith("*") && token.length > 2;
+    const cleanWord = token.replace(/^\*+|\*+$/g, "");
+    return {
+      index, // 0-based
+      displayIndex: index + 1, // 1-based for human admin
+      cleanWord,
+      isHighlighted,
+    };
+  });
+
+  const toggleWord = (targetIndex: number) => {
+    const newTokens = tokens.map((token, idx) => {
+      if (idx !== targetIndex) return token;
+      const isCurrentlyHighlighted = token.startsWith("*") && token.endsWith("*") && token.length > 2;
+      const clean = token.replace(/^\*+|\*+$/g, "");
+      return isCurrentlyHighlighted ? clean : `*${clean}*`;
+    });
+    onChange(newTokens.join(" "));
+  };
+
+  return (
+    <div className="mt-2 space-y-2 rounded-lg border border-brand-primary/20 bg-brand-primary/5 p-2.5 text-start">
+      <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-brand-espresso/70">
+        <span className="font-semibold text-brand-primary">
+          {lang === "ar" ? "تمييز الكلمات برقم الفهرس (Word Index):" : "Highlight words by index:"}
+        </span>
+        <span className="text-[11px] text-brand-espresso/60">
+          {lang === "ar" ? "اضغط على الكلمة برقمها لتفعيل أو إلغاء التمييز البرتقالي" : "Click word/index to toggle brand highlight"}
+        </span>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-1.5">
+        {words.map((item) => (
+          <button
+            key={item.index}
+            type="button"
+            onClick={() => toggleWord(item.index)}
+            className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs transition-all cursor-pointer ${
+              item.isHighlighted
+                ? "bg-primary-500 text-white font-bold shadow-xs ring-2 ring-primary-600/30"
+                : "bg-white text-brand-espresso border border-brand-espresso/15 hover:border-brand-primary hover:text-brand-primary"
+            }`}
+            title={`Index: ${item.displayIndex}`}
+          >
+            <span
+              className={`rounded-xs px-1 text-[10px] font-mono leading-none ${
+                item.isHighlighted ? "bg-black/25 text-white" : "bg-brand-espresso/10 text-brand-espresso/70"
+              }`}
+            >
+              #{item.displayIndex}
+            </span>
+            <span>{item.cleanWord}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="border-t border-brand-primary/10 pt-1.5 text-xs text-brand-espresso/80">
+        <span className="font-medium text-brand-espresso/50 me-1.5">
+          {lang === "ar" ? "معاينة التمييز:" : "Highlight preview:"}
+        </span>
+        <span className="font-display">
+          <Highlight text={value} highlightClassName="text-primary-500 font-bold" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function BilingualPair({
   id,
   label,
@@ -570,6 +660,7 @@ export function BilingualPair({
   helpText = "اتركه فارغاً لاستخدام النص الافتراضي.",
   enHelpText = "اختياري. يظهر في النسخة الإنجليزية؛ إن تُرك فارغاً يُعرض النص العربي.",
   required = false,
+  highlightable,
 }: {
   id: TextFieldName;
   label: string;
@@ -580,6 +671,7 @@ export function BilingualPair({
   helpText?: string;
   enHelpText?: string;
   required?: boolean;
+  highlightable?: boolean;
 }) {
   if (url) {
     return (
@@ -589,6 +681,14 @@ export function BilingualPair({
     );
   }
   const enId = `${id}_en` as TextFieldName;
+  const isHeading =
+    highlightable ??
+    (!id.startsWith("seo_") &&
+      (id.includes("heading") ||
+        id.includes("headline") ||
+        id.includes("title") ||
+        id.includes("kicker")));
+
   return (
     <>
       <Field id={id} label={label} required={required} help={helpText}>
@@ -597,12 +697,26 @@ export function BilingualPair({
         ) : (
           <Input id={id} value={values[id]} required={required} onChange={(event) => onChange(id, event.target.value)} />
         )}
+        {isHeading && (
+          <WordHighlightPicker
+            value={values[id]}
+            onChange={(val) => onChange(id, val)}
+            lang="ar"
+          />
+        )}
       </Field>
       <Field id={enId} label={`${label} — English`} required={false} help={enHelpText}>
         {multiline ? (
           <Textarea id={enId} dir="ltr" lang="en" rows={3} className="min-h-[96px]" value={values[enId]} onChange={(event) => onChange(enId, event.target.value)} />
         ) : (
           <Input id={enId} dir="ltr" lang="en" value={values[enId]} onChange={(event) => onChange(enId, event.target.value)} />
+        )}
+        {isHeading && (
+          <WordHighlightPicker
+            value={values[enId]}
+            onChange={(val) => onChange(enId, val)}
+            lang="en"
+          />
         )}
       </Field>
     </>

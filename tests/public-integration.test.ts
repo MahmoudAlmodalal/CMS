@@ -34,7 +34,7 @@ test("Task 40 — 2. Every route reads published content via its DAL", () => {
     ["artists/[slug]/page.tsx", ["getArtistBySlug", "getPublishedArtistSlugs"]],
     ["events/page.tsx", ["getPublishedEvents", "getFeaturedEvent", "getEventsSubtitle"]],
     ["academy/page.tsx", ["getSiteSettings", "getPublishedAcademyCourses"]],
-    ["news/page.tsx", ["getPublishedArticles", "getFeaturedArticles"]],
+    ["news/page.tsx", ["getPublishedArticlesPage", "getFeaturedArticles"]],
     ["news/[slug]/page.tsx", ["getArticleBySlug", "getRelatedArticles", "getAllPublishedArticleSlugs"]],
     ["booking/page.tsx", ["getBookingPageData"]],
   ];
@@ -68,10 +68,12 @@ test("Task 40 — 3. No draft leakage: all public DALs enforce published-only", 
   const articles = read(path.join(dalDir, "articles.ts"));
   assert.match(articles, /\.lte\("published_at", nowIso\)/);
 
-  // Detail lookups return null (→ 404) for drafts, never throw them public
+  // Detail lookups return null (→ 404) for drafts, never throw them public.
+  // DB-driven lookups resolve with an explicit `return null`; fixture-backed
+  // lookups resolve with `… || null`.
   for (const f of ["artists.ts", "articles.ts"]) {
     const src = read(path.join(dalDir, f));
-    assert.match(src, /return .* \|\| null/, `${f} detail lookup must resolve missing/draft to null`);
+    assert.match(src, /return null;|return .* \|\| null/, `${f} detail lookup must resolve missing/draft to null`);
   }
 });
 

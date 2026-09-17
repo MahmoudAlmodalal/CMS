@@ -3,7 +3,14 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { NewsHero } from "@/components/public/NewsHero";
 import { NewsGrid } from "@/components/public/NewsGrid";
-import { getPublishedArticles, getFeaturedArticles } from "@/lib/dal/articles";
+import { NewsPagination } from "@/components/public/NewsPagination";
+import {
+  NEWS_GRID_PER_PAGE,
+  type Article,
+  getPublishedArticles,
+  getFeaturedArticles,
+  getPublishedArticlesPage,
+} from "@/lib/dal/articles";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 
 export const revalidate = 1800; // 30 minutes ISR as specified in APPLICATION_ARCHITECTURE.md
@@ -41,32 +48,55 @@ export async function generateMetadata({
   };
 }
 
-export default async function NewsPage({ params }: { params: Promise<{ locale: string }> }) {
+function parsePageParam(param: string | string[] | undefined): number {
+  const raw = Array.isArray(param) ? param[0] : param;
+  if (!raw) return 1;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || Number.isNaN(parsed)) return 1;
+  const floored = Math.floor(parsed);
+  return floored < 1 ? 1 : floored;
+}
+
+export default async function NewsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const requestedPage = parsePageParam(resolvedSearchParams?.page);
 
-  const [articles, featuredArticles, settings] = await Promise.all([
-    getPublishedArticles(),
+  // Hero is stable DB featured top3 on all pages; if fewer than 3 featured exist,
+  // query published articles independently to fill the hero slots.
+  const [featuredArticles, settings] = await Promise.all([
     getFeaturedArticles(3),
     getSiteSettings(),
   ]);
 
-  const primaryArticle = featuredArticles[0] || articles[0];
-  const secondaryArticles =
-    featuredArticles.length > 1
-      ? featuredArticles.slice(1, 3)
-      : articles.filter((a) => a.id !== primaryArticle?.id).slice(0, 2);
+  const heroFill =
+    featuredArticles.length < 3 ? await getPublishedArticles({ limit: 3 }) : [];
+  const heroArticles: Article[] = [
+    ...featuredArticles,
+    ...heroFill.filter((art) => !featuredArticles.some((h) => h.id === art.id)),
+  ].slice(0, 3);
 
-  // The design shows exactly three cards below the fold, and the three it shows
-  // are the ones the featured band does not carry. Excluding only the three the
-  // band happens to render is not enough: a fourth featured article would fall
-  // through into the grid and displace one of the three the design specifies.
-  const featuredIds = new Set(
-    [primaryArticle, ...secondaryArticles].filter(Boolean).map((a) => a!.id)
-  );
-  const gridArticles = articles
-    .filter((a) => !a.is_featured && !featuredIds.has(a.id))
-    .slice(0, 3);
+  const primaryArticle = heroArticles[0] || null;
+  const secondaryArticles = heroArticles.slice(1, 3);
+  const heroRenderedIds = [primaryArticle, ...secondaryArticles]
+    .filter((a): a is Article => Boolean(a))
+    .map((a) => a.id);
+
+  // Exclude exactly the hero-rendered IDs BEFORE database count and range so
+  // every remaining story (including extra featured) is reachable.
+  const articlesPage = await getPublishedArticlesPage({
+    page: requestedPage,
+    perPage: NEWS_GRID_PER_PAGE,
+    excludeFeatured: true,
+    excludeIds: heroRenderedIds,
+  });
 
   return (
     <div className="w-full bg-brand-cream">
@@ -87,11 +117,18 @@ export default async function NewsPage({ params }: { params: Promise<{ locale: s
       <div className="mx-auto w-full max-w-[1440px] px-4 pb-[60.5px] pt-[47px] sm:px-6 lg:px-0 lg:pb-[151.5px] lg:pt-[240px]">
         <div className="w-full lg:ms-[103px] lg:w-[1208px] lg:max-w-[calc(100%-103px)]">
           <NewsGrid
-            articles={gridArticles}
+            articles={articlesPage.items}
             title={settings.news_title || undefined}
             kicker={settings.news_kicker || undefined}
             subtitle={settings.news_subtitle || undefined}
           />
+          {articlesPage.totalPages > 1 && (
+            <NewsPagination
+              currentPage={articlesPage.page}
+              totalPages={articlesPage.totalPages}
+              searchParams={resolvedSearchParams}
+            />
+          )}
         </div>
       </div>
     </div>

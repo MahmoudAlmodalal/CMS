@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { ArticleCard } from "./ArticleCard";
 import type { Article } from "@/lib/articles";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface NewsGridProps {
   articles: Article[];
@@ -11,6 +12,7 @@ export interface NewsGridProps {
   /** Admin-set standfirst rendered under the heading (only when provided). */
   subtitle?: string;
   className?: string;
+  pagination?: React.ReactNode;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface NewsGridProps {
  * section, so none are rendered. NewsFilterTabs is left in the tree unused rather
  * than deleted, since restoring filtering is a product decision, not a design one.
  */
-export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: NewsGridProps) {
+export function NewsGrid({ articles, title, kicker, subtitle, className = "", pagination }: NewsGridProps) {
   const t = useTranslations("news");
 
   return (
@@ -42,7 +44,7 @@ export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: 
           // down — the same pt-2 — so the line box is 40 at both widths.
           className="text-start font-display text-[32px] leading-[40px] text-gradscale-900 lg:text-[48px]"
         >
-          {title ?? t("gridHeading")}
+          <Highlight text={title ?? t("gridHeading")} highlightClassName="text-primary-500" />
         </h2>
         {subtitle && (
           <p className="mt-3 max-w-[693px] text-start text-base leading-[28px] text-gradscale-900/70">
@@ -61,15 +63,18 @@ export function NewsGrid({ articles, title, kicker, subtitle, className = "" }: 
         // figure: on the 390 one that box's bottom would fall 11.5 past the footer,
         // so there the space between the last card and the footer is the band's own
         // 60.5 instead.
-        <div className="motion-stagger grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
-          {articles.map((article, index) => (
-            <ArticleCard
-              key={article.id || article.slug}
-              article={article}
-              style={{ "--stagger-delay": `${Math.min(index * 80, 400)}ms` } as React.CSSProperties}
-            />
-          ))}
-        </div>
+        <>
+          <div className="motion-stagger grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:pb-[72px]">
+            {articles.map((article, index) => (
+              <ArticleCard
+                key={article.id || article.slug}
+                article={article}
+                style={{ "--stagger-delay": `${Math.min(index * 80, 400)}ms` } as React.CSSProperties}
+              />
+            ))}
+          </div>
+          {pagination}
+        </>
       )}
     </section>
   );

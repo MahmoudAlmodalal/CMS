@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import type { Article } from "@/lib/articles";
-import { getArticleCategoryLabel } from "@/lib/articles";
+import { ARTICLE_CATEGORY_MESSAGE_KEYS } from "@/lib/articles";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
@@ -41,6 +42,7 @@ export interface NewsHeroProps {
 }
 
 export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
+  const c = useTranslations("categories");
   return (
     <section className="relative w-full" aria-labelledby="featured-news-heading">
       <div className="relative h-[430px] w-full overflow-hidden sm:h-[540px] lg:h-[668px]">
@@ -105,7 +107,7 @@ export function NewsHero({ primaryArticle, secondaryArticles }: NewsHeroProps) {
                 </div>
                 <div className="flex flex-col gap-1 pb-1 pt-1 text-end ltr:text-start lg:pt-2">
                   <span className="text-[13px] font-bold leading-[19.5px] text-eyebrow">
-                    {getArticleCategoryLabel(article.category)}
+                    {c(ARTICLE_CATEGORY_MESSAGE_KEYS[article.category] ?? "articleFallback")}
                   </span>
                   <h2 className="text-[20px] font-bold leading-[30px] text-ink-heading group-hover:text-brand-primary transition-colors">
                     {article.title}

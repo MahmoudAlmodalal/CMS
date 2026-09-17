@@ -10,6 +10,7 @@ import { ArtistWorkCard } from "./ArtistWorkCard";
 import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { ScrollReveal } from "../ScrollReveal";
 import { useMotionPrefs } from "../motion/useMotionPrefs";
+import { Highlight } from "@/components/ui/Highlight";
 
 interface ArtistDiscographyProps {
   releases: Release[];
@@ -171,7 +172,7 @@ export function ArtistDiscography({
     <section className="w-full bg-gradscale-900 py-24 lg:py-[96px]">
       <ScrollReveal variant="up">
         <h2 className="pt-[12px] text-center font-display text-[32px] leading-[40px] text-brand-tint lg:h-[52px] lg:text-[48px]">
-          {t("careerTitle")}
+          <Highlight text={t("careerTitle")} highlightClassName="text-primary-500" />
         </h2>
       </ScrollReveal>
 
