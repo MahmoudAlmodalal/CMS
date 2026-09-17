@@ -134,16 +134,32 @@ export function YouTubeEmbed({
           aria-label={playLabel || title}
           className="motion-press group/play absolute inset-0 h-full w-full cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-inset"
         >
-          <SafeImage
-            src={poster?.trim() || youTubeThumbnailUrl(videoId)}
-            alt={posterAlt || ""}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            loading="lazy"
-            quality={90}
-            fallbackText={title}
-            className="motion-image motion-kenburns object-cover"
-          />
+          {audioOnly ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#24150d] via-[#120c08] to-[#2d160b]">
+              <div className="relative size-[154px] rounded-full bg-[#0d0a08] shadow-[0_14px_36px_-4px_rgba(0,0,0,.8)] ring-4 ring-[#3a2417] transition-transform group-hover/play:scale-[1.03]">
+                <div className="absolute inset-[7%] rounded-full border border-white/[0.08]" />
+                <div className="absolute inset-[15%] rounded-full border border-white/[0.07]" />
+                <div className="absolute inset-[23%] rounded-full border border-white/[0.06]" />
+                <div className="absolute inset-[31%] rounded-full border border-white/[0.05]" />
+                <div className="absolute inset-[39%] overflow-hidden rounded-full border-2 border-[#5b2d18]">
+                  <SafeImage src={poster?.trim() || youTubeThumbnailUrl(videoId)} alt={posterAlt || ""} fill sizes="70px" loading="lazy" quality={80} fallbackText={title} className="object-cover" />
+                </div>
+                <div className="absolute inset-0 m-auto size-3 rounded-full border border-white/30 bg-[#0d0a08]" />
+              </div>
+              <span className="absolute bottom-4 start-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">Music</span>
+            </div>
+          ) : (
+            <SafeImage
+              src={poster?.trim() || youTubeThumbnailUrl(videoId)}
+              alt={posterAlt || ""}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              loading="lazy"
+              quality={90}
+              fallbackText={title}
+              className="motion-image motion-kenburns object-cover"
+            />
+          )}
           <span aria-hidden="true" className="absolute inset-0 bg-gradscale-900/20" />
           <span
             aria-hidden="true"

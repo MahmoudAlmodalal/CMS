@@ -336,31 +336,27 @@ export function ArtistDiscography({
                       data-testid={`track-${track.id}`}
                       className="flex w-[269px] shrink-0 snap-start flex-col"
                     >
-                      <div className="relative w-full overflow-hidden rounded-[14px] bg-[#2a1d13] lg:h-[268.997px]">
-                        <div className="relative aspect-square w-full lg:h-full">
-                          <SafeImage
-                            src={track.cover_image_url}
-                            bucket="releases"
-                            alt={track.title}
-                            fill
-                            sizes="(max-width: 1023px) 100vw, 269px"
-                            quality={90}
-                            fallbackText={track.title}
-                            className="object-cover"
-                          />
+                      {track.youtube_url ? (
+                        <YouTubeEmbed
+                          url={track.youtube_url}
+                          title={track.title}
+                          audioOnly
+                          poster={track.cover_image_url}
+                          className="rounded-[14px] lg:min-h-[268.997px]"
+                          playLabel={t("workPlay", { title: track.title })}
+                          posterAlt={t("workThumbAlt", { title: track.title })}
+                          overlay={<span className="absolute start-[12px] top-[12px] rounded-full bg-primary-500 px-[10px] py-[4px] text-[8px] font-bold uppercase leading-[12px] tracking-[0.8px] text-white">{t("workType.song")}</span>}
+                        />
+                      ) : (
+                        <div className="flex min-h-[269px] items-center justify-center rounded-[14px] bg-[#1d120b] p-5">
+                          <audio controls preload="none" src={track.audio_file_url} className="w-full" />
                         </div>
-                        <span className="absolute start-[2.526px] top-[11.992px] rounded-full bg-primary-500 px-[10px] py-[4px] text-[8px] font-bold uppercase leading-[12px] tracking-[0.8px] text-white">
-                          {t("workType.song")}
-                        </span>
-                      </div>
+                      )}
 
                       <p className="pt-[16px] text-start text-[16px] font-bold leading-[20px] text-[#f0ebe1] lg:h-[36px]">
                         {track.title}
                       </p>
 
-                      <div className="mt-2 w-full">
-                        {track.youtube_url ? <YouTubeEmbed url={track.youtube_url} title={track.title} audioOnly /> : <audio controls preload="none" src={track.audio_file_url} className="w-full h-[36px] rounded accent-primary-500" />}
-                      </div>
                     </article>
                   ))}
                   {songWorks.map((work) => (
