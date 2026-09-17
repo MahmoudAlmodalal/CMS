@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -191,12 +192,15 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
                 {/* Avatar (Figma Node 176:1822 — 36x36, radius 18) */}
                 {current.avatar_image_url ? (
-                  <Image
+                  <SafeImage
                     src={current.avatar_image_url}
                     alt={current.author_name}
                     width={36}
                     height={36}
+                    fill={false}
                     className="w-9 h-9 rounded-full object-cover shrink-0"
+                    containerClassName="w-9 h-9 rounded-full shrink-0"
+                    fallbackText={current.author_name}
                   />
                 ) : (
                   <span
