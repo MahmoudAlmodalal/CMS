@@ -141,11 +141,11 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
                     className="group relative flex h-[80px] flex-row-reverse items-center gap-4 rounded-[16px] bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary lg:block lg:h-[110.646px] lg:flex-row lg:p-0"
                   >
                     {/* Date badge 87:14485 */}
-                    <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[6.4px] py-[8.8px] transition-transform duration-300 group-hover:scale-105 lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start">
+                    <span className="flex h-[48px] w-[56px] shrink-0 flex-col justify-center rounded-[8px] bg-primary-500 px-[3px] py-[8.8px] transition-transform duration-300 group-hover:scale-105 lg:absolute lg:end-[30px] lg:top-[28.4px] lg:h-[53.979px] lg:w-[72px] lg:justify-start lg:px-[6.4px]">
                       <span className="block w-full text-center font-mono tabular-nums text-[22.4px] font-black leading-[22.4px] text-primary-50">
                         {day.format(eventDate)}
                       </span>
-                      <span className="block h-[14px] w-full truncate whitespace-nowrap pt-[2px] text-center text-[8px] font-semibold uppercase leading-[12px] tracking-[0.48px] text-primary-50">
+                      <span className="block h-[14px] w-full whitespace-nowrap pt-[2px] text-center text-[6.5px] font-semibold uppercase leading-[12px] tracking-[0.15px] text-primary-50 sm:text-[8px] sm:tracking-[0.48px]">
                         {month.format(eventDate)}
                       </span>
                     </span>
