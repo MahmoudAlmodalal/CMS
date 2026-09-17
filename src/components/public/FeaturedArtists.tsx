@@ -34,7 +34,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
           <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
         <div className="relative mt-6 sm:mt-8">
-          <Marquee durationSeconds={28}>
+          <Marquee durationSeconds={28} pauseOnHover>
             {featuredArtists.map((artist, i) => (
               <div key={artist.id} className="px-2.5">
                 <ArtistTile artist={artist} priority={i < 2} />

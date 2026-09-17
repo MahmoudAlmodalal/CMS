@@ -15,6 +15,8 @@ export interface MarqueeProps {
   className?: string;
   /** Seconds for one full pass. Longer reads calmer. */
   durationSeconds?: number;
+  /** Pause animation when mouse hovers over the track or its tiles. Defaults to true. */
+  pauseOnHover?: boolean;
 }
 
 /** Imperative single-tile steps for arrow controls flanking the rail. */
@@ -37,22 +39,25 @@ export interface MarqueeHandle {
  * handle: forward tweens one tile ahead then rotates, backward prepends the
  * trailing tile then tweens back into place.
  *
- * Pauses for keyboard focus inside the strip (a11y) and for background tabs.
- * Hover and touch never pause it. Under reduced motion it renders a plain
- * scroll container instead — the content stays reachable by scroll/keyboard.
+ * Pauses for keyboard focus inside the strip (a11y), for background tabs,
+ * and on mouse hover when pauseOnHover is enabled (default).
+ * Under reduced motion it renders a plain scroll container instead.
  */
 export const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
-  { children, className = "", durationSeconds = 48 },
+  { children, className = "", durationSeconds = 48, pauseOnHover = true },
   ref,
 ) {
   // The rail loops on every device including touch — only an OS-level
-  // reduced-motion request (or a hidden tab / keyboard focus) stills it.
+  // reduced-motion request (or a hidden tab / keyboard focus / hover) stills it.
   const { reduced } = useMotionPrefs();
   const pageVisible = usePageVisible();
   const pageVisibleRef = useRef(pageVisible);
   const trackRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
   const focusedRef = useRef(false);
+  const [hovered, setHovered] = useState(false);
+  const hoveredRef = useRef(false);
+  const pauseOnHoverRef = useRef(pauseOnHover);
   const durationRef = useRef(durationSeconds);
   const reducedRef = useRef(reduced);
   const offsetRef = useRef(0);
@@ -64,6 +69,8 @@ export const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
   useEffect(() => {
     pageVisibleRef.current = pageVisible;
     focusedRef.current = focused;
+    hoveredRef.current = hovered;
+    pauseOnHoverRef.current = pauseOnHover;
     durationRef.current = durationSeconds;
     reducedRef.current = reduced;
   });
@@ -135,7 +142,14 @@ export const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
       raf = requestAnimationFrame(step);
       const dt = Math.min((now - last) / 1000, 0.1);
       last = now;
-      if (!pageVisibleRef.current || focusedRef.current || document.hidden) return;
+      if (
+        !pageVisibleRef.current ||
+        focusedRef.current ||
+        document.hidden ||
+        (pauseOnHoverRef.current && hoveredRef.current && !animRef.current)
+      ) {
+        return;
+      }
       const anim = animRef.current;
       if (anim) {
         const p = Math.min((now - anim.start) / anim.dur, 1);
@@ -174,6 +188,12 @@ export const Marquee = forwardRef<MarqueeHandle, MarqueeProps>(function Marquee(
   return (
     <div
       className={`motion-marquee ${className}`.trim()}
+      onMouseEnter={() => {
+        if (pauseOnHoverRef.current) setHovered(true);
+      }}
+      onMouseLeave={() => {
+        if (pauseOnHoverRef.current) setHovered(false);
+      }}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocused(false);

@@ -240,6 +240,24 @@ test("Milestone 2 — 4. Stage 3: Featured Artists Geometry & 4:5 Card Aspect Ra
     "ArtistTile must enforce the frame's 16px corner radius"
   );
 
+  // Marquee pause on hover
+  assert.match(
+    artistsSectionSrc,
+    /<Marquee[\s\S]*?pauseOnHover/,
+    "FeaturedArtists must pass pauseOnHover to Marquee"
+  );
+  const marqueeSrc = read(comp("motion/Marquee.tsx"));
+  assert.match(
+    marqueeSrc,
+    /pauseOnHover/,
+    "Marquee must support pauseOnHover prop"
+  );
+  assert.match(
+    marqueeSrc,
+    /onMouseEnter/,
+    "Marquee must pause on mouse hover"
+  );
+
   assert.match(artistsSectionSrc, /<section[\s>]/, "FeaturedArtists must use semantic <section> tag");
 });
 
