@@ -94,7 +94,6 @@ export default async function NewsPage({
   const articlesPage = await getPublishedArticlesPage({
     page: requestedPage,
     perPage: NEWS_GRID_PER_PAGE,
-    excludeFeatured: true,
     excludeIds: heroRenderedIds,
   });
 

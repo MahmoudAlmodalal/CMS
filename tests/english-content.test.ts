@@ -129,6 +129,11 @@ test("English content — 3. localizeRow replaces base columns only for English"
   const partial = localizeRow({ title: "عنوان", title_en: "Title" }, ["title", "city"], "en");
   assert.equal(partial.title, "Title");
   assert.ok(!("city" in partial), "a column absent from the row must not be invented");
+
+  // A null column with no translation stays null so `??` Figma defaults still render.
+  const nulls = localizeRow({ title: null, title_en: null, city: null, city_en: "Dubai" }, fields, "en");
+  assert.equal(nulls.title, null);
+  assert.equal(nulls.city, "Dubai");
 });
 
 test("English content — 4. translationString normalizes blanks to null", () => {

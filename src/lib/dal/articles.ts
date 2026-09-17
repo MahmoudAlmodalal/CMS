@@ -34,7 +34,6 @@ export async function getPublishedArticlesPage(
     page?: number;
     perPage?: number;
     excludeIds?: string[];
-    excludeFeatured?: boolean;
   } = {}
 ) {
   const perPage = options.perPage ?? PAGE_SIZE;
@@ -54,9 +53,6 @@ export async function getPublishedArticlesPage(
         .lte("published_at", nowIso);
       if (options.category && options.category !== "all") {
         query = query.eq("category", options.category as Article["category"]);
-      }
-      if (options.excludeFeatured) {
-        query = query.eq("is_featured", false);
       }
       if (options.excludeIds && options.excludeIds.length > 0) {
         const safeIds = options.excludeIds.filter((id) => /^[A-Za-z0-9_-]{1,64}$/.test(id));

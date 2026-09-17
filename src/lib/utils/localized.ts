@@ -38,7 +38,10 @@ export function localizeRow<T extends object>(
   for (const field of fields) {
     // Only fields the row actually carries; a missing column stays untouched.
     if (!(field in row)) continue;
-    out[field] = pickLocalized(row, field as Extract<keyof T, string>, locale);
+    const value = pickLocalized(row, field as Extract<keyof T, string>, locale);
+    // A null column with no translation stays null, as on Arabic, so callers' `??` defaults apply.
+    if (value === "" && out[field] == null) continue;
+    out[field] = value;
   }
   return out as T;
 }
