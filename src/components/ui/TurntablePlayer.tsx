@@ -103,6 +103,7 @@ export function TurntablePlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const synthRef = useRef<{ stop: () => void; resume?: () => void } | null>(null);
+  const playRequestedRef = useRef(false);
   // React-owned wrapper with no JSX children of its own, so React never tries
   // to diff or remove whatever ends up inside it. The YouTube Player API
   // physically replaces its mount element with an <iframe>, which crashes
@@ -296,6 +297,11 @@ export function TurntablePlayer({
             event.target.mute();
             event.target.playVideo();
             setIsPlaying(true);
+            if (playRequestedRef.current) {
+              event.target.unMute();
+              event.target.playVideo();
+              playRequestedRef.current = false;
+            }
           },
           // 1 is YT.PlayerState.PLAYING — a stable, documented API constant.
           onStateChange: (event) => setIsPlaying(event.data === 1),
@@ -360,13 +366,17 @@ export function TurntablePlayer({
   }, []);
 
   const togglePlayback = useCallback(() => {
-    if (!currentTrack.audioUrl && !youtubeVideoId) return;
     if (youtubeVideoId) {
       // A direct click is a real user gesture — unmuting here always works,
       // even before the page-wide first-interaction listener has fired.
+      if (!ytPlayerRef.current) {
+        playRequestedRef.current = true;
+        return;
+      }
       if (isPlaying) {
         ytPlayerRef.current?.pauseVideo();
       } else {
+        playRequestedRef.current = false;
         ytPlayerRef.current?.unMute();
         ytPlayerRef.current?.playVideo();
       }
@@ -434,7 +444,9 @@ export function TurntablePlayer({
           ref={audioRef}
           src={currentTrack.audioUrl}
           loop
-          preload="metadata"
+          autoPlay
+          playsInline
+          preload="auto"
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
         />
