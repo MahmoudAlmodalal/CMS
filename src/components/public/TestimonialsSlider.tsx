@@ -194,16 +194,13 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
 
                 {/* Avatar (Figma Node 176:1822 — 36x36, radius 18) */}
                 {current.avatar_image_url ? (
-                  <SafeImage
-                    src={current.avatar_image_url}
-                    alt={current.author_name}
-                    width={36}
-                    height={36}
-                    fill={false}
-                    className="w-9 h-9 rounded-full object-cover shrink-0"
-                    containerClassName="w-9 h-9 rounded-full shrink-0"
-                    fallbackText={current.author_name}
-                  />
+                  <div className="size-9 shrink-0 overflow-hidden rounded-full">
+                    <SafeImage
+                      src={current.avatar_image_url}
+                      alt={current.author_name}
+                      fallbackText={current.author_name}
+                    />
+                  </div>
                 ) : (
                   <span
                     className="w-9 h-9 rounded-full bg-brand-primary/15 text-brand-primary flex items-center justify-center font-sans text-sm font-bold shrink-0"
