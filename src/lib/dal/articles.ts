@@ -1,5 +1,6 @@
 import { createClient, createStaticClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
+import { PAGE_SIZE, pagination } from "@/lib/pagination";
 import { localizeContent, localizeContentList } from "./localize";
 import {
   type Article,
@@ -28,6 +29,38 @@ const canonicalArticles = (category?: string, limit?: number) => {
 };
 
 const demoArticles = (limit?: number) => canonicalArticles(undefined, limit);
+
+export async function getPublishedArticlesPage(options: { category?: string; page?: number } = {}) {
+  const nowIso = new Date().toISOString();
+  const fallback = async () => {
+    const rows = canonicalArticles(options.category)
+      .sort((a, b) => b.published_at.localeCompare(a.published_at) || a.id.localeCompare(b.id));
+    const bounds = pagination(rows.length, options.page ?? 1, PAGE_SIZE);
+    return { ...bounds, total: rows.length, items: await localizeContentList("articles", rows.slice(bounds.from, bounds.to + 1)) };
+  };
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return fallback();
+  try {
+    const supabase = await createClient();
+    const buildQuery = (head = false) => {
+      let query = supabase.from("articles").select("*", { count: "exact", head }).eq("is_published", true).lte("published_at", nowIso);
+      if (options.category && options.category !== "all") query = query.eq("category", options.category as Article["category"]);
+      return query;
+    };
+    const { count, error: countError } = await buildQuery(true);
+    if (countError) return fallback();
+    const total = count ?? 0;
+    const bounds = pagination(total, options.page ?? 1, PAGE_SIZE);
+    if (!total) return { ...bounds, total, items: [] as Article[] };
+    const { data, error } = await buildQuery()
+      .order("published_at", { ascending: false })
+      .order("id", { ascending: true })
+      .range(bounds.from, bounds.to);
+    if (error) return fallback();
+    return { ...bounds, total, items: await localizeContentList("articles", (data as unknown as Article[]) || []) };
+  } catch {
+    return fallback();
+  }
+}
 
 export async function getPublishedArticles(options?: { category?: string; limit?: number }): Promise<Article[]> {
   const category = options?.category;

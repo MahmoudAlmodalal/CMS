@@ -7,6 +7,8 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 
+import { TurntablePlayer } from "@/components/ui/TurntablePlayer";
+
 interface AboutSectionProps {
   settings: SiteSettings;
   ctaLabel?: string;
@@ -29,18 +31,11 @@ export function AboutSection({ settings, ctaLabel, audioUrl }: AboutSectionProps
           <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
-          <div className="order-1 min-w-0 md:order-2">
+          <div className="order-1 min-w-0 md:order-2 w-full">
             <ScrollReveal variant="image">
-              <div className="relative mx-auto aspect-square h-auto w-full max-w-[335px] overflow-hidden rounded-full border-4 border-white/80 shadow-md md:max-w-[551px]">
-                <SafeImage
-                  src={settings.about_image_url || "/assets/figma/about-musician.png"}
-                  alt={t("aboutImageAlt")}
-                  fill
-                  sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
-                  className="object-cover object-center"
-                  audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
-                />
-              </div>
+              <TurntablePlayer
+                audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
+              />
             </ScrollReveal>
           </div>
           <div className="order-2 flex min-w-0 w-full max-w-[324px] flex-col items-start gap-6 text-start md:order-1 md:w-auto md:max-w-none md:gap-7 lg:gap-8">

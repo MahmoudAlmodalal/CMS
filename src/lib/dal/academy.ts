@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
+import { PAGE_SIZE, pagination } from "@/lib/pagination";
 import { localizeContent, localizeContentList } from "./localize";
 import {
   CANONICAL_ACADEMY_COURSES,
@@ -15,6 +16,32 @@ export { CANONICAL_ACADEMY_COURSES, findCanonicalAcademyCourse, type AcademyCour
  * Falls back to canonical courses if database is unreachable or empty. This keeps
  * the public Figma content visible while the CMS is being populated.
  */
+export async function getPublishedAcademyCoursesPage(options: { page?: number } = {}) {
+  const fallback = async () => {
+    const rows = CANONICAL_ACADEMY_COURSES.filter((course) => course.is_published)
+      .sort((a, b) => a.display_order - b.display_order || a.id.localeCompare(b.id));
+    const bounds = pagination(rows.length, options.page ?? 1, PAGE_SIZE);
+    return { ...bounds, total: rows.length, items: await localizeContentList("academy_courses", rows.slice(bounds.from, bounds.to + 1)) };
+  };
+  if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return fallback();
+  try {
+    const supabase = await createClient();
+    const buildQuery = (head = false) => supabase.from("academy_courses").select("*", { count: "exact", head }).eq("is_published", true);
+    const { count, error: countError } = await buildQuery(true);
+    if (countError || !count) return fallback();
+    const total = count;
+    const bounds = pagination(total, options.page ?? 1, PAGE_SIZE);
+    const { data, error } = await buildQuery()
+      .order("display_order", { ascending: true })
+      .order("id", { ascending: true })
+      .range(bounds.from, bounds.to);
+    if (error) return fallback();
+    return { ...bounds, total, items: await localizeContentList("academy_courses", (data as unknown as AcademyCourse[]) || []) };
+  } catch {
+    return fallback();
+  }
+}
+
 export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
   if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
     return localizeContentList("academy_courses", CANONICAL_ACADEMY_COURSES);

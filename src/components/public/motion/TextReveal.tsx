@@ -2,9 +2,10 @@
 
 import React, { useId } from "react";
 import { useMotionPrefs } from "./useMotionPrefs";
+import { Highlight } from "@/components/ui/Highlight";
 
 export interface TextRevealProps {
-  /** The heading text. Plain string only — it is split for animation. */
+  /** The heading text. Plain string or asterisk-marked runs for highlight. */
   text: string;
   /** Rendered element. Defaults to a span so callers keep their own heading level. */
   as?: "span" | "h1" | "h2" | "h3" | "p";
@@ -13,6 +14,8 @@ export interface TextRevealProps {
   wordsPerLine?: number;
   /** Extra milliseconds before the first line starts. */
   delay?: number;
+  /** Class applied to highlighted runs. Defaults to text-primary-500 (#C54716). */
+  highlightClassName?: string;
 }
 
 /**
@@ -37,14 +40,22 @@ export function TextReveal({
   className = "",
   wordsPerLine = 4,
   delay = 0,
+  highlightClassName = "text-primary-500",
 }: TextRevealProps) {
   const { allowDecorative } = useMotionPrefs();
   const id = useId();
 
+  if (!text) return null;
+  const plainText = text.replace(/\*/g, "");
+
   // Phones render the heading as one plain string: the per-word wipe is
   // illegible at that measure and the section still fades in around it.
-  if (!allowDecorative || !text) {
-    return <Tag className={className}>{text}</Tag>;
+  if (!allowDecorative) {
+    return (
+      <Tag className={className}>
+        <Highlight text={text} highlightClassName={highlightClassName} autoHighlight />
+      </Tag>
+    );
   }
 
   const words = text.split(/\s+/).filter(Boolean);
@@ -57,12 +68,12 @@ export function TextReveal({
     <Tag
       className={`motion-text-reveal ${className}`.trim()}
       data-reveal-on-scroll=""
-      aria-label={text}
+      aria-label={plainText}
     >
       {lines.map((line, index) => (
         <span className="motion-text-line" key={`${id}-${index}`} aria-hidden="true">
           <span style={{ "--line-delay": `${delay + index * 90}ms` } as React.CSSProperties}>
-            {line.join(" ")}
+            <Highlight text={line.join(" ")} highlightClassName={highlightClassName} autoHighlight />
           </span>
         </span>
       ))}

@@ -1,0 +1,406 @@
+"use client";
+
+import React, { useRef, useState, useCallback, useEffect } from "react";
+
+export interface TrackItem {
+  title: string;
+  artist: string;
+  coverUrl: string;
+  audioUrl?: string | null;
+  synthMode: "vivalavida" | "andalusia";
+}
+
+export interface TurntablePlayerProps {
+  initialTrack?: Partial<TrackItem>;
+  audioUrl?: string | null;
+  className?: string;
+}
+
+const PLAYLIST: TrackItem[] = [
+  {
+    title: "Viva La Vida",
+    artist: "Coldplay",
+    coverUrl: "/assets/viva-la-vida.jpg",
+    synthMode: "vivalavida",
+  },
+  {
+    title: "عازف من فرقة أندلسيا",
+    artist: "فرقة أندلسيا للموسيقى",
+    coverUrl: "/assets/figma/about-musician.png",
+    synthMode: "andalusia",
+  },
+];
+
+export function TurntablePlayer({
+  initialTrack,
+  audioUrl,
+  className = "",
+}: TurntablePlayerProps) {
+  const [trackIndex, setTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const synthRef = useRef<{ stop: () => void } | null>(null);
+
+  const currentTrack: TrackItem = {
+    ...PLAYLIST[trackIndex],
+    ...(initialTrack || {}),
+    ...(audioUrl ? { audioUrl } : {}),
+  };
+
+  const stopSynth = useCallback(() => {
+    if (synthRef.current) {
+      synthRef.current.stop();
+      synthRef.current = null;
+    }
+  }, []);
+
+  const startSynth = useCallback((mode: "vivalavida" | "andalusia") => {
+    stopSynth();
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === "suspended") {
+        void ctx.resume();
+      }
+
+      let isAlive = true;
+
+      if (mode === "vivalavida") {
+        // Viva La Vida string ostinato chords (Db - Eb - Ab - Fm)
+        // 8 staccato pulses per chord
+        const chords = [
+          [174.61, 207.65, 277.18], // F3, Ab3, Db4
+          [196.0, 233.08, 311.13],  // G3, Bb3, Eb4
+          [207.65, 261.63, 329.63], // Ab3, C4, E4
+          [174.61, 207.65, 261.63], // F3, Ab3, C4
+        ];
+        let chordIdx = 0;
+        let beat = 0;
+
+        const playPulse = () => {
+          if (!isAlive || ctx.state === "closed") return;
+          const now = ctx.currentTime;
+          const currentChord = chords[chordIdx % chords.length];
+
+          // Staccato string chord
+          currentChord.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+
+            osc.type = i === 2 ? "sawtooth" : "triangle";
+            osc.frequency.setValueAtTime(freq, now);
+
+            filter.type = "lowpass";
+            filter.frequency.setValueAtTime(1200, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.07, now + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.25);
+          });
+
+          beat++;
+          if (beat % 8 === 0) {
+            chordIdx++;
+          }
+        };
+
+        playPulse();
+        const interval = window.setInterval(playPulse, 240);
+
+        synthRef.current = {
+          stop: () => {
+            isAlive = false;
+            clearInterval(interval);
+            void ctx.close();
+          },
+        };
+      } else {
+        // Andalusian Hijaz Oud scale
+        const notes = [146.83, 185.0, 220.0, 293.66, 261.63, 233.08, 220.0];
+        let idx = 0;
+
+        const playNote = () => {
+          if (!isAlive || ctx.state === "closed") return;
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(notes[idx % notes.length], now);
+
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(850, now);
+
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.14, now + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.95);
+          idx++;
+        };
+
+        playNote();
+        const interval = window.setInterval(playNote, 500);
+
+        synthRef.current = {
+          stop: () => {
+            isAlive = false;
+            clearInterval(interval);
+            void ctx.close();
+          },
+        };
+      }
+    } catch {
+      // AudioContext fallback
+    }
+  }, [stopSynth]);
+
+  useEffect(() => {
+    return () => {
+      stopSynth();
+    };
+  }, [stopSynth]);
+
+  const togglePlayback = useCallback(() => {
+    if (isPlaying) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      stopSynth();
+      setIsPlaying(false);
+    } else {
+      if (currentTrack.audioUrl && audioRef.current) {
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {
+            startSynth(currentTrack.synthMode);
+            setIsPlaying(true);
+          });
+      } else {
+        startSynth(currentTrack.synthMode);
+        setIsPlaying(true);
+      }
+    }
+  }, [isPlaying, currentTrack, startSynth, stopSynth]);
+
+  const handleNext = () => {
+    stopSynth();
+    if (audioRef.current) audioRef.current.pause();
+    const nextIdx = (trackIndex + 1) % PLAYLIST.length;
+    setTrackIndex(nextIdx);
+    if (isPlaying) {
+      setTimeout(() => {
+        startSynth(PLAYLIST[nextIdx].synthMode);
+      }, 100);
+    }
+  };
+
+  const handlePrev = () => {
+    stopSynth();
+    if (audioRef.current) audioRef.current.pause();
+    const prevIdx = (trackIndex - 1 + PLAYLIST.length) % PLAYLIST.length;
+    setTrackIndex(prevIdx);
+    if (isPlaying) {
+      setTimeout(() => {
+        startSynth(PLAYLIST[prevIdx].synthMode);
+      }, 100);
+    }
+  };
+
+  return (
+    <div
+      className={`relative w-full overflow-hidden rounded-3xl bg-[#191412] text-white p-6 sm:p-8 md:p-10 shadow-2xl border border-white/10 ${className}`}
+      dir="ltr"
+    >
+      {currentTrack.audioUrl ? (
+        <audio
+          ref={audioRef}
+          src={currentTrack.audioUrl}
+          loop
+          preload="metadata"
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
+      ) : null}
+
+      <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 md:gap-12">
+        {/* Left Side: Turntable with Vinyl Record & Tonearm */}
+        <div className="relative shrink-0 flex items-center justify-center">
+          {/* Vinyl Record */}
+          <div
+            className={`relative size-44 sm:size-52 md:size-60 rounded-full bg-[#140E0A] shadow-2xl flex items-center justify-center overflow-hidden border border-black/80 transition-transform ${
+              isPlaying ? "motion-spin-vinyl" : ""
+            }`}
+            style={{
+              boxShadow: "0 14px 36px -4px rgba(0,0,0,0.85), 0 0 0 6px #1A130F",
+            }}
+          >
+            {/* Conic gloss sheen */}
+            <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0deg,rgba(255,255,255,0.08)_45deg,transparent_90deg,rgba(255,255,255,0.08)_135deg,transparent_180deg,rgba(255,255,255,0.08)_225deg,transparent_270deg,rgba(255,255,255,0.08)_315deg,transparent_360deg)] pointer-events-none opacity-80" />
+
+            {/* Concentric vinyl grooves */}
+            <div className="absolute inset-[7%] rounded-full border border-white/[0.04]" />
+            <div className="absolute inset-[14%] rounded-full border border-white/[0.06]" />
+            <div className="absolute inset-[21%] rounded-full border border-white/[0.04]" />
+            <div className="absolute inset-[28%] rounded-full border border-white/[0.06]" />
+            <div className="absolute inset-[35%] rounded-full border border-white/[0.04]" />
+            <div className="absolute inset-[42%] rounded-full border border-white/[0.05]" />
+
+            {/* Center album cover artwork */}
+            <div className="relative z-10 size-20 sm:size-24 md:size-28 rounded-full overflow-hidden border-2 border-[#3D271B] shadow-inner">
+              <img
+                src={currentTrack.coverUrl}
+                alt={`${currentTrack.title} - ${currentTrack.artist}`}
+                className="w-full h-full object-cover select-none pointer-events-none"
+              />
+              {/* Spindle hole */}
+              <div className="absolute inset-0 m-auto size-3 rounded-full bg-[#0F0A07] border border-white/20" />
+            </div>
+          </div>
+
+          {/* Turntable Tonearm (Pivoting arm with needle cartridge) */}
+          <div
+            className={`absolute top-0 right-0 z-20 pointer-events-none transition-transform duration-700 ease-out origin-[95%_10%] ${
+              isPlaying ? "rotate-0" : "-rotate-[22deg]"
+            }`}
+            style={{ width: "95px", height: "155px" }}
+          >
+            <svg
+              viewBox="0 0 100 160"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-full drop-shadow-md"
+            >
+              {/* Base pivot gimbal */}
+              <circle cx="90" cy="16" r="10" fill="#2E1F16" stroke="#52392B" strokeWidth="2" />
+              <circle cx="90" cy="16" r="6" fill="#140E0A" />
+              <circle cx="90" cy="16" r="2.5" fill="#EAEAEA" />
+
+              {/* Counterweight */}
+              <rect x="83" y="2" width="14" height="6" rx="1.5" fill="#756457" />
+
+              {/* Tonearm rod */}
+              <path
+                d="M 90 16 Q 84 65, 72 105 T 38 145"
+                stroke="#F0F0F0"
+                strokeWidth="3.2"
+                strokeLinecap="round"
+                fill="none"
+              />
+
+              {/* Headshell cartridge */}
+              <g transform="translate(28, 137) rotate(-18)">
+                <rect x="0" y="0" width="11" height="20" rx="3" fill="#FFFFFF" />
+                <rect x="2" y="14" width="7" height="4" rx="1" fill="#C54716" />
+                <circle cx="5.5" cy="19" r="1.2" fill="#FFD900" />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        {/* Right Side: Track Info ("Viva La Vida", "Coldplay") & Controls */}
+        <div className="flex flex-col justify-center text-center sm:text-start min-w-0 flex-1">
+          {/* Track Title */}
+          <h3 className="font-sans text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight truncate">
+            {currentTrack.title}
+          </h3>
+
+          {/* Artist Description */}
+          <p className="font-sans text-sm sm:text-base md:text-lg text-white/60 font-medium mt-1 truncate">
+            {currentTrack.artist}
+          </p>
+
+          {/* Spotify-style media player controls */}
+          <div className="flex items-center justify-center sm:justify-start gap-5 sm:gap-7 mt-6 sm:mt-8">
+            {/* Heart / Like Icon */}
+            <button
+              type="button"
+              onClick={() => setIsLiked(!isLiked)}
+              className={`transition-all duration-200 transform hover:scale-115 focus-visible:outline-hidden ${
+                isLiked ? "text-[#FF4B55] scale-105" : "text-white/60 hover:text-white"
+              }`}
+              aria-label={isLiked ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill={isLiked ? "currentColor" : "none"}
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              </svg>
+            </button>
+
+            {/* Previous Button */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden"
+              aria-label="المقطع السابق"
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 20L9 12l10-8v16zM5 19h2V5H5v14z" />
+              </svg>
+            </button>
+
+            {/* Play / Pause Primary Button */}
+            <button
+              type="button"
+              onClick={togglePlayback}
+              className="size-12 sm:size-14 rounded-full bg-white text-black flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 focus-visible:outline-hidden"
+              aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
+            >
+              {isPlaying ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+
+            {/* Next Button */}
+            <button
+              type="button"
+              onClick={handleNext}
+              className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden"
+              aria-label="المقطع التالي"
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 4l10 8-10 8V4zm14 1v14h-2V5h2z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default TurntablePlayer;
