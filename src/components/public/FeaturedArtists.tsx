@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArtistTile } from "./ArtistTile";
@@ -8,7 +8,6 @@ import type { Artist } from "@/lib/types/artists";
 import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
 import { ScrollReveal } from "./ScrollReveal";
 import { TextReveal } from "./motion/TextReveal";
-import { Marquee } from "./motion/Marquee";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
 import { useMotionPrefs } from "./motion/useMotionPrefs";
 
@@ -25,14 +24,9 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
   const [activeIndex, setActiveIndex] = useState(0);
   const featuredArtists = artists.slice(0, 6);
   const { reduced } = useMotionPrefs();
-
-  /**
-   * The rail is the primary display on every viewport: visitors reaching the
-   * band see the tiles already looping. The swipe carousel (with its arrows,
-   * dots and snap points) is the fallback for reduced-motion visitors, where
-   * `Marquee` degrades to a plain scroller anyway.
-   */
-  const useRail = !reduced;
+  const activeIndexRef = useRef(0);
+  const directionRef = useRef<1 | -1>(1);
+  const focusPausedRef = useRef(false);
 
   const updateActiveIndex = useCallback(() => {
     const carousel = carouselRef.current;
@@ -48,6 +42,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
       },
       { distance: Number.POSITIVE_INFINITY, index: 0 },
     );
+    activeIndexRef.current = nearest.index;
     setActiveIndex(nearest.index);
   }, []);
 
@@ -55,6 +50,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
     const carousel = carouselRef.current;
     const tile = carousel?.querySelectorAll<HTMLElement>("[data-artist-tile]")[index];
     tile?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    activeIndexRef.current = index;
     setActiveIndex(index);
   }, []);
 
@@ -62,6 +58,31 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
     const nextIndex = Math.max(0, Math.min(featuredArtists.length - 1, activeIndex + direction));
     scrollToArtist(nextIndex);
   }, [activeIndex, featuredArtists.length, scrollToArtist]);
+
+  /**
+   * Ping-pong autoplay: the strip advances one tile at a time and turns around
+   * at the ends, so every image appears exactly once and the band is already
+   * looping when the visitor scrolls down to it. Paused only for reduced
+   * motion, a hidden tab, or keyboard focus inside the strip — hover and touch
+   * never stop it.
+   */
+  useEffect(() => {
+    if (reduced || featuredArtists.length < 2) return;
+    const id = window.setInterval(() => {
+      if (document.hidden || focusPausedRef.current) return;
+      const last = featuredArtists.length - 1;
+      let next = activeIndexRef.current + directionRef.current;
+      if (next >= last) {
+        next = last;
+        directionRef.current = -1;
+      } else if (next <= 0) {
+        next = 0;
+        directionRef.current = 1;
+      }
+      scrollToArtist(next);
+    }, 3000);
+    return () => window.clearInterval(id);
+  }, [reduced, featuredArtists.length, scrollToArtist]);
 
   if (!artists || artists.length === 0) return null;
   return (
@@ -76,39 +97,32 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
           <StrokeUnderline className="mx-auto mt-2" />
         </ScrollReveal>
         <div className="relative mt-6 sm:mt-8">
-          {useRail ? (
-            <Marquee durationSeconds={28}>
-              {featuredArtists.map((artist, i) => (
-                <div key={artist.id} className="px-2.5">
-                  <ArtistTile artist={artist} priority={i < 2} />
-                </div>
-              ))}
-            </Marquee>
-          ) : null}
-
           <div
             ref={carouselRef}
             onScroll={updateActiveIndex}
-            className={`${useRail ? "hidden " : ""}no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6`}
+            onFocusCapture={() => {
+              focusPausedRef.current = true;
+            }}
+            onBlurCapture={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                focusPausedRef.current = false;
+              }
+            }}
+            className="no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5"
             aria-label={t("artistsHeading")}
           >
             {featuredArtists.map((artist, i) => (
-              <div key={artist.id} data-artist-tile className="shrink-0 snap-center lg:shrink">
+              <div key={artist.id} data-artist-tile className="shrink-0 snap-center">
                 <ArtistTile artist={artist} priority={i < 2} />
               </div>
             ))}
           </div>
-          {!useRail ? (
-            <>
-              <div className="pointer-events-none absolute inset-y-0 start-0 w-6 bg-gradient-to-r from-black/80 to-transparent lg:hidden" />
-              <div className="pointer-events-none absolute inset-y-0 end-0 w-8 bg-gradient-to-l from-black/80 to-transparent lg:hidden" />
-            </>
-          ) : null}
+          <div className="pointer-events-none absolute inset-y-0 start-0 w-6 bg-gradient-to-r from-black/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 end-0 w-8 bg-gradient-to-l from-black/80 to-transparent" />
         </div>
 
-        {/* Carousel controls — only with the reduced-motion fallback carousel */}
-        {!useRail ? (
-        <div className="mt-4 flex items-center justify-between px-4 lg:hidden" aria-label="Artist carousel controls">
+        {/* Carousel controls: arrows + indicators */}
+        <div className="mt-4 flex items-center justify-between px-4" aria-label="Artist carousel controls">
           <button
             type="button"
             onClick={() => moveArtist(-1)}
@@ -142,7 +156,6 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
             <ChevronEndIcon size={18} />
           </button>
         </div>
-        ) : null}
 
         <div className="mt-6 flex justify-center sm:mt-8">
           <Link
