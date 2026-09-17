@@ -16,9 +16,10 @@ interface AboutSectionProps {
   ctaLabel?: string;
   audioUrl?: string;
   featuredTrack?: (Track & { artist_name?: string | null }) | null;
+  featuredTracks?: Array<Track & { artist_name?: string | null }>;
 }
 
-export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack }: AboutSectionProps) {
+export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack, featuredTracks = [] }: AboutSectionProps) {
   const t = useTranslations("home");
   const videoId = parseYouTubeId(featuredTrack?.youtube_url);
   return (
@@ -45,6 +46,16 @@ export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack }: Ab
                     coverUrl: featuredTrack?.cover_image_url || (videoId ? youTubeThumbnailUrl(videoId) : "/assets/figma/about-musician.png"),
                     synthMode: "andalusia",
                   }}
+                  playlist={featuredTracks.map((item) => {
+                    const id = parseYouTubeId(item.youtube_url);
+                    return {
+                      title: item.title,
+                      artist: item.artist_name || t("aboutMusicArtist"),
+                      coverUrl: item.cover_image_url || (id ? youTubeThumbnailUrl(id) : "/assets/figma/about-musician.png"),
+                      youtubeUrl: item.youtube_url,
+                      synthMode: "andalusia" as const,
+                    };
+                  })}
                   audioUrl={featuredTrack ? undefined : audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
                   youtubeUrl={featuredTrack?.youtube_url}
                   className="absolute inset-0"

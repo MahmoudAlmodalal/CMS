@@ -54,3 +54,26 @@ export async function getFeaturedPublishedTrack(): Promise<(Track & { artist_nam
     return null;
   }
 }
+
+/** Published YouTube music tracks for the home turntable playlist. */
+export async function getFeaturedPublishedTracks(limit = 8): Promise<Array<Track & { artist_name?: string | null }>> {
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return [];
+    const supabase = createStaticClient();
+    const { data, error } = await supabase
+      .from("tracks")
+      .select("*, artists(name)")
+      .eq("is_published", true)
+      .not("youtube_url", "is", null)
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error || !data) return [];
+    return (data as unknown as Array<Track & { artists?: { name?: string | null } | null }>).map((row) => ({
+      ...row,
+      artist_name: row.artists?.name ?? null,
+    }));
+  } catch {
+    return [];
+  }
+}

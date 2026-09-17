@@ -14,6 +14,7 @@ export interface TrackItem {
 
 export interface TurntablePlayerProps {
   initialTrack?: Partial<TrackItem>;
+  playlist?: Array<Partial<TrackItem>>;
   audioUrl?: string | null;
   youtubeUrl?: string | null;
   className?: string;
@@ -36,6 +37,7 @@ const PLAYLIST: TrackItem[] = [
 
 export function TurntablePlayer({
   initialTrack,
+  playlist,
   audioUrl,
   youtubeUrl,
   className = "",
@@ -47,8 +49,9 @@ export function TurntablePlayer({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const synthRef = useRef<{ stop: () => void } | null>(null);
 
+  const activePlaylist = playlist?.length ? playlist : PLAYLIST;
   const currentTrack: TrackItem = {
-    ...PLAYLIST[trackIndex],
+    ...activePlaylist[trackIndex % activePlaylist.length],
     ...(initialTrack || {}),
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
@@ -190,6 +193,7 @@ export function TurntablePlayer({
     if (!currentTrack.audioUrl && !currentTrack.youtubeUrl) return;
     const timer = setTimeout(() => {
       if (currentTrack.youtubeUrl) {
+        setIsPlaying(true);
         return;
       }
       if (currentTrack.audioUrl && audioRef.current) {
@@ -238,11 +242,11 @@ export function TurntablePlayer({
   const handleNext = () => {
     stopSynth();
     if (audioRef.current) audioRef.current.pause();
-    const nextIdx = (trackIndex + 1) % PLAYLIST.length;
+    const nextIdx = (trackIndex + 1) % activePlaylist.length;
     setTrackIndex(nextIdx);
-    if (isPlaying) {
+    if (isPlaying && !currentTrack.youtubeUrl) {
       setTimeout(() => {
-        startSynth(PLAYLIST[nextIdx].synthMode);
+        startSynth(activePlaylist[nextIdx].synthMode || "andalusia");
       }, 100);
     }
   };
@@ -250,11 +254,11 @@ export function TurntablePlayer({
   const handlePrev = () => {
     stopSynth();
     if (audioRef.current) audioRef.current.pause();
-    const prevIdx = (trackIndex - 1 + PLAYLIST.length) % PLAYLIST.length;
+    const prevIdx = (trackIndex - 1 + activePlaylist.length) % activePlaylist.length;
     setTrackIndex(prevIdx);
-    if (isPlaying) {
+    if (isPlaying && !currentTrack.youtubeUrl) {
       setTimeout(() => {
-        startSynth(PLAYLIST[prevIdx].synthMode);
+        startSynth(activePlaylist[prevIdx].synthMode || "andalusia");
       }, 100);
     }
   };
@@ -276,6 +280,7 @@ export function TurntablePlayer({
       ) : null}
       {currentTrack.youtubeUrl && isPlaying ? (
         <iframe
+          key={currentTrack.youtubeUrl}
           src={youTubeEmbedUrl(currentTrack.youtubeUrl, { autoplay: true })}
           title={currentTrack.title}
           allow="autoplay; encrypted-media; picture-in-picture"
