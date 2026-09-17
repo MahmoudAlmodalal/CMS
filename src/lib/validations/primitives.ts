@@ -1,6 +1,40 @@
 import { z } from "zod";
 import { parseYouTubeId } from "../youtube.ts";
 
+/**
+ * Formats a ZodError for display in the admin UI.
+ *
+ * Zod's default message for a failed `z.union()` — used for fields like
+ * `youtube_url` that accept either "" or a validated URL — is the generic
+ * "Invalid input", because the field's own custom messages live inside
+ * `unionErrors` and never reach `issue.message` unless unpacked. Every admin
+ * action should format its Zod errors through this helper instead of
+ * `error.issues.map(i => i.message)` so editors always see the actual reason
+ * (e.g. "يجب أن يكون الرابط رابط يوتيوب صالحاً") rather than "Invalid input".
+ */
+export function formatZodError(error: z.ZodError): string {
+  const messages = new Set<string>();
+
+  const collect = (issue: z.ZodIssue) => {
+    if (issue.code === "invalid_union") {
+      const branchIssues = issue.unionErrors.flatMap((e) => e.issues);
+      // A branch that failed only because the value is the wrong shape for
+      // that literal/type (e.g. a real string failing the `z.literal("")`
+      // branch) never explains anything — prefer messages from whichever
+      // branch actually validated the value's content.
+      const meaningful = branchIssues.filter(
+        (i) => i.code !== "invalid_literal" && i.code !== "invalid_type"
+      );
+      (meaningful.length ? meaningful : branchIssues).forEach(collect);
+      return;
+    }
+    messages.add(issue.message);
+  };
+
+  error.issues.forEach(collect);
+  return Array.from(messages).join(", ");
+}
+
 // ============================================================================
 // Canonical Domain Enums (Task 30 / DATABASE_SCHEMA.md)
 // ============================================================================

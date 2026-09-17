@@ -17,6 +17,7 @@ import {
   siteSettingsSchema,
   adminBookingUpdateSchema,
   adminNewsletterUpdateSchema,
+  formatZodError,
   type ArtistInput,
   type TrackInput,
   type ReleaseInput,
@@ -92,7 +93,7 @@ export async function createArtistAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = artistSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-artist-id" } };
@@ -115,7 +116,7 @@ export async function createTrackAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = trackSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-track-id" } };
@@ -146,7 +147,7 @@ export async function createReleaseAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = releaseSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-release-id" } };
@@ -169,7 +170,7 @@ export async function createArtistWorkAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = artistWorkSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-artist-work-id" } };
@@ -192,7 +193,7 @@ export async function createEventAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = eventSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-event-id" } };
@@ -215,7 +216,7 @@ export async function createAcademyCourseAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = academyCourseSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-course-id" } };
@@ -238,7 +239,7 @@ export async function createArticleAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = articleSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-article-id" } };
@@ -261,7 +262,7 @@ export async function createTestimonialAction(
   const { supabase } = await requireAdminSession(ctx);
   const parsed = testimonialSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true, data: { id: parsed.data.id || "mock-testimonial-id" } };
@@ -373,7 +374,7 @@ export async function updateSiteSettingsAction(
   // so saving one screen never overwrites edits made on the other.
   const parsed = siteSettingsSchema.partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase || Object.keys(parsed.data).length === 0) return { ok: true };
@@ -400,7 +401,7 @@ export async function updateArtistAction(
 
   const parsed = artistSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -428,7 +429,7 @@ export async function updateTrackAction(
 
   const parsed = trackSchemaBase.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -464,7 +465,7 @@ export async function updateReleaseAction(
 
   const parsed = releaseSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -492,7 +493,7 @@ export async function updateArtistWorkAction(
 
   const parsed = artistWorkSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -520,7 +521,7 @@ export async function updateEventAction(
 
   const parsed = eventSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -548,7 +549,7 @@ export async function updateAcademyCourseAction(
 
   const parsed = academyCourseSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -578,7 +579,7 @@ export async function updateArticleAction(
 
   const parsed = articleSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -606,7 +607,7 @@ export async function updateTestimonialAction(
 
   const parsed = testimonialSchema.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
   if (Object.keys(parsed.data).length === 0) {
     return { ok: false, error: "لا توجد تغييرات للحفظ" };
@@ -634,7 +635,7 @@ export async function updateBookingRequestAction(
 
   const parsed = adminBookingUpdateSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true };
@@ -658,7 +659,7 @@ export async function updateSubscriberAction(
 
   const parsed = adminNewsletterUpdateSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
+    return { ok: false, error: formatZodError(parsed.error) };
   }
 
   if (!supabase) return { ok: true };

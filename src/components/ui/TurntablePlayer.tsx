@@ -192,14 +192,15 @@ export function TurntablePlayer({
     };
   }, [stopSynth]);
 
-  // Autoplay on mount — short delay to pass browser autoplay policy
+  // Autoplay on mount — short delay to pass browser autoplay policy.
+  // YouTube tracks are excluded: browsers block unmuted iframe autoplay
+  // without a real user gesture, so marking isPlaying true here would show a
+  // spinning, "playing" vinyl with no actual sound. Those tracks wait for the
+  // visitor's own tap on the play button, which is a genuine gesture and does
+  // get sound.
   useEffect(() => {
-    if (!currentTrack.audioUrl && !currentTrack.youtubeUrl) return;
+    if (!currentTrack.audioUrl || currentTrack.youtubeUrl) return;
     const timer = setTimeout(() => {
-      if (currentTrack.youtubeUrl) {
-        setIsPlaying(true);
-        return;
-      }
       if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
           .play()
