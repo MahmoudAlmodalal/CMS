@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import Image from "next/image";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -62,6 +61,7 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
   useEffect(() => {
     if (total <= 1 || isPaused || reducedMotion) return;
     const interval = setInterval(() => {
+      if (document.hidden) return;
       handleNext();
     }, 5000);
     return () => clearInterval(interval);
@@ -116,8 +116,10 @@ export function TestimonialsSlider({ testimonials, heading }: TestimonialsSlider
       className="relative flex min-h-0 flex-col overflow-hidden bg-[#F9F7F0] py-12 md:py-16 lg:h-[597px] lg:min-h-[597px] lg:justify-center lg:py-0"
       aria-roledescription="carousel"
       aria-label={t("region")}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setIsPaused(false);
+      }}
     >
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center lg:space-y-10">
