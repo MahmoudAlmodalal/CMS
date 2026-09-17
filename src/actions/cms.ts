@@ -126,7 +126,15 @@ export async function createTrackAction(
     .select("id")
     .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error("[CMS] createTrackAction failed", { code: error.code, message: error.message });
+    return {
+      ok: false,
+      error: error.message.includes("youtube_url")
+        ? "قاعدة البيانات غير محدثة للمقاطع الموسيقية. شغّل هجرة youtube_url ثم أعد المحاولة."
+        : error.message,
+    };
+  }
   revalidateSite();
   return { ok: true, data: { id: insertedId(data) } };
 }
@@ -433,7 +441,15 @@ export async function updateTrackAction(
     .update(parsed.data as never)
     .eq("id" as never, id as never);
 
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    console.error("[CMS] updateTrackAction failed", { id, code: error.code, message: error.message });
+    return {
+      ok: false,
+      error: error.message.includes("youtube_url")
+        ? "قاعدة البيانات غير محدثة للمقاطع الموسيقية. شغّل هجرة youtube_url ثم أعد المحاولة."
+        : error.message,
+    };
+  }
   revalidateSite();
   return { ok: true };
 }
