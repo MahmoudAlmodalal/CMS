@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { type Release, CANONICAL_RELEASES } from "@/lib/releases";
 import { localizeContentList } from "./localize";
 
@@ -21,7 +21,7 @@ export async function getPublishedReleasesByArtist(artistId: string): Promise<Re
       return localizeContentList("releases", canonical);
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("releases")
       .select("*")

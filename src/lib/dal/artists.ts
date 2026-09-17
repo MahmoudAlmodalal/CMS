@@ -1,4 +1,4 @@
-import { createClient, createStaticClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { pagination } from "@/lib/pagination";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
@@ -52,7 +52,7 @@ export async function getFeaturedArtists(limit = 4): Promise<Artist[]> {
       return localizeContentList("artists", CANONICAL_FEATURED_ARTISTS.slice(0, limit));
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("artists")
       .select("*")
@@ -98,7 +98,7 @@ export async function getPublishedArtists(options?: { category?: string }): Prom
       return localizeContentList("artists", CANONICAL_FEATURED_ARTISTS);
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     let query = supabase
       .from("artists")
       .select("*")
@@ -170,7 +170,7 @@ export async function getPublishedArtistsPage(
       return demoPage(options.page);
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const buildQuery = (head = false) => {
       let query = supabase
         .from("artists")
@@ -226,7 +226,7 @@ export async function getArtistBySlug(slug: string): Promise<Artist | null> {
       return demo ? localizeContent("artists", demo) : null;
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("artists")
       .select("*")

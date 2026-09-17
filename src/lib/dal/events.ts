@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { pagination } from "@/lib/pagination";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { getContentLocale, localizeContent, localizeContentList } from "./localize";
@@ -90,7 +90,7 @@ export async function getUpcomingEvents(limit = 3): Promise<EventItem[]> {
       return localizeContentList("events", CANONICAL_UPCOMING_EVENTS.slice(0, limit));
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const nowIso = new Date().toISOString();
     const { data, error } = await supabase
       .from("events")
@@ -120,7 +120,7 @@ export async function getPublishedEvents(category?: string): Promise<EventItem[]
       return localizeContentList("events", CANONICAL_UPCOMING_EVENTS);
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     let query = supabase
       .from("events")
       .select(EVENT_COLUMNS)
@@ -188,7 +188,7 @@ export async function getPublishedEventsPage(
       return demoPage(options.page);
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const buildQuery = (head = false) => {
       let query = supabase
         .from("events")
@@ -248,7 +248,7 @@ export async function getFeaturedEvent(): Promise<EventItem | null> {
       return demo ? localizeContent("events", demo) : null;
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("events")
       .select(EVENT_COLUMNS)
@@ -288,7 +288,7 @@ export async function getEventsSubtitle(): Promise<string> {
       return fallback;
     }
 
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("site_settings")
       .select("events_subtitle, events_subtitle_en")

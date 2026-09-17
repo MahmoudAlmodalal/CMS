@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { localizeContentList } from "./localize";
 
 export interface Testimonial {
@@ -23,7 +23,7 @@ export interface Testimonial {
  */
 export async function getPublishedTestimonials(): Promise<Testimonial[]> {
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("testimonials")
       .select("*")

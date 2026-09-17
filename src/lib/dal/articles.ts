@@ -1,4 +1,4 @@
-import { createClient, createStaticClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { PAGE_SIZE, pagination } from "@/lib/pagination";
 import { localizeContent, localizeContentList } from "./localize";
 import {
@@ -45,7 +45,7 @@ export async function getPublishedArticlesPage(
   };
 
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const buildQuery = (head = false) => {
       let query = supabase
         .from("articles")
@@ -102,7 +102,7 @@ export async function getPublishedArticles(options?: { category?: string; limit?
   const limit = options?.limit;
   const nowIso = new Date().toISOString();
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     let query = supabase
       .from("articles")
       .select("*")
@@ -132,7 +132,7 @@ export async function getPublishedArticles(options?: { category?: string; limit?
 export async function getFeaturedArticles(limit = 3): Promise<Article[]> {
   const nowIso = new Date().toISOString();
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("articles")
       .select("*")
@@ -158,7 +158,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   if (!slug) return null;
   const nowIso = new Date().toISOString();
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("articles")
       .select("*")
@@ -184,7 +184,7 @@ export async function getRelatedArticles(
 ): Promise<Article[]> {
   const nowIso = new Date().toISOString();
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const query = supabase
       .from("articles")
       .select("*")

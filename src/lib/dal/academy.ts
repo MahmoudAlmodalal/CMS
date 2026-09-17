@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { PAGE_SIZE, pagination } from "@/lib/pagination";
 import { localizeContent, localizeContentList } from "./localize";
@@ -25,7 +25,7 @@ export async function getPublishedAcademyCoursesPage(options: { page?: number } 
   };
   if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) return fallback();
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const buildQuery = (head = false) => supabase.from("academy_courses").select("*", { count: "exact", head }).eq("is_published", true);
     const { count, error: countError } = await buildQuery(true);
     if (countError || !count) return fallback();
@@ -48,7 +48,7 @@ export async function getPublishedAcademyCourses(): Promise<AcademyCourse[]> {
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("academy_courses")
       .select(
@@ -83,7 +83,7 @@ export async function getAcademyCourseBySlug(slug: string): Promise<AcademyCours
   }
 
   try {
-    const supabase = await createClient();
+    const supabase = createStaticClient();
     const { data, error } = await supabase
       .from("academy_courses")
       .select("*")
