@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { getLocale } from "next-intl/server";
 import { isAppLocale, routing, type AppLocale } from "@/i18n/routing";
 import { localizeRow } from "@/lib/utils";
@@ -8,15 +9,20 @@ import { localizeRow } from "@/lib/utils";
  *
  * Admin routes live outside the [locale] segment, so no locale is negotiated
  * there and this resolves to Arabic — which is what the panel edits.
+ *
+ * Cached per request: a homepage fans out to site-settings + artists + events
+ * + articles + testimonials (≈10 getLocale() calls before). Without the cache
+ * every DAL helper pays a full next-intl lookup; with it the first call wins
+ * and the rest resolve from the request memo.
  */
-export async function getContentLocale(): Promise<AppLocale> {
+export const getContentLocale = cache(async (): Promise<AppLocale> => {
   try {
     const locale = await getLocale();
     return isAppLocale(locale) ? locale : routing.defaultLocale;
   } catch {
     return routing.defaultLocale;
   }
-}
+});
 
 /**
  * The translatable fields of each content table. Kept next to the DAL so a new
@@ -107,22 +113,28 @@ type FieldsOf<Tb extends Table> = (typeof LOCALIZED_FIELDS)[Tb][number];
 /** A row is localizable only if it actually carries the table's translatable fields. */
 type Localizable<Tb extends Table> = { [K in FieldsOf<Tb>]?: unknown };
 
-/** Resolves one row's translatable fields for the request's locale. */
+/** Resolves one row's translatable fields for the request's locale.
+ * Pass `locale` when the caller already resolved it (e.g. site-settings) to
+ * skip a second lookup. Arabic returns the row untouched — no copy, no loop. */
 export async function localizeContent<Tb extends Table, T extends Localizable<Tb>>(
   table: Tb,
   row: T,
+  locale?: AppLocale,
 ): Promise<T> {
-  const locale = await getContentLocale();
-  return localizeRow(row, LOCALIZED_FIELDS[table], locale);
+  const resolved = locale ?? (await getContentLocale());
+  if (resolved === "ar") return row;
+  return localizeRow(row, LOCALIZED_FIELDS[table], resolved);
 }
 
-/** Resolves a list of rows in a single locale lookup. */
+/** Resolves a list of rows in a single locale lookup.
+ * Pass `locale` when the caller already resolved it to skip the lookup. */
 export async function localizeContentList<Tb extends Table, T extends Localizable<Tb>>(
   table: Tb,
   rows: T[],
+  locale?: AppLocale,
 ): Promise<T[]> {
-  const locale = await getContentLocale();
-  if (locale === "ar") return rows;
+  const resolved = locale ?? (await getContentLocale());
+  if (resolved === "ar") return rows;
   const fields = LOCALIZED_FIELDS[table];
-  return rows.map((row) => localizeRow(row, fields, locale));
+  return rows.map((row) => localizeRow(row, fields, resolved));
 }

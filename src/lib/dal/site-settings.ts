@@ -388,10 +388,16 @@ const EMPTY_SITE_SETTINGS: SiteSettings = {
 /**
  * Fetches singleton site settings (id = 'default').
  * Falls back to DEFAULT_SITE_SETTINGS if not found or on connection error.
+ *
+ * Single locale lookup per request (getContentLocale is request-cached) passed
+ * explicitly into localizeContent — no second getLocale() round-trip. The raw
+ * row itself is request-cached in getSiteSettingsForLocale, so layout +
+ * generateMetadata + page share one DB-backed read. Hot path for
+ * "أصوات تصنع التاريخ" (home_artists_heading) on the homepage.
  */
 export async function getSiteSettings(): Promise<SiteSettings> {
   const locale = await getContentLocale();
-  return localizeContent("site_settings", await getSiteSettingsForLocale(locale));
+  return localizeContent("site_settings", await getSiteSettingsForLocale(locale), locale);
 }
 
 /** One settings query per request (metadata + layout + page share it). */
