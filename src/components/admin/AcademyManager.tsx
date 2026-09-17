@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { Textarea } from "@/components/ui/Textarea";
-import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, StatusBadge, ModalActions } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import type { AcademyCourseInput, CurriculumItemInput } from "@/lib/validations/cms";
@@ -324,7 +324,7 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
                         onClick={() => togglePublish(course)}
                         disabled={pending}
                         aria-pressed={course.is_published}
-                        className="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+                        className="inline-flex min-h-[44px] items-center gap-2 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
                         title={course.is_published ? "تحويل إلى مسودة" : "نشر المسار"}
                       >
                         <StatusBadge published={course.is_published} />
@@ -332,12 +332,12 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
-                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(course)} disabled={pending}>تعديل</Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(course)} disabled={pending} className="min-h-[44px]">تعديل</Button>
                         <button
                           type="button"
                           onClick={() => removeCourse(course)}
                           disabled={pending}
-                          className="rounded-button px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
+                          className="rounded-button min-h-[44px] inline-flex items-center px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
                         >
                           حذف
                         </button>
@@ -528,10 +528,10 @@ export function AcademyManager({ initialCourses, instructors }: AcademyManagerPr
                 نشر المسار فوراً
               </label>
             </div>
-            <CardFooter className="justify-start md:col-span-2 p-0 pt-2">
-              <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ المسار"}</Button>
-              <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </CardFooter>
+            <ModalActions>
+              <Button type="submit" isLoading={pending} className="min-h-[44px]">{editingId ? "حفظ التعديلات" : "حفظ المسار"}</Button>
+              <Button type="button" variant="outline" onClick={closeForm} disabled={pending} className="min-h-[44px]">إلغاء</Button>
+            </ModalActions>
           </form>
         </ModalShell>
       )}

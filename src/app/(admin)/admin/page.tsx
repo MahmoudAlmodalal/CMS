@@ -24,18 +24,18 @@ function StatCard({ label, value, href, icon, accent, description }: StatCardPro
   return (
     <Link
       href={href}
-      className="group block rounded-2xl bg-white border border-brand-espresso-subtle/60 shadow-2xs p-5 hover:shadow-sm hover:border-brand-espresso-subtle transition-all duration-150"
+      className="group block rounded-2xl bg-white border border-brand-espresso-subtle/60 shadow-2xs p-4 sm:p-5 hover:shadow-sm hover:border-brand-espresso-subtle transition-all duration-150"
     >
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-medium text-brand-espresso/70 font-sans">{label}</span>
-        <span className={`w-9 h-9 rounded-xl flex items-center justify-center ${accent}`}>
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <span className="text-xs sm:text-sm font-medium text-brand-espresso/70 font-sans">{label}</span>
+        <span className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center ${accent}`}>
           {icon}
         </span>
       </div>
-      <div className="text-3xl font-bold font-sans tabular-nums text-brand-espresso" dir="ltr">
+      <div className="text-2xl sm:text-3xl font-bold font-sans tabular-nums text-brand-espresso" dir="ltr">
         {value.toLocaleString("ar-EG")}
       </div>
-      <p className="mt-1 text-xs text-brand-espresso/50 font-sans">{description}</p>
+      <p className="mt-1 text-[11px] sm:text-xs text-brand-espresso/50 font-sans">{description}</p>
     </Link>
   );
 }
@@ -99,7 +99,7 @@ export default async function AdminDashboardPage() {
       {/* Stat Cards Grid */}
       <section aria-label="إحصائيات الموقع">
         <h2 className="sr-only">إحصائيات سريعة</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
           {cards.map((card) => (
             <StatCard key={card.href} {...card} />
           ))}
@@ -111,7 +111,7 @@ export default async function AdminDashboardPage() {
         <h2 className="text-base font-semibold font-sans text-brand-espresso mb-4">
           إجراءات سريعة
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {[
             { label: "إضافة فنان جديد", href: "/admin/artists", emoji: "🎵" },
             { label: "إضافة فعالية", href: "/admin/events", emoji: "📅" },
@@ -124,10 +124,10 @@ export default async function AdminDashboardPage() {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-3 p-4 rounded-xl bg-white border border-brand-espresso-subtle/60 hover:border-brand-terracotta/40 hover:bg-brand-cream/60 transition-all duration-150 group"
+              className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl bg-white border border-brand-espresso-subtle/60 hover:border-brand-terracotta/40 hover:bg-brand-cream/60 transition-all duration-150 group min-h-[44px]"
             >
-              <span className="text-xl" role="img" aria-hidden="true">{emoji}</span>
-              <span className="text-sm font-medium font-sans text-brand-espresso group-hover:text-brand-terracotta transition-colors">
+              <span className="text-lg sm:text-xl shrink-0" role="img" aria-hidden="true">{emoji}</span>
+              <span className="text-xs sm:text-sm font-medium font-sans text-brand-espresso group-hover:text-brand-terracotta transition-colors truncate">
                 {label}
               </span>
             </Link>

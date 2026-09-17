@@ -255,6 +255,57 @@
   mask-image: linear-gradient(to right, transparent 0, black 18px, black calc(100% - 18px), transparent 100%);
 }
 
+/* Safe-area utility for mobile bottom insets */
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
+}
+
+/* Custom scrollbar for responsive data tables */
+.table-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(43, 29, 20, 0.2) transparent;
+}
+.table-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.table-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.table-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(43, 29, 20, 0.2);
+  border-radius: 9999px;
+}
+.table-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(43, 29, 20, 0.35);
+}
+
+/* RTL-aware Drawer Animation */
+@keyframes drawer-slide-in-rtl {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-slide-in-ltr {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] .slide-in-from-start {
+  animation: drawer-slide-in-rtl 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[dir="ltr"] .slide-in-from-start {
+  animation: drawer-slide-in-ltr 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 /* Respect reduced motion on all viewports. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

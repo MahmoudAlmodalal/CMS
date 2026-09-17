@@ -163,7 +163,7 @@ export function BilingualField({
         </p>
         {help && <FormHelperText>{help}</FormHelperText>}
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div className="space-y-2">
           <FormLabel htmlFor={id} required={required}>العربية</FormLabel>
           {control("ar", id, value, onChange)}
@@ -197,6 +197,27 @@ export function Notice({ notice }: { notice: { type: "success" | "error"; text: 
         : "rounded-xl border border-brand-primary/20 bg-brand-primary/10 px-4 py-3 text-sm font-medium text-brand-primary"}
     >
       {notice.text}
+    </div>
+  );
+}
+
+/**
+ * Sticky action footer for modal dialogs.
+ * Stays pinned to the bottom on mobile viewports for easy thumb reachability,
+ * and flows naturally within the grid on larger screens.
+ */
+export function ModalActions({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`sticky bottom-0 z-10 -mx-5 -mb-5 sm:mx-0 sm:mb-0 p-4 sm:p-0 bg-white/95 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none border-t border-brand-espresso-subtle sm:border-t-0 flex items-center gap-3 md:col-span-2 shadow-xs sm:shadow-none ${className}`}
+    >
+      {children}
     </div>
   );
 }
@@ -263,7 +284,7 @@ export function ModalShell({
       onClick={(event) => {
         if (event.target === dialogRef.current) onClose?.();
       }}
-      className={`m-auto max-h-[90vh] w-[calc(100vw-2rem)] ${maxWidth} overflow-y-auto rounded-2xl border border-brand-espresso-subtle bg-white p-0 text-start shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur-xs`}
+      className={`m-auto h-full sm:h-auto max-h-screen sm:max-h-[90vh] w-full sm:w-[calc(100vw-2rem)] ${maxWidth} overflow-y-auto rounded-none sm:rounded-2xl border-0 sm:border sm:border-brand-espresso-subtle bg-white p-0 text-start shadow-2xl backdrop:bg-black/50 backdrop:backdrop-blur-xs`}
     >
       <ModalPortalContext.Provider value={portalTarget}>
         <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-brand-espresso-subtle bg-white px-5 py-4 sm:px-6">
@@ -277,7 +298,7 @@ export function ModalShell({
             type="button"
             onClick={() => onClose?.()}
             aria-label="إغلاق النموذج"
-            className="shrink-0 rounded-button px-3 py-2 text-sm font-bold text-gradscale-400 hover:bg-brand-surface hover:text-brand-espresso focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            className="shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-button px-3 py-2 text-sm font-bold text-gradscale-400 hover:bg-brand-surface hover:text-brand-espresso focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary cursor-pointer"
           >
             ✕
           </button>

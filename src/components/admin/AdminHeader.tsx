@@ -20,19 +20,21 @@ export function AdminHeader({
     <header
       className={`bg-white border-b border-brand-espresso-subtle px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-30 shadow-2xs ${className}`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 min-w-0">
         {/* Mobile menu trigger button */}
         <button
           type="button"
           onClick={onMenuToggle}
-          className="lg:hidden p-2 rounded-lg border border-brand-espresso-subtle/70 text-brand-espresso hover:bg-brand-surface/50 transition-colors cursor-pointer"
+          className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded-lg border border-brand-espresso-subtle/70 text-brand-espresso hover:bg-brand-surface/50 transition-colors cursor-pointer shrink-0"
           aria-label="فتح القائمة الجانبية"
         >
           <MenuIcon size={20} />
         </button>
 
         {/* Dynamic Breadcrumbs */}
-        <AdminBreadcrumbs />
+        <div className="min-w-0 max-w-[160px] sm:max-w-none truncate">
+          <AdminBreadcrumbs />
+        </div>
       </div>
 
       {/* User Info & Actions */}

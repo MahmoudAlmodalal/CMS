@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { updateSiteSettingsAction } from "@/actions/cms";
 import { Button } from "@/components/ui/Button";
@@ -62,6 +62,7 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
     pending,
     result,
   } = useSiteSettingsForm(settings, updateSiteSettingsAction);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     save(event);
@@ -134,14 +135,63 @@ export function SiteSettingsForm({ settings }: { settings: SiteSettings }) {
               {!pending && result?.ok && <p role="status" className="font-semibold text-alert-success">تم حفظ الإعدادات بنجاح.</p>}
               {!pending && result && !result.ok && <p role="alert" className="font-semibold text-alert-error">{result.error || "تعذر حفظ الإعدادات."}</p>}
             </div>
-            <Button type="submit" isLoading={pending} disabled={pending}>
+            <Button type="submit" isLoading={pending} disabled={pending} className="min-h-[44px]">
               حفظ الإعدادات
             </Button>
           </CardFooter>
         </Card>
       </form>
 
-      <SiteSettingsPreview values={values} />
+      {/* Desktop Preview (>=1280px) */}
+      <div className="hidden xl:block">
+        <SiteSettingsPreview values={values} />
+      </div>
+
+      {/* Floating Preview Button (<1280px) */}
+      <div className="fixed bottom-6 end-6 z-40 xl:hidden">
+        <button
+          type="button"
+          onClick={() => setPreviewOpen(true)}
+          className="flex items-center gap-2 px-4 py-3 bg-brand-primary text-white font-bold text-sm rounded-full shadow-lg hover:bg-brand-primary-hover active:scale-95 transition-all cursor-pointer min-h-[44px]"
+          aria-label="عرض المعاينة"
+        >
+          <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <span>عرض المعاينة</span>
+        </button>
+      </div>
+
+      {/* Mobile Live Preview Bottom Sheet Drawer */}
+      {previewOpen && (
+        <div className="fixed inset-0 z-50 xl:hidden flex flex-col justify-end" dir="rtl">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            onClick={() => setPreviewOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Bottom Sheet Modal */}
+          <div className="relative bg-white rounded-t-3xl shadow-2xl max-h-[85vh] flex flex-col w-full z-10 animate-in slide-in-from-bottom duration-200 pb-safe">
+            <div className="p-4 border-b border-brand-espresso-subtle flex items-center justify-between sticky top-0 bg-white rounded-t-3xl z-10">
+              <span className="font-bold text-base text-brand-espresso">معاينة سريعة</span>
+              <button
+                type="button"
+                onClick={() => setPreviewOpen(false)}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-brand-espresso/70 hover:bg-brand-surface text-sm font-bold cursor-pointer"
+                aria-label="إغلاق المعاينة"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto flex-1">
+              <SiteSettingsPreview values={values} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

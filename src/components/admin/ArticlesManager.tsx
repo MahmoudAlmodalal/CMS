@@ -15,7 +15,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/Input";
 import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { BilingualField, Field, ModalShell, Notice } from "@/components/admin/ManagerKit";
+import { BilingualField, Field, ModalShell, Notice, ModalActions } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { ARTICLE_CATEGORIES, type ArticleCategory } from "@/lib/validations/primitives";
 import type { ArticleInput } from "@/lib/validations/cms";
@@ -383,7 +383,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                         onClick={() => togglePublish(article)}
                         disabled={pending}
                         aria-pressed={article.is_published}
-                        className="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+                        className="inline-flex min-h-[44px] items-center gap-2 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
                         title={article.is_published ? "تحويل إلى مسودة" : "نشر المقال"}
                       >
                         <ArticleStatusBadge article={article} />
@@ -391,13 +391,13 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
-                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(article)} disabled={pending}>تعديل</Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(article)} disabled={pending} className="min-h-[44px]">تعديل</Button>
                         {isArticleLive(article) && (
                           <Link
                             href={`/en/news/${article.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="rounded-button px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary transition-colors"
+                            className="rounded-button min-h-[44px] inline-flex items-center px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary transition-colors"
                           >
                             معاينة ↗
                           </Link>
@@ -406,7 +406,7 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                           type="button"
                           onClick={() => removeArticle(article)}
                           disabled={pending}
-                          className="rounded-button px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
+                          className="rounded-button min-h-[44px] inline-flex items-center px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
                         >
                           حذف
                         </button>
@@ -507,10 +507,10 @@ export function ArticlesManager({ initialArticles }: ArticlesManagerProps) {
                 عرض ضمن المقالات المميزة
               </label>
             </div>
-            <div className="flex items-center gap-3 md:col-span-2">
-              <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ المقال"}</Button>
-              <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </div>
+            <ModalActions>
+              <Button type="submit" isLoading={pending} className="min-h-[44px]">{editingId ? "حفظ التعديلات" : "حفظ المقال"}</Button>
+              <Button type="button" variant="outline" onClick={closeForm} disabled={pending} className="min-h-[44px]">إلغاء</Button>
+            </ModalActions>
           </form>
         </ModalShell>
       )}

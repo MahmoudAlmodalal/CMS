@@ -98,63 +98,139 @@ export function BookingsTable({ initialBookings }: BookingsTableProps) {
               <p className="text-lg font-bold text-brand-espresso">لا توجد طلبات حجز بعد</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>مقدّم الطلب</TableHead>
-                  <TableHead>الفعالية</TableHead>
-                  <TableHead>الحالة</TableHead>
-                  <TableHead>ملاحظات داخلية</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <>
+              {/* Mobile Stacked Card View (<640px) */}
+              <div className="block sm:hidden divide-y divide-brand-surface/60">
                 {bookings.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell>
-                      <div className="min-w-[200px]">
-                        <p className="font-bold text-brand-espresso">{booking.full_name}</p>
-                        <p className="text-xs text-gradscale-400" dir="ltr">{booking.email}</p>
-                        {booking.phone && <p className="text-xs text-gradscale-400" dir="ltr">{booking.phone}</p>}
+                  <div key={booking.id} className="p-4 space-y-4">
+                    {/* Header with requester and status */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-bold text-base text-brand-espresso">{booking.full_name}</p>
+                        <p className="text-xs text-gradscale-400 mt-0.5" dir="ltr">{booking.email}</p>
+                        {booking.phone && (
+                          <p className="text-xs text-gradscale-400" dir="ltr">{booking.phone}</p>
+                        )}
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <p className="font-medium text-brand-espresso">{booking.event_type}</p>
-                      <p className="mt-1 text-xs text-gradscale-400" dir="ltr">{booking.event_date}</p>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex min-w-[160px] items-center gap-2">
-                        <Badge size="sm">{STATUS_LABELS[booking.status] ?? booking.status}</Badge>
-                        <label className="sr-only" htmlFor={`booking-status-${booking.id}`}>حالة طلب الحجز</label>
-                        <Dropdown<BookingStatus>
-                          id={`booking-status-${booking.id}`}
-                          ariaLabel="حالة طلب الحجز"
-                          value={booking.status}
-                          disabled={pending}
-                          onChange={(status) => changeStatus(booking, status)}
-                          options={STATUSES.map((status) => ({ value: status, label: STATUS_LABELS[status as string] }))}
-                          size="sm"
+                      <Badge size="sm">{STATUS_LABELS[booking.status] ?? booking.status}</Badge>
+                    </div>
+
+                    {/* Event details */}
+                    <div className="rounded-xl bg-brand-surface/30 p-3 text-xs space-y-1.5 border border-brand-surface/50">
+                      <div className="flex justify-between">
+                        <span className="text-gradscale-400 font-medium">نوع الفعالية:</span>
+                        <span className="font-semibold text-brand-espresso">{booking.event_type}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gradscale-400 font-medium">تاريخ الفعالية:</span>
+                        <span className="font-medium text-brand-espresso" dir="ltr">{booking.event_date}</span>
+                      </div>
+                    </div>
+
+                    {/* Status dropdown */}
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-brand-espresso" htmlFor={`mobile-booking-status-${booking.id}`}>
+                        تحديث الحالة:
+                      </label>
+                      <Dropdown<BookingStatus>
+                        id={`mobile-booking-status-${booking.id}`}
+                        ariaLabel="حالة طلب الحجز"
+                        value={booking.status}
+                        disabled={pending}
+                        onChange={(status) => changeStatus(booking, status)}
+                        options={STATUSES.map((status) => ({ value: status, label: STATUS_LABELS[status as string] }))}
+                        size="sm"
+                        className="w-full"
+                      />
+                    </div>
+
+                    {/* Admin notes & save action */}
+                    <div className="space-y-2 pt-1">
+                      <Field id={`mobile-booking-notes-${booking.id}`} label="ملاحظات إدارية" required={false}>
+                        <Textarea
+                          id={`mobile-booking-notes-${booking.id}`}
+                          rows={2}
+                          value={notesDraft[booking.id] ?? booking.admin_notes ?? ""}
+                          onChange={(event) => setNotesDraft((current) => ({ ...current, [booking.id]: event.target.value }))}
+                          placeholder="ملاحظات داخلية للفريق..."
                         />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="min-w-[260px] space-y-2">
-                        <Field id={`booking-notes-${booking.id}`} label="ملاحظات إدارية" required={false}>
-                          <Textarea
-                            id={`booking-notes-${booking.id}`}
-                            rows={2}
-                            value={notesDraft[booking.id] ?? booking.admin_notes ?? ""}
-                            onChange={(event) => setNotesDraft((current) => ({ ...current, [booking.id]: event.target.value }))}
-                          />
-                        </Field>
-                        <Button type="button" size="sm" variant="outline" disabled={pending} onClick={() => saveNotes(booking)}>
-                          حفظ الملاحظات
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                      </Field>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        disabled={pending}
+                        onClick={() => saveNotes(booking)}
+                        className="w-full min-h-[44px]"
+                      >
+                        حفظ الملاحظات
+                      </Button>
+                    </div>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
+              </div>
+
+              {/* Tablet & Desktop Horizontal Scrolling Table (>=640px) */}
+              <div className="hidden sm:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>مقدّم الطلب</TableHead>
+                      <TableHead>الفعالية</TableHead>
+                      <TableHead>الحالة</TableHead>
+                      <TableHead>ملاحظات داخلية</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {bookings.map((booking) => (
+                      <TableRow key={booking.id}>
+                        <TableCell>
+                          <div className="min-w-[200px]">
+                            <p className="font-bold text-brand-espresso">{booking.full_name}</p>
+                            <p className="text-xs text-gradscale-400" dir="ltr">{booking.email}</p>
+                            {booking.phone && <p className="text-xs text-gradscale-400" dir="ltr">{booking.phone}</p>}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <p className="font-medium text-brand-espresso">{booking.event_type}</p>
+                          <p className="mt-1 text-xs text-gradscale-400" dir="ltr">{booking.event_date}</p>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex min-w-[160px] items-center gap-2">
+                            <Badge size="sm">{STATUS_LABELS[booking.status] ?? booking.status}</Badge>
+                            <label className="sr-only" htmlFor={`booking-status-${booking.id}`}>حالة طلب الحجز</label>
+                            <Dropdown<BookingStatus>
+                              id={`booking-status-${booking.id}`}
+                              ariaLabel="حالة طلب الحجز"
+                              value={booking.status}
+                              disabled={pending}
+                              onChange={(status) => changeStatus(booking, status)}
+                              options={STATUSES.map((status) => ({ value: status, label: STATUS_LABELS[status as string] }))}
+                              size="sm"
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="min-w-[260px] space-y-2">
+                            <Field id={`booking-notes-${booking.id}`} label="ملاحظات إدارية" required={false}>
+                              <Textarea
+                                id={`booking-notes-${booking.id}`}
+                                rows={2}
+                                value={notesDraft[booking.id] ?? booking.admin_notes ?? ""}
+                                onChange={(event) => setNotesDraft((current) => ({ ...current, [booking.id]: event.target.value }))}
+                              />
+                            </Field>
+                            <Button type="button" size="sm" variant="outline" disabled={pending} onClick={() => saveNotes(booking)} className="min-h-[44px]">
+                              حفظ الملاحظات
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>

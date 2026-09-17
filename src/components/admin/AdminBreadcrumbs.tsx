@@ -12,7 +12,7 @@ export function AdminBreadcrumbs({ className = "" }: { className?: string }) {
 
   return (
     <nav aria-label="مسار التنقل" className={`flex min-w-0 items-center text-sm ${className}`}>
-      <ol className="flex min-w-0 items-center gap-1.5 flex-wrap">
+      <ol className="flex min-w-0 items-center gap-1.5 flex-nowrap sm:flex-wrap overflow-hidden">
         {crumbs.map((crumb, idx) => {
           const isLast = idx === crumbs.length - 1;
           return (

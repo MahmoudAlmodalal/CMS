@@ -1,5 +1,7 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+
+import React, { useId, useState } from "react";
+import { ChevronEndIcon, ChevronStartIcon } from "@/components/ui/Icons";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import type { Event } from "@/lib/dal/events";
@@ -81,6 +83,11 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
   const ev = useTranslations("event");
   const c = useTranslations("categories");
   const locale = useLocale();
+  const [page, setPage] = useState(0);
+  const listId = useId();
+  const pageSize = 3;
+  const pageCount = Math.ceil((events?.length ?? 0) / pageSize);
+  const currentPage = Math.min(page, Math.max(0, pageCount - 1));
 
   if (!events || events.length === 0) {
     return null;
@@ -119,9 +126,8 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
             </ScrollReveal>
 
             {/* Rows 87:14483 */}
-            <div className="order-3 mx-auto flex w-[326.489px] flex-col gap-[8px] pt-8 lg:mx-0 lg:w-auto lg:pt-[48px]">
-              {/* Already limited by the admin "home_upcoming_events_count" setting. */}
-              {events.map((event) => {
+            <div id={listId} className="order-3 mx-auto flex w-[326.489px] max-w-full flex-col gap-[8px] pt-8 lg:mx-0 lg:w-auto lg:pt-[48px]">              {/* Already limited by the admin "home_upcoming_events_count" setting. */}
+              {events.slice(currentPage * pageSize, (currentPage + 1) * pageSize).map((event) => {
                 const eventDate = new Date(event.event_date);
                 const categoryKey = CATEGORY_KEY_MAP[event.category];
                 const categoryLabel = categoryKey ? c(categoryKey) : event.category;
@@ -171,7 +177,36 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
             </div>
 
             {/* CTA 87:14532 */}
-            <div className="order-4 mx-auto flex h-[48px] w-[326.489px] justify-start pt-[24px] lg:mx-0 lg:h-auto lg:w-auto lg:justify-end lg:pt-[24.45px]">
+            <div className="order-4 mx-auto flex w-[326.489px] max-w-full items-center justify-between gap-3 pt-[24px] lg:mx-0 lg:w-auto lg:justify-end lg:pt-[24.45px]">
+              {pageCount > 1 && (
+                <nav className="flex items-center gap-2 lg:me-auto" aria-label={isRtl ? "صفحات الفعاليات" : "Event pages"}>
+                  <button
+                    type="button"
+                    aria-label={isRtl ? "الصفحة السابقة" : "Previous page"}
+                    aria-controls={listId}
+                    disabled={currentPage === 0}
+                    onClick={() => setPage(Math.max(0, currentPage - 1))}
+                    className="flex size-11 items-center justify-center rounded-full border border-brand-espresso/30 text-brand-espresso hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <ChevronStartIcon size={20} />
+                  </button>
+                  <span className="text-sm tabular-nums text-brand-espresso" role="status" aria-live="polite" aria-atomic="true">
+                    {isRtl
+                      ? `الصفحة ${(currentPage + 1).toLocaleString(locale)} من ${pageCount.toLocaleString(locale)}`
+                      : `Page ${currentPage + 1} of ${pageCount}`}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={isRtl ? "الصفحة التالية" : "Next page"}
+                    aria-controls={listId}
+                    disabled={currentPage === pageCount - 1}
+                    onClick={() => setPage(Math.min(pageCount - 1, currentPage + 1))}
+                    className="flex size-11 items-center justify-center rounded-full border border-brand-espresso/30 text-brand-espresso hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <ChevronEndIcon size={20} />
+                  </button>
+                </nav>
+              )}
               <Link
                 href={ctaHref || "/events"}
                 className="inline-flex h-[20px] items-center text-[14px] font-bold leading-[20px] text-primary-500 transition-colors hover:text-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 lg:h-[48px] lg:rounded-[16px] lg:bg-primary-500 lg:px-[26.4px] lg:text-[14.4px] lg:leading-[21.6px] lg:text-primary-50 lg:hover:bg-brand-primary-hover lg:active:bg-brand-primary-pressed"

@@ -38,12 +38,12 @@ export function AdminShell({ children, userEmail }: AdminShellProps) {
 
   return (
     <div className="min-h-screen bg-[#F9F7F0] text-brand-espresso flex flex-row" dir="rtl">
-      {/* Desktop Sidebar (Permanent) */}
-      <div className="hidden lg:block shrink-0 sticky top-0 h-screen z-20">
-        <AdminSidebar />
+      {/* Tablet & Desktop Sidebar (Icon-only on tablet md:w-16, full on lg:w-64) */}
+      <div className="hidden md:block shrink-0 sticky top-0 h-screen z-20">
+        <AdminSidebar variant="responsive" className="md:w-16 lg:w-64 transition-all duration-200" />
       </div>
 
-      {/* Mobile Drawer Backdrop & Sidebar */}
+      {/* Mobile & Tablet Drawer Backdrop & Sidebar */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
@@ -53,19 +53,19 @@ export function AdminShell({ children, userEmail }: AdminShellProps) {
             aria-hidden="true"
           />
 
-          {/* Drawer container (sliding from start/right in RTL) */}
-          <div className="fixed inset-y-0 start-0 max-w-xs w-full bg-white shadow-2xl z-10 flex flex-col animate-in slide-in-from-start duration-200">
-            <div className="absolute top-4 end-4 z-20">
+          {/* Drawer container (sliding from start/right in RTL with safe-area inset) */}
+          <div className="fixed inset-y-0 start-0 w-[85vw] max-w-xs bg-white shadow-2xl z-10 flex flex-col pb-safe animate-in slide-in-from-start duration-200">
+            <div className="absolute top-2.5 end-2.5 z-20">
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-1.5 rounded-lg text-brand-espresso/70 hover:text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-brand-espresso/70 hover:text-brand-espresso hover:bg-brand-surface transition-colors cursor-pointer"
                 aria-label="إغلاق القائمة الجانبية"
               >
                 <CloseIcon size={18} />
               </button>
             </div>
-            <AdminSidebar onItemClick={() => setMobileMenuOpen(false)} />
+            <AdminSidebar variant="full" className="w-full" onItemClick={() => setMobileMenuOpen(false)} />
           </div>
         </div>
       )}

@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
-import { ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
+import { ModalShell, Notice, StatusBadge, ModalActions } from "@/components/admin/ManagerKit";
 import { Dropdown } from "@/components/ui/Dropdown";
 import type { Artist } from "@/lib/dal/artists";
 import type { AdminEvent } from "@/lib/types/admin-events";
@@ -331,7 +331,7 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
                       <button
                         type="button"
                         onClick={() => navigator.clipboard?.writeText(`/booking?event_id=${event.id}`)}
-                        className="rounded-lg px-2 py-1 font-mono text-xs text-brand-primary underline decoration-dotted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                        className="rounded-lg min-h-[44px] px-2 py-1 font-mono text-xs text-brand-primary underline decoration-dotted inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                         dir="ltr"
                         title="نسخ رابط الحجز"
                       >
@@ -344,7 +344,7 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
                         onClick={() => togglePublish(event)}
                         disabled={pending}
                         aria-pressed={event.is_published}
-                        className="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+                        className="inline-flex min-h-[44px] items-center gap-2 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
                         title={event.is_published ? "تحويل إلى مسودة" : "نشر الفعالية"}
                       >
                         <StatusBadge published={event.is_published} />
@@ -357,20 +357,20 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
                         disabled={pending}
                         aria-pressed={event.is_featured}
                         className={event.is_featured
-                          ? "rounded-lg px-2 py-1 text-sm font-bold text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-                          : "rounded-lg px-2 py-1 text-sm font-bold text-gradscale-400 hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"}
+                          ? "rounded-lg min-h-[44px] inline-flex items-center px-2 py-1 text-sm font-bold text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                          : "rounded-lg min-h-[44px] inline-flex items-center px-2 py-1 text-sm font-bold text-gradscale-400 hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"}
                       >
                         {event.is_featured ? "★ مميز" : "☆ تمييز"}
                       </button>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
-                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(event)} disabled={pending}>تعديل</Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(event)} disabled={pending} className="min-h-[44px]">تعديل</Button>
                         <button
                           type="button"
                           onClick={() => removeEvent(event)}
                           disabled={pending}
-                          className="rounded-button px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
+                          className="rounded-button min-h-[44px] inline-flex items-center px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
                         >
                           حذف
                         </button>
@@ -394,10 +394,10 @@ export function EventsTable({ events: initialEvents, artists }: EventsTableProps
         >
           <form onSubmit={handleSubmit} aria-label={editingId ? "نموذج تعديل فعالية" : "نموذج إضافة فعالية"} className="contents">
             <EventForm values={values} setField={setField} artists={artists} eventId={editingId} />
-            <div className="flex items-center gap-3 md:col-span-2">
-              <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ الفعالية"}</Button>
-              <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </div>
+            <ModalActions>
+              <Button type="submit" isLoading={pending} className="min-h-[44px]">{editingId ? "حفظ التعديلات" : "حفظ الفعالية"}</Button>
+              <Button type="button" variant="outline" onClick={closeForm} disabled={pending} className="min-h-[44px]">إلغاء</Button>
+            </ModalActions>
           </form>
         </ModalShell>
       )}

@@ -8,7 +8,7 @@ import {
   setPublishStatusAction,
   updateArtistAction,
 } from "@/actions/cms";
-import { BilingualField, ModalShell, Notice } from "@/components/admin/ManagerKit";
+import { BilingualField, ModalShell, Notice, ModalActions } from "@/components/admin/ManagerKit";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -378,7 +378,7 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                         onClick={() => togglePublish(artist)}
                         disabled={pending}
                         aria-pressed={artist.is_published}
-                        className="inline-flex items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+                        className="inline-flex min-h-[44px] items-center gap-2 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
                         title={artist.is_published ? "تحويل إلى مسودة" : "نشر الفنان"}
                       >
                         <StatusBadge published={artist.is_published} />
@@ -391,20 +391,20 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                         disabled={pending}
                         aria-pressed={artist.is_featured}
                         className={artist.is_featured
-                          ? "rounded-lg px-2 py-1 text-sm font-bold text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-                          : "rounded-lg px-2 py-1 text-sm font-bold text-gradscale-400 hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"}
+                          ? "rounded-lg min-h-[44px] inline-flex items-center px-2.5 py-1 text-sm font-bold text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                          : "rounded-lg min-h-[44px] inline-flex items-center px-2.5 py-1 text-sm font-bold text-gradscale-400 hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"}
                       >
                         {artist.is_featured ? "★ مميز" : "☆ تمييز"}
                       </button>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 whitespace-nowrap">
-                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(artist)} disabled={pending}>تعديل</Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => openEdit(artist)} disabled={pending} className="min-h-[44px]">تعديل</Button>
                         <button
                           type="button"
                           onClick={() => removeArtist(artist)}
                           disabled={pending}
-                          className="rounded-button px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
+                          className="rounded-button min-h-[44px] inline-flex items-center px-3 py-2 text-xs font-bold text-alert-error hover:bg-alert-error/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alert-error"
                         >
                           حذف
                         </button>
@@ -552,10 +552,10 @@ export function ArtistsManager({ initialArtists }: ArtistsManagerProps) {
                 عرض ضمن الفنانين المميزين
               </label>
             </div>
-            <div className="flex items-center gap-3 md:col-span-2">
-              <Button type="submit" isLoading={pending}>{editingId ? "حفظ التعديلات" : "حفظ الفنان"}</Button>
-              <Button type="button" variant="outline" onClick={closeForm} disabled={pending}>إلغاء</Button>
-            </div>
+            <ModalActions>
+              <Button type="submit" isLoading={pending} className="min-h-[44px]">{editingId ? "حفظ التعديلات" : "حفظ الفنان"}</Button>
+              <Button type="button" variant="outline" onClick={closeForm} disabled={pending} className="min-h-[44px]">إلغاء</Button>
+            </ModalActions>
           </form>
         </ModalShell>
       )}

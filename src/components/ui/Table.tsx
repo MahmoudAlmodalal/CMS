@@ -6,13 +6,15 @@ export function Table({
   ...props
 }: React.HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="w-full overflow-x-auto rounded-2xl border border-brand-surface shadow-xs bg-white">
-      <table
-        className={`w-full text-start text-sm border-collapse ${className}`}
-        {...props}
-      >
-        {children}
-      </table>
+    <div className="relative w-full rounded-2xl border border-brand-surface shadow-xs bg-white overflow-hidden">
+      <div className="w-full overflow-x-auto table-scrollbar [mask-image:linear-gradient(to_left,transparent_0,black_24px,black_100%)] sm:[mask-image:none]">
+        <table
+          className={`w-full text-start text-sm border-collapse ${className}`}
+          {...props}
+        >
+          {children}
+        </table>
+      </div>
     </div>
   );
 }

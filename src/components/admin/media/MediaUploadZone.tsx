@@ -154,7 +154,7 @@ export function MediaUploadZone({ bucket, folder, onUploaded }: MediaUploadZoneP
           }
         }}
         className={[
-          "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors",
+          "border-2 border-dashed rounded-xl py-6 sm:py-12 px-4 sm:px-8 text-center cursor-pointer transition-colors",
           isDragging
             ? "border-amber-500 bg-amber-50"
             : "border-gray-300 hover:border-amber-400 hover:bg-gray-50",

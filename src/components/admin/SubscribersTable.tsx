@@ -63,37 +63,62 @@ export function SubscribersTable({ initialSubscribers }: SubscribersTableProps) 
               <p className="text-lg font-bold text-brand-espresso">لا يوجد مشتركون بعد</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>البريد الإلكتروني</TableHead>
-                  <TableHead>الحالة</TableHead>
-                  <TableHead>الإجراءات</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <>
+              {/* Mobile Card View (<640px) */}
+              <div className="block sm:hidden divide-y divide-brand-surface/60">
                 {subscribers.map((subscriber) => (
-                  <TableRow key={subscriber.id}>
-                    <TableCell>
-                      <p className="font-medium text-brand-espresso" dir="ltr">{subscriber.email}</p>
-                    </TableCell>
-                    <TableCell>
+                  <div key={subscriber.id} className="p-4 flex items-center justify-between gap-3">
+                    <div className="space-y-1 min-w-0">
+                      <p className="font-medium text-sm text-brand-espresso truncate" dir="ltr">{subscriber.email}</p>
                       <StatusBadge published={subscriber.status === "subscribed"} labels={["مشترك", "ملغى"]} />
-                    </TableCell>
-                    <TableCell>
-                      <button
-                        type="button"
-                        onClick={() => toggleStatus(subscriber)}
-                        disabled={pending}
-                        className="rounded-button px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-                      >
-                        {subscriber.status === "subscribed" ? "إلغاء الاشتراك" : "إعادة تفعيل الاشتراك"}
-                      </button>
-                    </TableCell>
-                  </TableRow>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => toggleStatus(subscriber)}
+                      disabled={pending}
+                      className="shrink-0 min-h-[44px] px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 rounded-button focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary transition-colors"
+                    >
+                      {subscriber.status === "subscribed" ? "إلغاء الاشتراك" : "إعادة تفعيل"}
+                    </button>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
+              </div>
+
+              {/* Desktop & Tablet Table (>=640px) */}
+              <div className="hidden sm:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>البريد الإلكتروني</TableHead>
+                      <TableHead>الحالة</TableHead>
+                      <TableHead>الإجراءات</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {subscribers.map((subscriber) => (
+                      <TableRow key={subscriber.id}>
+                        <TableCell>
+                          <p className="font-medium text-brand-espresso" dir="ltr">{subscriber.email}</p>
+                        </TableCell>
+                        <TableCell>
+                          <StatusBadge published={subscriber.status === "subscribed"} labels={["مشترك", "ملغى"]} />
+                        </TableCell>
+                        <TableCell>
+                          <button
+                            type="button"
+                            onClick={() => toggleStatus(subscriber)}
+                            disabled={pending}
+                            className="rounded-button min-h-[44px] inline-flex items-center justify-center px-3 py-2 text-xs font-bold text-brand-primary hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                          >
+                            {subscriber.status === "subscribed" ? "إلغاء الاشتراك" : "إعادة تفعيل الاشتراك"}
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>

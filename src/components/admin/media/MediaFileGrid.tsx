@@ -150,7 +150,7 @@ function FileCard({ file, onDeleted }: FileCardProps) {
             type="button"
             onClick={handleCopyPath}
             title="نسخ المسار"
-            className="flex-1 text-xs px-2 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex-1 min-h-[36px] sm:min-h-[40px] text-xs px-2 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer inline-flex items-center justify-center font-medium"
           >
             {copied ? "✓ تم النسخ" : "نسخ المسار"}
           </button>
@@ -159,9 +159,9 @@ function FileCard({ file, onDeleted }: FileCardProps) {
             onClick={handleDelete}
             disabled={deleting}
             title="حذف الملف"
-            className="px-2 py-1 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-xs"
+            className="min-h-[36px] sm:min-h-[40px] px-2.5 py-1.5 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-xs inline-flex items-center justify-center font-medium"
           >
-            {deleting ? "جارٍ الحذف…" : "حذف"}
+            {deleting ? "جارٍ…" : "حذف"}
           </button>
         </div>
       </div>
@@ -200,7 +200,7 @@ export function MediaFileGrid({ files, onDeleted }: MediaFileGridProps) {
     <div
       role="region"
       aria-label="قائمة الملفات"
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
       dir="rtl"
     >
       {localFiles.map((file) => (
