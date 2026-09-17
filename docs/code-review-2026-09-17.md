@@ -234,18 +234,48 @@ a copy edit fails at the key rather than as a selector matching nothing.
 scripts/seed-demo-content.mjs --seed"* when a listing has no published rows,
 instead of letting every detail test fail separately as a missing link.
 
-## 6. Open, not addressed here
+## 6. Rate limiting on the public endpoints — fixed
 
-- **`SubmissionDeduplicator`** (`src/lib/validations/security.ts:127`) is
-  written, exported and unit-tested — and used by nothing. The public booking
-  and newsletter actions have no rate limiting or duplicate suppression of any
-  kind. The test suite covering a class no caller uses is the §2 problem in
-  miniature.
-- **The ~36 remaining source-grep test files** — see §2.
-- **The E2E suite has not been executed.** It needs a live Supabase project and
-  an admin user, which this environment does not have. Every spec is
-  typechecked and enumerates under `playwright test --list`; none has been run
-  against a browser.
+Originally listed here as open. `SubmissionDeduplicator`
+(`src/lib/validations/security.ts`) was written, exported and unit-tested, and
+imported by nothing; the public booking and newsletter actions had no rate
+limiting or duplicate suppression at all.
+
+Newsletter turned out to be covered — `email` carries a UNIQUE constraint and
+`subscribeNewsletter` maps 23505 to "you are already subscribed". Booking had
+nothing, so a script could insert unbounded rows.
+
+The guard is a `BEFORE INSERT` trigger (`20260922000000_rate_limit_booking_requests.sql`),
+not application code, because the anon role cannot SELECT `booking_requests` —
+the public path cannot count its own history, and giving that endpoint a
+service-role client so it could would put an RLS-bypassing key behind an
+unauthenticated form. Three per email per ten minutes; the action maps the
+trigger's hint to a localized refusal rather than a generic failure.
+
+Verified against a real Postgres 16 with all 33 migrations applied, both onto an
+existing database and from empty: 1–3 accepted and the 4th refused,
+case-insensitive on the address, other visitors unaffected, the window expiring
+correctly, and the file re-running cleanly. That run caught a bug before it
+shipped — `is_admin()` alone reads `app_metadata.role`, which the service-role
+token does not carry, so an admin using `createPrivilegedBookingAction` for a
+fourth booking was being rejected as spam.
+
+`SubmissionDeduplicator` is deleted: a static `Map` cannot rate-limit across
+serverless instances, and its test made the suite look like it covered a
+protection that was never wired up. The booking form also gained the `_hp`
+honeypot the newsletter already had.
+
+## 7. Still open
+
+- **The ~36 source-grep test files** (§2). Not converted — they pass, and they
+  do catch deletions. `tests/README.md` now records what they prove and what
+  they do not, and the routes for real coverage (behavioural unit tests, and
+  `e2e/`). Converting them is a larger piece of work than this review.
+- **The E2E suite has still not been executed.** It needs a live Supabase
+  project and an admin user. Every spec typechecks and enumerates under
+  `playwright test --list`; none has been run against a browser. This is the
+  single largest remaining gap, and the one thing that would most change
+  confidence in the admin panel.
 
 ## Verification
 
@@ -253,7 +283,7 @@ instead of letting every detail test fail separately as a missing link.
 npm ci
 npm run lint       # 0 errors, 48 pre-existing warnings
 npm run typecheck  # clean
-npm test           # 279 tests, 279 passing
+npm test           # 284 tests, 284 passing
 npm run build      # compiled, 17 static pages
 npx playwright test --list   # 139 tests in 8 files
 ```
@@ -266,6 +296,13 @@ To run the E2E suite:
 node scripts/seed-demo-content.mjs --seed
 npm run e2e
 ```
+
+SQL changes are verified against a throwaway Postgres 16 rather than assumed:
+`initdb` a cluster, stub the Supabase-provided pieces the migrations assume
+(`auth.jwt()`, the anon/authenticated/service_role roles, `storage.objects`),
+then run `scripts/apply-migrations.sh` and exercise the behaviour as each
+role. That is how the rate-limit trigger in §6 was checked, and how the
+service-role bypass bug in it was found.
 
 `global-teardown` deletes every `E2E-TEST%` and `e2e-test+%` row the run
 creates. The two specs that touch `site_settings` restore what they changed
