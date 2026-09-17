@@ -50,6 +50,11 @@ function revalidateSite(): void {
     // route tree would leave old Global Config data in the Data Cache.
     revalidateTag("site-settings-public", "max");
     revalidatePath("/", "layout");
+    // Artist pages are ISR routes and contain published tracks, releases, and
+    // artist works. Invalidate their route entries so a publish/edit/delete is
+    // visible immediately instead of waiting for the one-hour ISR window.
+    revalidatePath("/[locale]/(public)/artists", "page");
+    revalidatePath("/[locale]/(public)/artists/[slug]", "page");
   } catch {
     // Ignore cache invalidation errors outside request scope (tests or static execution).
   }
