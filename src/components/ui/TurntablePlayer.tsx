@@ -113,21 +113,23 @@ export function TurntablePlayer({
   const ytHostRef = useRef<HTMLDivElement | null>(null);
   const ytPlayerRef = useRef<YTPlayerInstance | null>(null);
 
-  const activePlaylist = playlist?.length ? playlist : PLAYLIST;
-  const playlistTrack = activePlaylist[trackIndex % activePlaylist.length] || PLAYLIST[0];
+  const activePlaylist = playlist?.length ? playlist : initialTrack ? [initialTrack] : [];
+  const playlistTrack = activePlaylist.length
+    ? activePlaylist[trackIndex % activePlaylist.length]
+    : undefined;
   const currentTrack: TrackItem = {
     title: "",
     artist: "",
     coverUrl: "/assets/figma/about-musician.png",
     synthMode: "andalusia",
-    ...(playlist?.length ? playlistTrack : initialTrack || playlistTrack),
+    ...(playlistTrack || initialTrack || {}),
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
   };
   // youtubeUrl is the full link an editor pasted (e.g. "https://youtu.be/xyz");
   // the embed endpoint needs the bare 11-char video id, or it 404s and never
   // makes a sound no matter how it was triggered.
-  const youtubeVideoId = parseYouTubeId(currentTrack.youtubeUrl);
+  const youtubeVideoId = currentTrack.audioUrl ? null : parseYouTubeId(currentTrack.youtubeUrl);
 
   const stopSynth = useCallback(() => {
     if (synthRef.current) {
@@ -403,6 +405,7 @@ export function TurntablePlayer({
   }, [isPlaying, currentTrack, youtubeVideoId, startSynth, stopSynth]);
 
   const handleNext = () => {
+    if (!activePlaylist.length) return;
     stopSynth();
     if (audioRef.current) audioRef.current.pause();
     const nextIdx = (trackIndex + 1) % activePlaylist.length;
@@ -419,6 +422,7 @@ export function TurntablePlayer({
   };
 
   const handlePrev = () => {
+    if (!activePlaylist.length) return;
     stopSynth();
     if (audioRef.current) audioRef.current.pause();
     const prevIdx = (trackIndex - 1 + activePlaylist.length) % activePlaylist.length;

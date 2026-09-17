@@ -89,7 +89,7 @@ export default async function HomePage({
     settings.show_events !== false
       ? getUpcomingEvents(settings.home_upcoming_events_count)
       : Promise.resolve([]),
-    getFeaturedPublishedTracks(),
+    getFeaturedPublishedTracks(100),
   ]);
 
   return (
