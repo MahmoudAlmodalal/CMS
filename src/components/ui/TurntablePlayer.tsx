@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useCallback, useEffect } from "react";
-import { youTubeEmbedUrl } from "@/lib/youtube";
+import { parseYouTubeId, youTubeEmbedUrl } from "@/lib/youtube";
 
 export interface TrackItem {
   title: string;
@@ -60,6 +60,10 @@ export function TurntablePlayer({
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
   };
+  // youtubeUrl is the full link an editor pasted (e.g. "https://youtu.be/xyz");
+  // the embed endpoint needs the bare 11-char video id, or it 404s and never
+  // makes a sound no matter how it was triggered.
+  const youtubeVideoId = parseYouTubeId(currentTrack.youtubeUrl);
 
   const stopSynth = useCallback(() => {
     if (synthRef.current) {
@@ -227,7 +231,7 @@ export function TurntablePlayer({
       stopSynth();
       setIsPlaying(false);
     } else {
-      if (currentTrack.youtubeUrl) {
+      if (youtubeVideoId) {
         setIsPlaying(true);
       } else if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
@@ -242,7 +246,7 @@ export function TurntablePlayer({
         setIsPlaying(true);
       }
     }
-  }, [isPlaying, currentTrack, startSynth, stopSynth]);
+  }, [isPlaying, currentTrack, youtubeVideoId, startSynth, stopSynth]);
 
   const handleNext = () => {
     stopSynth();
@@ -291,10 +295,10 @@ export function TurntablePlayer({
           onPause={() => setIsPlaying(false)}
         />
       ) : null}
-      {currentTrack.youtubeUrl && isPlaying ? (
+      {youtubeVideoId && isPlaying ? (
         <iframe
-          key={currentTrack.youtubeUrl}
-          src={youTubeEmbedUrl(currentTrack.youtubeUrl, { autoplay: true })}
+          key={youtubeVideoId}
+          src={youTubeEmbedUrl(youtubeVideoId, { autoplay: true })}
           title={currentTrack.title}
           allow="autoplay; encrypted-media; picture-in-picture"
           className="absolute h-px w-px opacity-0"
