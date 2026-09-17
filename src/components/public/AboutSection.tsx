@@ -33,9 +33,12 @@ export function AboutSection({ settings, ctaLabel, audioUrl }: AboutSectionProps
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
           <div className="order-1 min-w-0 md:order-2 w-full">
             <ScrollReveal variant="image">
-              <TurntablePlayer
-                audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
-              />
+              <div className="relative mx-auto aspect-square w-full max-w-[335px] overflow-hidden rounded-full border-4 border-white/80 shadow-xl md:max-w-[480px]">
+                <TurntablePlayer
+                  audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
+                  className="absolute inset-0"
+                />
+              </div>
             </ScrollReveal>
           </div>
           <div className="order-2 flex min-w-0 w-full max-w-[324px] flex-col items-start gap-6 text-start md:order-1 md:w-auto md:max-w-none md:gap-7 lg:gap-8">

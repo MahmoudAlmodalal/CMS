@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import type { Event } from "@/lib/dal/events";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
+import { Highlight } from "@/components/ui/Highlight";
 
 interface HomeEventsProps {
   events: Event[];
@@ -121,7 +122,7 @@ export function HomeEvents({ events, heading, ctaLabel, ctaHref, imageUrl }: Hom
             {/* Heading 87:14480 */}
             <ScrollReveal variant="up">
               <h2 className="order-1 mx-auto mb-4 h-auto min-h-[64px] w-[326px] max-w-full pt-[8px] text-start font-display text-3xl font-normal leading-relaxed text-brand-espresso sm:text-4xl md:text-5xl lg:mx-0 lg:mb-0 lg:h-[55.6px] lg:w-auto lg:min-h-0 lg:pt-[13.6px] lg:text-[48px] lg:leading-[40px]">
-                {heading || t("eventsHeading")}
+                <Highlight text={heading || t("eventsHeading")} highlightClassName="text-primary-500" />
               </h2>
             </ScrollReveal>
 

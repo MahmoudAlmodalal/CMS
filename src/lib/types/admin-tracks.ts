@@ -10,6 +10,7 @@ import type { Database } from "@/lib/supabase/types";
 // ---------------------------------------------------------------------------
 
 export type TrackRow = Database["public"]["Tables"]["tracks"]["Row"];
+export type Track = TrackRow;
 export type TrackInsert = Database["public"]["Tables"]["tracks"]["Insert"];
 export type TrackUpdate = Database["public"]["Tables"]["tracks"]["Update"];
 

@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { ScrollReveal } from "./ScrollReveal";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 import { cssUrl } from "@/lib/storage";
+import { Highlight } from "@/components/ui/Highlight";
 
 /**
  * Two frames draw this band and they are not the same drawing, so the shape is
@@ -122,7 +123,7 @@ export function BookingBanner({
               className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
               style={{ "--shift": `${v.headingShift}px` } as React.CSSProperties}
             >
-              {title}
+              <Highlight text={title} highlightClassName="text-primary-500" />
             </h2>
           </ScrollReveal>
         </div>

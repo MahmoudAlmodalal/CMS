@@ -229,7 +229,7 @@ export function TurntablePlayer({
 
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-3xl bg-[#191412] text-white p-6 sm:p-8 md:p-10 shadow-2xl border border-white/10 ${className}`}
+      className={`absolute inset-0 overflow-hidden bg-gradient-to-br from-[#2B1D14] to-[#0F0700] text-white flex flex-col items-center justify-between pb-8 pt-6 ${className}`}
       dir="ltr"
     >
       {currentTrack.audioUrl ? (
@@ -243,160 +243,108 @@ export function TurntablePlayer({
         />
       ) : null}
 
-      <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 md:gap-12">
-        {/* Left Side: Turntable with Vinyl Record & Tonearm */}
-        <div className="relative shrink-0 flex items-center justify-center">
-          {/* Vinyl Record */}
-          <div
-            className={`relative size-44 sm:size-52 md:size-60 rounded-full bg-[#140E0A] shadow-2xl flex items-center justify-center overflow-hidden border border-black/80 transition-transform ${
-              isPlaying ? "motion-spin-vinyl" : ""
-            }`}
-            style={{
-              boxShadow: "0 14px 36px -4px rgba(0,0,0,0.85), 0 0 0 6px #1A130F",
-            }}
-          >
-            {/* Conic gloss sheen */}
-            <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0deg,rgba(255,255,255,0.08)_45deg,transparent_90deg,rgba(255,255,255,0.08)_135deg,transparent_180deg,rgba(255,255,255,0.08)_225deg,transparent_270deg,rgba(255,255,255,0.08)_315deg,transparent_360deg)] pointer-events-none opacity-80" />
-
-            {/* Concentric vinyl grooves */}
-            <div className="absolute inset-[7%] rounded-full border border-white/[0.04]" />
-            <div className="absolute inset-[14%] rounded-full border border-white/[0.06]" />
-            <div className="absolute inset-[21%] rounded-full border border-white/[0.04]" />
-            <div className="absolute inset-[28%] rounded-full border border-white/[0.06]" />
-            <div className="absolute inset-[35%] rounded-full border border-white/[0.04]" />
-            <div className="absolute inset-[42%] rounded-full border border-white/[0.05]" />
-
-            {/* Center album cover artwork */}
-            <div className="relative z-10 size-20 sm:size-24 md:size-28 rounded-full overflow-hidden border-2 border-[#3D271B] shadow-inner">
-              <img
-                src={currentTrack.coverUrl}
-                alt={`${currentTrack.title} - ${currentTrack.artist}`}
-                className="w-full h-full object-cover select-none pointer-events-none"
-              />
-              {/* Spindle hole */}
-              <div className="absolute inset-0 m-auto size-3 rounded-full bg-[#0F0A07] border border-white/20" />
-            </div>
-          </div>
-
-          {/* Turntable Tonearm (Pivoting arm with needle cartridge) */}
-          <div
-            className={`absolute top-0 right-0 z-20 pointer-events-none transition-transform duration-700 ease-out origin-[95%_10%] ${
-              isPlaying ? "rotate-0" : "-rotate-[22deg]"
-            }`}
-            style={{ width: "95px", height: "155px" }}
-          >
-            <svg
-              viewBox="0 0 100 160"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-full drop-shadow-md"
-            >
-              {/* Base pivot gimbal */}
-              <circle cx="90" cy="16" r="10" fill="#2E1F16" stroke="#52392B" strokeWidth="2" />
-              <circle cx="90" cy="16" r="6" fill="#140E0A" />
-              <circle cx="90" cy="16" r="2.5" fill="#EAEAEA" />
-
-              {/* Counterweight */}
-              <rect x="83" y="2" width="14" height="6" rx="1.5" fill="#756457" />
-
-              {/* Tonearm rod */}
-              <path
-                d="M 90 16 Q 84 65, 72 105 T 38 145"
-                stroke="#F0F0F0"
-                strokeWidth="3.2"
-                strokeLinecap="round"
-                fill="none"
-              />
-
-              {/* Headshell cartridge */}
-              <g transform="translate(28, 137) rotate(-18)">
-                <rect x="0" y="0" width="11" height="20" rx="3" fill="#FFFFFF" />
-                <rect x="2" y="14" width="7" height="4" rx="1" fill="#C54716" />
-                <circle cx="5.5" cy="19" r="1.2" fill="#FFD900" />
-              </g>
-            </svg>
+      {/* Vinyl Record — top half */}
+      <div className="relative flex shrink-0 items-center justify-center mt-2">
+        {/* Vinyl disc */}
+        <div
+          className={`relative size-36 sm:size-44 md:size-52 rounded-full bg-[#140E0A] flex items-center justify-center overflow-hidden border border-black/80 ${
+            isPlaying ? "motion-spin-vinyl" : ""
+          }`}
+          style={{
+            boxShadow: "0 8px 28px -4px rgba(0,0,0,0.9), 0 0 0 5px #1A130F",
+          }}
+        >
+          {/* Conic gloss sheen */}
+          <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent_0deg,rgba(255,255,255,0.08)_45deg,transparent_90deg,rgba(255,255,255,0.08)_135deg,transparent_180deg,rgba(255,255,255,0.08)_225deg,transparent_270deg,rgba(255,255,255,0.08)_315deg,transparent_360deg)] pointer-events-none opacity-80" />
+          {/* Grooves */}
+          <div className="absolute inset-[7%]  rounded-full border border-white/[0.04]" />
+          <div className="absolute inset-[14%] rounded-full border border-white/[0.06]" />
+          <div className="absolute inset-[21%] rounded-full border border-white/[0.04]" />
+          <div className="absolute inset-[28%] rounded-full border border-white/[0.06]" />
+          <div className="absolute inset-[35%] rounded-full border border-white/[0.04]" />
+          <div className="absolute inset-[42%] rounded-full border border-white/[0.05]" />
+          {/* Center cover art */}
+          <div className="relative z-10 size-16 sm:size-20 md:size-24 rounded-full overflow-hidden border-2 border-[#3D271B] shadow-inner">
+            <img
+              src={currentTrack.coverUrl}
+              alt={`${currentTrack.title} - ${currentTrack.artist}`}
+              className="w-full h-full object-cover select-none pointer-events-none"
+            />
+            {/* Spindle */}
+            <div className="absolute inset-0 m-auto size-3 rounded-full bg-[#0F0A07] border border-white/20" />
           </div>
         </div>
 
-        {/* Right Side: Track Info ("Viva La Vida", "Coldplay") & Controls */}
-        <div className="flex flex-col justify-center text-center sm:text-start min-w-0 flex-1">
-          {/* Track Title */}
-          <h3 className="font-sans text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight truncate">
-            {currentTrack.title}
-          </h3>
+        {/* Tonearm */}
+        <div
+          className={`absolute top-0 right-0 z-20 pointer-events-none transition-transform duration-700 ease-out origin-[95%_10%] ${
+            isPlaying ? "rotate-0" : "-rotate-[22deg]"
+          }`}
+          style={{ width: "72px", height: "120px" }}
+        >
+          <svg viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+            <circle cx="90" cy="16" r="10" fill="#2E1F16" stroke="#52392B" strokeWidth="2" />
+            <circle cx="90" cy="16" r="6"  fill="#140E0A" />
+            <circle cx="90" cy="16" r="2.5" fill="#EAEAEA" />
+            <rect x="83" y="2" width="14" height="6" rx="1.5" fill="#756457" />
+            <path d="M 90 16 Q 84 65, 72 105 T 38 145" stroke="#F0F0F0" strokeWidth="3.2" strokeLinecap="round" fill="none" />
+            <g transform="translate(28, 137) rotate(-18)">
+              <rect x="0" y="0" width="11" height="20" rx="3" fill="#FFFFFF" />
+              <rect x="2" y="14" width="7"  height="4" rx="1" fill="#C54716" />
+              <circle cx="5.5" cy="19" r="1.2" fill="#FFD900" />
+            </g>
+          </svg>
+        </div>
+      </div>
 
-          {/* Artist Description */}
-          <p className="font-sans text-sm sm:text-base md:text-lg text-white/60 font-medium mt-1 truncate">
-            {currentTrack.artist}
-          </p>
+      {/* Bottom: title + artist + controls */}
+      <div className="flex flex-col items-center gap-1 w-full px-6">
+        <h3 className="font-sans text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight truncate text-center w-full">
+          {currentTrack.title}
+        </h3>
+        <p className="font-sans text-xs sm:text-sm text-white/60 font-medium truncate text-center w-full">
+          {currentTrack.artist}
+        </p>
 
-          {/* Spotify-style media player controls */}
-          <div className="flex items-center justify-center sm:justify-start gap-5 sm:gap-7 mt-6 sm:mt-8">
-            {/* Heart / Like Icon */}
-            <button
-              type="button"
-              onClick={() => setIsLiked(!isLiked)}
-              className={`transition-all duration-200 transform hover:scale-115 focus-visible:outline-hidden ${
-                isLiked ? "text-[#FF4B55] scale-105" : "text-white/60 hover:text-white"
-              }`}
-              aria-label={isLiked ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill={isLiked ? "currentColor" : "none"}
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-              </svg>
-            </button>
+        {/* Controls */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3">
+          {/* Heart */}
+          <button
+            type="button"
+            onClick={() => setIsLiked(!isLiked)}
+            className={`transition-all duration-200 hover:scale-115 focus-visible:outline-hidden ${
+              isLiked ? "text-[#FF4B55] scale-105" : "text-white/60 hover:text-white"
+            }`}
+            aria-label={isLiked ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill={isLiked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+          </button>
 
-            {/* Previous Button */}
-            <button
-              type="button"
-              onClick={handlePrev}
-              className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden"
-              aria-label="المقطع السابق"
-            >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 20L9 12l10-8v16zM5 19h2V5H5v14z" />
-              </svg>
-            </button>
+          {/* Prev */}
+          <button type="button" onClick={handlePrev} className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع السابق">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 19h2V5H5v14z" /></svg>
+          </button>
 
-            {/* Play / Pause Primary Button */}
-            <button
-              type="button"
-              onClick={togglePlayback}
-              className="size-12 sm:size-14 rounded-full bg-white text-black flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 focus-visible:outline-hidden"
-              aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
-            >
-              {isPlaying ? (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              ) : (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-            </button>
+          {/* Play/Pause */}
+          <button
+            type="button"
+            onClick={togglePlayback}
+            className="size-10 sm:size-12 rounded-full bg-white text-black flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 focus-visible:outline-hidden"
+            aria-label={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
+          >
+            {isPlaying ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="ml-0.5"><path d="M8 5v14l11-7z" /></svg>
+            )}
+          </button>
 
-            {/* Next Button */}
-            <button
-              type="button"
-              onClick={handleNext}
-              className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden"
-              aria-label="المقطع التالي"
-            >
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M5 4l10 8-10 8V4zm14 1v14h-2V5h2z" />
-              </svg>
-            </button>
-          </div>
+          {/* Next */}
+          <button type="button" onClick={handleNext} className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع التالي">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zm14 1v14h-2V5h2z" /></svg>
+          </button>
         </div>
       </div>
     </div>
