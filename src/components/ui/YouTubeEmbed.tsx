@@ -87,7 +87,7 @@ export function YouTubeEmbed({
 
   if (audioOnly && playing) {
     return (
-      <div className={`relative flex min-h-[116px] items-center justify-between gap-4 overflow-hidden bg-gradscale-900 px-5 py-4 text-white ${className}`}>
+      <div className={`relative flex min-h-[240px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#24150d] via-[#120c08] to-[#2d160b] px-5 py-4 text-white ${className}`}>
         <iframe
           src={youTubeEmbedUrl(videoId, { autoplay: true })}
           title={title}
@@ -97,16 +97,18 @@ export function YouTubeEmbed({
           className="absolute h-px w-px opacity-0"
           aria-hidden="true"
         />
-        <div className="relative flex min-w-0 items-center gap-3">
-          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-500">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
-          </span>
-          <span className="truncate text-sm font-semibold">{title}</span>
+        <div className="relative size-[154px] motion-spin-vinyl rounded-full bg-[#0d0a08] shadow-[0_14px_36px_-4px_rgba(0,0,0,.8)] ring-4 ring-[#3a2417]">
+          <div className="absolute inset-[7%] rounded-full border border-white/[0.08]" />
+          <div className="absolute inset-[15%] rounded-full border border-white/[0.07]" />
+          <div className="absolute inset-[23%] rounded-full border border-white/[0.06]" />
+          <div className="absolute inset-[31%] overflow-hidden rounded-full border-2 border-[#5b2d18]"><SafeImage src={poster?.trim() || youTubeThumbnailUrl(videoId)} alt="" fill sizes="70px" loading="lazy" quality={80} fallbackText={title} className="object-cover" /></div>
+          <div className="absolute inset-0 m-auto size-3 rounded-full border border-white/30 bg-[#0d0a08]" />
         </div>
+        <span className="absolute bottom-4 start-4 truncate pe-20 text-xs font-semibold text-white/80">{title}</span>
         <button
           type="button"
           onClick={() => setPlaying(false)}
-          className="relative shrink-0 rounded-full border border-white/35 px-3 py-2 text-xs font-bold transition hover:bg-white/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white"
+          className="absolute bottom-3 end-4 rounded-full border border-white/35 px-3 py-2 text-xs font-bold transition hover:bg-white/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white"
           aria-label={`إيقاف ${title}`}
         >
           إيقاف
