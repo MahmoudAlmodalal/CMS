@@ -70,10 +70,11 @@ export function ArtistsGrid({
 function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const scrollRow = (direction: "start" | "end") => {
-    rowRef.current?.scrollBy({
-      left: direction === "end" ? 306 : -306,
-      behavior: "smooth",
-    });
+    const row = rowRef.current;
+    if (!row) return;
+    const isRtl = getComputedStyle(row).direction === "rtl";
+    const step = direction === "end" ? 306 : -306;
+    row.scrollBy({ left: isRtl ? -step : step, behavior: "smooth" });
   };
 
   return (
@@ -103,7 +104,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         <button
           type="button"
           onClick={() => scrollRow("start")}
-          className="pointer-events-auto absolute left-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="pointer-events-auto absolute left-2 top-1/2 flex size-11 -translate-y-1/2 touch-manipulation select-none items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Previous artists"
         >
           <ChevronStartIcon size={20} />
@@ -111,7 +112,7 @@ function ArtistRow({ artists, rowIndex }: { artists: Artist[]; rowIndex: number 
         <button
           type="button"
           onClick={() => scrollRow("end")}
-          className="pointer-events-auto absolute right-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
+          className="pointer-events-auto absolute right-2 top-1/2 flex size-11 -translate-y-1/2 touch-manipulation select-none items-center justify-center rounded-full border border-black/10 bg-white text-brand-espresso shadow-lg transition-transform hover:scale-105 active:scale-95"
           aria-label="Next artists"
         >
           <ChevronEndIcon size={20} />
