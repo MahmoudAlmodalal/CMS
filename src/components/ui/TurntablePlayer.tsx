@@ -7,6 +7,7 @@ import { parseYouTubeId } from "@/lib/youtube";
 interface YTPlayerInstance {
   playVideo(): void;
   pauseVideo(): void;
+  mute(): void;
   unMute(): void;
   loadVideoById(videoId: string): void;
   destroy(): void;
@@ -279,6 +280,9 @@ export function TurntablePlayer({
       if (cancelled || !ytHostRef.current || !window.YT) return;
       if (ytPlayerRef.current) {
         ytPlayerRef.current.loadVideoById(youtubeVideoId);
+        ytPlayerRef.current.mute();
+        ytPlayerRef.current.playVideo();
+        setIsPlaying(true);
         return;
       }
       const mount = document.createElement("div");
@@ -288,7 +292,11 @@ export function TurntablePlayer({
         host: "https://www.youtube-nocookie.com",
         playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, modestbranding: 1, playsinline: 1 },
         events: {
-          onReady: (event) => event.target.playVideo(),
+          onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
+            setIsPlaying(true);
+          },
           // 1 is YT.PlayerState.PLAYING — a stable, documented API constant.
           onStateChange: (event) => setIsPlaying(event.data === 1),
         },
@@ -312,11 +320,15 @@ export function TurntablePlayer({
   // "just plays itself" while still respecting autoplay-with-sound rules.
   useEffect(() => {
     const unlock = () => {
-      ytPlayerRef.current?.unMute();
-      ytPlayerRef.current?.playVideo();
+      if (ytPlayerRef.current) {
+        ytPlayerRef.current.unMute();
+        ytPlayerRef.current.playVideo();
+        document.removeEventListener("pointerdown", unlock);
+        document.removeEventListener("keydown", unlock);
+      }
       synthRef.current?.resume?.();
     };
-    document.addEventListener("pointerdown", unlock, { once: true, passive: true });
+    document.addEventListener("pointerdown", unlock, { passive: true });
     document.addEventListener("keydown", unlock, { once: true });
     return () => {
       document.removeEventListener("pointerdown", unlock);
@@ -324,12 +336,12 @@ export function TurntablePlayer({
     };
   }, []);
 
-  // Autoplay on mount — short delay to pass browser autoplay policy.
+  // Autoplay on mount as soon as the native source is available.
   // YouTube tracks are handled by the player effect above; tracks without a
   // media URL use the local synth fallback and resume on the first gesture.
   useEffect(() => {
     if (youtubeVideoId) return;
-    const timer = setTimeout(() => {
+    const start = () => {
       if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
           .play()
@@ -342,8 +354,8 @@ export function TurntablePlayer({
         startSynth(currentTrack.synthMode);
         setIsPlaying(true);
       }
-    }, 300);
-    return () => clearTimeout(timer);
+    };
+    start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
