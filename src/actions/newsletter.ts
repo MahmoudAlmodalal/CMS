@@ -63,7 +63,14 @@ export async function subscribeNewsletter(
 
   // 2. Database Insertion (if configured)
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    // Graceful offline/demo fallback
+    // Offline/demo affordance: a local run without Supabase can still exercise
+    // the form. In production the same branch would tell a visitor they had
+    // subscribed when nothing was stored, so there it is an error.
+    if (process.env.NODE_ENV === "production") {
+      console.error("[Newsletter] Supabase is not configured; subscription was not stored.");
+      const errorMsg = msg("newsletterServerError", NEWSLETTER_MESSAGES.SERVER_ERROR);
+      return { success: false, message: errorMsg, error: errorMsg };
+    }
     return {
       success: true,
       message: msg("newsletterSuccess", NEWSLETTER_MESSAGES.SUCCESS),
