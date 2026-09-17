@@ -123,6 +123,14 @@ export function BookingForm({
       noValidate
       className="flex w-full flex-col text-start pb-[52.8px] lg:w-[672px]"
     >
+      {/* Honeypot: hidden from readers, caught on bots. Same _hp field name the
+          newsletter uses, and the action answers a filled one with the success
+          a bot expects rather than an error that tells it what to change. */}
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="_hp_booking">{t("honeypot")}</label>
+        <input type="text" id="_hp_booking" name="_hp" tabIndex={-1} autoComplete="off" />
+      </div>
+
       {/* Hidden Event Preselection Linkage */}
       {defaultEventId && <input type="hidden" name="event_id" value={defaultEventId} />}
 

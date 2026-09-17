@@ -120,60 +120,6 @@ export function checkDuplicateEmail(
   };
 }
 
-// ============================================================================
-// Repeated Submissions & Anti-Replay Guard (In-Memory Sliding Window)
-// ============================================================================
-
-export class SubmissionDeduplicator {
-  private static timestamps: Map<string, number> = new Map();
-
-  /**
-   * Generates a deterministic submission fingerprint key.
-   */
-  public static createFingerprint(prefix: string, payload: unknown): string {
-    const serialized = JSON.stringify(payload, Object.keys(payload as object || {}).sort());
-    return `${prefix}:${serialized}`;
-  }
-
-  /**
-   * Checks whether a submission with this fingerprint occurred within the cooldown window.
-   */
-  public static isRepeated(key: string, cooldownMs: number = 60_000): boolean {
-    const now = Date.now();
-    const last = this.timestamps.get(key);
-    if (!last) return false;
-    if (now - last < cooldownMs) {
-      return true;
-    }
-    this.timestamps.delete(key);
-    return false;
-  }
-
-  /**
-   * Records a submission timestamp and purges old entries.
-   */
-  public static record(key: string): void {
-    const now = Date.now();
-    this.timestamps.set(key, now);
-
-    // Housekeeping: remove entries older than 5 minutes
-    if (this.timestamps.size > 500) {
-      const expiry = now - 300_000;
-      for (const [k, ts] of this.timestamps.entries()) {
-        if (ts < expiry) {
-          this.timestamps.delete(k);
-        }
-      }
-    }
-  }
-
-  /**
-   * Clears all recorded submissions (useful for test isolation).
-   */
-  public static reset(): void {
-    this.timestamps.clear();
-  }
-}
 
 // ============================================================================
 // Zod Error Formatting & Safe Validation Helpers

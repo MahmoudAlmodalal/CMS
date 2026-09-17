@@ -45,7 +45,6 @@ import {
   validateUserRole,
   checkDuplicateSlug,
   checkDuplicateEmail,
-  SubmissionDeduplicator,
   safeValidate,
 } from "../src/lib/validations/index.ts";
 
@@ -317,41 +316,6 @@ test("Server-Side Validation — 8. Unauthorized Requests & Role Authorization",
   // Authorized service_role
   const serviceCheck = validateUserRole("service_role");
   assert.equal(serviceCheck.authorized, true);
-});
-
-// ============================================================================
-// 9. Repeated Submissions & Anti-Replay Guard
-// ============================================================================
-
-test("Server-Side Validation — 9. Repeated Submissions & Deduplication Guard", () => {
-  SubmissionDeduplicator.reset();
-
-  const payload = {
-    email: "fan@andalusia.art",
-    form: "newsletter",
-  };
-  const key = SubmissionDeduplicator.createFingerprint("newsletter", payload);
-
-  // Initial submission: not repeated
-  assert.equal(SubmissionDeduplicator.isRepeated(key, 5000), false);
-
-  // Record the submission
-  SubmissionDeduplicator.record(key);
-
-  // Immediate repeated attempt within cooldown: detected as repeated
-  assert.equal(SubmissionDeduplicator.isRepeated(key, 5000), true);
-
-  // Different payload: not repeated
-  const differentPayload = {
-    email: "other@andalusia.art",
-    form: "newsletter",
-  };
-  const diffKey = SubmissionDeduplicator.createFingerprint("newsletter", differentPayload);
-  assert.equal(SubmissionDeduplicator.isRepeated(diffKey, 5000), false);
-
-  // Clean up
-  SubmissionDeduplicator.reset();
-  assert.equal(SubmissionDeduplicator.isRepeated(key, 5000), false);
 });
 
 // ============================================================================

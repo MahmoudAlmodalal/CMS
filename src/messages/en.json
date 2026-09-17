@@ -251,6 +251,7 @@
   "booking": {
     "kicker": "Booking events and private shows",
     "title": "Your occasion deserves <em>real music</em>. ♪",
+    "honeypot": "Do not fill in this field",
     "contextHeading": "Selected booking context",
     "contextEvent": "Booking linked to the event: {title}",
     "contextPerformer": "Performer: {name}",
@@ -318,6 +319,7 @@
     "server": {
       "invalid": "Please correct the errors in the form before continuing.",
       "saveFailed": "We could not save your booking request right now. Please try again later or contact us directly.",
+      "rateLimited": "You have sent several booking requests in the last few minutes. We will be in touch — please wait before sending another.",
       "success": "Your request was received! We will contact you within 48 hours to discuss the details and confirm the booking.",
       "unexpected": "An unexpected error occurred while processing your request. Please try again.",
       "field_full_name": "Please enter your full name (2–150 characters).",
