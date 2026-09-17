@@ -65,7 +65,7 @@ export function AcademyTracks({ courses, heading }: AcademyTracksProps) {
           className="mx-auto w-[286px] text-center font-display text-[32px] leading-[49.5px] text-brand-espresso lg:w-full lg:max-w-[1136px] lg:px-8 lg:text-center lg:text-[40px] hd:mx-0 hd:ms-[560px] hd:w-fit hd:max-w-none hd:text-start"
         >
           <Highlight
-            text={heading || t("tracksHeading")}
+            text={heading || t.raw("tracksHeading")}
             highlightClassName="text-primary-500"
           />
         </h2>
