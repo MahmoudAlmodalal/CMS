@@ -648,6 +648,32 @@ bdi, .bdi-isolate {
   to   { transform: scaleY(1); }
 }
 
+/* --- Circular Spotify Vinyl Record & Sound Wave Loop ---------------------- */
+
+@keyframes motion-spin-vinyl {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.motion-spin-vinyl {
+  animation: motion-spin-vinyl 14s linear infinite;
+}
+
+@keyframes spotify-wave-bounce {
+  0%, 100% { transform: scaleY(0.25); }
+  50%      { transform: scaleY(1); }
+}
+
+.spotify-wave-bar {
+  transform-origin: bottom center;
+  animation: spotify-wave-bounce 1s ease-in-out infinite;
+}
+
+.spotify-wave-bar[data-playing="false"] {
+  animation-play-state: paused;
+  transform: scaleY(0.35);
+}
+
 /* --- Terracotta ripple behind the play control ---------------------------- */
 
 .motion-ripple::before {
@@ -714,6 +740,8 @@ bdi, .bdi-isolate {
   .motion-shimmer::after,
   .motion-image.motion-kenburns,
   .motion-equalizer-bar,
+  .motion-spin-vinyl,
+  .spotify-wave-bar,
   .motion-ripple::before,
   .motion-check path,
   .motion-curtain,

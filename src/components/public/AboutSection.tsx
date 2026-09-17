@@ -10,9 +10,10 @@ import { StrokeUnderline } from "./motion/StrokeUnderline";
 interface AboutSectionProps {
   settings: SiteSettings;
   ctaLabel?: string;
+  audioUrl?: string;
 }
 
-export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
+export function AboutSection({ settings, ctaLabel, audioUrl }: AboutSectionProps) {
   const t = useTranslations("home");
   return (
     <section className="relative w-full bg-[#F9F7F0] py-12 md:py-16 lg:py-24">
@@ -37,6 +38,7 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
                   fill
                   sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
                   className="object-cover object-center"
+                  audioUrl={audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
                 />
               </div>
             </ScrollReveal>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { repairLegacyMediaUrl, resolveMediaUrl, type StorageBucket } from "@/lib/storage";
+import { SpotifyVinylDisc } from "./SpotifyVinylDisc";
 
 export interface SafeImageProps {
   src?: string | null;
@@ -28,6 +29,7 @@ export interface SafeImageProps {
   fallbackText?: string;
   fallbackIcon?: React.ReactNode;
   fallbackTestId?: string;
+  audioUrl?: string | null;
 }
 
 const VIDEO_PAGE_HOSTS = ["youtube.com", "youtu.be", "youtube-nocookie.com", "vimeo.com"];
@@ -119,6 +121,7 @@ export function SafeImage({
   fallbackText,
   fallbackIcon,
   fallbackTestId,
+  audioUrl,
 }: SafeImageProps) {
   const normalizedSrc = normalizeMediaUrl(src, bucket);
   const [hasError, setHasError] = useState(!normalizedSrc);
@@ -126,29 +129,37 @@ export function SafeImage({
   const initialChar = fallbackText?.trim() ? fallbackText.trim().charAt(0) : "";
 
   // Render branded fallback container
-  const renderFallback = () => (
-    <div
-      data-testid={fallbackTestId}
-      className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B1D14] to-[#1F0900] text-brand-surface selection:bg-transparent"
-      aria-label={alt ? alt : undefined}
-      role={alt ? "img" : undefined}
-      aria-hidden={alt ? undefined : true}
-    >
-      <div className="relative flex flex-col items-center justify-center text-center p-2">
-        {fallbackIcon ? (
-          fallbackIcon
-        ) : initialChar ? (
-          <span className="font-display font-bold text-2xl sm:text-3xl text-primary-500 select-none">
-            {initialChar}
-          </span>
-        ) : (
-          <span aria-hidden="true" className="font-sans text-xl sm:text-2xl font-bold text-primary-500/80 select-none">
-            ♪
-          </span>
-        )}
-      </div>
-    </div>
-  );
+  const renderFallback = () => {
+    if (fallbackIcon || initialChar) {
+      return (
+        <div
+          data-testid={fallbackTestId}
+          className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#2B1D14] to-[#1F0900] text-brand-surface selection:bg-transparent"
+          aria-label={alt ? alt : undefined}
+          role={alt ? "img" : undefined}
+          aria-hidden={alt ? undefined : true}
+        >
+          <div className="relative flex flex-col items-center justify-center text-center p-2">
+            {fallbackIcon ? (
+              fallbackIcon
+            ) : (
+              <span className="font-display font-bold text-2xl sm:text-3xl text-primary-500 select-none">
+                {initialChar}
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <SpotifyVinylDisc
+        alt={alt}
+        audioUrl={audioUrl}
+        testId={fallbackTestId}
+      />
+    );
+  };
 
   const containerStyles: React.CSSProperties = aspectRatio
     ? { aspectRatio }

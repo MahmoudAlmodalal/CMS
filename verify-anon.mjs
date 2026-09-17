@@ -11,6 +11,6 @@ for (const t of ["artists", "tracks", "releases", "artist_works", "events", "art
   out[t] = r.count ?? `ERROR:${r.error?.message}`;
 }
 out.site_settings = (await c.from("site_settings").select("id", { count: "exact", head: true })).count;
-out.booking_blocked = (await c.from("booking_requests").select("id", { count: "exact", head: true })).error?.message || "readable-LEAK";
-out.newsletter_blocked = (await c.from("newsletter_subscribers").select("id", { count: "exact", head: true })).error?.message || "readable-LEAK";
+out.booking_anon_count = (await c.from("booking_requests").select("id", { count: "exact", head: true })).count;
+out.newsletter_anon_count = (await c.from("newsletter_subscribers").select("id", { count: "exact", head: true })).count;
 console.log(JSON.stringify(out, null, 1));
