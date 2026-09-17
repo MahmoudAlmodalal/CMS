@@ -13,9 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
-import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
-import { AudioUploadField } from "@/components/admin/media/AudioUploadField";
-import { AUDIO_MAX_BYTES, BUCKET_ALLOWED_MIMES } from "@/lib/storage";
+import { parseYouTubeId, youTubeThumbnailUrl } from "@/lib/youtube";
+import { SafeImage } from "@/components/ui/SafeImage";
 import type { AdminTrack, ArtistOption } from "@/lib/types/admin-tracks";
 import type { TrackInput } from "@/lib/validations";
 
@@ -32,6 +31,7 @@ function emptyTrack(defaultArtistId: string): TrackFormValues {
     title: "",
     title_en: null,
     audio_file_url: "",
+    youtube_url: "",
     duration_seconds: 0,
     cover_image_url: "",
     display_order: 0,
@@ -45,6 +45,7 @@ function trackToForm(track: AdminTrack): TrackFormValues {
     title: track.title,
     title_en: track.title_en ?? null,
     audio_file_url: track.audio_file_url,
+    youtube_url: track.youtube_url ?? "",
     duration_seconds: track.duration_seconds,
     cover_image_url: track.cover_image_url ?? "",
     display_order: track.display_order,
@@ -94,8 +95,8 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
     event.preventDefault();
     if (pending) return;
 
-    if (!values.audio_file_url.trim()) {
-      setNotice({ type: "error", text: "يرجى رفع الملف الصوتي أو إدخال رابطه" });
+    if (!parseYouTubeId(values.youtube_url)) {
+      setNotice({ type: "error", text: "يرجى إدخال رابط يوتيوب صالح للمقطوعة الموسيقية" });
       return;
     }
 
@@ -171,7 +172,7 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
           <p className="text-sm font-bold text-brand-primary">المحتوى الفني</p>
           <h1 className="mt-1 text-2xl font-bold font-sans text-brand-espresso">إدارة المقطوعات والأعمال الموسيقية</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gradscale-400">
-            أدِر المقطوعات الصوتية المرتبطة بالفنانين، ترتيب الظهور، وحالات النشر.
+              أضف الأعمال الموسيقية المرتبطة بالفنانين من خلال رابط يوتيوب فقط، دون رفع أو تخزين ملفات.
           </p>
         </div>
         <Button type="button" onClick={openCreate} disabled={pending || artists.length === 0}>
@@ -287,31 +288,15 @@ export function TracksManager({ initialTracks, artists }: TracksManagerProps) {
               valueEn={values.title_en}
               onChangeEn={(value) => setField("title_en", value)}
             />
-            <Field
-              id="track-audio-url"
-              label="الملف الصوتي"
-              help="الصق رابطاً مباشراً للملف الصوتي. رفع الملفات الصوتية أُلغي؛ الأعمال المعروضة للجمهور تُضاف من صفحة «الأعمال» كفيديو يوتيوب."
-            >
-              <AudioUploadField
-                id="track-audio"
-                value={values.audio_file_url}
-                onChange={(url) => setField("audio_file_url", url)}
-                disabled={pending}
-              />
+            <Field id="track-youtube-url" label="رابط يوتيوب للموسيقى" help="يُشغّل الموقع الصوت من يوتيوب مباشرة ولا يخزن فيديو أو ملف صوتي.">
+              <Input id="track-youtube-url" type="url" dir="ltr" placeholder="https://www.youtube.com/watch?v=..." value={values.youtube_url ?? ""} onChange={(event) => setField("youtube_url", event.target.value)} required />
+              {values.youtube_url && !parseYouTubeId(values.youtube_url) ? <p role="alert" className="mt-2 text-xs font-medium text-alert-error">هذا ليس رابط يوتيوب صالحاً.</p> : null}
+              {parseYouTubeId(values.youtube_url) ? <div className="mt-3 flex items-center gap-3"><div className="relative h-16 w-28 overflow-hidden rounded-lg"><SafeImage src={youTubeThumbnailUrl(parseYouTubeId(values.youtube_url)!)} alt="" fill sizes="112px" /></div><span className="text-xs text-gradscale-400">تم التعرف على مصدر الموسيقى</span></div> : null}
             </Field>
             <Field id="track-duration" label="المدة بالثواني">
               <Input id="track-duration" type="number" min="1" dir="ltr" value={values.duration_seconds} onChange={(event) => setField("duration_seconds", Number(event.target.value))} required />
             </Field>
-            <Field id="track-cover" label="صورة الغلاف" required={false} help="ارفع صورة (JPG/PNG/WebP حتى 5MB) أو اختر من المكتبة أو الصق رابطاً مباشراً. تُحفظ في مجلد releases/covers.">
-              <MediaPickerField
-                id="track-cover"
-                value={values.cover_image_url ?? ""}
-                onChange={(url) => setField("cover_image_url", url)}
-                bucket="releases"
-                folder="covers"
-                disabled={pending}
-              />
-            </Field>
+            <input type="hidden" name="cover_image_url" value="" />
             <Field id="track-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً.">
               <Input id="track-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
             </Field>

@@ -253,19 +253,27 @@ export type ArtistInput = z.infer<typeof artistSchema>;
 // 3. Track Schema
 // ============================================================================
 
-export const trackSchema = z
+export const trackSchemaBase = z
   .object({
     id: uuidSchema.optional(),
     artist_id: uuidSchema,
     title: trimmedString(1, 200, "عنوان المقطع الصوتي"),
     title_en: translationString(200),
-    audio_file_url: safeUrlSchema(500),
+    // Legacy direct-audio URL; new music entries use youtube_url instead.
+    audio_file_url: z.union([z.literal(""), safeUrlSchema(500)]),
+    youtube_url: z.union([z.literal(""), youtubeUrlSchema(500)]).optional().nullable(),
     duration_seconds: positiveInt(7200),
     cover_image_url: optionalImageUrlSchema(500),
     display_order: z.number().int().min(0).default(0),
     is_published: z.boolean().default(true),
   })
   .strict();
+
+export const trackSchema = trackSchemaBase
+  .refine((value) => Boolean(value.audio_file_url || value.youtube_url), {
+    message: "يجب إضافة رابط يوتيوب للموسيقى",
+    path: ["youtube_url"],
+  });
 
 export type TrackInput = z.infer<typeof trackSchema>;
 

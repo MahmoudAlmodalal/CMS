@@ -7,6 +7,7 @@ import type { Release } from "@/lib/releases";
 import type { ArtistWork } from "@/lib/types/artist-works";
 import type { Track } from "@/lib/dal/tracks";
 import { ArtistWorkCard } from "./ArtistWorkCard";
+import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
 import { ChevronStartIcon, ChevronEndIcon } from "@/components/ui/Icons";
 import { ScrollReveal } from "../ScrollReveal";
 import { useMotionPrefs } from "../motion/useMotionPrefs";
@@ -358,12 +359,7 @@ export function ArtistDiscography({
                       </p>
 
                       <div className="mt-2 w-full">
-                        <audio
-                          controls
-                          preload="none"
-                          src={track.audio_file_url}
-                          className="w-full h-[36px] rounded accent-primary-500"
-                        />
+                        {track.youtube_url ? <YouTubeEmbed url={track.youtube_url} title={track.title} audioOnly /> : <audio controls preload="none" src={track.audio_file_url} className="w-full h-[36px] rounded accent-primary-500" />}
                       </div>
                     </article>
                   ))}
@@ -465,14 +461,7 @@ export function ArtistDiscography({
                         </span>
                         {trk.title}
                       </span>
-                      {trk.audio_file_url && (
-                        <audio
-                          controls
-                          preload="none"
-                          src={trk.audio_file_url}
-                          className="h-7 w-32 shrink-0"
-                        />
-                      )}
+                      {trk.youtube_url ? <YouTubeEmbed url={trk.youtube_url} title={trk.title} audioOnly className="h-12 min-h-0 w-32 shrink-0" /> : trk.audio_file_url ? <audio controls preload="none" src={trk.audio_file_url} className="h-7 w-32 shrink-0" /> : null}
                     </li>
                   ))}
                 </ol>

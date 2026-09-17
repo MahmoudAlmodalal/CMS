@@ -203,6 +203,7 @@ export interface Database {
           title: string;
           title_en?: string | null;
           audio_file_url: string;
+          youtube_url?: string | null;
           duration_seconds: number;
           cover_image_url: string | null;
           display_order: number;
@@ -215,6 +216,7 @@ export interface Database {
           title: string;
           title_en?: string | null;
           audio_file_url: string;
+          youtube_url?: string | null;
           duration_seconds: number;
           cover_image_url?: string | null;
           display_order?: number;

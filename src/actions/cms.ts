@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import {
   artistSchema,
   trackSchema,
+  trackSchemaBase,
   releaseSchema,
   artistWorkSchema,
   eventSchema,
@@ -412,7 +413,7 @@ export async function updateTrackAction(
   const { supabase } = await requireAdminSession(ctx);
   if (!id) return { ok: false, error: "معرف المقطع الصوتي مطلوب" };
 
-  const parsed = trackSchema.omit({ id: true }).partial().safeParse(input);
+  const parsed = trackSchemaBase.omit({ id: true }).partial().safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues.map((i) => i.message).join(", ") };
   }
