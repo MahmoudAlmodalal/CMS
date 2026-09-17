@@ -325,10 +325,10 @@ export function TurntablePlayer({
   }, []);
 
   // Autoplay on mount — short delay to pass browser autoplay policy.
-  // (YouTube tracks are handled by the player effect above instead: they
-  // autoplay muted immediately, then unmute on first interaction.)
+  // YouTube tracks are handled by the player effect above; tracks without a
+  // media URL use the local synth fallback and resume on the first gesture.
   useEffect(() => {
-    if (!currentTrack.audioUrl || youtubeVideoId) return;
+    if (youtubeVideoId) return;
     const timer = setTimeout(() => {
       if (currentTrack.audioUrl && audioRef.current) {
         audioRef.current
@@ -338,7 +338,7 @@ export function TurntablePlayer({
             startSynth(currentTrack.synthMode);
             setIsPlaying(true);
           });
-      } else {
+      } else if (!currentTrack.audioUrl) {
         startSynth(currentTrack.synthMode);
         setIsPlaying(true);
       }

@@ -42,7 +42,7 @@ export async function getFeaturedPublishedTrack(): Promise<(Track & { artist_nam
       .from("tracks")
       .select("*, artists(name)")
       .eq("is_published", true)
-      .not("youtube_url", "is", null)
+      .or("youtube_url.not.is.null,audio_file_url.not.is.null")
       .order("display_order", { ascending: true })
       .order("created_at", { ascending: false })
       .limit(1)
@@ -64,7 +64,7 @@ export async function getFeaturedPublishedTracks(limit = 8): Promise<Array<Track
       .from("tracks")
       .select("*, artists(name)")
       .eq("is_published", true)
-      .not("youtube_url", "is", null)
+      .or("youtube_url.not.is.null,audio_file_url.not.is.null")
       .order("display_order", { ascending: true })
       .order("created_at", { ascending: false })
       .limit(limit);

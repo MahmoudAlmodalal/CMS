@@ -57,8 +57,6 @@ export function AboutSection({ settings, ctaLabel, audioUrl, featuredTrack, feat
                       synthMode: "andalusia" as const,
                     };
                   })}
-                  audioUrl={featuredTrack ? undefined : audioUrl || (settings as unknown as { about_audio_url?: string }).about_audio_url}
-                  youtubeUrl={featuredTrack?.youtube_url}
                   className="absolute inset-0"
                 />
               </div>
