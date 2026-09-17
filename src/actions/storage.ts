@@ -252,7 +252,10 @@ async function findReferencingRows(
       .select(`id, ${ref.column}` as never)
       .like(ref.column as never, `%${path}%` as never)
       .limit(5);
-    if (error || !data) continue;
+    // Fail closed: a skipped column would hide live references and allow deleting in-use files.
+    if (error || !data) {
+      throw new Error(`Reference scan failed for ${ref.table}.${ref.column}: ${error?.message ?? "no data"}`);
+    }
     for (const row of data as Array<Record<string, unknown>>) {
       hits.push(`${ref.table}:${String(row.id)}`);
     }
@@ -300,7 +303,10 @@ async function collectReferencedPaths(
       .select(ref.column as never)
       .not(ref.column as never, "is", null)
       .limit(10000);
-    if (error || !data) continue;
+    // Fail closed: a skipped column would hide live references and allow deleting in-use files.
+    if (error || !data) {
+      throw new Error(`Reference scan failed for ${ref.table}.${ref.column}: ${error?.message ?? "no data"}`);
+    }
     for (const row of data as Array<Record<string, unknown>>) {
       const v = row[ref.column];
       if (typeof v !== "string" || !v) continue;

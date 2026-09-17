@@ -627,6 +627,7 @@ export const MEDIA_REFERENCES: readonly MediaReference[] = [
   { table: "site_settings", column: "academy_hero_image_url", bucket: "site" },
   { table: "site_settings", column: "home_events_image_url", bucket: "site" },
   { table: "site_settings", column: "booking_banner_image_url", bucket: "site" },
+  { table: "site_settings", column: "booking_hero_image_url", bucket: "site" },
   { table: "site_settings", column: "artist_hero_image_url", bucket: "site" },
   { table: "site_settings", column: "seo_og_image_url", bucket: "site" },
   { table: "artists", column: "portrait_image_url", bucket: "artists" },
