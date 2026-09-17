@@ -30,9 +30,9 @@ test("Task 40 — 1. Route map: 8 canonical routes, no /events/[slug]", () => {
 test("Task 40 — 2. Every route reads published content via its DAL", () => {
   const wiring: [string, string[]][] = [
     ["page.tsx", ["getSiteSettings", "getFeaturedArtists", "getPublishedTestimonials", "getFeaturedArticles", "getUpcomingEvents"]],
-    ["artists/page.tsx", ["getPublishedArtists", "getSiteSettings"]],
+    ["artists/page.tsx", ["getPublishedArtistsPage", "getSiteSettings"]],
     ["artists/[slug]/page.tsx", ["getArtistBySlug", "getPublishedArtistSlugs"]],
-    ["events/page.tsx", ["getPublishedEvents", "getFeaturedEvent", "getEventsSubtitle"]],
+    ["events/page.tsx", ["getPublishedEventsPage", "getFeaturedEvent", "getEventsSubtitle"]],
     ["academy/page.tsx", ["getSiteSettings", "getPublishedAcademyCourses"]],
     ["news/page.tsx", ["getPublishedArticlesPage", "getFeaturedArticles"]],
     ["news/[slug]/page.tsx", ["getArticleBySlug", "getRelatedArticles", "getAllPublishedArticleSlugs"]],

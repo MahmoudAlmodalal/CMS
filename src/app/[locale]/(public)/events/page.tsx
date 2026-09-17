@@ -4,9 +4,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { EventsCatalogView } from "@/components/public/events";
 import { PageHero } from "@/components/public";
 import {
-  getPublishedEvents,
+  getPublishedEventsPage,
   getFeaturedEvent,
   getEventsSubtitle,
+  EVENTS_CATALOG_PER_PAGE,
 } from "@/lib/dal/events";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import type { CategoryFilterId } from "@/lib/types/events";
@@ -50,9 +51,18 @@ export async function generateMetadata({
   };
 }
 
+function parsePageParam(param: string | string[] | undefined): number {
+  const raw = Array.isArray(param) ? param[0] : param;
+  if (!raw) return 1;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || Number.isNaN(parsed)) return 1;
+  const floored = Math.floor(parsed);
+  return floored < 1 ? 1 : floored;
+}
+
 interface EventsPageProps {
   params: Promise<{ locale: string }>;
-  searchParams?: Promise<{ category?: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function EventsPage({ params, searchParams }: EventsPageProps) {
@@ -60,16 +70,23 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
   setRequestLocale(locale);
 
   const query = searchParams ? await searchParams : {};
-  const requestedCategory = (query.category as CategoryFilterId) || "all";
+  const rawCategory = Array.isArray(query.category) ? query.category[0] : query.category;
+  const requestedCategory = (rawCategory as CategoryFilterId) || "all";
+  const requestedPage = parsePageParam(query.page);
 
-  const [events, featuredEvent, subtitle, settings, t] = await Promise.all([
-    getPublishedEvents(),
+  const [featuredEvent, subtitle, settings, t] = await Promise.all([
     getFeaturedEvent(),
     getEventsSubtitle(),
     getSiteSettings(),
     getTranslations("events"),
   ]);
-  const resolvedFeaturedEvent = featuredEvent || events[0] || null;
+
+  const eventsPage = await getPublishedEventsPage({
+    category: requestedCategory,
+    page: requestedPage,
+    perPage: EVENTS_CATALOG_PER_PAGE,
+    excludeIds: featuredEvent ? [featuredEvent.id] : undefined,
+  });
 
   return (
     <div className="flex w-full flex-col bg-brand-cream">
@@ -112,10 +129,13 @@ export default async function EventsPage({ params, searchParams }: EventsPagePro
         <Suspense fallback={<div className="min-h-[828px]" />}>
           <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center">
             <EventsCatalogView
-              initialEvents={events}
-              featuredEvent={resolvedFeaturedEvent}
-              initialCategory={requestedCategory}
+              events={eventsPage.items}
+              page={eventsPage.page}
+              totalPages={eventsPage.totalPages}
+              featuredEvent={featuredEvent}
+              selectedCategory={requestedCategory}
               allLabel={settings.events_filter_all_label}
+              searchParams={query}
             />
           </div>
         </Suspense>

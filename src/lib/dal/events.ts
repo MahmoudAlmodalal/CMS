@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { pagination } from "@/lib/pagination";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { getContentLocale, localizeContent, localizeContentList } from "./localize";
 import { pickLocalized } from "@/lib/utils";
@@ -141,6 +142,99 @@ export async function getPublishedEvents(category?: string): Promise<EventItem[]
   } catch (err: unknown) {
     console.warn("[DAL Warning getPublishedEvents]:", err instanceof Error ? err.message : String(err));
     return localizeContentList("events", USE_DEMO_CONTENT ? CANONICAL_UPCOMING_EVENTS : []);
+  }
+}
+
+/** Cards per page on /events — the list column holds one card per row. */
+export const EVENTS_CATALOG_PER_PAGE = 6;
+
+/**
+ * Paginated published events for /events — mirrors getPublishedArticlesPage.
+ * `excludeIds` keeps the featured banner card out of the list so it never
+ * renders twice on the same page.
+ */
+export async function getPublishedEventsPage(
+  options: {
+    category?: string;
+    page?: number;
+    perPage?: number;
+    excludeIds?: string[];
+  } = {}
+) {
+  const perPage = options.perPage ?? EVENTS_CATALOG_PER_PAGE;
+  const emptyBounds = (pageReq = 1) => {
+    const bounds = pagination(0, pageReq, perPage);
+    return { ...bounds, total: 0, items: [] as EventItem[] };
+  };
+
+  const demoPage = async (pageReq = 1) => {
+    let rows = CANONICAL_UPCOMING_EVENTS;
+    if (options.category && options.category !== "all") {
+      rows = rows.filter((e) => e.category === options.category);
+    }
+    if (options.excludeIds && options.excludeIds.length > 0) {
+      rows = rows.filter((e) => !options.excludeIds!.includes(e.id));
+    }
+    const bounds = pagination(rows.length, pageReq, perPage);
+    return {
+      ...bounds,
+      total: rows.length,
+      items: await localizeContentList("events", rows.slice(bounds.from, bounds.to + 1)),
+    };
+  };
+
+  try {
+    if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+      return demoPage(options.page);
+    }
+
+    const supabase = await createClient();
+    const buildQuery = (head = false) => {
+      let query = supabase
+        .from("events")
+        .select(EVENT_COLUMNS, { count: "exact", head })
+        .eq("is_published", true);
+      if (options.category && options.category !== "all") {
+        query = query.eq("category", options.category as EventItem["category"]);
+      }
+      if (options.excludeIds && options.excludeIds.length > 0) {
+        const safeIds = options.excludeIds.filter((id) => /^[A-Za-z0-9_-]{1,64}$/.test(id));
+        if (safeIds.length > 0) {
+          query = query.not("id", "in", `(${safeIds.join(",")})`);
+        }
+      }
+      return query;
+    };
+
+    const { count, error: countError } = await buildQuery(true);
+    if (countError) {
+      if (!isJwtClockError(countError)) console.error("DAL Error [getPublishedEventsPage:count]:", countError.message);
+      return USE_DEMO_CONTENT || isJwtClockError(countError) ? demoPage(options.page) : emptyBounds(options.page);
+    }
+
+    const total = count ?? 0;
+    const bounds = pagination(total, options.page ?? 1, perPage);
+    if (!total) {
+      return { ...bounds, total: 0, items: [] as EventItem[] };
+    }
+
+    const { data, error } = await buildQuery()
+      .order("event_date", { ascending: true })
+      .order("id", { ascending: true })
+      .range(bounds.from, bounds.to);
+
+    if (error) {
+      if (!isJwtClockError(error)) console.error("DAL Error [getPublishedEventsPage:data]:", error.message);
+      return USE_DEMO_CONTENT || isJwtClockError(error)
+        ? demoPage(options.page)
+        : { ...bounds, total, items: [] as EventItem[] };
+    }
+
+    const rows = (data as unknown as EventItem[]) || [];
+    return { ...bounds, total, items: await localizeContentList("events", rows) };
+  } catch (err: unknown) {
+    console.warn("[DAL Warning getPublishedEventsPage]:", err instanceof Error ? err.message : String(err));
+    return USE_DEMO_CONTENT ? demoPage(options.page) : emptyBounds(options.page);
   }
 }
 

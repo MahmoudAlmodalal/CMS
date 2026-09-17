@@ -1,7 +1,10 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getPublishedArtists } from "@/lib/dal/artists";
+import {
+  getPublishedArtistsPage,
+  ARTISTS_CATALOG_PER_PAGE,
+} from "@/lib/dal/artists";
 import { getSiteSettings } from "@/lib/dal/site-settings";
 import { ArtistsDirectoryClient, PageHero } from "@/components/public";
 
@@ -49,18 +52,40 @@ export async function generateMetadata({
   };
 }
 
+function parsePageParam(param: string | string[] | undefined): number {
+  const raw = Array.isArray(param) ? param[0] : param;
+  if (!raw) return 1;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || Number.isNaN(parsed)) return 1;
+  const floored = Math.floor(parsed);
+  return floored < 1 ? 1 : floored;
+}
+
+interface ArtistsPageProps {
+  params?: Promise<{ locale: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
 export default async function ArtistsPage({
   params,
-}: {
-  params?: Promise<{ locale: string }>;
-} = {}) {
+  searchParams,
+}: ArtistsPageProps = {}) {
   if (params) {
     const { locale } = await params;
     setRequestLocale(locale);
   }
 
-  const [artists, settings, t] = await Promise.all([
-    getPublishedArtists(),
+  const query = searchParams ? await searchParams : {};
+  const rawCategory = Array.isArray(query.category) ? query.category[0] : query.category;
+  const requestedCategory = rawCategory || "all";
+  const requestedPage = parsePageParam(query.page);
+
+  const [artistsPage, settings, t] = await Promise.all([
+    getPublishedArtistsPage({
+      category: requestedCategory,
+      page: requestedPage,
+      perPage: ARTISTS_CATALOG_PER_PAGE,
+    }),
     getSiteSettings(),
     getTranslations("artists"),
   ]);
@@ -106,8 +131,12 @@ export default async function ArtistsPage({
         <div className="relative mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12 xl:px-8">
           <Suspense fallback={<div className="min-h-[888px]" />}>
             <ArtistsDirectoryClient
-              initialArtists={artists}
+              artists={artistsPage.items}
+              page={artistsPage.page}
+              totalPages={artistsPage.totalPages}
+              selectedCategory={requestedCategory}
               allLabel={settings.artists_filter_all_label}
+              searchParams={query}
             />
           </Suspense>
         </div>

@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { arMessages, enMessages } from "./helpers/i18n.ts";
 
 const root = path.resolve(".");
 
@@ -57,4 +58,28 @@ test("الفنانين — the 390 frame's vertical rhythm", () => {
   // The band height is per-frame, so it cannot come from a shared default.
   assert.match(hero, /--hero-mobile-height/, "PageHero takes its 390 band height from the frame");
   assert.doesNotMatch(hero, /sm:h-\[500px\]/, "The invented tablet band height is gone — Figma has no tablet frame");
+});
+
+test("الفنانين — Server-Side Pagination Integration", () => {
+  const dal = read("src/lib/dal/artists.ts");
+  assert.match(dal, /export const ARTISTS_CATALOG_PER_PAGE = 8;/);
+  assert.match(dal, /export async function getPublishedArtistsPage/);
+
+  const page = read("src/app/[locale]/(public)/artists/page.tsx");
+  assert.match(page, /getPublishedArtistsPage/);
+  assert.match(page, /parsePageParam/);
+
+  const client = comp("ArtistsDirectoryClient.tsx");
+  assert.match(client, /NewsPagination/);
+  assert.match(client, /totalPages > 1/);
+
+  // i18n keys present
+  assert.ok(arMessages["artists.pagination"]);
+  assert.ok(enMessages["artists.pagination"]);
+  assert.ok(arMessages["artists.previousPage"]);
+  assert.ok(enMessages["artists.previousPage"]);
+  assert.ok(arMessages["artists.nextPage"]);
+  assert.ok(enMessages["artists.nextPage"]);
+  assert.ok(arMessages["artists.pageNumber"]);
+  assert.ok(enMessages["artists.pageNumber"]);
 });

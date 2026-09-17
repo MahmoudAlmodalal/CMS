@@ -243,12 +243,27 @@ test("Task 35 — 9. Type Consistency and Mock Event Data Verification", () => {
   assert.ok(mockEvent.id.length > 0);
 });
 
-/**
- * الفعاليات on the 390 frame — 144:19902.
- *
- * Every section of this frame is reproducible and pinned below. Its total height is
- * not: `Frame 39` holds three rows whose third duplicates the first
- * («مهرجان الربيع الموسيقي» appears twice), so the 491 that box measures encodes a
- * three-row mock rather than a designed row count — the desktop frame draws five,
- * and matches our five fixtures exactly. So this frame is gated section by section.
- */
+test("Task 35 — 10. Events Server-Side Pagination Integration", () => {
+  const dal = fs.readFileSync(path.join(root, "src/lib/dal/events.ts"), "utf-8");
+  assert.match(dal, /export const EVENTS_CATALOG_PER_PAGE = 6;/);
+  assert.match(dal, /export async function getPublishedEventsPage/);
+  assert.match(dal, /excludeIds/);
+
+  const page = fs.readFileSync(path.join(root, "src/app/[locale]/(public)/events/page.tsx"), "utf-8");
+  assert.match(page, /getPublishedEventsPage/);
+  assert.match(page, /parsePageParam/);
+
+  const view = fs.readFileSync(path.join(root, "src/components/public/events/EventsCatalogView.tsx"), "utf-8");
+  assert.match(view, /NewsPagination/);
+  assert.match(view, /totalPages > 1/);
+
+  // i18n keys present
+  assert.ok(arMessages["events.pagination"]);
+  assert.ok(enMessages["events.pagination"]);
+  assert.ok(arMessages["events.previousPage"]);
+  assert.ok(enMessages["events.previousPage"]);
+  assert.ok(arMessages["events.nextPage"]);
+  assert.ok(enMessages["events.nextPage"]);
+  assert.ok(arMessages["events.pageNumber"]);
+  assert.ok(enMessages["events.pageNumber"]);
+});

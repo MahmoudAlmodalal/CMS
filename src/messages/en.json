@@ -166,7 +166,11 @@
     "emptyTitle": "No artists published yet",
     "emptyFilteredBody": "Try another category, or browse all artists to meet the Andalusia players.",
     "emptyBody": "The Andalusia artist roster is being prepared. Please check back soon.",
-    "showAll": "View all artists"
+    "showAll": "View all artists",
+    "pagination": "Artists pagination",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageNumber": "Page {page}"
   },
   "news": {
     "title": "Latest news and articles",
@@ -236,7 +240,11 @@
     "showAll": "View all events",
     "book": "Book",
     "bookNow": "Book now",
-    "bookTicket": "Book your ticket"
+    "bookTicket": "Book your ticket",
+    "pagination": "Events pagination",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "pageNumber": "Page {page}"
   },
   "booking": {
     "kicker": "Booking events and private shows",

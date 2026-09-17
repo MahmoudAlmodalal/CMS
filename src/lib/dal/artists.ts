@@ -1,4 +1,5 @@
 import { createClient, createStaticClient } from "@/lib/supabase/server";
+import { pagination } from "@/lib/pagination";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { USE_DEMO_CONTENT } from "@/lib/demo-content";
 import { localizeContent, localizeContentList } from "./localize";
@@ -124,6 +125,93 @@ export async function getPublishedArtists(options?: { category?: string }): Prom
   } catch (err) {
     console.warn("DAL Warning [getPublishedArtists]: Failed to fetch artists", err);
     return localizeContentList("artists", USE_DEMO_CONTENT ? CANONICAL_FEATURED_ARTISTS : []);
+  }
+}
+
+/** Cards per page on /artists — the desktop grid draws four columns by two rows. */
+export const ARTISTS_CATALOG_PER_PAGE = 8;
+
+/**
+ * Paginated published artists for /artists — mirrors getPublishedArticlesPage.
+ * Ordering matches getPublishedArtists: display_order ASC, name ASC.
+ */
+export async function getPublishedArtistsPage(
+  options: {
+    category?: string;
+    page?: number;
+    perPage?: number;
+  } = {}
+) {
+  const perPage = options.perPage ?? ARTISTS_CATALOG_PER_PAGE;
+  const emptyBounds = (pageReq = 1) => {
+    const bounds = pagination(0, pageReq, perPage);
+    return { ...bounds, total: 0, items: [] as Artist[] };
+  };
+
+  const demoPage = async (pageReq = 1) => {
+    let rows = CANONICAL_FEATURED_ARTISTS;
+    if (options.category && options.category !== "all") {
+      rows = rows.filter((a) => a.category === options.category);
+    }
+    const ordered = [...rows].sort((a, b) => {
+      if (a.display_order !== b.display_order) return a.display_order - b.display_order;
+      return a.name.localeCompare(b.name, "ar");
+    });
+    const bounds = pagination(ordered.length, pageReq, perPage);
+    return {
+      ...bounds,
+      total: ordered.length,
+      items: await localizeContentList("artists", ordered.slice(bounds.from, bounds.to + 1)),
+    };
+  };
+
+  try {
+    if (USE_DEMO_CONTENT && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+      return demoPage(options.page);
+    }
+
+    const supabase = await createClient();
+    const buildQuery = (head = false) => {
+      let query = supabase
+        .from("artists")
+        .select("*", { count: "exact", head })
+        .eq("is_published", true);
+      if (options?.category && options.category !== "all") {
+        query = query.eq(
+          "category",
+          options.category as Database["public"]["Tables"]["artists"]["Row"]["category"],
+        );
+      }
+      return query;
+    };
+
+    const { count, error: countError } = await buildQuery(true);
+    if (countError) {
+      console.error("DAL Error [getPublishedArtistsPage:count]:", countError.message);
+      return USE_DEMO_CONTENT ? demoPage(options.page) : emptyBounds(options.page);
+    }
+
+    const total = count ?? 0;
+    const bounds = pagination(total, options.page ?? 1, perPage);
+    if (!total) {
+      return { ...bounds, total: 0, items: [] as Artist[] };
+    }
+
+    const { data, error } = await buildQuery()
+      .order("display_order", { ascending: true })
+      .order("name", { ascending: true })
+      .range(bounds.from, bounds.to);
+
+    if (error) {
+      console.error("DAL Error [getPublishedArtistsPage:data]:", error.message);
+      return USE_DEMO_CONTENT ? demoPage(options.page) : { ...bounds, total, items: [] as Artist[] };
+    }
+
+    const rows = (data as unknown as Artist[]) || [];
+    return { ...bounds, total, items: await localizeContentList("artists", rows) };
+  } catch (err) {
+    console.warn("DAL Warning [getPublishedArtistsPage]: Failed to fetch artists page", err);
+    return USE_DEMO_CONTENT ? demoPage(options.page) : emptyBounds(options.page);
   }
 }
 

@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { type Artist } from "@/lib/types/artists";
 import { ArtistFilterTabs } from "./ArtistFilterTabs";
 import { ArtistsGrid } from "./ArtistsGrid";
+import { NewsPagination } from "./NewsPagination";
 
 export interface ArtistsDirectoryClientProps {
-  initialArtists: Artist[];
+  /** Current page items — the page fetches one ?category= & ?page= window. */
+  artists: Artist[];
+  page: number;
+  totalPages: number;
+  selectedCategory?: string;
   className?: string;
   allLabel?: string | null;
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
 /**
@@ -21,58 +27,37 @@ export interface ArtistsDirectoryClientProps {
  * at 809 — which is likewise its own figure.
  *
  * Filtering, the ?category= sync and the keyboard tablist are behaviour the design
- * cannot express and are kept as they were.
+ * cannot express and are kept as they were. Paging is server-side like /news:
+ * the page reads ?page= and this client renders one window plus a pager that
+ * preserves ?category=.
  */
 export function ArtistsDirectoryClient({
-  initialArtists,
+  artists,
+  page,
+  totalPages,
+  selectedCategory = "all",
   className = "",
   allLabel,
+  searchParams,
 }: ArtistsDirectoryClientProps) {
-  const searchParams = useSearchParams();
+  const urlSearchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  // Category from query param or default "all"
-  const paramCategory = searchParams.get("category") || "all";
-  const [selectedCategory, setSelectedCategory] = useState<string>(paramCategory);
-
-  // Sync state if URL searchParam changes (e.g. back/forward navigation)
-  useEffect(() => {
-    if (paramCategory) {
-      setSelectedCategory(paramCategory);
-    }
-  }, [paramCategory]);
-
-  // Handle tab switch
+  // Handle tab switch — the page re-fetches one window and restarts at page 1.
   const handleSelectCategory = (categoryId: string) => {
-    setSelectedCategory(categoryId);
-
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(urlSearchParams.toString());
     if (categoryId === "all") {
       params.delete("category");
     } else {
       params.set("category", categoryId);
     }
+    params.delete("page");
 
     const query = params.toString();
     const target = query ? `${pathname}?${query}` : pathname;
     router.replace(target, { scroll: false });
   };
-
-  // Filtered and sorted artists
-  const filteredArtists = useMemo(() => {
-    let result = initialArtists;
-    if (selectedCategory && selectedCategory !== "all") {
-      result = result.filter((a) => a.category === selectedCategory);
-    }
-    // Strict ordering: display_order ASC, name ASC
-    return [...result].sort((a, b) => {
-      if (a.display_order !== b.display_order) {
-        return a.display_order - b.display_order;
-      }
-      return a.name.localeCompare(b.name, "ar");
-    });
-  }, [initialArtists, selectedCategory]);
 
   return (
     <div className={`flex w-full min-w-0 flex-col items-start gap-[32.467px] lg:items-stretch lg:gap-[41.7px] ${className}`}>
@@ -90,10 +75,20 @@ export function ArtistsDirectoryClient({
         aria-labelledby={`tab-${selectedCategory}`}
       >
         <ArtistsGrid
-          artists={filteredArtists}
+          artists={artists}
           category={selectedCategory}
           onResetFilter={() => handleSelectCategory("all")}
         />
+        {totalPages > 1 && (
+          <NewsPagination
+            currentPage={page}
+            totalPages={totalPages}
+            basePath="/artists"
+            namespace="artists"
+            searchParams={searchParams}
+            className="mt-8"
+          />
+        )}
       </div>
     </div>
   );

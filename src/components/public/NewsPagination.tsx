@@ -9,6 +9,8 @@ export interface NewsPaginationProps {
   basePath?: string;
   className?: string;
   searchParams?: Record<string, string | string[] | undefined>;
+  /** i18n namespace holding pagination/previousPage/nextPage/pageNumber. */
+  namespace?: "news" | "events" | "artists";
 }
 
 export function getPageItems(current: number, total: number): (number | "ellipsis")[] {
@@ -50,8 +52,12 @@ export function NewsPagination({
   basePath = "/news",
   className = "",
   searchParams,
+  namespace = "news",
 }: NewsPaginationProps) {
-  const t = useTranslations("news");
+  const tNews = useTranslations("news");
+  const tEvents = useTranslations("events");
+  const tArtists = useTranslations("artists");
+  const t = namespace === "events" ? tEvents : namespace === "artists" ? tArtists : tNews;
 
   if (totalPages <= 1) {
     return null;
