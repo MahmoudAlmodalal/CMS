@@ -50,8 +50,13 @@ export function TurntablePlayer({
   const synthRef = useRef<{ stop: () => void } | null>(null);
 
   const activePlaylist = playlist?.length ? playlist : PLAYLIST;
+  const playlistTrack = activePlaylist[trackIndex % activePlaylist.length] || PLAYLIST[0];
   const currentTrack: TrackItem = {
-    ...activePlaylist[trackIndex % activePlaylist.length],
+    title: playlistTrack.title || "",
+    artist: playlistTrack.artist || "",
+    coverUrl: playlistTrack.coverUrl || "/assets/figma/about-musician.png",
+    synthMode: playlistTrack.synthMode || "andalusia",
+    ...playlistTrack,
     ...(initialTrack || {}),
     ...(audioUrl ? { audioUrl } : {}),
     ...(youtubeUrl ? { youtubeUrl } : {}),
