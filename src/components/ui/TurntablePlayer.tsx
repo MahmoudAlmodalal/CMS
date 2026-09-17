@@ -101,7 +101,7 @@ export function TurntablePlayer({
   const [isLiked, setIsLiked] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const synthRef = useRef<{ stop: () => void } | null>(null);
+  const synthRef = useRef<{ stop: () => void; resume?: () => void } | null>(null);
   // React-owned wrapper with no JSX children of its own, so React never tries
   // to diff or remove whatever ends up inside it. The YouTube Player API
   // physically replaces its mount element with an <iframe>, which crashes
@@ -204,6 +204,9 @@ export function TurntablePlayer({
             clearInterval(interval);
             void ctx.close();
           },
+          resume: () => {
+            if (ctx.state === "suspended") void ctx.resume();
+          },
         };
       } else {
         // Andalusian Hijaz Oud scale
@@ -244,6 +247,9 @@ export function TurntablePlayer({
             isAlive = false;
             clearInterval(interval);
             void ctx.close();
+          },
+          resume: () => {
+            if (ctx.state === "suspended") void ctx.resume();
           },
         };
       }
@@ -308,8 +314,9 @@ export function TurntablePlayer({
     const unlock = () => {
       ytPlayerRef.current?.unMute();
       ytPlayerRef.current?.playVideo();
+      synthRef.current?.resume?.();
     };
-    document.addEventListener("pointerdown", unlock, { once: true });
+    document.addEventListener("pointerdown", unlock, { once: true, passive: true });
     document.addEventListener("keydown", unlock, { once: true });
     return () => {
       document.removeEventListener("pointerdown", unlock);
@@ -506,7 +513,7 @@ export function TurntablePlayer({
           </button>
 
           {/* Prev */}
-          <button type="button" onClick={handlePrev} className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع السابق">
+          <button type="button" onPointerDown={(event) => { event.preventDefault(); handlePrev(); }} onClick={(event) => event.detail === 0 && handlePrev()} className="touch-manipulation select-none text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع السابق">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20L9 12l10-8v16zM5 19h2V5H5v14z" /></svg>
           </button>
 
@@ -525,7 +532,7 @@ export function TurntablePlayer({
           </button>
 
           {/* Next */}
-          <button type="button" onClick={handleNext} className="text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع التالي">
+          <button type="button" onPointerDown={(event) => { event.preventDefault(); handleNext(); }} onClick={(event) => event.detail === 0 && handleNext()} className="touch-manipulation select-none text-white/70 hover:text-white transition-transform hover:scale-115 active:scale-90 focus-visible:outline-hidden" aria-label="المقطع التالي">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4l10 8-10 8V4zm14 1v14h-2V5h2z" /></svg>
           </button>
         </div>
