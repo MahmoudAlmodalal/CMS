@@ -279,14 +279,17 @@ export function TurntablePlayer({
       ytPlayerRef.current = null;
       return;
     }
+    startSynth(currentTrack.synthMode);
     let cancelled = false;
     loadYouTubeIframeApi().then(() => {
       if (cancelled || !ytHostRef.current || !window.YT) return;
       if (ytPlayerRef.current) {
+        stopSynth();
         ytPlayerRef.current.loadVideoById(youtubeVideoId);
         ytPlayerRef.current.mute();
         ytMutedRef.current = true;
         ytPlayerRef.current.playVideo();
+        startSynth(currentTrack.synthMode);
         setIsPlaying(true);
         return;
       }
@@ -298,6 +301,7 @@ export function TurntablePlayer({
         playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, modestbranding: 1, playsinline: 1 },
         events: {
           onReady: (event) => {
+            stopSynth();
             event.target.mute();
             ytMutedRef.current = true;
             event.target.playVideo();
@@ -316,7 +320,7 @@ export function TurntablePlayer({
     return () => {
       cancelled = true;
     };
-  }, [youtubeVideoId]);
+  }, [youtubeVideoId, currentTrack.synthMode, startSynth, stopSynth]);
 
   // Destroy the player on unmount only (not on every id change above).
   useEffect(() => {
@@ -335,10 +339,11 @@ export function TurntablePlayer({
         ytPlayerRef.current.unMute();
         ytPlayerRef.current.playVideo();
         ytMutedRef.current = false;
+        stopSynth();
         document.removeEventListener("pointerdown", unlock);
         document.removeEventListener("keydown", unlock);
       }
-      synthRef.current?.resume?.();
+      else synthRef.current?.resume?.();
     };
     document.addEventListener("pointerdown", unlock, { passive: true });
     document.addEventListener("keydown", unlock, { once: true });
@@ -346,7 +351,7 @@ export function TurntablePlayer({
       document.removeEventListener("pointerdown", unlock);
       document.removeEventListener("keydown", unlock);
     };
-  }, []);
+  }, [stopSynth]);
 
   // Autoplay on mount as soon as the native source is available.
   // YouTube tracks are handled by the player effect above; tracks without a
