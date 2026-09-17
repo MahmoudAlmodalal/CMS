@@ -1,9 +1,7 @@
 "use client";
 
-import React from "react";
 import { useTranslations } from "next-intl";
 import { MorphLink } from "./motion/ViewTransitions";
-import { Tilt3D } from "./motion/Tilt3D";
 import { morphName } from "@/lib/morph";
 import { type Artist } from "@/lib/types/artists";
 import { resolveMediaUrl } from "@/lib/storage";
@@ -46,50 +44,48 @@ export function ArtistCard({ artist, priority = false, className = "", style }: 
   const portrait = resolveMediaUrl("artists", artist.portrait_image_url?.trim() || "");
 
   return (
-    <Tilt3D max={6} className={`h-[422px] w-[296px] shrink-0 snap-start lg:w-full ${className}`}>
-      <article
-        data-testid={`artist-card-${artist.slug}`}
-        style={style}
-        className="motion-card group h-full w-full overflow-hidden rounded-[16px] bg-white text-start"
+    <article
+      data-testid={`artist-card-${artist.slug}`}
+      style={style}
+      className={`motion-card group h-[422px] w-[296px] shrink-0 snap-start overflow-hidden rounded-[16px] bg-white text-start lg:w-full ${className}`}
+    >
+      <MorphLink
+        href={`/artists/${artist.slug}`}
+        aria-label={a("viewProfile", { name: artist.name })}
+        className="flex h-full w-full flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
       >
-        <MorphLink
-          href={`/artists/${artist.slug}`}
-          aria-label={a("viewProfile", { name: artist.name })}
-          className="flex h-full w-full flex-col focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary"
+        <div
+          className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-espresso"
+          style={{ viewTransitionName: morphName("artist", artist.slug) }}
         >
-          <div
-            className="relative h-[314px] w-full shrink-0 overflow-hidden bg-brand-espresso"
-            style={{ viewTransitionName: morphName("artist", artist.slug) }}
-          >
-            <SafeImage
-              src={portrait}
-              alt={a("portraitAlt", { name: artist.name })}
-              fill
-              sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
-              loading={priority ? "eager" : "lazy"}
-              quality={90}
-              fallbackTestId="artist-card-fallback-image"
-              fallbackText={artist.name}
-              className="motion-image motion-kenburns object-cover object-center"
-            />
-          </div>
+          <SafeImage
+            src={portrait}
+            alt={a("portraitAlt", { name: artist.name })}
+            fill
+            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+            loading={priority ? "eager" : "lazy"}
+            quality={90}
+            fallbackTestId="artist-card-fallback-image"
+            fallbackText={artist.name}
+            className="motion-image object-cover object-center"
+          />
+        </div>
 
-          <div className="h-[134px] shrink-0 p-5">
-            <p className="text-[13px] font-medium leading-[19.5px] text-brand-primary">
-              {artist.genre_tag}
-            </p>
+        <div className="h-[134px] shrink-0 p-5">
+          <p className="text-[13px] font-medium leading-[19.5px] text-brand-primary">
+            {artist.genre_tag}
+          </p>
 
-            <h2 className="truncate pt-[4.8px] text-[16px] font-bold leading-[24px] text-gradscale-900 transition-colors group-hover:text-brand-primary">
-              {artist.name}
-            </h2>
+          <h2 className="truncate pt-[4.8px] text-[16px] font-bold leading-[24px] text-gradscale-900 transition-colors group-hover:text-brand-primary">
+            {artist.name}
+          </h2>
 
-            <p className="truncate pt-[2.4px] text-[12.8px] leading-[19.2px] text-gradscale-900">
-              {artist.city}
-            </p>
-          </div>
-        </MorphLink>
-      </article>
-    </Tilt3D>
+          <p className="truncate pt-[2.4px] text-[12.8px] leading-[19.2px] text-gradscale-900">
+            {artist.city}
+          </p>
+        </div>
+      </MorphLink>
+    </article>
   );
 }
 

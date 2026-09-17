@@ -6,8 +6,6 @@ import type { SiteSettings } from "@/lib/dal/site-settings";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { ScrollReveal } from "./ScrollReveal";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
-import { Tilt3D } from "./motion/Tilt3D";
-import { NumberCounter } from "./motion/NumberCounter";
 import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
 
 interface AboutSectionProps {
@@ -33,18 +31,15 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
         <div className="mt-8 grid min-w-0 grid-cols-1 items-center gap-8 sm:mt-10 md:grid-cols-2 md:gap-10 lg:mt-12 xl:gap-16">
           <div className="order-1 min-w-0 md:order-2">
             <ScrollReveal variant="image">
-              {/* Tilt3D wraps the circular portrait for a subtle depth effect on desktop */}
-              <Tilt3D max={4} className="mx-auto w-full max-w-[335px] md:max-w-[551px]">
-                <div className="relative aspect-square h-auto w-full overflow-hidden rounded-full border-4 border-white/80 shadow-md">
-                  <SafeImage
-                    src={settings.about_image_url || "/assets/figma/about-musician.png"}
-                    alt={t("aboutImageAlt")}
-                    fill
-                    sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
-                    className="object-cover object-center"
-                  />
-                </div>
-              </Tilt3D>
+              <div className="relative mx-auto aspect-square h-auto w-full max-w-[335px] overflow-hidden rounded-full border-4 border-white/80 shadow-md md:max-w-[551px]">
+                <SafeImage
+                  src={settings.about_image_url || "/assets/figma/about-musician.png"}
+                  alt={t("aboutImageAlt")}
+                  fill
+                  sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 551px"
+                  className="object-cover object-center"
+                />
+              </div>
             </ScrollReveal>
           </div>
           <div className="order-2 flex min-w-0 w-full max-w-[324px] flex-col items-start gap-6 text-start md:order-1 md:w-auto md:max-w-none md:gap-7 lg:gap-8">
@@ -52,28 +47,6 @@ export function AboutSection({ settings, ctaLabel }: AboutSectionProps) {
               <h3 className="font-display text-2xl font-normal leading-snug text-primary-500 sm:text-3xl lg:text-[48px] lg:leading-tight">
                 {settings.about_headline}
               </h3>
-
-              {/* Animated stats row — counts up when scrolled into view */}
-              <div className="motion-stats-row">
-                <div className="motion-stat-item">
-                  <span className="text-2xl font-bold text-brand-primary lg:text-4xl">
-                    <NumberCounter target={300} suffix="+" duration={1.6} />
-                  </span>
-                  <span className="text-xs font-medium text-gradscale-400 lg:text-sm">{t("statArtists")}</span>
-                </div>
-                <div className="motion-stat-item">
-                  <span className="text-2xl font-bold text-brand-primary lg:text-4xl">
-                    <NumberCounter target={50} suffix="+" duration={1.4} />
-                  </span>
-                  <span className="text-xs font-medium text-gradscale-400 lg:text-sm">{t("statEvents")}</span>
-                </div>
-                <div className="motion-stat-item">
-                  <span className="text-2xl font-bold text-brand-primary lg:text-4xl">
-                    <NumberCounter target={12} duration={1.2} />
-                  </span>
-                  <span className="text-xs font-medium text-gradscale-400 lg:text-sm">{t("statCountries")}</span>
-                </div>
-              </div>
 
               <p className="max-w-prose text-base font-medium leading-relaxed text-[#1b1b1b] sm:text-lg lg:text-[25px] lg:leading-relaxed">
                 {settings.about_body}

@@ -10,8 +10,6 @@ import { ScrollReveal } from "./ScrollReveal";
 import { TextReveal } from "./motion/TextReveal";
 import { Marquee } from "./motion/Marquee";
 import { StrokeUnderline } from "./motion/StrokeUnderline";
-import { CursorGlow } from "./motion/CursorGlow";
-import { Tilt3D } from "./motion/Tilt3D";
 import { useMotionPrefs } from "./motion/useMotionPrefs";
 
 interface FeaturedArtistsProps {
@@ -69,8 +67,6 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
   if (!artists || artists.length === 0) return null;
   return (
     <section className="relative w-full overflow-x-hidden bg-black py-12 md:py-16 lg:py-24">
-      {/* Cursor spotlight over the dark band */}
-      <CursorGlow color="rgba(197, 71, 22, 0.10)" size={460} />
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10 xl:px-16">
         <TextReveal
           as="h2"
@@ -82,12 +78,11 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
         </ScrollReveal>
         <div className="relative mt-6 sm:mt-8">
           {useRail ? (
-            <Marquee className="hidden lg:block" durationSeconds={56}>
+            <Marquee className="hidden lg:block" durationSeconds={28}>
               {featuredArtists.map((artist, i) => (
-                // Tilt3D wraps each tile in the desktop Marquee for depth on hover
-                <Tilt3D key={artist.id} max={5} className="px-2.5">
+                <div key={artist.id} className="px-2.5">
                   <ArtistTile artist={artist} priority={i < 2} />
-                </Tilt3D>
+                </div>
               ))}
             </Marquee>
           ) : null}

@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "@/components/ui/LayoutPrimitives";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
-import { CursorGlow } from "./motion/CursorGlow";
 import { cssUrl } from "@/lib/storage";
 
 interface PageHeroProps {
@@ -102,9 +101,6 @@ export function PageHero({
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,5,17,.4),rgba(43,29,20,.98))] lg:bg-[linear-gradient(180deg,rgba(7,5,17,.52),rgba(43,29,20,.94))]"
       />
-
-      {/* Cursor radial spotlight over the dark hero overlay */}
-      <CursorGlow color="rgba(197, 71, 22, 0.10)" size={420} />
 
       {/* The 390 frames carry their headline block off-canvas (الفنانين puts it at
           x=376 on a 390 artboard), so the mobile offset of this block is not

@@ -58,22 +58,28 @@ export function MotionReady() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setState(entry.target as HTMLElement, entry.isIntersecting);
+          if (entry.isIntersecting) {
+            setState(entry.target as HTMLElement, true);
+            observer.unobserve(entry.target);
+          }
         });
       },
       { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
     );
 
-    // Elements already on screen at first paint reveal immediately rather than
-    // waiting for a scroll that may never come — but they stay observed, so
-    // scrolling past and back still replays them.
+    // Elements already on screen at first paint reveal immediately;
+    // below-the-fold elements reveal once on first intersection.
     const register = (target: HTMLElement) => {
       if (target.dataset.motionObserved === "true") return;
       target.dataset.motionObserved = "true";
 
       const alreadyVisible = target.getBoundingClientRect().top < window.innerHeight;
-      setState(target, alreadyVisible);
-      observer.observe(target);
+      if (alreadyVisible) {
+        setState(target, true);
+      } else {
+        setState(target, false);
+        observer.observe(target);
+      }
     };
 
     const scan = () => {

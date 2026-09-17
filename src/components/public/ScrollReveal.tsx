@@ -56,12 +56,8 @@ export function ScrollReveal({
       initial={initial}
       whileInView={animate}
       onViewportEnter={() => setInView(true)}
-      onViewportLeave={() => setInView(false)}
-      // `once: false` is what makes the reveal replay. The bottom margin holds
-      // the reveal a little past the fold so an element is not reset while a
-      // sliver of it is still on screen.
       viewport={{
-        once: false,
+        once: true,
         amount: isMobile ? 0.05 : 0.12,
         margin: "0px 0px -8% 0px",
       }}

@@ -4,9 +4,6 @@ import { Container } from "@/components/ui/LayoutPrimitives";
 import { Highlight } from "@/components/ui/Highlight";
 import { ScrollReveal } from "./ScrollReveal";
 import { Parallax } from "./motion/Parallax";
-import { FloatParticles } from "./motion/FloatParticles";
-import { CursorGlow } from "./motion/CursorGlow";
-import { MagneticButton } from "./motion/MagneticButton";
 import { PublicButton } from "./PublicButton";
 import { parseYouTubeId } from "@/lib/youtube";
 import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
@@ -107,12 +104,6 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
         <div className="absolute inset-0 bg-[linear-gradient(151.78deg,rgba(0,0,0,1)_12.8%,rgba(0,0,0,0.1)_66.88%)]" />
       </Parallax>
 
-      {/* Ambient floating particles — terracotta embers drifting upward */}
-      <FloatParticles count={9} color="rgba(197, 71, 22, 0.55)" zClassName="z-[1]" />
-
-      {/* Cursor-following radial spotlight over the dark overlay */}
-      <CursorGlow color="rgba(197, 71, 22, 0.09)" size={500} className="z-[2]" />
-
       <Container className="relative z-10 w-full">
         <div className="mx-auto flex w-full max-w-[881px] flex-col items-center justify-center space-y-6 text-center sm:space-y-8">
           {/* Headline (Figma Node 148:3671 — Qahwa Arabic Regular 64px/93px, 2-fill)
@@ -131,28 +122,23 @@ export function HeroSection({ settings, primaryCtaLabel, secondaryCtaLabel }: He
             </p>
           </ScrollReveal>
 
-          {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap)
-              MagneticButton gives desktop cursors a subtle pull toward each button. */}
+          {/* Action CTAs (Figma Node 148:3666 — 207x48, 32px gap) */}
           <ScrollReveal variant="soft" delay={0.16} className="w-full">
             <div className="flex w-full flex-col items-center justify-center gap-3 pt-2 sm:flex-row sm:gap-6">
               {/* Solid primary (Figma component 115:1079, fixed 207x48) */}
-              <MagneticButton strength={10}>
-                <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
-                  {primaryCtaLabel || t("heroPrimaryCta")}
-                </PublicButton>
-              </MagneticButton>
+              <PublicButton href={settings.home_hero_primary_href || "/artists"} variant="primary" size="md" expandOnHover={false}>
+                {primaryCtaLabel || t("heroPrimaryCta")}
+              </PublicButton>
 
               {/* Outline secondary (Figma component 115:1091, fixed 207x48) */}
-              <MagneticButton strength={10}>
-                <PublicButton
-                  href={secondaryHref}
-                  variant="secondary"
-                  size="md"
-                  expandOnHover={false}
-                >
-                  {secondaryCtaLabel || t("heroSecondaryCta")}
-                </PublicButton>
-              </MagneticButton>
+              <PublicButton
+                href={secondaryHref}
+                variant="secondary"
+                size="md"
+                expandOnHover={false}
+              >
+                {secondaryCtaLabel || t("heroSecondaryCta")}
+              </PublicButton>
             </div>
           </ScrollReveal>
         </div>

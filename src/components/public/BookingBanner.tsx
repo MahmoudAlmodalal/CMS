@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ScrollReveal } from "./ScrollReveal";
-import { FloatParticles } from "./motion/FloatParticles";
-import { CursorGlow } from "./motion/CursorGlow";
 import type { SiteSettings } from "@/lib/dal/site-settings";
 import { cssUrl } from "@/lib/storage";
 
@@ -107,20 +105,14 @@ export function BookingBanner({
         className="absolute left-0 top-0 h-[12.05%] w-[6.39%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat opacity-[0.08]"
       />
 
-      {/* Ambient terracotta particles drifting upward behind the overlay */}
-      <FloatParticles count={10} color="rgba(197, 71, 22, 0.6)" zClassName="z-[1]" />
-
-      {/* Cursor radial spotlight */}
-      <CursorGlow color="rgba(197, 71, 22, 0.08)" size={450} className="z-[2]" />
-
       <div className="relative z-10 flex flex-col items-center gap-7 px-5 text-center lg:block lg:gap-0 lg:px-0">
-        {/* ♪ — 87:14537 / 134:4663 — motion-drift makes it float rhythmically */}
+        {/* ♪ — 87:14537 / 134:4663 */}
         <div
           className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
           style={{ top: `${v.glyphTop}px` }}
         >
           <ScrollReveal variant="soft">
-            <p aria-hidden="true" className="motion-drift text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
+            <p aria-hidden="true" className="text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
               ♪
             </p>
           </ScrollReveal>
@@ -163,7 +155,7 @@ export function BookingBanner({
           <ScrollReveal variant="up" delay={0.3}>
             <Link
               href={bookingHref}
-              className={`motion-ripple-click inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-lg active:translate-y-0 active:scale-[0.98] lg:ms-[var(--shift)] ${v.cta}`}
+              className={`inline-flex max-w-full items-center justify-center bg-primary-500 text-[16px] font-bold text-brand-surface shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-primary-hover hover:shadow-lg active:translate-y-0 active:scale-[0.98] lg:ms-[var(--shift)] ${v.cta}`}
               style={{ "--shift": `${v.ctaShift}px` } as React.CSSProperties}
             >
               {cta}
