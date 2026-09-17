@@ -301,7 +301,6 @@ export function TurntablePlayer({
         playerVars: { autoplay: 1, mute: 1, controls: 0, rel: 0, modestbranding: 1, playsinline: 1 },
         events: {
           onReady: (event) => {
-            stopSynth();
             event.target.mute();
             ytMutedRef.current = true;
             event.target.playVideo();
@@ -335,18 +334,12 @@ export function TurntablePlayer({
   // "just plays itself" while still respecting autoplay-with-sound rules.
   useEffect(() => {
     const unlock = () => {
-      if (ytPlayerRef.current) {
-        ytPlayerRef.current.unMute();
-        ytPlayerRef.current.playVideo();
-        ytMutedRef.current = false;
-        stopSynth();
-        document.removeEventListener("pointerdown", unlock);
-        document.removeEventListener("keydown", unlock);
-      }
-      else synthRef.current?.resume?.();
+      // Scrolling/tapping the page must not stop the temporary fallback sound.
+      // YouTube is unmuted only by the explicit play button below.
+      synthRef.current?.resume?.();
     };
     document.addEventListener("pointerdown", unlock, { passive: true });
-    document.addEventListener("keydown", unlock, { once: true });
+    document.addEventListener("keydown", unlock);
     return () => {
       document.removeEventListener("pointerdown", unlock);
       document.removeEventListener("keydown", unlock);
