@@ -13,7 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/Input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/Table";
 import { BilingualField, Field, ModalShell, Notice, StatusBadge } from "@/components/admin/ManagerKit";
-import { MediaPickerField } from "@/components/admin/media/MediaPickerField";
 import { parseYouTubeId, youTubeThumbnailUrl } from "@/lib/youtube";
 import {
   WORK_TYPE_OPTIONS,
@@ -347,7 +346,7 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
               <Field
                 id="work-youtube"
                 label="رابط يوتيوب"
-                help="الصق رابط الفيديو بأي صيغة: youtube.com/watch?v=… أو youtu.be/… أو /shorts/… — تظهر المعاينة فور لصق رابط صحيح."
+                help="الصق رابط العمل الموسيقي من يوتيوب. لن يتم تنزيل أو تخزين أي ملف؛ الموقع يشغّل الصوت مباشرة من يوتيوب."
               >
                 <Input
                   id="work-youtube"
@@ -375,7 +374,7 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
                     />
                   </div>
                   <p className="text-xs text-gradscale-400">
-                    تم التعرف على الفيديو. <span dir="ltr">{previewVideoId}</span>
+                    تم التعرف على مصدر الصوت. <span dir="ltr">{previewVideoId}</span>
                   </p>
                 </div>
               )}
@@ -394,21 +393,10 @@ export function ArtistWorksManager({ initialWorks, artists }: ArtistWorksManager
               onChangeEn={(value) => setField("description_en", value)}
             />
 
-            <Field
-              id="work-thumbnail"
-              label="صورة مصغّرة مخصّصة"
-              required={false}
-              help="اتركها فارغة لاستخدام الصورة المصغّرة من يوتيوب تلقائياً."
-            >
-              <MediaPickerField
-                id="work-thumbnail"
-                value={values.thumbnail_image_url ?? ""}
-                onChange={(url) => setField("thumbnail_image_url", url || null)}
-                bucket="artists"
-                folder="gallery"
-                disabled={pending}
-              />
-            </Field>
+            <input type="hidden" name="thumbnail_image_url" value="" />
+            <p className="text-xs leading-6 text-gradscale-400 md:col-span-2">
+              لا تحتاج لإضافة صورة أو ملف صوتي. ستُستخدم صورة يوتيوب تلقائياً للمعاينة، وسيبقى المصدر رابط يوتيوب فقط.
+            </p>
             <Field id="work-order" label="ترتيب الظهور" help="الأرقام الأصغر تظهر أولاً داخل قسم الأعمال.">
               <Input id="work-order" type="number" min="0" dir="ltr" value={values.display_order} onChange={(event) => setField("display_order", Number(event.target.value))} required />
             </Field>

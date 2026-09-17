@@ -6,7 +6,7 @@ import { YouTubeEmbed } from "@/components/ui/YouTubeEmbed";
 import type { ArtistWork } from "@/lib/types/artist-works";
 
 /**
- * One work in the الأعمال grid — title, description and a click-to-play video.
+ * One work in the الأعمال grid — title, description and a click-to-play audio source.
  *
  * The facade itself (poster frame, play button, no third-party request until the
  * visitor presses play) lives in YouTubeEmbed, shared with the hero and the about
@@ -24,6 +24,7 @@ export function ArtistWorkCard({ work }: { work: ArtistWork }) {
       <YouTubeEmbed
         url={work.youtube_url}
         title={work.title}
+        audioOnly
         poster={work.thumbnail_image_url}
         playLabel={t("workPlay", { title: work.title })}
         posterAlt={t("workThumbAlt", { title: work.title })}

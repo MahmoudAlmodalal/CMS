@@ -25,6 +25,8 @@ export interface YouTubeEmbedProps {
    * looping band behind the hero, which must paint without interaction.
    */
   variant?: "player" | "backdrop";
+  /** Plays the YouTube source as audio while keeping the card compact. */
+  audioOnly?: boolean;
   /** Overrides the YouTube poster frame — e.g. a cover uploaded in the CMS. */
   poster?: string | null;
   /** Accessible label for the play button. */
@@ -55,6 +57,7 @@ export function YouTubeEmbed({
   url,
   title,
   variant = "player",
+  audioOnly = false,
   poster,
   playLabel,
   posterAlt,
@@ -82,8 +85,38 @@ export function YouTubeEmbed({
     );
   }
 
+  if (audioOnly && playing) {
+    return (
+      <div className={`relative flex min-h-[116px] items-center justify-between gap-4 overflow-hidden bg-gradscale-900 px-5 py-4 text-white ${className}`}>
+        <iframe
+          src={youTubeEmbedUrl(videoId, { autoplay: true })}
+          title={title}
+          loading="lazy"
+          allow={PLAYER_ALLOW}
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="absolute h-px w-px opacity-0"
+          aria-hidden="true"
+        />
+        <div className="relative flex min-w-0 items-center gap-3">
+          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-500">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
+          </span>
+          <span className="truncate text-sm font-semibold">{title}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setPlaying(false)}
+          className="relative shrink-0 rounded-full border border-white/35 px-3 py-2 text-xs font-bold transition hover:bg-white/10 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-white"
+          aria-label={`إيقاف ${title}`}
+        >
+          إيقاف
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className={`relative aspect-video w-full overflow-hidden bg-gradscale-900 ${className}`}>
+    <div className={`relative ${audioOnly ? "min-h-[116px]" : "aspect-video"} w-full overflow-hidden bg-gradscale-900 ${className}`}>
       {playing ? (
         <iframe
           src={youTubeEmbedUrl(videoId, { autoplay: true })}
