@@ -63,14 +63,6 @@ export function TemplateWrapper({ children }: TemplateWrapperProps) {
       : { opacity: 0, y: -10, transition: { duration: 0.18, ease: "easeInOut" } },
   };
 
-  // Tier 2: the curtain sweeps down over the outgoing page and lifts away from
-  // the incoming one, so the two pages are never visible at the same time.
-  const curtain: Variants = {
-    initial: { scaleY: 1, originY: 0 },
-    animate: { scaleY: 0, originY: 0, transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] } },
-    exit: { scaleY: 1, originY: 1, transition: { duration: 0.32, ease: [0.7, 0, 0.84, 0] } },
-  };
-
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
@@ -82,9 +74,6 @@ export function TemplateWrapper({ children }: TemplateWrapperProps) {
         style={{ minHeight: "var(--page-min-height, 100dvh)" }}
         className="page-transition-wrapper flex-1 w-full flex flex-col will-change-[opacity,transform]"
       >
-        {!reducedMotion && !isInitialLoad ? (
-          <motion.div className="motion-curtain" variants={curtain} aria-hidden="true" />
-        ) : null}
         {children}
       </motion.div>
     </AnimatePresence>

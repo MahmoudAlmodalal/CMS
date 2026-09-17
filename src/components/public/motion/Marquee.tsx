@@ -18,30 +18,31 @@ export interface MarqueeProps {
  * duplicate is `aria-hidden` and taken out of the tab order, so assistive tech
  * and keyboard users see one copy of each item.
  *
- * Falls back to a plain scroll container on touch, on a hidden tab, and under
- * reduced motion — the content is always reachable by scroll or by keyboard
- * regardless of whether the animation runs.
+ * Falls back to a plain scroll container under reduced motion — the content is
+ * always reachable by scroll or by keyboard regardless of whether the
+ * animation runs.
  */
 export function Marquee({ children, className = "", durationSeconds = 48 }: MarqueeProps) {
-  const { allowAmbient } = useMotionPrefs();
+  // The rail loops on every device including touch — only an OS-level
+  // reduced-motion request (or a hidden tab / keyboard focus) stills it.
+  const { reduced } = useMotionPrefs();
   const pageVisible = usePageVisible();
-  const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
 
-  if (!allowAmbient) {
+  if (reduced) {
     return (
       <div className={`flex overflow-x-auto ${className}`.trim()}>{children}</div>
     );
   }
 
-  const paused = hovered || focused || !pageVisible;
+  // Hover no longer pauses the rail — only keyboard focus (a11y) or a hidden
+  // tab pauses it.
+  const paused = focused || !pageVisible;
 
   return (
     <div
       className={`motion-marquee ${className}`.trim()}
       data-paused={paused ? "true" : "false"}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={() => setFocused(false)}
       style={{ "--motion-marquee-duration": `${durationSeconds}s` } as React.CSSProperties}

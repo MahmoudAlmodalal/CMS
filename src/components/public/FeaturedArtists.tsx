@@ -24,16 +24,15 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const featuredArtists = artists.slice(0, 6);
-  const { allowAmbient, isMobile } = useMotionPrefs();
+  const { reduced } = useMotionPrefs();
 
   /**
-   * The black band is a static 6-up grid at lg and a swipe carousel below it.
-   * The grid is the half that reads as dead, so only that half becomes a rail;
-   * the carousel keeps its arrows, dots and snap points untouched. Both render
-   * the same tiles, and the rail is skipped entirely on touch and under reduced
-   * motion, where `Marquee` degrades to a plain scroller anyway.
+   * The rail is the primary display on every viewport: visitors reaching the
+   * band see the tiles already looping. The swipe carousel (with its arrows,
+   * dots and snap points) is the fallback for reduced-motion visitors, where
+   * `Marquee` degrades to a plain scroller anyway.
    */
-  const useRail = allowAmbient && !isMobile;
+  const useRail = !reduced;
 
   const updateActiveIndex = useCallback(() => {
     const carousel = carouselRef.current;
@@ -78,7 +77,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
         </ScrollReveal>
         <div className="relative mt-6 sm:mt-8">
           {useRail ? (
-            <Marquee className="hidden lg:block" durationSeconds={28}>
+            <Marquee durationSeconds={28}>
               {featuredArtists.map((artist, i) => (
                 <div key={artist.id} className="px-2.5">
                   <ArtistTile artist={artist} priority={i < 2} />
@@ -90,7 +89,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
           <div
             ref={carouselRef}
             onScroll={updateActiveIndex}
-            className={`${useRail ? "lg:hidden " : ""}no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6`}
+            className={`${useRail ? "hidden " : ""}no-scrollbar mx-auto flex w-full max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-2 pb-4 sm:gap-4 md:gap-5 lg:grid lg:grid-cols-4 lg:justify-items-center lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 xl:grid-cols-6`}
             aria-label={t("artistsHeading")}
           >
             {featuredArtists.map((artist, i) => (
@@ -99,11 +98,16 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
               </div>
             ))}
           </div>
-          <div className="pointer-events-none absolute inset-y-0 start-0 w-6 bg-gradient-to-r from-black/80 to-transparent lg:hidden" />
-          <div className="pointer-events-none absolute inset-y-0 end-0 w-8 bg-gradient-to-l from-black/80 to-transparent lg:hidden" />
+          {!useRail ? (
+            <>
+              <div className="pointer-events-none absolute inset-y-0 start-0 w-6 bg-gradient-to-r from-black/80 to-transparent lg:hidden" />
+              <div className="pointer-events-none absolute inset-y-0 end-0 w-8 bg-gradient-to-l from-black/80 to-transparent lg:hidden" />
+            </>
+          ) : null}
         </div>
 
-        {/* Mobile controls outside of image container: arrows + indicators */}
+        {/* Carousel controls — only with the reduced-motion fallback carousel */}
+        {!useRail ? (
         <div className="mt-4 flex items-center justify-between px-4 lg:hidden" aria-label="Artist carousel controls">
           <button
             type="button"
@@ -138,6 +142,7 @@ export function FeaturedArtists({ artists, heading, ctaLabel, ctaHref }: Feature
             <ChevronEndIcon size={18} />
           </button>
         </div>
+        ) : null}
 
         <div className="mt-6 flex justify-center sm:mt-8">
           <Link

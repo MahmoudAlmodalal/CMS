@@ -583,19 +583,11 @@ bdi, .bdi-isolate {
   to { transform: translateX(100%); }
 }
 
-/* --- Ken Burns drift on card imagery -------------------------------------- */
-/* Replaces the flat scale(1.04) snap: the photo keeps breathing while hovered. */
+/* --- Ken Burns drift disabled: calm hover scale used instead ------------- */
 
-@media (hover: hover) and (pointer: fine) {
-  .public-motion-shell .motion-card:hover .motion-image.motion-kenburns,
-  .public-motion-shell .motion-image.motion-kenburns:hover {
-    animation: motion-kenburns-drift 6s var(--motion-ease) infinite alternate;
-  }
-}
-
-@keyframes motion-kenburns-drift {
-  from { transform: scale(1.04) translate3d(0, 0, 0); }
-  to   { transform: scale(1.09) translate3d(-1.5%, -1.5%, 0); }
+.public-motion-shell .motion-card:hover .motion-image.motion-kenburns,
+.public-motion-shell .motion-image.motion-kenburns:hover {
+  animation: none;
 }
 
 /* --- Equalizer bars ------------------------------------------------------- */
@@ -660,27 +652,16 @@ bdi, .bdi-isolate {
 
 [dir="rtl"] .motion-progress-bar { transform-origin: right center; }
 
-/* --- Curtain page transition ---------------------------------------------- */
+/* --- Curtain page transition disabled: clean opacity cross-fade used ------ */
 
 .motion-curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  background: var(--color-brand-primary);
-  will-change: transform;
+  display: none !important;
 }
 
-/* --- Drifting 404 type ---------------------------------------------------- */
+/* --- Drifting 404 type disabled: static calligraphic presentation ---------- */
 
 .motion-drift {
-  animation: motion-drift-float 9s var(--motion-ease) infinite alternate;
-  will-change: transform;
-}
-
-@keyframes motion-drift-float {
-  from { transform: translate3d(0, -6px, 0) rotate(-1deg); }
-  to   { transform: translate3d(0, 6px, 0) rotate(1deg); }
+  animation: none !important;
 }
 
 /* --- Reduced motion neutralises the entire expressive layer ---------------- */
@@ -764,43 +745,16 @@ bdi, .bdi-isolate {
   }
 }
 
-/* --- Floating particles -------------------------------------------------- */
-
-@keyframes motion-particle-float {
-  0%   { transform: translateY(0) scale(1); opacity: 0.8; }
-  70%  { opacity: 0.5; }
-  100% { transform: translateY(-120px) scale(0.3); opacity: 0; }
-}
+/* --- Floating particles disabled ----------------------------------------- */
 
 .motion-particle {
-  position: absolute;
-  border-radius: 9999px;
-  animation: motion-particle-float var(--particle-dur, 7s) ease-in
-    var(--particle-delay, 0ms) infinite;
-  will-change: transform, opacity;
+  display: none !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .motion-particle { animation: none !important; opacity: 0 !important; }
-}
-@media (max-width: 767px) {
-  .motion-particle { animation: none !important; opacity: 0 !important; }
-}
-
-/* --- Active indicator pulse ----------------------------------------------- */
-
-@keyframes motion-indicator-pulse {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.25); }
-}
+/* --- Active indicator pulse disabled: clean solid dot -------------------- */
 
 .motion-indicator-active {
-  animation: motion-indicator-pulse 1.6s var(--motion-ease) infinite;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .motion-indicator-active { animation: none !important; }
+  animation: none !important;
 }
 
 /* --- Click ripple on buttons --------------------------------------------- */
@@ -880,3 +834,53 @@ bdi, .bdi-isolate {
   .motion-check-circle { animation: none !important; opacity: 1 !important; transform: none !important; }
   .motion-check-circle .motion-check path { animation: none !important; stroke-dashoffset: 0 !important; }
 }
+
+/* --- Locale Switcher 3D Script Coin (AR ↔ EN) ----------------------------- */
+
+.locale-switcher-badge {
+  perspective: 600px;
+}
+
+.locale-coin {
+  transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.locale-switcher-badge:hover .locale-coin,
+.locale-switcher-badge:focus-visible .locale-coin {
+  transform: rotateY(180deg);
+}
+
+.locale-coin-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.locale-coin-back {
+  transform: rotateY(180deg);
+}
+
+.locale-coin-spin {
+  animation: locale-coin-spin-anim 480ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes locale-coin-spin-anim {
+  0%   { transform: rotateY(180deg) scale(0.92); }
+  50%  { transform: rotateY(270deg) scale(1.08); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locale-coin {
+    transition: none !important;
+    transform: none !important;
+  }
+  .locale-switcher-badge:hover .locale-coin,
+  .locale-switcher-badge:focus-visible .locale-coin {
+    transform: none !important;
+  }
+  .locale-coin-spin {
+    animation: none !important;
+  }
+}
+
