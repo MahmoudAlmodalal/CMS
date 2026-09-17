@@ -89,7 +89,7 @@ export function BookingBanner({
 
   return (
     <section
-      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-12 md:py-16 lg:block lg:h-[498px] lg:py-0"
+      className="relative isolate flex w-full grow flex-col justify-center overflow-hidden bg-brand-espresso py-12 md:py-16 lg:h-[498px] lg:py-0"
       aria-label={ev("bookingRegion")}
     >
       <div
@@ -105,12 +105,9 @@ export function BookingBanner({
         className="absolute left-0 top-0 h-[12.05%] w-[6.39%] bg-[url('/assets/branding/band-mark.png')] bg-cover bg-no-repeat opacity-[0.08]"
       />
 
-      <div className="relative z-10 flex flex-col items-center gap-7 px-5 text-center lg:block lg:gap-0 lg:px-0">
+      <div className="relative z-10 flex flex-col items-center justify-center gap-5 px-5 text-center lg:gap-6 lg:px-0">
         {/* ♪ — 87:14537 / 134:4663 */}
-        <div
-          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
-          style={{ top: `${v.glyphTop}px` }}
-        >
+        <div className="flex justify-center">
           <ScrollReveal variant="soft">
             <p aria-hidden="true" className="text-[44px] leading-[66px] text-primary-500 opacity-70 lg:ms-[17px]">
               ♪
@@ -119,10 +116,7 @@ export function BookingBanner({
         </div>
 
         {/* Headline — 87:14539 / 134:4665 */}
-        <div
-          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
-          style={{ top: `${v.headingTop}px` }}
-        >
+        <div className="flex justify-center">
           <ScrollReveal variant="up" delay={0.1}>
             <h2
               className={`max-w-[636px] font-display font-normal lg:ms-[var(--shift)] lg:w-[636px] ${v.heading}`}
@@ -134,10 +128,7 @@ export function BookingBanner({
         </div>
 
         {/* Body — 87:14541 / 134:4667 */}
-        <div
-          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
-          style={{ top: `${v.bodyTop}px` }}
-        >
+        <div className="flex justify-center">
           <ScrollReveal variant="up" delay={0.2}>
             <p
               className={`max-w-[636px] text-[15px] leading-[26px] lg:ms-[17px] lg:max-w-none lg:text-[16px] lg:leading-[30.4px] ${v.body}`}
@@ -148,10 +139,7 @@ export function BookingBanner({
         </div>
 
         {/* CTA — 89:15225 / 134:4669 */}
-        <div
-          className="lg:absolute lg:inset-x-0 lg:flex lg:justify-center"
-          style={{ top: `${v.ctaTop}px` }}
-        >
+        <div className="flex justify-center">
           <ScrollReveal variant="up" delay={0.3}>
             <Link
               href={bookingHref}

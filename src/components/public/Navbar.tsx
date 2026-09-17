@@ -41,7 +41,7 @@ export const ENGLISH_NAV_ITEMS: readonly NavItem[] = [
  * - English link sequence: Home -> Events -> Academy -> Artists -> News
  * - Inline end: `Book Now` / `أحجز الآن` CTA 149x44 radius 16, plus 24x24 language glyph
  */
-export function Navbar({ bookingHref = "/booking" }: { bookingHref?: string }) {
+export function Navbar({ bookingHref = "/booking", bookingLabel }: { bookingHref?: string; bookingLabel?: string | null }) {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("nav");
@@ -171,11 +171,11 @@ export function Navbar({ bookingHref = "/booking" }: { bookingHref?: string }) {
 
           {/* Primary CTA (Figma Node 20:4405 / 134:8255 — 149x44, radius 16) */}
           <Link
-            href="/booking"
+            href={bookingHref}
             className="inline-flex h-11 shrink-0 items-center justify-center rounded-2xl bg-brand-primary px-4 text-sm font-bold leading-6 text-primary-50 transition-colors hover:bg-brand-primary-hover focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary xl:w-[149px] xl:px-0 xl:text-[16px]"
             data-node-id={isEn ? "I142:17048;134:8255" : "I94:18677;20:4405"}
           >
-            {t("bookNow")}
+            {bookingLabel ?? t("bookNow")}
           </Link>
         </div>
       </header>
